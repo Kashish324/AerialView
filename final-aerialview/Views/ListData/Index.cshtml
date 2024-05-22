@@ -1,0 +1,113 @@
+﻿@model ListDataViewModel
+
+@{
+    ViewData["Title"] = @Model.ChildMenuName;
+}
+
+@section ExternalDependencies {
+    @* export pdf *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script>
+        window.jsPDF = window.jspdf.jsPDF;
+    </script>
+
+    @* export excel *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.10.1/polyfill.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+}
+
+@{
+    var priorities = new[] { "Standard", "Date" };
+}
+
+<div class="tableContent">
+    @if (@Model.ChildMenuName != null)
+    {
+        <h1 class='tableHeading'>@Model.ChildMenuName</h1>
+    }
+    else
+    {
+        <h1 class='tableHeading'>Table Data</h1>
+    }
+</div>
+
+<div class='dataGridView'>
+    @foreach (var item in Model.PdfImageData)
+    {
+        <div class="d-flex gap-2">
+            <div class="overflow-hidden" style="width: auto;">
+                <img class="d-inline" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
+            </div>
+            <div>
+                <h4>Project: @item.ProjectName</h4>
+                <h4>Client: @item.ClientName</h4>
+            </div>
+        </div>
+    }
+    <partial name="~/Views/Filter/FilterView.cshtml" />
+
+    <div class="datagridWrapper">
+        @(Html.DevExtreme().DataGrid()
+            .ID("dataGridContainer")
+            .DataSource(Model.TableData)
+            @* .ShowBorders(true) *@
+            .FilterRow(filterRow => filterRow
+            .Visible(true)
+            .ApplyFilter(GridApplyFilterMode.Auto)
+            )
+            .ColumnAutoWidth(true)
+            .AllowColumnReordering(true)
+            .ShowColumnLines(true)
+            .ShowRowLines(true)
+            .ColumnChooser(c => c.Enabled(true))
+            .ColumnFixing(c => c.Enabled(true))
+            .WordWrapEnabled(true)
+            .HoverStateEnabled(true)
+            .HeaderFilter(hf => hf
+            .Visible(true)
+            .Search(hfs => hfs.Enabled(true))
+            )
+            .GroupPanel(g => g.Visible(true))
+            .Grouping(g => g.AutoExpandAll(false))
+            .KeyExpr("ID")
+            @* .Scrolling(scrolling => scrolling.Mode(DevExtreme.AspNet.Mvc.GridScrollingMode.Virtual)) *@
+            .Columns(c =>
+            {
+                if (Model.TableData != null && Model.TableData.Any())
+                {
+                    var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault();
+                    if (firstItem != null)
+                    {
+                        foreach (var property in firstItem.Keys)
+                        {
+                            if (property == "DateAndTime")
+                            {
+                                c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime);
+                            }
+                            else
+                            {
+                                c.Add().DataField(property).Caption(property);
+                            }
+                        }
+                    }
+                }
+            })
+            .ShowColumnHeaders(true)
+            .Pager(pager =>
+            {
+                pager.Visible(true);
+                pager.DisplayMode(GridPagerDisplayMode.Compact);
+                pager.ShowPageSizeSelector(true);
+                pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+                pager.ShowInfo(true);
+                pager.ShowNavigationButtons(true);
+            })
+            .Paging(paging =>
+            {
+                paging.Enabled(true);
+                paging.PageSize(10);
+            })
+            )
+    </div>
+</div>

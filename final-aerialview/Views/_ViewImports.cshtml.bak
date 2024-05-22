@@ -1,0 +1,3 @@
+﻿@using final_aerialview
+@using final_aerialview.Models
+@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers

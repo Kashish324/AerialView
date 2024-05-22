@@ -1,0 +1,65 @@
+﻿@{
+    var priorities = new[] { "Standard", "Date" };
+    var Items = new[] { "previous day", "1 week", "1 month", "3 months", "6 months", "1 year", "all" };
+}
+
+<div class='filterOptions d-flex align-items-center gap-2'>
+    <div class="dx-field-label"><i class="ri-filter-2-line filter-icon"></i> Filter : </div>
+    <div class="dx-field-value radioOption">
+        @(Html.DevExtreme().RadioGroup()
+            .Items(priorities)
+            .Value("Standard")
+            .Layout(Orientation.Horizontal)
+            .ID("radioOption")
+            )
+    </div>
+    <div class="radioGroupContainer">
+        @(Html.DevExtreme().SelectBox()
+            .DataSource(Items)
+            .OnValueChanged("selectBox_valueChanged")
+            .InputAttr("aria-label", "Product")
+            .ID("standardFilter")
+            )
+        @* <div class="datePicker">
+        <div class="dx-field fromDate">
+        <div class="dx-field-value">
+        @(Html.DevExtreme().DateBox()
+        .InputAttr("aria-label", "Date And Time")
+        .Type(DateBoxType.DateTime)
+        .Value(DateTime.Now)
+        )
+        </div>
+        </div>
+
+        <div class="dx-field toDate">
+        <div class="dx-field-value">
+        @(Html.DevExtreme().DateBox()
+        .InputAttr("aria-label", "Date And Time")
+        .Type(DateBoxType.DateTime)
+        .Value(DateTime.Now)
+        )
+        </div>
+        </div>
+        </div> *@
+    </div>
+
+    <div class="previewBtn">
+        @(Html.DevExtreme().Button()
+            .Text("Apply")
+            .Icon("check")
+            .StylingMode(ButtonStylingMode.Contained)
+            .Type(ButtonType.Normal)
+            .Width(100)
+            )
+    </div>
+</div>
+
+
+
+<script>
+    function selectBox_valueChanged(data) {
+        $(".current-value > span").text(data.value);
+        DevExpress.ui.notify(`Filter is set to: "${data.value}"`);
+    }
+</script>
+
