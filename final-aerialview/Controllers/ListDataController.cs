@@ -111,6 +111,7 @@ namespace final_aerialview.Controllers
         private IEnumerable<dynamic>? ExecuteDynamicQuery(DynamicConnectionString dynamicConnectionString, string tableName)
         {
             ViewData["DatabaseName"] = dynamicConnectionString.InitialCatalog;
+            ViewData["TableName"] = tableName;
 
             try
             {

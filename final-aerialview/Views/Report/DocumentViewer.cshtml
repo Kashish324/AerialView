@@ -1,0 +1,20 @@
+﻿@using final_aerialview.Reports
+
+@{
+    ViewData["Title"] = "Report Viewer";
+    var reportName = ViewData["ReportName"] as string;
+    var datagridRptid = ViewData["DatagridRptid"] as int?;
+}
+
+<link rel="stylesheet" href="~/css/viewer.part.bundle.css" />
+<script src="~/js/viewer.part.bundle.js"></script>
+
+@{
+    var documentViewer = Html.DevExpress().WebDocumentViewer("DocumentViewer")
+        .Height("100vh")
+        .Bind(@reportName);
+}
+
+@documentViewer
+
+

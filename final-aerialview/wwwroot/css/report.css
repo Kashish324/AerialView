@@ -1,0 +1,38 @@
+﻿.reportConfig {
+    height: 96vh;
+    /*background-color: skyblue;*/
+    padding: 2vh 0vw;
+}
+
+.reportList {
+    height: 100%;
+    width: fit-content;
+    background-color: #11101D;
+    padding: 2vh 2vw;
+    /*margin-top: 2vh;*/
+}
+
+    .reportList ul {
+        padding: 0;
+        text-align: left;
+    }
+
+        .reportList ul li {
+            padding-bottom: .5vh;
+            color: #fff;
+        }
+
+            .reportList ul li a {
+                color: #fff;
+            }
+
+.reportInstance {
+    position: relative;
+    padding: 0vh 0vw;
+}
+
+.typeBox {
+    position: relative;
+   
+}
+

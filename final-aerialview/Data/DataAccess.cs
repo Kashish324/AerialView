@@ -69,34 +69,33 @@ namespace final_aerialview.Data
             return ExecuteQuery<LocalReportModel>(query);
         }
 
-       
-
-        //public void UpdateReportPath( string fullReportPath)
-        //public void UpdateReportPath(string url)
-        //{
-        //    var rptid = UpdateModel.DatagridRptid;
-        //    string query = "UPDATE MyReports SET WebReportPath = @reportName WHERE RptId = @DatagridRptid";
-
-        //    //CreateConnection().Execute(query, new { FullReportPath = fullReportPath, DatagridRptid = rptid });
-        //    CreateConnection().Execute(query, new { reportName = url, DatagridRptid = rptid });
-        //}
 
 
+        public void UpdateReportPath(string url)
+        {
+            var rptid = UpdateModel.DatagridRptid;
+            string query = "UPDATE MyReports SET WebReportPath = @reportName WHERE RptId = @DatagridRptid";
 
-        //public string GetReportFromDatabase()
-        //{
-        //    try
-        //    {
-        //        var reportId = UpdateModel.DatagridRptid;
-        //        string query = "SELECT WebReportPath FROM MyReports WHERE RptId = @ReportId";
-        //        return CreateConnection().QueryFirstOrDefault<string>(query, new { ReportId = reportId });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error retrieving report from the database: {ex.Message}");
-        //        return null;
-        //    }
-        //}
+            //CreateConnection().Execute(query, new { FullReportPath = fullReportPath, DatagridRptid = rptid });
+            CreateConnection().Execute(query, new { reportName = url, DatagridRptid = rptid });
+        }
+
+
+
+        public string GetReportFromDatabase()
+        {
+            try
+            {
+                var reportId = UpdateModel.DatagridRptid;
+                string query = "SELECT WebReportPath FROM MyReports WHERE RptId = @ReportId";
+                return CreateConnection().QueryFirstOrDefault<string>(query, new { ReportId = reportId });
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"Error retrieving report from the database: {ex.Message}");
+                return null;
+            }
+        }
 
     }
 }

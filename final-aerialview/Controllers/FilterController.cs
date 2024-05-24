@@ -4,7 +4,8 @@ namespace final_aerialview.Controllers
 {
     public class FilterController : Controller
     {
-        public IActionResult FilterView()
+        [HttpPost]
+        public IActionResult FilterView(string selectedRadioOption, string selectedFilterValue)
         {
             return View();
         }

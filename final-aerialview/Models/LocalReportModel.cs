@@ -9,5 +9,7 @@
         public string? DataTableName { get; set; }
 
         public string? WebReportPath { get; set; }
+
+        public string? ReportType { get; set;}
     }
 }

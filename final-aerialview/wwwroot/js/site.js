@@ -36,7 +36,7 @@ function menuToggleHandling() {
 
 function subMenuToggleHandling() {
     let subMenuItems = document.querySelectorAll('.sub-menu > .subMenu-link');
-    let childMenuItems = document.querySelectorAll('.childshubmenu .icon-link');
+    let childMenuItems = document.querySelectorAll('.childSubMenu .icon-link');
 
     childMenuItems.forEach(item => {
         item.addEventListener('click', function (e) {
@@ -50,12 +50,12 @@ function subMenuToggleHandling() {
     }
 
     subMenuItems.forEach(subMenuItem => {
-        if (!subMenuItem.closest('.childshubmenu')) {
+        if (!subMenuItem.closest('.childSubMenu')) {
             subMenuItem.addEventListener('click', function (e) {
                 if (!e.target.classList.contains('link_name')) {
                     e.stopPropagation(); // Prevent the event from bubbling up to the parent li
                 }
-                if (subMenuItem.querySelector('.childshubmenu')) {
+                if (subMenuItem.querySelector('.childSubMenu')) {
                     toggleSubMenu(subMenuItem);
                 }
             });

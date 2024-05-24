@@ -21,7 +21,9 @@
     var priorities = new[] { "Standard", "Date" };
 }
 
-<div class="tableContent">
+
+
+@* <div class="tableContent">
     @if (@Model.ChildMenuName != null)
     {
         <h1 class='tableHeading'>@Model.ChildMenuName</h1>
@@ -30,12 +32,14 @@
     {
         <h1 class='tableHeading'>Table Data</h1>
     }
-</div>
+</div> *@
+
+@* @Model.TableName *@
 
 <div class='dataGridView'>
     @foreach (var item in Model.PdfImageData)
     {
-        <div class="d-flex gap-2">
+        <div class="d-flex gap-2 mt-2">
             <div class="overflow-hidden" style="width: auto;">
                 <img class="d-inline" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
             </div>
@@ -47,7 +51,8 @@
     }
     <partial name="~/Views/Filter/FilterView.cshtml" />
 
-    <div class="datagridWrapper">
+    <div class="datagridWrapper bg-light bg-gradient">
+
         @(Html.DevExtreme().DataGrid()
             .ID("dataGridContainer")
             .DataSource(Model.TableData)
@@ -70,7 +75,7 @@
             )
             .GroupPanel(g => g.Visible(true))
             .Grouping(g => g.AutoExpandAll(false))
-            .KeyExpr("ID")
+            @* .KeyExpr("ID") *@
             @* .Scrolling(scrolling => scrolling.Mode(DevExtreme.AspNet.Mvc.GridScrollingMode.Virtual)) *@
             .Columns(c =>
             {
@@ -109,5 +114,308 @@
                 paging.PageSize(10);
             })
             )
+
+
     </div>
 </div>
+
+<div class="exportBtn position-sticky d-flex align-items-center justify-content-end gap-2 border-top">
+
+    @(Html.DevExtreme().Button()
+        @* .Text("Export to Excel") *@
+        .Icon("xlsxfile")
+        .OnClick("exportToExcel")
+        .StylingMode(ButtonStylingMode.Contained)
+        .Type(ButtonType.Normal)
+        .ID("excelBtn")
+        )
+
+    @(Html.DevExtreme().Button()
+        @* .Text("Export to PDF") *@
+        .Icon("pdffile")
+        .OnClick("exportToPDF")
+        .StylingMode(ButtonStylingMode.Contained)
+        .Type(ButtonType.Normal)
+        .ID("pdfBtn")
+
+        )
+
+    @{
+        int datagridRptid = Model.RptId;
+        // var reportPath = ViewData["ReportPath"] as string;
+        var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
+        var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
+    }
+
+    @if (reportItem != null)
+    {
+        @* <h1>@reportItem.WebReportPath</h1> *@
+
+        @if (string.IsNullOrEmpty(reportItem.WebReportPath))
+        {
+            @* <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })">
+    @(Html.DevExtreme().Button()
+    .Text("Design")
+    .Icon("edit")
+    .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
+    .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
+    )
+    </a> *@
+
+            <div>
+                @(Html.DevExtreme().Button()
+                    .Text("No Report Available")
+                    .Type(ButtonType.Normal)
+                    .StylingMode(ButtonStylingMode.Text)
+                    )
+            </div>
+           
+        }
+        else
+        {
+            <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
+                @(Html.DevExtreme().Button()
+                    .Text("Preview")
+                    .Icon("print")
+                    .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
+                    .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
+                    )
+            </a>
+        }
+    }
+    else
+    {
+        <p>No report found for the given RptId.</p>
+    }
+</div>
+
+
+
+
+
+
+@* <section class="footer-section ">
+    <div class="footer-content">
+        <div class="headerContent">
+
+            @if (ViewData["DatabaseName"] != null)
+            {
+                <span class="text text-center" id="selected-submenu">database</span>
+
+            }
+            else
+            {
+                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
+
+            }
+        </div>
+
+    </div>
+</section> *@
+
+<script>
+    var pdfImageData = @Html.Raw(Json.Serialize(Model.PdfImageData));
+    var tableData = @Html.Raw(Json.Serialize(Model.TableData));
+    var date = new Date();
+    var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+
+    // function notify(e) {
+    //     var buttonText = e.component.option("text");
+    //     DevExpress.ui.notify(buttonText);
+    // }
+
+    function exportToPDF() {
+        var dataGridElement = document.getElementById("dataGridContainer");
+        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+        console.log('pdf clicked');
+        var columnWidth = 25;
+        var columnWidths = [];
+        var columnCount = dataGridInstance.columnCount();
+        for (var i = 0; i < columnCount; i++) {
+            columnWidths.push(columnWidth);
+        }
+
+        var doc = new jsPDF({
+            // format: [5000, 3200],
+        });
+
+        DevExpress.pdfExporter.exportDataGrid({
+            jsPDFDocument: doc,
+            component: dataGridInstance,
+            topLeft: { x: 1, y: 40 },
+            columnWidths: columnWidths,
+        }).then(function () {
+            // Calculate the number of pages
+            var pageCount = doc.internal.getNumberOfPages();
+
+            // Add footer to each page
+            for (var i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                addFooter(i, pageCount);
+            }
+
+            // Save the PDF document
+            doc.save("@Model.TableName");
+        });
+
+        // Function to add footer with paging
+        var addFooter = function (pageNumber, pageCount) {
+            doc.setFontSize(9);
+            doc.setTextColor('#cccccc');
+            doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+
+            var startY = 30;
+            for (var i = 0; i < pdfImageData.length; i++) {
+                var item = pdfImageData[i];
+                var imgData = item.Logo;
+                var projectName = item.ProjectName;
+                var clientName = item.ClientName;
+
+                // Add image
+                doc.addImage(imgData, 'JPEG', 15, startY, 40, 20);
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(13);
+
+                // Add project and client names
+                doc.text('Project:' + ' ' + projectName, 60, (startY - 6) + 15);
+                doc.text('Client:' + ' ' + clientName, 60, 15 + 30);
+                doc.setTextColor(0);
+                doc.setFontSize(0);
+                // Update startY for the next iteration
+                startY += 50; // Adjust this value as needed based on the height of the content
+            }
+        };
+
+        // Add header
+        doc.setFontSize(15);
+        doc.setTextColor(0);
+        doc.text('@Model.TableName Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+    }
+
+    function getColumnLetter(columnIndex) {
+        let columnName = '';
+        while (columnIndex > 0) {
+            const remainder = (columnIndex - 1) % 26;
+            columnName = String.fromCharCode(65 + remainder) + columnName;
+            columnIndex = Math.floor((columnIndex - 1) / 26);
+        }
+        return columnName;
+    }
+
+
+
+    function exportToExcel() {
+        var dataGridElement = document.getElementById("dataGridContainer");
+        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+
+        const workbook = new ExcelJS.Workbook();
+        const worksheet = workbook.addWorksheet('@Model.TableName');
+
+
+        // Merge cells and add image to the workbook
+        worksheet.mergeCells("A1:A4");
+        const imageId = workbook.addImage({
+            base64: pdfImageData[0].Logo,
+            extension: 'jpeg',
+        });
+        worksheet.addImage(imageId, "A1:A3");
+
+
+        const excelHeaders = Object.keys(tableData[0])
+        const headerLength = excelHeaders.length
+        // const head = worksheet.addRow(excelHeaders)
+        // headerLength.font = { bold: false }
+        console.log(excelHeaders)
+
+
+        // Export the data grid starting from cell A5
+        const startingRow = 5;
+        DevExpress.excelExporter.exportDataGrid({
+            component: dataGridInstance,
+            worksheet: worksheet,
+            topLeftCell: { row: startingRow, column: 1 }, // Start from cell A5
+            autoFilterEnabled: true
+        }).then(function () {
+            // Format column headers with bold text
+            const headerRow = worksheet.getRow(startingRow);
+            headerRow.font = { bold: true };
+
+            headerRow.eachCell(function (cell, colNumber) {
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'ffffffcc' }
+                };
+
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                }
+            });
+
+            function getColumnLetter(columnIndex) {
+                let columnName = '';
+                while (columnIndex > 0) {
+                    const remainder = (columnIndex - 1) % 26;
+                    columnName = String.fromCharCode(65 + remainder) + columnName;
+                    columnIndex = Math.floor((columnIndex - 1) / 26);
+                }
+                return columnName;
+            }
+
+            const last = getColumnLetter(headerLength)
+
+            worksheet.mergeCells(`B3:${last}3`)
+            worksheet.getCell("B3").value = '@Model.TableName'
+            worksheet.getCell("B3").alignment = { horizontal: "center", vertical: "middle" }
+            worksheet.getCell("B3").font = { bold: true, name: 'Arial' }
+            worksheet.getCell("B3").fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' }
+            }
+
+            worksheet.mergeCells(`B2:${last}2`)
+            worksheet.getCell("B2").value = pdfImageData[0].ProjectName
+            worksheet.getCell("B2").alignment = { horizontal: "center", vertical: "middle" }
+            worksheet.getCell("B2").font = { bold: true, name: 'Arial' }
+            worksheet.getCell("B2").fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFFFFFFF' }
+            }
+
+            worksheet.mergeCells(`B1:${last}1`)
+            worksheet.getCell("B1").value = pdfImageData[0].ClientName
+            worksheet.getCell("B1").alignment = { horizontal: "center", vertical: "middle" }
+            worksheet.getCell("B1").font = { bold: true, name: 'Arial' }
+            worksheet.getCell("B1").fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' }
+            }
+
+
+            // Loop through all cells and add borders
+            worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
+            });
+
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                saveAs(new Blob([buffer], { type: "application/octet-stream" }), '"@Model.ChildMenuName".xlsx');
+            });
+        }).catch(function (error) {
+            console.error("Error exporting data grid:", error);
+        });
+    }
+
+</script>

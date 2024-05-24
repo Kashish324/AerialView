@@ -1,0 +1,51 @@
+﻿@{
+    ViewData["Title"] = ViewData["MenuName"];
+}
+
+@{
+    var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
+    var reportType = ViewData["ReportType"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
+}
+
+
+<div class="reportConfig d-flex align-items-center justify-content-center ">
+
+    @if (reportData != null)
+    {
+
+
+        <div class="reportList border">
+            <ul class="">
+                @foreach (var reportItem in reportData)
+                {
+                    <li class="">
+                        <a asp-controller="Report" asp-action="ReportDesigner" class="text-decoration-none">
+                            @reportItem.ReportName
+                        </a>
+                    </li>
+                }
+
+            </ul>
+        </div>
+        <div class="reportInstance d-flex flex-column w-100 h-100 bg-light bg-gradient border ">
+            <div class="reportTypeContainer d-flex align-items-center gap-2 ">
+                @if (reportType != null)
+                {
+                    @foreach (var type in reportType)
+                    {
+                        @* <div class="typeBox btn btn-light border border-bottom-0 ">@type.ReportType</div> *@
+                        <div class="typeBox">@type.ReportType</div>
+                    }
+                }
+            </div>
+
+            <div class="reportDesignerWrapper h-100 w-100 "></div>
+        </div>
+    }
+    else
+    {
+        <p class="">No reports available</p>
+    }
+
+
+</div>
