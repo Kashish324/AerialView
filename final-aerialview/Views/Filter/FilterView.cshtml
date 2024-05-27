@@ -1,6 +1,6 @@
 ﻿@{
     var priorities = new[] { "Standard", "Date" };
-    var Items = new[] { "previous day", "1 week", "1 month", "3 months", "6 months", "1 year", "all" };
+    var Items = new[] { "Previous Day", "1 Week", "1 Month", "3 Months", "6 Months", "1 Year", "All" };
 }
 
 <div class='filterOptions d-flex align-items-center gap-2'>
@@ -9,42 +9,56 @@
         @(Html.DevExtreme().RadioGroup()
             .Items(priorities)
             .Value("Standard")
+            .OnValueChanged("selectedOption")
+            @* .OnOptionChanged("selectedOption") *@
             .Layout(Orientation.Horizontal)
             .ID("radioOption")
             @* .OnValueChanged("onRadioGroupValueChanged") *@
             )
     </div>
     <div class="radioGroupContainer">
-        @(Html.DevExtreme().SelectBox()
-            .DataSource(Items)
-            .OnValueChanged("selectBox_valueChanged")
-            .InputAttr("aria-label", "Product")
-            .ID("standardFilter")
-            )
-        @* <div class="datePicker">
-        <div class="dx-field fromDate">
-        <div class="dx-field-value">
-        @(Html.DevExtreme().DateBox()
-        .InputAttr("aria-label", "Date And Time")
-        .Type(DateBoxType.DateTime)
-        .Value(DateTime.Now)
-        )
-        </div>
+        <div id="standardFilterContainer" style="display: block;">
+            @(Html.DevExtreme().SelectBox()
+                .DataSource(Items)
+                .OnValueChanged("selectBox_valueChanged")
+                .InputAttr("aria-label", "Standard Time")
+                .ID("standardFilter")
+                )
         </div>
 
-        <div class="dx-field toDate">
-        <div class="dx-field-value">
-        @(Html.DevExtreme().DateBox()
-        .InputAttr("aria-label", "Date And Time")
-        .Type(DateBoxType.DateTime)
-        .Value(DateTime.Now)
-        )
+        <div id="datePickerContainer" style="display: none;">
+            <div class="datePicker">
+                <div class="dx-field fromDate">
+                    <div class="dx-field-value">
+                        @(Html.DevExtreme().DateBox()
+                            .InputAttr("aria-label", "Date And Time")
+                            .Type(DateBoxType.DateTime)
+                            .Value(DateTime.Now.AddHours(-1))
+                            .DisplayFormat("dd/MM/yyyy HH:mm:ss")
+                            .ShowClearButton(true)
+                            .OnValueChanged("fromDate")
+                            )
+                    </div>
+                </div>
+
+                <div class="dx-field toDate">
+                    <div class="dx-field-value">
+                        @(Html.DevExtreme().DateBox()
+                            .InputAttr("aria-label", "Date And Time")
+                            .Type(DateBoxType.DateTime)
+                            .Value(DateTime.Now)
+                            .DisplayFormat("dd/MM/yyyy HH:mm:ss")
+                            .ShowClearButton(true)
+                            .OnValueChanged("toDate")
+
+                            )
+                    </div>
+                </div>
+            </div>
         </div>
-        </div>
-        </div> *@
     </div>
 
-    <div class="previewBtn">
+   @*  <div class="previewBtn">
         @(Html.DevExtreme().Button()
             .Text("Apply")
             .Icon("check")
@@ -52,15 +66,107 @@
             .Type(ButtonType.Normal)
             .Width(100)
             )
-    </div>
+    </div> *@
+
+    <form id="myForm" action="/Filter/FilterView" method="post">
+        <!-- Your inputs and controls here -->
+        <!-- Include hidden inputs for storing the values you want to send -->
+        <input type="hidden" id="selectedOption" name="option">
+        <input type="hidden" id="selectedValue" name="selectedValue">
+        <input type="hidden" id="fromDate" name="fromDate">
+        <input type="hidden" id="toDate" name="toDate">
+        <input type="hidden" name="tableName" value="@Model.TableName" />
+        <div class="previewBtn">
+            @(Html.DevExtreme().Button()
+                .Text("Apply")
+                .Icon("check")
+                .StylingMode(ButtonStylingMode.Contained)
+                .Type(ButtonType.Normal)
+                .Width(100)
+                )
+        </div>
+    </form>
+
 </div>
 
 
 
 <script>
-    function selectBox_valueChanged(data) {
-        $(".current-value > span").text(data.value);
-        DevExpress.ui.notify(`Filter is set to: "${data.value}"`);
+
+    $(document).ready(function () {
+        $("#myForm").submit(function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
+
+            // Serialize the form data
+            var formData = $(this).serialize();
+
+            // Send an AJAX request to the server
+            $.ajax({
+                type: "POST",
+                url: "/Filter/FilterView", // URL to submit the form data to
+                data: formData,
+                success: function (response) {
+                    // Update the specific portion of the page with the response data
+                    $("#dataGridView").html(response);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors, if any
+                    console.error("Error:", error);
+                }
+            });
+        });
+    });
+
+
+    function formatDate(date) {
+        var options = { month: 'numeric', day: 'numeric', year: 'numeric', hour: 'numeric', minute: 'numeric', hour12: false };
+        return date.toLocaleString('en-US', options);
     }
+
+    function selectedOption(e) {
+        var option = e.component.option("value");
+
+        if (option == 'Standard') {
+            $('#standardFilterContainer').show();
+            $('#datePickerContainer').hide();
+        } else {
+            $('#standardFilterContainer').hide();
+            $('#datePickerContainer').show();
+        }
+        console.log(option)
+        $("#selectedOption").val(option);
+    }
+
+    function selectBox_valueChanged(data) {
+        var selectedValue = data.value;
+        $(".current-value > span").text(selectedValue);
+
+        $("#selectedValue").val(selectedValue);
+    }
+   
+    function fromDate(data) {
+        var fromDateAndTime = data.value;
+        var formattedFromDate = formatDate(fromDateAndTime);
+        $("#fromDate").val(fromDateAndTime);
+    }
+
+    function toDate(data) {
+        var toDateAndTime = data.value;
+        var formattedToDate = formatDate(toDateAndTime);
+        $("#toDate").val(toDateAndTime);
+    }
+
+
+   
+    $(document).ready(function () {
+        $("#selectedOption").val("Standard");
+        $(".previewBtn").click(function () {
+            $("#myForm").submit(); // Submit the form
+        });
+    });
+
+
+    
 </script>
 

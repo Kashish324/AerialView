@@ -58,10 +58,6 @@ namespace final_aerialview.Data
 
         }
 
-        //public IEnumerable<FilterModel> GetFilteredData(FilterModel filter)
-        //{
-        //    string query = "S";
-        //}
 
         public IEnumerable<LocalReportModel> GetReportData()
         {
@@ -97,6 +93,18 @@ namespace final_aerialview.Data
             }
         }
 
+
+        public IEnumerable<FilterModel> GetFilteredData(string whereClause)
+        {
+            var tableName = UpdateModel.DatagridTableName;
+            string query = $"SELECT * FROM {tableName} {whereClause}";
+            return ExecuteQuery<FilterModel>(query);
+        }
+
+
+
+
     }
 }
 
+//select* from T1 where DateAndTime between '2018-03-26 10:28:46.000' and '2018-03-26 10:30:27.000'

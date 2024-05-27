@@ -18,7 +18,7 @@
 
     @* dev extreme links *@
     <link rel="stylesheet" href="~/css/thirdparty.bundle.css" />
-    <link rel="stylesheet" href="~/css/site.css" />
+    @* <link rel="stylesheet" href="~/css/site.css" /> *@
     <script src="~/js/thirdparty.bundle.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
@@ -193,14 +193,24 @@
                 </div>
 
 
-                @if (ViewContext.RouteData.Values["controller"]?.ToString() != "ListData" && ViewContext.RouteData.Values["controller"]?.ToString() != "Submenu")
+               @*  @if (ViewContext.RouteData.Values["controller"]?.ToString() != "ListData" && ViewContext.RouteData.Values["controller"]?.ToString() != "Submenu" && ViewContext.RouteData.Values["controller"]?.ToString() != "Filter")
                 {
 
                     <div class="tableContent">
                         <h1 class='tableHeading'> Home Page </h1>
                         <div>Please select an item </div>
                     </div>
+                } *@
+
+                @if (Context.Request.Path == "/")
+                {
+                    <div class="tableContent">
+                        <h1 class='tableHeading'> Home Page </h1>
+                        <div>Please select an item </div>
+                    </div>
                 }
+
+
 
                 <main role="main">
                     @RenderBody()

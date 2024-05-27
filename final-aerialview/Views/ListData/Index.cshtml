@@ -36,6 +36,7 @@
 
 @* @Model.TableName *@
 
+
 <div class='dataGridView'>
     @foreach (var item in Model.PdfImageData)
     {
@@ -121,8 +122,7 @@
 
 <div class="exportBtn position-sticky d-flex align-items-center justify-content-end gap-2 border-top">
 
-    @(Html.DevExtreme().Button()
-        @* .Text("Export to Excel") *@
+   @*  @(Html.DevExtreme().Button()
         .Icon("xlsxfile")
         .OnClick("exportToExcel")
         .StylingMode(ButtonStylingMode.Contained)
@@ -131,14 +131,13 @@
         )
 
     @(Html.DevExtreme().Button()
-        @* .Text("Export to PDF") *@
         .Icon("pdffile")
         .OnClick("exportToPDF")
         .StylingMode(ButtonStylingMode.Contained)
         .Type(ButtonType.Normal)
         .ID("pdfBtn")
 
-        )
+        ) *@
 
     @{
         int datagridRptid = Model.RptId;
@@ -190,30 +189,7 @@
 </div>
 
 
-
-
-
-
-@* <section class="footer-section ">
-    <div class="footer-content">
-        <div class="headerContent">
-
-            @if (ViewData["DatabaseName"] != null)
-            {
-                <span class="text text-center" id="selected-submenu">database</span>
-
-            }
-            else
-            {
-                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
-
-            }
-        </div>
-
-    </div>
-</section> *@
-
-<script>
+@* <script>
     var pdfImageData = @Html.Raw(Json.Serialize(Model.PdfImageData));
     var tableData = @Html.Raw(Json.Serialize(Model.TableData));
     var date = new Date();
@@ -301,8 +277,6 @@
         }
         return columnName;
     }
-
-
 
     function exportToExcel() {
         var dataGridElement = document.getElementById("dataGridContainer");
@@ -418,4 +392,4 @@
         });
     }
 
-</script>
+</script> *@

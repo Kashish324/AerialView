@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = ViewData["MenuName"];
 }
 
@@ -19,7 +19,7 @@
                 @foreach (var reportItem in reportData)
                 {
                     <li class="">
-                        <a asp-controller="Report" asp-action="ReportDesigner" class="text-decoration-none">
+                        <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none">
                             @reportItem.ReportName
                         </a>
                     </li>
@@ -28,18 +28,20 @@
             </ul>
         </div>
         <div class="reportInstance d-flex flex-column w-100 h-100 bg-light bg-gradient border ">
-            <div class="reportTypeContainer d-flex align-items-center gap-2 ">
+            <div class="reportTypeContainer d-flex align-items-center ">
                 @if (reportType != null)
                 {
                     @foreach (var type in reportType)
                     {
-                        @* <div class="typeBox btn btn-light border border-bottom-0 ">@type.ReportType</div> *@
-                        <div class="typeBox">@type.ReportType</div>
+                        
+                        <div class="typeBox border">@type.ReportType</div>
                     }
                 }
             </div>
 
-            <div class="reportDesignerWrapper h-100 w-100 "></div>
+            <div class="reportDesignerWrapper h-100 w-100">
+               
+            </div>
         </div>
     }
     else
@@ -49,3 +51,96 @@
 
 
 </div>
+
+
+@section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.reportLink').click(function (e) {
+                e.preventDefault();
+                var rptId = $(this).data('rptid');
+                loadReport(rptId);
+            });
+
+            function loadReport(reportId) {
+                // You can load the report content dynamically here using AJAX
+                // For demonstration, let's just display the report ID in the reportDesignerWrapper
+                $('.reportDesignerWrapper').html("<p>Loading report with ID: " + reportId + "</p>");
+            }
+        });
+    </script>
+}
+
+ *@
+
+@{
+    ViewData["Title"] = ViewData["MenuName"];
+}
+
+@{
+    var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
+    var reportType = ViewData["ReportType"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
+}
+
+<div class="reportConfig d-flex align-items-center justify-content-center">
+    <div class="reportList border">
+        <ul>
+            @foreach (var reportItem in reportData)
+            {
+                <li>
+                    @* <a asp-action="ReportDesigner" asp-controller="Report" class="reportLink text-decoration-none">
+
+                        @reportItem.ReportName
+                    </a> *@
+
+                    <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none">
+                        @reportItem.ReportName
+                    </a>
+                </li>
+            }
+        </ul>
+    </div>
+    <div class="reportInstance d-flex flex-column w-100 h-100 bg-light bg-gradient border">
+        <div class="reportTypeContainer d-flex align-items-center gap-2">
+            @if (reportType != null)
+            {
+                @foreach (var type in reportType)
+                {
+                    <div class="typeBox">@type.ReportType</div>
+                }
+            }
+        </div>
+
+        <div class="reportDesignerWrapper h-100 w-100">
+            <!-- Report content will be loaded here -->
+            <div id="reportDesignerPlaceholder"></div>
+        </div>
+    </div>
+</div>
+
+@* @section Scripts {
+    <script>
+        $(document).ready(function () {
+            $('.reportLink').click(function (e) {
+                e.preventDefault();
+                var rptId = $(this).data('rptid');
+                loadReport(rptId);
+            });
+
+            function loadReport(reportId) {
+                $.ajax({
+                    url: '@Url.Action("ReportDesigner", "Report")',
+                    type: 'GET',
+                    data: { datagridRptid: reportId },
+                    success: function (response) {
+                        $('#reportDesignerPlaceholder').html(response);
+                    },
+                    error: function () {
+                        alert('Failed to load report.');
+                    }
+                });
+            }
+
+        });
+    </script>
+} *@

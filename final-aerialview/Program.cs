@@ -9,6 +9,7 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 builder.Services.AddScoped<DataAccess>();
+//builder.Services.AddTransient<DataAccess>();
 
 builder.Services.AddDevExpressControls();
 
@@ -68,6 +69,7 @@ app.UseRouting();
 
 app.UseAuthorization();
 
+//submenu routing 
 app.MapControllerRoute(
     name: "Submenu",
     pattern: "{parentMenu}/{submenu}",
@@ -78,21 +80,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-//app.MapControllers();
 
-//#pragma warning disable ASP0014
-//app.UseEndpoints(endpoints =>
-//{
-//    endpoints.MapControllerRoute(
-//        name: "Submenu",
-//        pattern: "{parentMenu}/{submenu}",
-//        defaults: new { controller = "Submenu", action = "ReportConfiguration" }
-//    );
-
-   
-
-//    // Additional endpoints can be defined here 
-//});
-//#pragma warning restore ASP0014
 
 app.Run();
