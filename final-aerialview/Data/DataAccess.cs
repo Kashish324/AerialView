@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using DevExpress.XtraReports.Wizards;
 using final_aerialview.Models;
+using final_aerialview.ViewModels;
+using Microsoft.AspNetCore.Http.HttpResults;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -51,7 +53,6 @@ namespace final_aerialview.Data
 
         public IEnumerable<PdfImageModel> GetPdfImageData()
         {
-            //string query = "Select * from ProjectSettings";
             string query = "SELECT CONVERT(VARCHAR(MAX), Logo, 2) AS Logo, ClientName, ProjectName FROM ProjectSettings";
             return ExecuteQuery<PdfImageModel>(query);
 
@@ -72,11 +73,8 @@ namespace final_aerialview.Data
             var rptid = UpdateModel.DatagridRptid;
             string query = "UPDATE MyReports SET WebReportPath = @reportName WHERE RptId = @DatagridRptid";
 
-            //CreateConnection().Execute(query, new { FullReportPath = fullReportPath, DatagridRptid = rptid });
             CreateConnection().Execute(query, new { reportName = url, DatagridRptid = rptid });
         }
-
-
 
         public string GetReportFromDatabase()
         {
@@ -93,18 +91,84 @@ namespace final_aerialview.Data
             }
         }
 
-
-        public IEnumerable<FilterModel> GetFilteredData(string whereClause)
+        public IEnumerable<dynamic> DynamicConnString(string connectionString, string tableName, string option, string selectedValue, string fromDate, string toDate)
         {
-            var tableName = UpdateModel.DatagridTableName;
-            string query = $"SELECT * FROM {tableName} {whereClause}";
-            return ExecuteQuery<FilterModel>(query);
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                string whereClause = GenerateWhereClause(option, selectedValue, fromDate, toDate);
+                string sqlQuery = $"SELECT * FROM {tableName} {whereClause}";
+
+                return connection.Query<dynamic>(sqlQuery);
+            }
         }
 
+        private string GenerateWhereClause(string option, string selectedValue, string fromDate, string toDate)
+        {
+            string whereClause = "";
 
 
+            if (option == "Date")
+            {
 
+                if (DateTime.TryParse(fromDate, out DateTime fromDateTime) && DateTime.TryParse(toDate, out DateTime toDateTime))
+                {
+                    return $" WHERE DateAndTime >= '{fromDateTime:yyyy-MM-ddTHH:mm:ss}' AND DateAndTime <= '{toDateTime:yyyy-MM-ddTHH:mm:ss}'";
+                }
+
+                return null;
+                // Date filter logic
+                //DateTime fromDateTime = DateTime.Parse(fromDate);
+                //DateTime toDateTime = DateTime.Parse(toDate);
+
+                //whereClause = $"WHERE DateAndTime >= '{fromDateTime:yyyy-MM-ddTHH:mm:ss}' AND DateAndTime <= '{toDateTime:yyyy-MM-ddTHH:mm:ss}'";
+
+            }
+            else if (option == "Standard")
+            {
+
+                if (string.IsNullOrEmpty(selectedValue))
+                {
+                    return null;
+                }
+
+
+                var currentDate = DateTime.Now;
+                var filterDate = currentDate;
+
+                switch (selectedValue)
+                {
+                    case "Previous Day":
+                        filterDate = currentDate.AddDays(-1);
+                        break;
+                    case "1 Week":
+                        filterDate = currentDate.AddDays(-7);
+                        break;
+                    case "1 Month":
+                        filterDate = currentDate.AddMonths(-1);
+                        break;
+                    case "3 Months":
+                        filterDate = currentDate.AddMonths(-3);
+                        break;
+                    case "6 Months":
+                        filterDate = currentDate.AddMonths(-6);
+                        break;
+                    case "1 Year":
+                        filterDate = currentDate.AddYears(-1);
+                        break;
+                    case "All":
+                        return "";
+                    default:
+                        return null;
+                }
+
+                whereClause = $"WHERE DateAndTime >= '{filterDate}'";
+
+
+            }
+
+            return whereClause;
+        }
     }
 }
-
-//select* from T1 where DateAndTime between '2018-03-26 10:28:46.000' and '2018-03-26 10:30:27.000'

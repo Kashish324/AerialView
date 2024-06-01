@@ -20,6 +20,7 @@ namespace final_aerialview.Controllers
             ViewData["PdfImageData"] = _dataAccess.GetPdfImageData();
             ViewData["ReportData"] = _dataAccess.GetReportData();
 
+
             base.OnActionExecuting(context);
         }
     }

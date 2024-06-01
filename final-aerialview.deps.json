@@ -11,6 +11,7 @@
           "BuildBundlerMinifier": "3.2.449",
           "Dapper": "2.1.35",
           "DevExpress.AspNetCore.Core": "23.2.5",
+          "DevExpress.AspNetCore.Dashboard": "23.2.5",
           "DevExpress.AspNetCore.Reporting": "23.2.5",
           "DevExtreme.AspNet.Core": "23.2.5",
           "DevExtreme.AspNet.Data": "4.0.0-beta.2",
@@ -93,6 +94,23 @@
           }
         }
       },
+      "DevExpress.AspNetCore.Dashboard/23.2.5": {
+        "dependencies": {
+          "DevExpress.AspNetCore.Common": "23.2.5",
+          "DevExpress.AspNetCore.Core": "23.2.5",
+          "DevExpress.Dashboard.Core": "23.2.5",
+          "DevExpress.Data": "23.2.5",
+          "DevExpress.DataAccess": "23.2.5",
+          "DevExpress.Web.Dashboard.Common": "23.2.5",
+          "DevExpress.Web.Resources": "23.2.5"
+        },
+        "runtime": {
+          "lib/net6.0/DevExpress.Dashboard.v23.2.AspNetCore.dll": {
+            "assemblyVersion": "23.2.5.0",
+            "fileVersion": "23.2.5.0"
+          }
+        }
+      },
       "DevExpress.AspNetCore.Reporting/23.2.5": {
         "dependencies": {
           "DevExpress.AspNetCore.Common": "23.2.5",
@@ -146,6 +164,33 @@
         },
         "runtime": {
           "lib/net6.0/DevExpress.CodeParser.v23.2.dll": {
+            "assemblyVersion": "23.2.5.0",
+            "fileVersion": "23.2.5.0"
+          }
+        }
+      },
+      "DevExpress.Dashboard.Core/23.2.5": {
+        "dependencies": {
+          "DevExpress.Charts": "23.2.5",
+          "DevExpress.Charts.Core": "23.2.5",
+          "DevExpress.Data": "23.2.5",
+          "DevExpress.DataAccess": "23.2.5",
+          "DevExpress.Drawing": "23.2.5",
+          "DevExpress.Gauges.Core": "23.2.5",
+          "DevExpress.Map.Core": "23.2.5",
+          "DevExpress.Office.Core": "23.2.5",
+          "DevExpress.PivotGrid.Core": "23.2.5",
+          "DevExpress.Printing.Core": "23.2.5",
+          "DevExpress.Reporting.Core": "23.2.5",
+          "DevExpress.RichEdit.Core": "23.2.5",
+          "DevExpress.Sparkline.Core": "23.2.5",
+          "DevExpress.TreeMap": "23.2.5",
+          "DevExpress.TreeMap.Core": "23.2.5",
+          "DevExpress.Xpo": "23.2.5",
+          "System.Drawing.Common": "4.7.2"
+        },
+        "runtime": {
+          "lib/net6.0/DevExpress.Dashboard.v23.2.Core.dll": {
             "assemblyVersion": "23.2.5.0",
             "fileVersion": "23.2.5.0"
           }
@@ -213,6 +258,20 @@
         },
         "runtime": {
           "lib/net6.0/DevExpress.XtraGauges.v23.2.Core.dll": {
+            "assemblyVersion": "23.2.5.0",
+            "fileVersion": "23.2.5.0"
+          }
+        }
+      },
+      "DevExpress.Map.Core/23.2.5": {
+        "dependencies": {
+          "DevExpress.Data": "23.2.5",
+          "DevExpress.Drawing": "23.2.5",
+          "DevExpress.Printing.Core": "23.2.5",
+          "System.Drawing.Common": "4.7.2"
+        },
+        "runtime": {
+          "lib/net6.0/DevExpress.Map.v23.2.Core.dll": {
             "assemblyVersion": "23.2.5.0",
             "fileVersion": "23.2.5.0"
           }
@@ -360,6 +419,50 @@
         },
         "runtime": {
           "lib/net6.0/DevExpress.Sparkline.v23.2.Core.dll": {
+            "assemblyVersion": "23.2.5.0",
+            "fileVersion": "23.2.5.0"
+          }
+        }
+      },
+      "DevExpress.TreeMap/23.2.5": {
+        "dependencies": {
+          "DevExpress.Data": "23.2.5",
+          "DevExpress.DataVisualization.Core": "23.2.5",
+          "DevExpress.Drawing": "23.2.5",
+          "DevExpress.Printing.Core": "23.2.5",
+          "DevExpress.TreeMap.Core": "23.2.5",
+          "System.Drawing.Common": "4.7.2"
+        },
+        "runtime": {
+          "lib/net6.0/DevExpress.XtraTreeMap.v23.2.dll": {
+            "assemblyVersion": "23.2.5.0",
+            "fileVersion": "23.2.5.0"
+          }
+        }
+      },
+      "DevExpress.TreeMap.Core/23.2.5": {
+        "dependencies": {
+          "DevExpress.Data": "23.2.5"
+        },
+        "runtime": {
+          "lib/net6.0/DevExpress.TreeMap.v23.2.Core.dll": {
+            "assemblyVersion": "23.2.5.0",
+            "fileVersion": "23.2.5.0"
+          }
+        }
+      },
+      "DevExpress.Web.Dashboard.Common/23.2.5": {
+        "dependencies": {
+          "DevExpress.Dashboard.Core": "23.2.5",
+          "DevExpress.Data": "23.2.5",
+          "DevExpress.DataAccess": "23.2.5",
+          "DevExpress.Drawing": "23.2.5",
+          "DevExpress.PivotGrid.Core": "23.2.5",
+          "DevExpress.Printing.Core": "23.2.5",
+          "DevExpress.Reporting.Core": "23.2.5"
+        },
+        "runtime": {
+          "lib/net6.0/DevExpress.Dashboard.v23.2.Web.dll": {
             "assemblyVersion": "23.2.5.0",
             "fileVersion": "23.2.5.0"
           }
@@ -1169,6 +1272,13 @@
       "path": "devexpress.aspnetcore.core/23.2.5",
       "hashPath": "devexpress.aspnetcore.core.23.2.5.nupkg.sha512"
     },
+    "DevExpress.AspNetCore.Dashboard/23.2.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-vOIcfQVdN2mDViDoh/a2jzlq1RUygE6/fK50aOG7DZjWOMDHpMmW0vsIgW7tOv/3IX8JsFHQ6CuSUpaNoKNQtw==",
+      "path": "devexpress.aspnetcore.dashboard/23.2.5",
+      "hashPath": "devexpress.aspnetcore.dashboard.23.2.5.nupkg.sha512"
+    },
     "DevExpress.AspNetCore.Reporting/23.2.5": {
       "type": "package",
       "serviceable": true,
@@ -1196,6 +1306,13 @@
       "sha512": "sha512-n9QTWYz1CR8wVhfC+tq9P6ZIF08G2Nf+uzvhP/NRBwCT5nfC+bQiY7ddrb6zS19eIGi3CGlrWKurj/GGGesJsQ==",
       "path": "devexpress.codeparser/23.2.5",
       "hashPath": "devexpress.codeparser.23.2.5.nupkg.sha512"
+    },
+    "DevExpress.Dashboard.Core/23.2.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-u3brCnzt6jg5xGUOCIN3tO/FpO4dgZCC+w0j9wSUocPb9pY28ccwjdBbvqhlav9zetHfsjPMTOp4h26XhuCrYA==",
+      "path": "devexpress.dashboard.core/23.2.5",
+      "hashPath": "devexpress.dashboard.core.23.2.5.nupkg.sha512"
     },
     "DevExpress.Data/23.2.5": {
       "type": "package",
@@ -1231,6 +1348,13 @@
       "sha512": "sha512-Dz//n+p0HQd9r3Fn8u9F50aegFURzExApZnnzaYT20Da9mpEp5f7xYnX+44ljhRa/BpzgdXSqOazNUoTU6nvUA==",
       "path": "devexpress.gauges.core/23.2.5",
       "hashPath": "devexpress.gauges.core.23.2.5.nupkg.sha512"
+    },
+    "DevExpress.Map.Core/23.2.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-bcubGsXkxWQhsSQ96RcI03ePmWPydU3fr2eKaUtSpRxnkZMyyGzuw2OrBaM3gt7ymejAqDQxuYC2N9r/j+CR0g==",
+      "path": "devexpress.map.core/23.2.5",
+      "hashPath": "devexpress.map.core.23.2.5.nupkg.sha512"
     },
     "DevExpress.Office.Core/23.2.5": {
       "type": "package",
@@ -1294,6 +1418,27 @@
       "sha512": "sha512-NDglWPosYPBkch8uTo5JWckEGQNFfdEe/eiIt+xKMffj1H8uo7RJDtVtI8HvxQZo1t7oVLF1OEV+JmOHAGve9g==",
       "path": "devexpress.sparkline.core/23.2.5",
       "hashPath": "devexpress.sparkline.core.23.2.5.nupkg.sha512"
+    },
+    "DevExpress.TreeMap/23.2.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-jp6tiKt8Ic0YYo5aduXEMyfN5U7hNVeUOAbWiVeyQZnrj+Fo01Gev2zvWEtuJa3s2JXHaFxkufA0vjWJAlaXeA==",
+      "path": "devexpress.treemap/23.2.5",
+      "hashPath": "devexpress.treemap.23.2.5.nupkg.sha512"
+    },
+    "DevExpress.TreeMap.Core/23.2.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-X/cWV9dwDqaUPDV6RgqyIzGTrvA7aygas1eLvkU6RZax18CO2VJ3ZgOTq/rdxzpzx0OBtzzxyHJxF6Ijj9miWw==",
+      "path": "devexpress.treemap.core/23.2.5",
+      "hashPath": "devexpress.treemap.core.23.2.5.nupkg.sha512"
+    },
+    "DevExpress.Web.Dashboard.Common/23.2.5": {
+      "type": "package",
+      "serviceable": true,
+      "sha512": "sha512-U3Dg/+hnx+PDCNlLqI83spkEb+Ma4bAqwLFdiAA72LQm2Z6m0dVhkG4WHhRFyFrE8lAw3zpCnrmRaYD0O1TRKw==",
+      "path": "devexpress.web.dashboard.common/23.2.5",
+      "hashPath": "devexpress.web.dashboard.common.23.2.5.nupkg.sha512"
     },
     "DevExpress.Web.Reporting.Common/23.2.5": {
       "type": "package",

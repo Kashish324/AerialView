@@ -7,6 +7,7 @@
     "bootstrap": "4.6.2",
     "devexpress-reporting": "23.2.6",
     "devextreme-dist": "23.2.5",
-    "remixicon": "^4.2.0"
+    "remixicon": "^4.2.0",
+    "devexpress-dashboard": "23.2.5"
   }
 }

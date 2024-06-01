@@ -2,29 +2,18 @@
 using final_aerialview.Data;
 using final_aerialview.Models;
 using final_aerialview.ViewModels;
-using System.Data.SqlClient;
-using Dapper;
 using final_aerialview.Utilities;
 
 namespace final_aerialview.Controllers
 {
-    public class ListDataController : BaseController
+    public class ListDataController(DataAccess dataAccess) : BaseController(dataAccess)
     {
-        public ListDataController(DataAccess dataAccess) : base(dataAccess)
-        {
-            //_dataAccess = dataAccess;
-        }
-
         public IActionResult Index(int? subMenuId, string? subMenuName)
         {
             if (subMenuId != null)
             {
                 var menuItems = _dataAccess.GetChildMenuData();
-                var reportData = _dataAccess.GetReportData();
-                ViewData["ReportData"] = reportData;
-
                 IEnumerable<PdfImageModel> pdfImageData = _dataAccess.GetPdfImageData();
-
                 // Convert logo data to Base64
                 foreach (var item in pdfImageData)
                 {
@@ -37,23 +26,13 @@ namespace final_aerialview.Controllers
                 var selectedChildData = menuItems.FirstOrDefault(item => item.SubMenuId == subMenuId);
                 var childMenuName = subMenuName ?? string.Empty;
 
-                IEnumerable<dynamic>? queryResult = null;
-
                 if (selectedChildData != null && !string.IsNullOrEmpty(selectedChildData.stringName))
                 {
-                    var connectionString = selectedChildData.stringName;
                     var tableName = selectedChildData.DataTableName;
-                    var dynamicConnString = ParseDatabaseData(connectionString);
+                    var connectionString = selectedChildData.stringName;
 
-                    if (dynamicConnString != null && tableName != null)
-                    {
-                        queryResult = ExecuteDynamicQuery(dynamicConnString, tableName);
-                    }
-                    else
-                    {
-                        throw new Exception("Can't find Connection String and Table Name");
-                    }
-
+                    ViewBag.TableName = tableName;
+                   
                     int rptId = selectedChildData.RptId;
 
                     var viewModel = new ListDataViewModel
@@ -63,12 +42,7 @@ namespace final_aerialview.Controllers
                         ConnectionString = connectionString,
                         TableName = tableName,
                         RptId = rptId,
-                        DynamicConnectionString = dynamicConnString.ToString(),
-                        DataSource = dynamicConnString.DataSource,
-                        DataBaseName = dynamicConnString.InitialCatalog,
-                        UserID = dynamicConnString.UserID,
-                        Password = dynamicConnString.Password,
-                        TableData = queryResult,
+                        TableData = [],
                         PdfImageData = pdfImageData,
                     };
                     return View(viewModel);
@@ -82,74 +56,24 @@ namespace final_aerialview.Controllers
             {
                 return View("Error");
             }
+
         }
 
-        private DynamicConnectionString? ParseDatabaseData(string connectionString)
+        [HttpPost]
+        public IActionResult DataGrid(string option, string selectedValue, string fromDate, string toDate, string tableName, string connString, int rptId)
         {
-            try
-            {
-                var builder = new SqlConnectionStringBuilder(connectionString);
+            var dynamicData = _dataAccess.DynamicConnString(connString, tableName, option, selectedValue, fromDate, toDate);
 
-                return new DynamicConnectionString
-                {
-                    DataSource = builder.DataSource,
-                    InitialCatalog = builder.InitialCatalog,
-                    UserID = builder.ContainsKey("User ID") ? builder.UserID : string.Empty,
-                    Password = builder.ContainsKey("Password") ? builder.Password : string.Empty,
-                    PersistSecurityInfo = builder.ContainsKey("Persist Security Info") ? builder.PersistSecurityInfo : true,
-                    IntegratedSecurity = builder.ContainsKey("Integrated Security") ? builder.IntegratedSecurity : false,
-                };
-            }
-            catch (Exception e)
+            var viewModel = new ListDataViewModel
             {
-                Console.WriteLine("error parsing connection string " + e.Message);
-                return null;
-            }
+                TableData = dynamicData,
+                RptId = rptId,
+            };
+
+
+            return View(viewModel);
         }
 
-        // Constructing dynamic connection 
-        private IEnumerable<dynamic>? ExecuteDynamicQuery(DynamicConnectionString dynamicConnectionString, string tableName)
-        {
-            ViewData["DatabaseName"] = dynamicConnectionString.InitialCatalog;
-            ViewData["TableName"] = tableName;
-
-            try
-            {
-                var connStringBuild = $"Data Source={dynamicConnectionString.DataSource};Initial Catalog={dynamicConnectionString.InitialCatalog};";
-
-                if (!string.IsNullOrEmpty(dynamicConnectionString.UserID))
-                {
-                    connStringBuild += $"User ID={dynamicConnectionString.UserID};";
-                }
-
-                if (!string.IsNullOrEmpty(dynamicConnectionString.Password))
-                {
-                    connStringBuild += $"Password={dynamicConnectionString.Password};";
-                }
-
-                connStringBuild += $"Persist Security Info={dynamicConnectionString.PersistSecurityInfo};Integrated Security={dynamicConnectionString.IntegratedSecurity};";
-
-                using (var connection = new SqlConnection(connStringBuild))
-                {
-                    connection.Open();
-
-                    var query = $"SELECT * FROM {tableName}";
-
-                    var result = connection.Query(query);
-
-                    connection.Close();
-
-                    return result;
-                }
-            }
-            catch (Exception e)
-            {
-                Console.WriteLine(e.Message);
-                return null;
-            }
-        }
-
-       
     }
 }
 

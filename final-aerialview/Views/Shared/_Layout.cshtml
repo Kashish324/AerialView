@@ -1,4 +1,4 @@
-﻿@{
+﻿﻿@{
     var menuParentData = ViewData["MenuParentData"] as IEnumerable<final_aerialview.Models.ListDataModel>;
     var subMenuData = ViewData["SubMenuData"] as IEnumerable<final_aerialview.Models.SubMenuModel>;
     var childMenuData = ViewData["ChildMenuData"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
@@ -17,8 +17,7 @@
     <link rel="stylesheet" href="~/css/report.css" asp-append-version="true" />
 
     @* dev extreme links *@
-    <link rel="stylesheet" href="~/css/thirdparty.bundle.css" />
-    @* <link rel="stylesheet" href="~/css/site.css" /> *@
+    @* <link rel="stylesheet" href="~/css/thirdparty.bundle.css" />
     <script src="~/js/thirdparty.bundle.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
@@ -28,8 +27,22 @@
     <script src="~/js/devextreme/jquery.js"></script>
     <script src="~/js/devextreme/dx.all.js"></script>
     <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
-    <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script> *@
 
+    @* dev extreme links *@
+
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <link rel="stylesheet" href="~/css/thirdparty.bundle.css" />
+    <script src="~/js/thirdparty.bundle.js"></script>
+
+
+    <link href="~/css/devextreme/dx.light.css" rel="stylesheet" />
+    <link href="~/css/devextreme/bootstrap.css" rel="stylesheet" />
+    @* <script src="~/js/devextreme/jquery.js"></script> *@
+    <script src="~/js/devextreme/dx.all.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
+    <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
 
 
     @RenderSection("ExternalDependencies", false)
@@ -93,8 +106,23 @@
                                         var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode);
 
                                         <li class="subMenu-link">
-                                            @if(mainItem.MenuName == "Reports")
+                                            @if (mainItem.MenuName == "Reports")
                                             {
+                                                <div class="icon-link">
+                                                    <div class="listMenu">
+                                                        <i class="ri-box-3-line"></i>
+                                                        <span>@subItem.SubMenuName</span>
+                                                    </div>
+                                                    @if (hasChildmenu)
+                                                    {
+                                                        <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
+                                                    }
+                                                </div>
+                                            }
+                                            else
+                                            {
+
+                                                <a href="@Url.Action("ReportConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
                                                     <div class="icon-link">
                                                         <div class="listMenu">
                                                             <i class="ri-box-3-line"></i>
@@ -105,22 +133,7 @@
                                                             <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
                                                         }
                                                     </div>
-                                            }
-                                            else
-                                            {
-                                                
-                                            <a href="@Url.Action("ReportConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
-                                            <div class="icon-link">
-                                                <div class="listMenu">
-                                                    <i class="ri-box-3-line"></i>
-                                                    <span>@subItem.SubMenuName</span>
-                                                </div>
-                                                @if (hasChildmenu)
-                                                {
-                                                    <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
-                                                }
-                                            </div>
-                                            </a>
+                                                </a>
                                             }
 
                                             @if (hasChildmenu)
@@ -158,14 +171,14 @@
                     <i class="ri-arrow-right-double-line bx bx-menu"></i>
 
                     @* @if (ViewData["DatabaseName"] != null)
-                    {
-                        <span class="text text-center" id="selected-submenu"> @ViewData["TableName"]</span>
-                    }
-                    else
-                    {
-                        <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
+                {
+                <span class="text text-center" id="selected-submenu"> @ViewData["TableName"]</span>
+                }
+                else
+                {
+                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
 
-                    } *@
+                } *@
 
                     @if (ViewContext.RouteData.Values["controller"].ToString() != "ListData")
                     {
@@ -180,9 +193,9 @@
                     }
                     else
                     {
-                        if (ViewData["TableName"] != null)
+                        if (ViewBag.TableName != null)
                         {
-                            <span class="text text-center" id="selected-submenu">@ViewData["TableName"]</span>
+                            <span class="text text-center" id="selected-submenu">@ViewBag.TableName</span>
                         }
                         else
                         {
@@ -191,16 +204,6 @@
                     }
 
                 </div>
-
-
-               @*  @if (ViewContext.RouteData.Values["controller"]?.ToString() != "ListData" && ViewContext.RouteData.Values["controller"]?.ToString() != "Submenu" && ViewContext.RouteData.Values["controller"]?.ToString() != "Filter")
-                {
-
-                    <div class="tableContent">
-                        <h1 class='tableHeading'> Home Page </h1>
-                        <div>Please select an item </div>
-                    </div>
-                } *@
 
                 @if (Context.Request.Path == "/")
                 {
@@ -226,7 +229,7 @@
         </main>
     }
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 

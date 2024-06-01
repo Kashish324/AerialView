@@ -1,0 +1,113 @@
+﻿@model ListDataViewModel
+
+@{
+    Layout = null;
+}
+<div id="dataTable">
+
+<div class="datagridWrapper bg-light bg-gradient" >
+
+        @(Html.DevExtreme().DataGrid()
+            .ID("dataGridContainer")
+            .DataSource(Model.TableData)
+
+            .FilterRow(filterRow => filterRow
+            .Visible(true)
+            .ApplyFilter(GridApplyFilterMode.Auto)
+            )
+
+            .ColumnAutoWidth(true)
+            .AllowColumnReordering(true)
+            .ShowColumnLines(true)
+            .ShowRowLines(true)
+            .ColumnChooser(c => c.Enabled(true))
+            .ColumnFixing(c => c.Enabled(true))
+            .WordWrapEnabled(true)
+            .HoverStateEnabled(true)
+            .HeaderFilter(hf => hf
+            .Visible(true)
+            .Search(hfs => hfs.Enabled(true))
+            )
+            .GroupPanel(g => g.Visible(true))
+            .Grouping(g => g.AutoExpandAll(false))
+
+            .Columns(c =>
+            {
+                if (Model.TableData != null && Model.TableData.Any())
+                {
+                    var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault();
+                    if (firstItem != null)
+                    {
+                        foreach (var property in firstItem.Keys)
+                        {
+                            if (property == "DateAndTime")
+                            {
+                                c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime);
+                            }
+                            else
+                            {
+                                c.Add().DataField(property).Caption(property);
+                            }
+                        }
+                    }
+                }
+            })
+            .ShowColumnHeaders(true)
+            .Pager(pager =>
+            {
+                pager.Visible(true);
+                pager.DisplayMode(GridPagerDisplayMode.Compact);
+                pager.ShowPageSizeSelector(true);
+                pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+                pager.ShowInfo(true);
+                pager.ShowNavigationButtons(true);
+            })
+            .Paging(paging =>
+            {
+                paging.Enabled(true);
+                paging.PageSize(10);
+            })
+            )
+
+
+    </div>
+
+    <div class="exportBtn position-sticky d-flex align-items-center justify-content-end gap-2 border-top">
+
+        @{
+            int datagridRptid = Model.RptId;
+            var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
+            var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
+        }
+
+        @if (reportItem != null)
+        {
+            @if (string.IsNullOrEmpty(reportItem.WebReportPath))
+            {
+                <div>
+                    @(Html.DevExtreme().Button()
+                        .Text("No Report Available")
+                        .Type(ButtonType.Normal)
+                        .StylingMode(ButtonStylingMode.Text)
+                        )
+                </div>
+
+            }
+            else
+            {
+                <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
+                    @(Html.DevExtreme().Button()
+                        .Text("Preview")
+                        .Icon("print")
+                        .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
+                        .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
+                        )
+                </a>
+            }
+        }
+        else
+        {
+            <p>No report found for the given RptId.</p>
+        }
+    </div>
+</div>

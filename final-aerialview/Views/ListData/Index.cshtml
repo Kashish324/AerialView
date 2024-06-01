@@ -1,5 +1,6 @@
 ﻿@model ListDataViewModel
 
+
 @{
     ViewData["Title"] = @Model.ChildMenuName;
 }
@@ -19,22 +20,9 @@
 
 @{
     var priorities = new[] { "Standard", "Date" };
+    var Items = new[] { "Previous Day", "1 Week", "1 Month", "3 Months", "6 Months", "1 Year", "All" };
 }
 
-
-
-@* <div class="tableContent">
-    @if (@Model.ChildMenuName != null)
-    {
-        <h1 class='tableHeading'>@Model.ChildMenuName</h1>
-    }
-    else
-    {
-        <h1 class='tableHeading'>Table Data</h1>
-    }
-</div> *@
-
-@* @Model.TableName *@
 
 
 <div class='dataGridView'>
@@ -50,346 +38,178 @@
             </div>
         </div>
     }
-    <partial name="~/Views/Filter/FilterView.cshtml" />
+    @* <partial name="~/Views/Filter/FilterView.cshtml" /> *@
 
-    <div class="datagridWrapper bg-light bg-gradient">
-
-        @(Html.DevExtreme().DataGrid()
-            .ID("dataGridContainer")
-            .DataSource(Model.TableData)
-            @* .ShowBorders(true) *@
-            .FilterRow(filterRow => filterRow
-            .Visible(true)
-            .ApplyFilter(GridApplyFilterMode.Auto)
-            )
-            .ColumnAutoWidth(true)
-            .AllowColumnReordering(true)
-            .ShowColumnLines(true)
-            .ShowRowLines(true)
-            .ColumnChooser(c => c.Enabled(true))
-            .ColumnFixing(c => c.Enabled(true))
-            .WordWrapEnabled(true)
-            .HoverStateEnabled(true)
-            .HeaderFilter(hf => hf
-            .Visible(true)
-            .Search(hfs => hfs.Enabled(true))
-            )
-            .GroupPanel(g => g.Visible(true))
-            .Grouping(g => g.AutoExpandAll(false))
-            @* .KeyExpr("ID") *@
-            @* .Scrolling(scrolling => scrolling.Mode(DevExtreme.AspNet.Mvc.GridScrollingMode.Virtual)) *@
-            .Columns(c =>
-            {
-                if (Model.TableData != null && Model.TableData.Any())
-                {
-                    var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault();
-                    if (firstItem != null)
-                    {
-                        foreach (var property in firstItem.Keys)
-                        {
-                            if (property == "DateAndTime")
-                            {
-                                c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime);
-                            }
-                            else
-                            {
-                                c.Add().DataField(property).Caption(property);
-                            }
-                        }
-                    }
-                }
-            })
-            .ShowColumnHeaders(true)
-            .Pager(pager =>
-            {
-                pager.Visible(true);
-                pager.DisplayMode(GridPagerDisplayMode.Compact);
-                pager.ShowPageSizeSelector(true);
-                pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
-                pager.ShowInfo(true);
-                pager.ShowNavigationButtons(true);
-            })
-            .Paging(paging =>
-            {
-                paging.Enabled(true);
-                paging.PageSize(10);
-            })
-            )
-
-
-    </div>
-</div>
-
-<div class="exportBtn position-sticky d-flex align-items-center justify-content-end gap-2 border-top">
-
-   @*  @(Html.DevExtreme().Button()
-        .Icon("xlsxfile")
-        .OnClick("exportToExcel")
-        .StylingMode(ButtonStylingMode.Contained)
-        .Type(ButtonType.Normal)
-        .ID("excelBtn")
-        )
-
-    @(Html.DevExtreme().Button()
-        .Icon("pdffile")
-        .OnClick("exportToPDF")
-        .StylingMode(ButtonStylingMode.Contained)
-        .Type(ButtonType.Normal)
-        .ID("pdfBtn")
-
-        ) *@
-
-    @{
-        int datagridRptid = Model.RptId;
-        // var reportPath = ViewData["ReportPath"] as string;
-        var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
-        var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
-    }
-
-    @if (reportItem != null)
-    {
-        @* <h1>@reportItem.WebReportPath</h1> *@
-
-        @if (string.IsNullOrEmpty(reportItem.WebReportPath))
-        {
-            @* <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })">
-    @(Html.DevExtreme().Button()
-    .Text("Design")
-    .Icon("edit")
-    .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
-    .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
-    )
-    </a> *@
-
-            <div>
-                @(Html.DevExtreme().Button()
-                    .Text("No Report Available")
-                    .Type(ButtonType.Normal)
-                    .StylingMode(ButtonStylingMode.Text)
+    <div class='filterOptions d-flex align-items-center gap-2'>
+        <div class="dx-field-label"><i class="ri-filter-2-line filter-icon"></i> Filter : </div>
+        <div class="dx-field-value radioOption">
+            @(Html.DevExtreme().RadioGroup()
+                .Items(priorities)
+                .Value("Standard")
+                .OnValueChanged("selectedOption")
+                .Layout(Orientation.Horizontal)
+                .ID("radioOption")
+                )
+        </div>
+        <div class="radioGroupContainer">
+            <div id="standardFilterContainer" style="display: block;">
+                @(Html.DevExtreme().SelectBox()
+                    .DataSource(Items)
+                    .OnValueChanged("selectBox_valueChanged")
+                    .InputAttr("aria-label", "Standard Time")
+                    .ID("standardFilter")
                     )
             </div>
-           
-        }
-        else
-        {
-            <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
+
+            <div id="datePickerContainer" style="display: none;">
+                <div class="datePicker">
+                    <div class="dx-field fromDate">
+                        <div class="dx-field-value">
+                            @(Html.DevExtreme().DateBox()
+                                .InputAttr("aria-label", "Date And Time")
+                                .Type(DateBoxType.DateTime)
+                                .Value(DateTime.Now.AddHours(-1))
+                                .DisplayFormat("dd/MM/yyyy HH:mm:ss")
+                                .ShowClearButton(true)
+                                .OnValueChanged("fromDate")
+                                )
+                        </div>
+                    </div>
+
+                    <div class="dx-field toDate">
+                        <div class="dx-field-value">
+                            @(Html.DevExtreme().DateBox()
+                                .InputAttr("aria-label", "Date And Time")
+                                .Type(DateBoxType.DateTime)
+                                .Value(DateTime.Now)
+                                .DisplayFormat("dd/MM/yyyy HH:mm:ss")
+                                .ShowClearButton(true)
+                                .OnValueChanged("toDate")
+
+                                )
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+
+        <form id="filterForm" action="/ListData/DataGrid" method="post">
+            <input type="hidden" id="selectedOption" name="option">
+            <input type="hidden" id="selectedValue" name="selectedValue">
+            <input type="hidden" id="fromDate" name="fromDate">
+            <input type="hidden" id="toDate" name="toDate">
+
+
+            <input type="hidden" name="tableName" value="@Model.TableName" />
+            <input type="hidden" name="connString" value="@Model.ConnectionString" />
+            <input type="hidden" name="rptId" value="@Model.RptId" />
+
+            <div class="previewBtn">
                 @(Html.DevExtreme().Button()
-                    .Text("Preview")
-                    .Icon("print")
-                    .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
-                    .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
+                    .Text("Apply")
+                    .Icon("check")
+                    .StylingMode(ButtonStylingMode.Contained)
+                    .Type(ButtonType.Normal)
+                    .Width(100)
                     )
-            </a>
-        }
-    }
-    else
-    {
-        <p>No report found for the given RptId.</p>
-    }
+            </div>
+        </form>
+    </div>
+
+    @* <div id="dataTable"></div> *@
+
+    <partial name="~/Views/ListData/Datagrid.cshtml" />
+
+
 </div>
 
+<script>
+    function formatDate(date) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Months are zero-based
+        var year = date.getFullYear();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
 
-@* <script>
-    var pdfImageData = @Html.Raw(Json.Serialize(Model.PdfImageData));
-    var tableData = @Html.Raw(Json.Serialize(Model.TableData));
-    var date = new Date();
-    var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+        // Pad single digits with a leading zero
+        day = day < 10 ? '0' + day : day;
+        month = month < 10 ? '0' + month : month;
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
 
-    // function notify(e) {
-    //     var buttonText = e.component.option("text");
-    //     DevExpress.ui.notify(buttonText);
-    // }
-
-    function exportToPDF() {
-        var dataGridElement = document.getElementById("dataGridContainer");
-        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
-        console.log('pdf clicked');
-        var columnWidth = 25;
-        var columnWidths = [];
-        var columnCount = dataGridInstance.columnCount();
-        for (var i = 0; i < columnCount; i++) {
-            columnWidths.push(columnWidth);
-        }
-
-        var doc = new jsPDF({
-            // format: [5000, 3200],
-        });
-
-        DevExpress.pdfExporter.exportDataGrid({
-            jsPDFDocument: doc,
-            component: dataGridInstance,
-            topLeft: { x: 1, y: 40 },
-            columnWidths: columnWidths,
-        }).then(function () {
-            // Calculate the number of pages
-            var pageCount = doc.internal.getNumberOfPages();
-
-            // Add footer to each page
-            for (var i = 1; i <= pageCount; i++) {
-                doc.setPage(i);
-                addFooter(i, pageCount);
-            }
-
-            // Save the PDF document
-            doc.save("@Model.TableName");
-        });
-
-        // Function to add footer with paging
-        var addFooter = function (pageNumber, pageCount) {
-            doc.setFontSize(9);
-            doc.setTextColor('#cccccc');
-            doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
-
-            var startY = 30;
-            for (var i = 0; i < pdfImageData.length; i++) {
-                var item = pdfImageData[i];
-                var imgData = item.Logo;
-                var projectName = item.ProjectName;
-                var clientName = item.ClientName;
-
-                // Add image
-                doc.addImage(imgData, 'JPEG', 15, startY, 40, 20);
-                doc.setTextColor(0, 0, 0);
-                doc.setFontSize(13);
-
-                // Add project and client names
-                doc.text('Project:' + ' ' + projectName, 60, (startY - 6) + 15);
-                doc.text('Client:' + ' ' + clientName, 60, 15 + 30);
-                doc.setTextColor(0);
-                doc.setFontSize(0);
-                // Update startY for the next iteration
-                startY += 50; // Adjust this value as needed based on the height of the content
-            }
-        };
-
-        // Add header
-        doc.setFontSize(15);
-        doc.setTextColor(0);
-        doc.text('@Model.TableName Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+        // Return the formatted date string without commas
+        return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
     }
 
-    function getColumnLetter(columnIndex) {
-        let columnName = '';
-        while (columnIndex > 0) {
-            const remainder = (columnIndex - 1) % 26;
-            columnName = String.fromCharCode(65 + remainder) + columnName;
-            columnIndex = Math.floor((columnIndex - 1) / 26);
+    function selectedOption(e) {
+        var option = e.component.option("value");
+
+        if (option == 'Standard') {
+            $('#standardFilterContainer').show();
+            $('#datePickerContainer').hide();
+        } else {
+            $('#standardFilterContainer').hide();
+            $('#datePickerContainer').show();
         }
-        return columnName;
+        console.log("option:", option)
+        $("#selectedOption").val(option);
     }
 
-    function exportToExcel() {
-        var dataGridElement = document.getElementById("dataGridContainer");
-        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+    function selectBox_valueChanged(data) {
+        var selectedValue = data.value;
+        $(".current-value > span").text(selectedValue);
 
-        const workbook = new ExcelJS.Workbook();
-        const worksheet = workbook.addWorksheet('@Model.TableName');
+        $("#selectedValue").val(selectedValue);
+        console.log("selected value", selectedValue)
+    }
 
+    function fromDate(data) {
+        var fromDateAndTime = new Date(data.value);
+        var formattedFromDate = formatDate(fromDateAndTime);
+        $("#fromDate").val(formattedFromDate);
+        console.log("from date", formattedFromDate)
+    }
 
-        // Merge cells and add image to the workbook
-        worksheet.mergeCells("A1:A4");
-        const imageId = workbook.addImage({
-            base64: pdfImageData[0].Logo,
-            extension: 'jpeg',
+    function toDate(data) {
+        var toDateAndTime = new Date(data.value);
+        var formattedToDate = formatDate(toDateAndTime);
+        $("#toDate").val(formattedToDate);
+        console.log("to date", formattedToDate)
+    }
+
+    $(document).ready(function () {
+        // Set default value for selectedOption on page load
+        $("#selectedOption").val("Standard");
+
+        $(".previewBtn").click(function () {
+            $("#filterForm").submit(); // Submit the form
         });
-        worksheet.addImage(imageId, "A1:A3");
 
+        $("#filterForm").submit(function (event) {
+            // Prevent the default form submission behavior
+            event.preventDefault();
 
-        const excelHeaders = Object.keys(tableData[0])
-        const headerLength = excelHeaders.length
-        // const head = worksheet.addRow(excelHeaders)
-        // headerLength.font = { bold: false }
-        console.log(excelHeaders)
+            // Serialize the form data
+            var formData = $(this).serialize();
 
-
-        // Export the data grid starting from cell A5
-        const startingRow = 5;
-        DevExpress.excelExporter.exportDataGrid({
-            component: dataGridInstance,
-            worksheet: worksheet,
-            topLeftCell: { row: startingRow, column: 1 }, // Start from cell A5
-            autoFilterEnabled: true
-        }).then(function () {
-            // Format column headers with bold text
-            const headerRow = worksheet.getRow(startingRow);
-            headerRow.font = { bold: true };
-
-            headerRow.eachCell(function (cell, colNumber) {
-                cell.fill = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: 'ffffffcc' }
-                };
-
-                cell.border = {
-                    top: { style: 'thin' },
-                    left: { style: 'thin' },
-                    bottom: { style: 'thin' },
-                    right: { style: 'thin' }
+            // Send an AJAX request to the server
+            $.ajax({
+                type: "POST",
+                url: "/ListData/DataGrid", // URL to submit the form data to
+                data: formData,
+                success: function (response) {
+                    // Update the specific portion of the page with the response data
+                    $("#dataTable").html(response);
+                },
+                error: function (xhr, status, error) {
+                    // Handle errors, if any
+                    console.error("Error:", error);
                 }
             });
-
-            function getColumnLetter(columnIndex) {
-                let columnName = '';
-                while (columnIndex > 0) {
-                    const remainder = (columnIndex - 1) % 26;
-                    columnName = String.fromCharCode(65 + remainder) + columnName;
-                    columnIndex = Math.floor((columnIndex - 1) / 26);
-                }
-                return columnName;
-            }
-
-            const last = getColumnLetter(headerLength)
-
-            worksheet.mergeCells(`B3:${last}3`)
-            worksheet.getCell("B3").value = '@Model.TableName'
-            worksheet.getCell("B3").alignment = { horizontal: "center", vertical: "middle" }
-            worksheet.getCell("B3").font = { bold: true, name: 'Arial' }
-            worksheet.getCell("B3").fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: 'FFDDDDDD' }
-            }
-
-            worksheet.mergeCells(`B2:${last}2`)
-            worksheet.getCell("B2").value = pdfImageData[0].ProjectName
-            worksheet.getCell("B2").alignment = { horizontal: "center", vertical: "middle" }
-            worksheet.getCell("B2").font = { bold: true, name: 'Arial' }
-            worksheet.getCell("B2").fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: 'FFFFFFFF' }
-            }
-
-            worksheet.mergeCells(`B1:${last}1`)
-            worksheet.getCell("B1").value = pdfImageData[0].ClientName
-            worksheet.getCell("B1").alignment = { horizontal: "center", vertical: "middle" }
-            worksheet.getCell("B1").font = { bold: true, name: 'Arial' }
-            worksheet.getCell("B1").fill = {
-                type: 'pattern',
-                pattern: 'solid',
-                fgColor: { argb: 'FFDDDDDD' }
-            }
-
-
-            // Loop through all cells and add borders
-            worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
-                row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
-                    cell.border = {
-                        top: { style: 'thin' },
-                        left: { style: 'thin' },
-                        bottom: { style: 'thin' },
-                        right: { style: 'thin' }
-                    };
-                });
-            });
-
-            workbook.xlsx.writeBuffer().then(function (buffer) {
-                saveAs(new Blob([buffer], { type: "application/octet-stream" }), '"@Model.ChildMenuName".xlsx');
-            });
-        }).catch(function (error) {
-            console.error("Error exporting data grid:", error);
         });
-    }
-
-</script> *@
+    });
+</script>
