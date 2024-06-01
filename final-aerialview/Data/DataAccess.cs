@@ -118,12 +118,6 @@ namespace final_aerialview.Data
                 }
 
                 return null;
-                // Date filter logic
-                //DateTime fromDateTime = DateTime.Parse(fromDate);
-                //DateTime toDateTime = DateTime.Parse(toDate);
-
-                //whereClause = $"WHERE DateAndTime >= '{fromDateTime:yyyy-MM-ddTHH:mm:ss}' AND DateAndTime <= '{toDateTime:yyyy-MM-ddTHH:mm:ss}'";
-
             }
             else if (option == "Standard")
             {
@@ -163,7 +157,7 @@ namespace final_aerialview.Data
                         return null;
                 }
 
-                whereClause = $"WHERE DateAndTime >= '{filterDate}'";
+                whereClause = $"WHERE DateAndTime >= '{filterDate:yyyy-MM-ddTHH:mm:ss}'";
 
 
             }

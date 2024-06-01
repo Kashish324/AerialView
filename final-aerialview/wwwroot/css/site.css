@@ -519,8 +519,13 @@ body, html {
         border-radius: .3vw .3vw 0px 0px;
     }
 
-/*footer section*/
+.dx-datagrid .dx-header-filter {
+    position: relative;
+    color: #757575;
+    font: 11px / 1 DXIcons !important;
+}
 
+/*footer section*/
 .exportBtn {
     position: absolute;
     top: 100%;
