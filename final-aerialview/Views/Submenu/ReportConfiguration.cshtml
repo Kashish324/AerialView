@@ -1,4 +1,4 @@
-﻿@* @{
+﻿@{
     ViewData["Title"] = ViewData["MenuName"];
 }
 
@@ -7,96 +7,26 @@
     var reportType = ViewData["ReportType"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
 }
 
-
-<div class="reportConfig d-flex align-items-center justify-content-center ">
-
-    @if (reportData != null)
-    {
-
-
-        <div class="reportList border">
-            <ul class="">
-                @foreach (var reportItem in reportData)
-                {
-                    <li class="">
-                        <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none">
-                            @reportItem.ReportName
-                        </a>
-                    </li>
-                }
-
-            </ul>
-        </div>
-        <div class="reportInstance d-flex flex-column w-100 h-100 bg-light bg-gradient border ">
-            <div class="reportTypeContainer d-flex align-items-center ">
-                @if (reportType != null)
-                {
-                    @foreach (var type in reportType)
-                    {
-                        
-                        <div class="typeBox border">@type.ReportType</div>
-                    }
-                }
-            </div>
-
-            <div class="reportDesignerWrapper h-100 w-100">
-               
-            </div>
-        </div>
-    }
-    else
-    {
-        <p class="">No reports available</p>
-    }
-
-
-</div>
-
-
-@section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('.reportLink').click(function (e) {
-                e.preventDefault();
-                var rptId = $(this).data('rptid');
-                loadReport(rptId);
-            });
-
-            function loadReport(reportId) {
-                // You can load the report content dynamically here using AJAX
-                // For demonstration, let's just display the report ID in the reportDesignerWrapper
-                $('.reportDesignerWrapper').html("<p>Loading report with ID: " + reportId + "</p>");
-            }
-        });
-    </script>
-}
-
- *@
-
-@{
-    ViewData["Title"] = ViewData["MenuName"];
-}
-
-@{
-    var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
-    var reportType = ViewData["ReportType"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
-}
-
-<div class="reportConfig d-flex align-items-center justify-content-center">
+@* <div class="reportConfig d-flex align-items-center justify-content-center">
     <div class="reportList border">
         <ul>
-            @foreach (var reportItem in reportData)
+            @if (reportData != null)
             {
-                <li>
-                    @* <a asp-action="ReportDesigner" asp-controller="Report" class="reportLink text-decoration-none">
+                @foreach (var reportItem in reportData)
+                {
+                    <li>
+            <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none">
+            @reportItem.ReportName
+            </a>
+            </li>
+                    <li>
+                        <a href="javascript:void(0);" class="text-decoration-none" onclick="loadReportDesigner(@reportItem.RptId)">
+                            @reportItem.ReportName
 
-                        @reportItem.ReportName
-                    </a> *@
-
-                    <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none">
-                        @reportItem.ReportName
-                    </a>
-                </li>
+                        </a>
+                            <input type="hidden" id="reportDesignerActionUrl" value="@Url.Action("ReportDesigner", "Report")" />
+                    </li>
+                }
             }
         </ul>
     </div>
@@ -111,36 +41,125 @@
             }
         </div>
 
-        <div class="reportDesignerWrapper h-100 w-100">
-            <!-- Report content will be loaded here -->
-            <div id="reportDesignerPlaceholder"></div>
+        <div class="reportDesignerWrapper h-100 w-100 overflow-hidden">
+
+
         </div>
     </div>
+</div> *@
+
+
+@* <script type="text/javascript">
+    // function loadReportDesigner(datagridRptid) {
+    //     var actionUrl = $('#reportDesignerActionUrl').val();
+    //     $('.reportDesignerWrapper').load(actionUrl, { datagridRptid: datagridRptid });
+    // }
+
+    function loadReportDesigner(datagridRptid) {
+        var actionUrl = $('#reportDesignerActionUrl').val();
+
+        $.ajax({
+            url: actionUrl,
+            type: 'GET',
+            data: { datagridRptid: datagridRptid },
+            success: function (data) {
+                $('.reportDesignerWrapper').html(data);
+            },
+            error: function (xhr, status, error) {
+                console.error('Error loading report designer:', error);
+            }
+        });
+    }
+
+
+
+</script> *@
+
+@* You can set the EnableClientSideDevelopmentMode option to false *@
+
+
+
+    @* <nav class="navbar navbar-expand-lg navbar-light bg-light  rounded mt-2 border">
+        <div class="container-fluid">
+           
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-2 text-bold">
+                @if (reportType != null)
+                {
+                    @foreach (var type in reportType)
+                    {
+                        <li class="typeBox">@type.ReportType</li>
+                    }
+                }
+                </ul>
+               
+            </div>
+        </div>
+    </nav> *@
+
+@{
+    var TypeIcons = new Dictionary<string, string>
+    {
+        { "Tabular", "ri-grid-fill" },
+        { "Bar-Chart", "ri-bar-chart-grouped-fill" },
+        { "Live-Chart", "ri-bubble-chart-line" },
+    };
+}
+
+<div class="reportConfig-nav mb-1 p-1">
+    <span class="badge rounded-pill bg-dark text-light fs-6 fw-normal" onclick="filterReports('All')"><i class="ri-file-chart-2-line"></i> All</span>
+    @if (reportType != null)
+    {
+        @foreach (var type in reportType)
+        {
+            string icon = TypeIcons.ContainsKey(type.ReportType) ? TypeIcons[type.ReportType] : "ri-default-icon";
+            <span class="badge rounded-pill bg-dark text-light fs-6 my-2 fw-normal" onclick="filterReports('@type.ReportType')"> <i class="@icon"></i> @type.ReportType </span>
+                
+        }
+    }
+
 </div>
 
-@* @section Scripts {
-    <script>
-        $(document).ready(function () {
-            $('.reportLink').click(function (e) {
-                e.preventDefault();
-                var rptId = $(this).data('rptid');
-                loadReport(rptId);
-            });
 
-            function loadReport(reportId) {
-                $.ajax({
-                    url: '@Url.Action("ReportDesigner", "Report")',
-                    type: 'GET',
-                    data: { datagridRptid: reportId },
-                    success: function (response) {
-                        $('#reportDesignerPlaceholder').html(response);
-                    },
-                    error: function () {
-                        alert('Failed to load report.');
-                    }
-                });
+
+<div class="reportConfig d-flex justify-content-center">
+
+    <ol class="list-group list-group-numbered w-100">
+        @if (reportData != null)
+        {
+            @foreach (var reportItem in reportData)
+            {
+                <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none text-dark report-item" data-type="@reportItem.ReportType">
+                <li class="list-group-item d-flex justify-content-between align-items-start">
+                    <div class="ms-2 me-auto">
+                        <div class="fw-bold">
+                                @reportItem.ReportName
+                        </div>
+                        <p class="mb-1">@reportItem.ConnName</p>
+
+                    </div>
+                    <span class="badge rounded-pill text-muted" >@reportItem.ReportType</span>
+                </li>
+                </a>
             }
+        }
 
+    </ol>
+
+</div>
+
+<script>
+    function filterReports(type) {
+        var reports = document.querySelectorAll('.report-item');
+        reports.forEach(function (report) {
+            if (type === 'All' || report.getAttribute('data-type') === type) {
+                report.style.display = '';
+            } else {
+                report.style.display = 'none';
+            }
         });
-    </script>
-} *@
+    }
+</script>

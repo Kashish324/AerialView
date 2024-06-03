@@ -11,5 +11,7 @@
         public string? WebReportPath { get; set; }
 
         public string? ReportType { get; set;}
+        public string? ConnName { get; set; }
+        public string? Status { get;set; }
     }
 }

@@ -11,10 +11,14 @@ namespace final_aerialview.Controllers
         {
             //_dataAccess = dataAccess;
         }
+
+        [HttpGet]
         public IActionResult ReportDesigner(int datagridRptid)
         {
             UpdateModel.DatagridRptid = datagridRptid;
-
+            //to bring the data according to some specific rptid
+            //var reportDesignerData = GetReportDesignerData(datagridRptid);
+            //return View(reportDesignerData);
             return View();
         }
 

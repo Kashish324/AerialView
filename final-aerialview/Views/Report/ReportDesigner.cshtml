@@ -3,15 +3,15 @@
 }
 
 <link rel="stylesheet" href="~/css/designer.part.bundle.css" />
-@* <link rel="stylesheet" href="~/css/ace/ace.bundle.css" />
-<script src="~/js/designer.part.bundle.js"></script> *@
+<link rel="stylesheet" href="~/css/ace/ace.bundle.css" />
+
 <script src="~/js/reporting.designer.part.bundle.js"></script>
 
-@* @ViewData["ReportData"] *@
 
 @{
     var designerRender = Html.DevExpress().ReportDesigner("reportDesigner")
     .Height("100vh");
+   
     @designerRender.RenderHtml()
 }
 
