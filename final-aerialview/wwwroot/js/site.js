@@ -1,4 +1,5 @@
-﻿function sidebarToggleHandling() {
+﻿
+function sidebarToggleHandling() {
 
 let sidebar = document.querySelector(".sidebar");
 let sidebarBtn = document.querySelector(".bx-menu");

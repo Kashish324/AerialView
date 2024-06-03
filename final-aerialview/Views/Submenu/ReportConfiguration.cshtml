@@ -7,99 +7,6 @@
     var reportType = ViewData["ReportType"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
 }
 
-@* <div class="reportConfig d-flex align-items-center justify-content-center">
-    <div class="reportList border">
-        <ul>
-            @if (reportData != null)
-            {
-                @foreach (var reportItem in reportData)
-                {
-                    <li>
-            <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none">
-            @reportItem.ReportName
-            </a>
-            </li>
-                    <li>
-                        <a href="javascript:void(0);" class="text-decoration-none" onclick="loadReportDesigner(@reportItem.RptId)">
-                            @reportItem.ReportName
-
-                        </a>
-                            <input type="hidden" id="reportDesignerActionUrl" value="@Url.Action("ReportDesigner", "Report")" />
-                    </li>
-                }
-            }
-        </ul>
-    </div>
-    <div class="reportInstance d-flex flex-column w-100 h-100 bg-light bg-gradient border">
-        <div class="reportTypeContainer d-flex align-items-center gap-2">
-            @if (reportType != null)
-            {
-                @foreach (var type in reportType)
-                {
-                    <div class="typeBox">@type.ReportType</div>
-                }
-            }
-        </div>
-
-        <div class="reportDesignerWrapper h-100 w-100 overflow-hidden">
-
-
-        </div>
-    </div>
-</div> *@
-
-
-@* <script type="text/javascript">
-    // function loadReportDesigner(datagridRptid) {
-    //     var actionUrl = $('#reportDesignerActionUrl').val();
-    //     $('.reportDesignerWrapper').load(actionUrl, { datagridRptid: datagridRptid });
-    // }
-
-    function loadReportDesigner(datagridRptid) {
-        var actionUrl = $('#reportDesignerActionUrl').val();
-
-        $.ajax({
-            url: actionUrl,
-            type: 'GET',
-            data: { datagridRptid: datagridRptid },
-            success: function (data) {
-                $('.reportDesignerWrapper').html(data);
-            },
-            error: function (xhr, status, error) {
-                console.error('Error loading report designer:', error);
-            }
-        });
-    }
-
-
-
-</script> *@
-
-@* You can set the EnableClientSideDevelopmentMode option to false *@
-
-
-
-    @* <nav class="navbar navbar-expand-lg navbar-light bg-light  rounded mt-2 border">
-        <div class="container-fluid">
-           
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0 d-flex gap-2 text-bold">
-                @if (reportType != null)
-                {
-                    @foreach (var type in reportType)
-                    {
-                        <li class="typeBox">@type.ReportType</li>
-                    }
-                }
-                </ul>
-               
-            </div>
-        </div>
-    </nav> *@
-
 @{
     var TypeIcons = new Dictionary<string, string>
     {
@@ -109,36 +16,51 @@
     };
 }
 
-<div class="reportConfig-nav mb-1 p-1">
-    <span class="badge rounded-pill bg-dark text-light fs-6 fw-normal" onclick="filterReports('All')"><i class="ri-file-chart-2-line"></i> All</span>
+
+<div class="reportConfig-nav mb-1 p-1 d-flex align-items-center justify-content-between">
+    <div>
+    <span class="badge active rounded-pill bg-dark text-light fs-6 fw-normal mr-1" onclick="filterReports('All')"><i class="ri-file-chart-2-line"></i> All</span>
     @if (reportType != null)
     {
         @foreach (var type in reportType)
         {
-            string icon = TypeIcons.ContainsKey(type.ReportType) ? TypeIcons[type.ReportType] : "ri-default-icon";
-            <span class="badge rounded-pill bg-dark text-light fs-6 my-2 fw-normal" onclick="filterReports('@type.ReportType')"> <i class="@icon"></i> @type.ReportType </span>
-                
+            string icon = TypeIcons.ContainsKey(type.ReportType) ? TypeIcons[type.ReportType] : "ri-line-chart-line";
+            <span class="badge rounded-pill bg-dark text-light fs-6 my-2 fw-normal mr-1" data-type="@type.ReportType" onclick="filterReports('@type.ReportType')"> <i class="@icon"></i> @type.ReportType </span>
         }
     }
+    </div>
+
+   @*  <div class="search">
+        <form class="search-form">
+            <input type="text" placeholder="Search for books, authors, categories and more..">
+            <input type="submit" value="Submit">
+        </form>
+    </div> *@
+    <form class="d-flex">
+        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <button class="btn btn-outline-primary" type="submit">Search</button>
+    </form>
 
 </div>
 
 
 
-<div class="reportConfig d-flex justify-content-center">
 
-    <ol class="list-group list-group-numbered w-100">
+<div class="reportConfig d-flex justify-content-center mb-3 mt-2">
+
+    <ol class="list-group list-group-numbered w-100 ">
         @if (reportData != null)
         {
             @foreach (var reportItem in reportData)
             {
+                
                 <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none text-dark report-item" data-type="@reportItem.ReportType">
-                <li class="list-group-item d-flex justify-content-between align-items-start">
+                <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
                         <div class="fw-bold">
                                 @reportItem.ReportName
                         </div>
-                        <p class="mb-1">@reportItem.ConnName</p>
+                        <p class="mb-1 text-muted ">@reportItem.ConnName</p>
 
                     </div>
                     <span class="badge rounded-pill text-muted" >@reportItem.ReportType</span>
