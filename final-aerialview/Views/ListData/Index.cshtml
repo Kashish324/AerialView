@@ -25,7 +25,7 @@
 
 
 
-<div class='dataGridView'>
+<div class='dataGridView rounded'>
     @foreach (var item in Model.PdfImageData)
     {
         <div class="d-flex gap-2 mt-2">
@@ -69,7 +69,7 @@
                                 .InputAttr("aria-label", "Date And Time")
                                 .Type(DateBoxType.DateTime)
                                 .Value(DateTime.Now.AddHours(-1))
-                                .DisplayFormat("dd/MM/yyyy HH:mm:ss")
+                                .DisplayFormat("dd-MM-yyyy HH:mm:ss")
                                 .ShowClearButton(true)
                                 .OnValueChanged("fromDate")
                                 )
@@ -82,7 +82,7 @@
                                 .InputAttr("aria-label", "Date And Time")
                                 .Type(DateBoxType.DateTime)
                                 .Value(DateTime.Now)
-                                .DisplayFormat("dd/MM/yyyy HH:mm:ss")
+                                .DisplayFormat("dd-MM-yyyy HH:mm:ss")
                                 .ShowClearButton(true)
                                 .OnValueChanged("toDate")
 
@@ -113,17 +113,16 @@
                     .StylingMode(ButtonStylingMode.Contained)
                     .Type(ButtonType.Normal)
                     .Width(100)
+                    @* .Disabled(true) *@
                     )
             </div>
         </form>
     </div>
 
-    @* <div id="dataTable"></div> *@
-
     <partial name="~/Views/ListData/Datagrid.cshtml" />
 
-
 </div>
+<div id="toast"></div>
 
 <script>
     function formatDate(date) {
@@ -148,14 +147,14 @@
     function selectedOption(e) {
         var option = e.component.option("value");
 
-        if (option == 'Standard') {
+        if (option === 'Standard') {
             $('#standardFilterContainer').show();
             $('#datePickerContainer').hide();
         } else {
             $('#standardFilterContainer').hide();
             $('#datePickerContainer').show();
         }
-        console.log("option:", option)
+        console.log("option:", option);
         $("#selectedOption").val(option);
     }
 
@@ -164,24 +163,62 @@
         $(".current-value > span").text(selectedValue);
 
         $("#selectedValue").val(selectedValue);
-        console.log("selected value", selectedValue)
+        console.log("selected value", selectedValue);
     }
 
     function fromDate(data) {
         var fromDateAndTime = new Date(data.value);
         var formattedFromDate = formatDate(fromDateAndTime);
         $("#fromDate").val(formattedFromDate);
-        console.log("from date", formattedFromDate)
+        console.log("from date", formattedFromDate);
     }
 
     function toDate(data) {
         var toDateAndTime = new Date(data.value);
         var formattedToDate = formatDate(toDateAndTime);
         $("#toDate").val(formattedToDate);
-        console.log("to date", formattedToDate)
+        console.log("to date", formattedToDate);
+    }
+
+    function validateForm() {
+        var option = $("#selectedOption").val();
+        if (option === 'Standard') {
+            var selectedValue = $("#selectedValue").val();
+            if (!selectedValue) {
+                showToast("Please select one of the filter options from the dropdown.");
+                return false;
+            }
+        } else if (option === 'Date') {
+            var fromDate = $("#fromDate").val();
+            var toDate = $("#toDate").val();
+            if (!fromDate || !toDate) {
+                showToast("Please select both from and to dates.");
+                return false;
+            }
+        }
+        return true;
+    }
+
+    function showToast(message) {
+        var toast = $("#toast").dxToast("instance");
+        toast.option("message", message);
+        toast.show();
     }
 
     $(document).ready(function () {
+        // Initialize the toast instance
+        $("#toast").dxToast({
+            message: "",
+            type: "error",
+            displayTime: 3000,
+            width: 300,
+            position: {
+                at: "top",
+                my: "top",
+                of: window
+            }
+        });
+
         // Set default value for selectedOption on page load
         $("#selectedOption").val("Standard");
 
@@ -193,10 +230,13 @@
             // Prevent the default form submission behavior
             event.preventDefault();
 
+            if (!validateForm()) {
+                return;
+            }
+
             // Serialize the form data
             var formData = $(this).serialize();
 
-            // Send an AJAX request to the server
             $.ajax({
                 type: "POST",
                 url: "/ListData/DataGrid", // URL to submit the form data to

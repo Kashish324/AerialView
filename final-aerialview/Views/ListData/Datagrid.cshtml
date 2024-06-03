@@ -42,7 +42,7 @@
                         {
                             if (property == "DateAndTime")
                             {
-                                c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime);
+                                c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss");
                             }
                             else
                             {

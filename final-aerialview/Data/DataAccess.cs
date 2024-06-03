@@ -104,7 +104,7 @@ namespace final_aerialview.Data
             }
         }
 
-        private string GenerateWhereClause(string option, string selectedValue, string fromDate, string toDate)
+        private string? GenerateWhereClause(string option, string selectedValue, string fromDate, string toDate)
         {
             string whereClause = "";
 
@@ -126,38 +126,39 @@ namespace final_aerialview.Data
                 {
                     return null;
                 }
-
-
-                var currentDate = DateTime.Now;
-                var filterDate = currentDate;
-
-                switch (selectedValue)
+                else
                 {
-                    case "Previous Day":
-                        filterDate = currentDate.AddDays(-1);
-                        break;
-                    case "1 Week":
-                        filterDate = currentDate.AddDays(-7);
-                        break;
-                    case "1 Month":
-                        filterDate = currentDate.AddMonths(-1);
-                        break;
-                    case "3 Months":
-                        filterDate = currentDate.AddMonths(-3);
-                        break;
-                    case "6 Months":
-                        filterDate = currentDate.AddMonths(-6);
-                        break;
-                    case "1 Year":
-                        filterDate = currentDate.AddYears(-1);
-                        break;
-                    case "All":
-                        return "";
-                    default:
-                        return null;
-                }
+                    var currentDate = DateTime.Now;
+                    var filterDate = currentDate;
 
-                whereClause = $"WHERE DateAndTime >= '{filterDate:yyyy-MM-ddTHH:mm:ss}'";
+                    switch (selectedValue)
+                    {
+                        case "Previous Day":
+                            filterDate = currentDate.AddDays(-1);
+                            break;
+                        case "1 Week":
+                            filterDate = currentDate.AddDays(-7);
+                            break;
+                        case "1 Month":
+                            filterDate = currentDate.AddMonths(-1);
+                            break;
+                        case "3 Months":
+                            filterDate = currentDate.AddMonths(-3);
+                            break;
+                        case "6 Months":
+                            filterDate = currentDate.AddMonths(-6);
+                            break;
+                        case "1 Year":
+                            filterDate = currentDate.AddYears(-1);
+                            break;
+                        case "All":
+                            return "";
+                        default:
+                            return null;
+                    }
+
+                    whereClause = $"WHERE DateAndTime >= '{filterDate:yyyy-MM-ddTHH:mm:ss}'";
+                }
 
 
             }

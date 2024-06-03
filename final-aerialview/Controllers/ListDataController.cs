@@ -14,6 +14,7 @@ namespace final_aerialview.Controllers
             {
                 var menuItems = _dataAccess.GetChildMenuData();
                 IEnumerable<PdfImageModel> pdfImageData = _dataAccess.GetPdfImageData();
+
                 // Convert logo data to Base64
                 foreach (var item in pdfImageData)
                 {
