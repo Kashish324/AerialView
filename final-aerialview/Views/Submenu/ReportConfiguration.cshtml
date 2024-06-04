@@ -30,17 +30,15 @@
     }
     </div>
 
-   @*  <div class="search">
-        <form class="search-form">
-            <input type="text" placeholder="Search for books, authors, categories and more..">
-            <input type="submit" value="Submit">
-        </form>
-    </div> *@
-    <form class="d-flex">
-        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-        <button class="btn btn-outline-primary" type="submit">Search</button>
+    <form class="d-flex searchBox" role="search">
+        <div class="input-group ">
+            <span class="input-group-text border border-secondary-subtle bg-white" id="search-icon">
+                <i class="ri-search-2-line"></i>
+            </span>
+            <input class="form-control border-start-0  border border-secondary-subtle" type="search" placeholder="Search..." aria-label="Search">
+        </div>
     </form>
-
+    
 </div>
 
 
@@ -53,14 +51,13 @@
         {
             @foreach (var reportItem in reportData)
             {
-                
                 <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none text-dark report-item" data-type="@reportItem.ReportType">
                 <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start">
                     <div class="ms-2 me-auto">
-                        <div class="fw-bold">
+                        <div class="fw-bold reportName">
                                 @reportItem.ReportName
                         </div>
-                        <p class="mb-1 text-muted ">@reportItem.ConnName</p>
+                        <p class="mb-1 text-muted connName">@reportItem.ConnName</p>
 
                     </div>
                     <span class="badge rounded-pill text-muted" >@reportItem.ReportType</span>
@@ -71,6 +68,7 @@
 
     </ol>
 
+    
 </div>
 
 <script>
@@ -84,4 +82,25 @@
             }
         });
     }
+
+        // Function to filter reports based on search input
+        function filterReportsBySearch() {
+            var searchInput = document.querySelector('.searchBox input[type="search"]');
+            var searchValue = searchInput.value.trim().toLowerCase();
+            var reports = document.querySelectorAll('.report-item');
+
+            reports.forEach(function (report) {
+            var reportName = report.querySelector('.reportName').textContent.trim().toLowerCase();
+            var connName = report.querySelector('.connName').textContent.trim().toLowerCase();
+
+                if (reportName.includes(searchValue) || connName.includes(searchValue)) {
+                    report.style.display = '';
+                } else {
+                    report.style.display = 'none';
+                }
+            });
+        }
+
+    document.querySelector('.searchBox input[type="search"]').addEventListener('input', filterReportsBySearch);
+
 </script>
