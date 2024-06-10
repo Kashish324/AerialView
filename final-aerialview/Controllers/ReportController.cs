@@ -4,14 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace final_aerialview.Controllers
 {
-    public class ReportController : BaseController
+    public class ReportController(DataAccess dataAccess) : BaseController(dataAccess)
     {
-
-        public ReportController(DataAccess dataAccess) : base(dataAccess)
-        {
-            //_dataAccess = dataAccess;
-        }
-
         [HttpGet]
         public IActionResult ReportDesigner(int datagridRptid)
         {

@@ -5,7 +5,7 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins';
-    cursor: pointer !important;
+    /*cursor: pointer !important;*/
 }
 
 body, html {
@@ -27,6 +27,7 @@ body, html {
     background: #11101d;
     z-index: 100;
     transition: all 0.5s ease;
+    overflow:hidden;
 }
 
     .sidebar.close {
@@ -77,6 +78,7 @@ body, html {
 
     .sidebar .nav-links {
         height: 100%;
+        width: var(--sidebar-width);
         padding: 30px 0 150px 0;
         overflow: auto;
     }
@@ -104,6 +106,7 @@ body, html {
             display: flex;
             align-items: center;
             justify-content: space-between;
+            cursor:pointer;
         }
 
 
@@ -533,4 +536,70 @@ body, html {
     background-color: #fff;
     padding: 1vh .5vw;
     border-radius: 0px 0px .3vw .3vw;
+}
+
+
+/*profile section*/
+.sidebar .profile-details {
+    position: fixed;
+    bottom: 0;
+    width: var(--sidebar-width);
+    /*display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-direction: row-reverse;*/
+    background: #1d1b31;
+    transition: all 0.5s ease;
+    padding: 0vh .5vw;
+}
+
+.sidebar.close .profile-details {
+    background: none;
+    padding: .5vh .2vw;
+}
+
+.sidebar.close .profile-details {
+    width: 78px;
+}
+
+.sidebar .profile-details .profile-content {
+    display: flex;
+    align-items: center;
+}
+
+.sidebar .profile-details .logOut {
+    border-radius: 16px;
+    margin: 0 10px 0 12px;
+    background: #1d1b31;
+    transition: all 0.5s ease;
+}
+
+    .sidebar .profile-details .logOut i {
+        font-size: 2vh;
+    }
+
+.sidebar.close .profile-details .logOut i {
+    font-size: 2.5vh;
+}
+
+.sidebar.close .profile-details .logOut {
+    padding: 0vh .7vw;
+}
+
+.sidebar .profile-details .profile_name,
+.sidebar .profile-details .job {
+    color: #fff;
+    font-size: 2vh;
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.sidebar.close .profile-details .profile_name {
+    display: none;
+}
+
+
+.sidebar.close .profile-details .software-version{
+    display: none;
+    opacity: 0;
 }

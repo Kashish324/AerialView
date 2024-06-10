@@ -38,11 +38,10 @@
             </div>
         </div>
     }
-    @* <partial name="~/Views/Filter/FilterView.cshtml" /> *@
 
-    <div class='filterOptions d-flex align-items-center gap-2'>
+    <div class='filterOptions d-flex  align-items-center gap-2'>
         <div class="dx-field-label"><i class="ri-filter-2-line filter-icon"></i> Filter : </div>
-        <div class="dx-field-value radioOption">
+        <div class="dx-field-value radioOption d-flex">
             @(Html.DevExtreme().RadioGroup()
                 .Items(priorities)
                 .Value("Standard")

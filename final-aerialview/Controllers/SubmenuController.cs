@@ -3,14 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace final_aerialview.Controllers
 {
-    public class SubmenuController : BaseController
+    public class SubmenuController(DataAccess dataAccess) : BaseController(dataAccess)
     {
-
-        public SubmenuController(DataAccess dataAccess) : base(dataAccess)
-        {
-            //_dataAccess = dataAccess;
-        }
-
         public IActionResult ReportConfiguration(string parentMenu, string submenu)
         {
             var reportData = _dataAccess.GetReportData();

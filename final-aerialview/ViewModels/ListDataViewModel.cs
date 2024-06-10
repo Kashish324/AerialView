@@ -4,6 +4,14 @@ namespace final_aerialview.ViewModels
 {
     public class ListDataViewModel
     {
+
+        //public IEnumerable<ListDataModel> MenuParentData { get; set; }
+        //public IEnumerable<SubMenuModel> SubMenuData { get; set; }
+
+        //public IEnumerable<ChildMenuModel> ChildMenuData { get; set; }
+
+        //public IEnumerable<UserMasterModel> UserMasterData { get; set; }
+
         public IEnumerable<ChildMenuModel>? ChildMenuData { get; set; }
         public string? ChildMenuName { get; set; }
         public string? ConnectionString { get; set; }

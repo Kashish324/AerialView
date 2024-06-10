@@ -4,13 +4,8 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace final_aerialview.Controllers
 {
-    public class FilterController : BaseController
+    public class FilterController(DataAccess dataAccess) : BaseController(dataAccess)
     {
-        public FilterController(DataAccess dataAccess) : base(dataAccess)
-        {
-            //_dataAccess = dataAccess;
-        }
-
         public IActionResult FilterView()
         {
             return View();

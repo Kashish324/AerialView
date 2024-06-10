@@ -31,7 +31,7 @@
     </div>
 
     <form class="d-flex searchBox" role="search">
-        <div class="input-group ">
+        <div class="input-group rounded">
             <span class="input-group-text border border-secondary-subtle bg-white" id="search-icon">
                 <i class="ri-search-2-line"></i>
             </span>
@@ -46,7 +46,7 @@
 
 <div class="reportConfig d-flex justify-content-center mb-3 mt-2">
 
-    <ol class="list-group list-group-numbered w-100 ">
+    <ol class="list-group list-group-numbered w-100">
         @if (reportData != null)
         {
             @foreach (var reportItem in reportData)
@@ -67,8 +67,6 @@
         }
 
     </ol>
-
-    
 </div>
 
 <script>

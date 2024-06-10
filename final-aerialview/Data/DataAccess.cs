@@ -32,10 +32,35 @@ namespace final_aerialview.Data
             }
         }
 
+        //for login
+        public async Task<UserModel> GetUserByUsernameAsync(string userId)
+        {
+            using (var connection = CreateConnection())
+            {
+                string query = "SELECT * FROM UserMaster WHERE UserId = @UserId";
+                return await connection.QuerySingleOrDefaultAsync<UserModel>(query, new { UserId = userId });
+            }
+        }
+
+        public async Task<IEnumerable<UserMasterModel>> GetAccessibleControlsForUserAsync(string role)
+        {
+            using (var connection = CreateConnection())
+            {
+                string query = "SELECT * FROM UserControlMaster WHERE UserName = @UserName AND Status = 'True'";
+                return await connection.QueryAsync<UserMasterModel>(query, new { UserName = role });
+            }
+        }
+
         public IEnumerable<ListDataModel> GetMenuParentData()
         {
             string query = "SELECT * FROM Menu_Parent";
             return ExecuteQuery<ListDataModel>(query);
+        }
+
+        public IEnumerable<UserMasterModel> GetUserMasterData()
+        {
+            string query = "SELECT * FROM UserControlMaster";
+            return ExecuteQuery<UserMasterModel>(query);
         }
 
         public IEnumerable<SubMenuModel> GetSubMenuData()

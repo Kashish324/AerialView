@@ -1,6 +1,7 @@
 ﻿using final_aerialview.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
+using System.Security.Claims;
 
 namespace final_aerialview.Controllers
 {
@@ -20,6 +21,11 @@ namespace final_aerialview.Controllers
             ViewData["PdfImageData"] = _dataAccess.GetPdfImageData();
             ViewData["ReportData"] = _dataAccess.GetReportData();
 
+            // to get the navigation menu according to user logged in
+            var roleClaim = User.FindFirst(ClaimTypes.Role);
+            string role = roleClaim?.Value ?? string.Empty;
+
+            ViewBag.UserMasterData = _dataAccess.GetAccessibleControlsForUserAsync(role).Result;
 
             base.OnActionExecuting(context);
         }

@@ -1,7 +1,17 @@
-﻿﻿@{
+﻿@* @model MenuViewModel *@
+
+@{
     var menuParentData = ViewData["MenuParentData"] as IEnumerable<final_aerialview.Models.ListDataModel>;
     var subMenuData = ViewData["SubMenuData"] as IEnumerable<final_aerialview.Models.SubMenuModel>;
     var childMenuData = ViewData["ChildMenuData"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
+
+    // var menuParentData = Model.MenuParentData;
+    // var subMenuData = Model.SubMenuData;
+    // var childMenuData = Model.ChildMenuData;
+    var userMasterData = ViewBag.UserMasterData as IEnumerable<final_aerialview.Models.UserMasterModel>;
+
+    // Assuming userMasterData contains the controls accessible to the logged-in user.
+    // var accessibleControls = userMasterData?.Select(um => um.ControlName).ToList() ?? new List<string>();
 }
 
 <!DOCTYPE html>
@@ -15,11 +25,9 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/report.css" asp-append-version="true" />
-
-   
+    <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
 
     @* dev extreme links *@
-
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <link rel="stylesheet" href="~/css/thirdparty.bundle.css" />
@@ -52,171 +60,211 @@
 
 <body>
 
-    @if (ViewContext.RouteData.Values["controller"].ToString() != "Report")
+
+    @if (User.Identity != null && User.Identity.IsAuthenticated)
     {
-        <div class="sidebar close">
-            <div class="logo-details">
-                <i class="bi bi-buildings"></i>
-                <span class="logo_name">Hi-Mak Pvt. Ltd.</span>
-            </div>
+        @if (ViewContext.RouteData.Values["controller"].ToString() != "Report")
+        {
+            <div class="sidebar close">
+                <div class="logo-details">
+                    <i class="bi bi-buildings"></i>
+                    <span class="logo_name">Hi-Mak Pvt. Ltd.</span>
+                </div>
 
-            <ul class="nav-links">
-                @if (menuParentData != null && subMenuData != null && childMenuData != null)
-                {
-                    @foreach (var mainItem in menuParentData)
+                <ul class="nav-links">
+                    @if (menuParentData != null && subMenuData != null && childMenuData != null)
                     {
-                        var hasSubmenu = subMenuData.Any(subItem => subItem.MainMenuCode == mainItem.MenuCode);
-                        var correspondingIcon = MenuIcons.FirstOrDefault(icon => icon.Item1 == mainItem.MenuCode);
+                        @foreach (var mainItem in menuParentData)
+                        {
 
-                        <li>
-                            <div class="icon-link">
-                                <div class="listMenu">
-                                    @if (correspondingIcon != default)
-                                    {
-                                        <i class="@correspondingIcon.Item2"></i>
-                                    }
-                                    else
-                                    {
-                                        <i class="ri-list-indefinite"></i>
-                                    }
-                                    <span class="link_name">@mainItem.MenuName</span>
-                                </div>
-                                @if (hasSubmenu)
-                                {
-                                    <i class="ri-arrow-down-s-line arrow"></i>
-                                }
-                            </div>
+                            bool menuAccessible = userMasterData != null && userMasterData.Any(uc => uc.ControlName == mainItem.MenuName);
 
-                            @if (hasSubmenu)
+                            if (menuAccessible)
                             {
-                                <ul class="sub-menu">
-                                    @foreach (var subItem in subMenuData.Where(subItem => subItem.MainMenuCode == mainItem.MenuCode))
-                                    {
-                                        var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode);
 
-                                        <li class="subMenu-link">
-                                            @if (mainItem.MenuName == "Reports")
+                                var hasSubmenu = subMenuData.Any(subItem => subItem.MainMenuCode == mainItem.MenuCode);
+                                var correspondingIcon = MenuIcons.FirstOrDefault(icon => icon.Item1 == mainItem.MenuCode);
+
+                                <li>
+                                    <div class="icon-link">
+                                        <div class="listMenu">
+                                            @if (correspondingIcon != default)
                                             {
-                                                <div class="icon-link">
-                                                    <div class="listMenu">
-                                                        <i class="ri-box-3-line"></i>
-                                                        <span>@subItem.SubMenuName</span>
-                                                    </div>
-                                                    @if (hasChildmenu)
-                                                    {
-                                                        <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
-                                                    }
-                                                </div>
+                                                <i class="@correspondingIcon.Item2"></i>
                                             }
                                             else
                                             {
-
-                                                <a href="@Url.Action("ReportConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
-                                                    <div class="icon-link">
-                                                        <div class="listMenu">
-                                                            <i class="ri-box-3-line"></i>
-                                                            <span>@subItem.SubMenuName</span>
-                                                        </div>
-                                                        @if (hasChildmenu)
-                                                        {
-                                                            <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
-                                                        }
-                                                    </div>
-                                                </a>
+                                                <i class="ri-list-indefinite"></i>
                                             }
+                                            <span class="link_name">@mainItem.MenuName</span>
+                                        </div>
+                                        @if (hasSubmenu)
+                                        {
+                                            <i class="ri-arrow-down-s-line arrow"></i>
+                                        }
+                                    </div>
 
-                                            @if (hasChildmenu)
+                                    @if (hasSubmenu)
+                                    {
+                                        <ul class="sub-menu">
+                                            @foreach (var subItem in subMenuData.Where(subItem => subItem.MainMenuCode == mainItem.MenuCode))
                                             {
-                                                <ul class="childSubMenu">
-                                                    @foreach (var childItem in childMenuData.Where(childItem => childItem.SubMenuCode == subItem.SubMenuCode))
-                                                    {
-                                                        <li>
-                                                            <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none">
+                                                bool subMenuAccessible = userMasterData != null && userMasterData.Any(uc => uc.ControlName == subItem.SubMenuName);
+                                                if (subMenuAccessible)
+                                                {
+
+                                                    var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode);
+
+                                                    <li class="subMenu-link">
+                                                        @if (mainItem.MenuName == "Reports")
+                                                        {
+                                                            <div class="icon-link">
+                                                                <div class="listMenu">
+                                                                    <i class="ri-box-3-line"></i>
+                                                                    <span>@subItem.SubMenuName</span>
+                                                                </div>
+                                                                @if (hasChildmenu)
+                                                                {
+                                                                    <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
+                                                                }
+                                                            </div>
+                                                        }
+                                                        else
+                                                        {
+
+                                                            <a href="@Url.Action("ReportConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
                                                                 <div class="icon-link">
                                                                     <div class="listMenu">
-                                                                        <i class="ri-bard-line"></i>
-                                                                        <span>@childItem.SubChildName</span>
+                                                                        <i class="ri-box-3-line"></i>
+                                                                        <span>@subItem.SubMenuName</span>
                                                                     </div>
+                                                                    @if (hasChildmenu)
+                                                                    {
+                                                                        <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
+                                                                    }
                                                                 </div>
                                                             </a>
-                                                        </li>
-                                                    }
-                                                </ul>
+                                                        }
+
+                                                        @if (hasChildmenu)
+                                                        {
+                                                            <ul class="childSubMenu">
+                                                                @foreach (var childItem in childMenuData.Where(childItem => childItem.SubMenuCode == subItem.SubMenuCode))
+                                                                {
+                                                                    <li>
+                                                                        <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none">
+                                                                            <div class="icon-link">
+                                                                                <div class="listMenu">
+                                                                                    <i class="ri-bard-line"></i>
+                                                                                    <span>@childItem.SubChildName</span>
+                                                                                </div>
+                                                                            </div>
+                                                                        </a>
+                                                                    </li>
+                                                                }
+                                                            </ul>
+                                                        }
+                                                    </li>
+                                                }
                                             }
-                                        </li>
+                                        </ul>
                                     }
-                                </ul>
+                                </li>
                             }
-                        </li>
-                    }
-                }
-            </ul>
-
-        </div>
-
-        <section class="home-section">
-            <div class="home-content">
-                <div class="headerContent">
-                    <i class="ri-arrow-right-double-line bx bx-menu"></i>
-
-                    @* @if (ViewData["DatabaseName"] != null)
-                {
-                <span class="text text-center" id="selected-submenu"> @ViewData["TableName"]</span>
-                }
-                else
-                {
-                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
-
-                } *@
-
-                    @if (ViewContext.RouteData.Values["controller"].ToString() != "ListData")
-                    {
-                        if (ViewData["MenuName"] != null)
-                        {
-                            <span class="text text-center" id="selected-submenu">@ViewData["MenuName"]</span>
-                        }
-                        else
-                        {
-                            <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
                         }
                     }
-                    else
-                    {
-                        if (ViewBag.TableName != null)
-                        {
-                            <span class="text text-center" id="selected-submenu">@ViewBag.TableName</span>
-                        }
-                        else
-                        {
-                            <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
-                        }
-                    }
+                    <li>
 
-                </div>
+                        <div class="profile-details d-flex align-items-center justify-content-between">
 
-                @if (Context.Request.Path == "/")
-                {
-                    <div class="tableContent">
-                        <h1 class='tableHeading'> Home Page </h1>
-                        <div>Please select an item </div>
-                    </div>
-                }
+                            <div class="software-version text-light fw-medium fs-6">AerialView 3.0</div>
+
+                            <div class="d-flex align-items-center justify-content-center flex-row-reverse">
+
+                                <div class="profile-content">
+                                    <form class="logOut" method="post" action="/Account/Logout">
+                                        @Html.AntiForgeryToken()
+                                        <button class="nav-link btn btn-link text-light border-0" type="submit"> <i title="Logout" class="ri-logout-circle-line"></i></button>
+                                    </form>
+                                </div>
+                                <div class="name-job">
+                                    <div class="profile_name fw-medium fs-6">@User.Identity.Name</div>
+                                </div>
+
+                            </div>
+
+                        </div>
+                    </li>
 
 
-
-                <main role="main">
-                    @RenderBody()
-                </main>
+                </ul>
 
             </div>
-        </section>
+
+            <section class="home-section">
+                <div class="home-content">
+                    <div class="headerContent">
+                        <i class="ri-arrow-right-double-line bx bx-menu"></i>
+                        @if (ViewContext.RouteData.Values["controller"].ToString() != "ListData")
+                        {
+                            if (ViewData["MenuName"] != null)
+                            {
+                                <span class="text text-center" id="selected-submenu">@ViewData["MenuName"]</span>
+                            }
+                            else
+                            {
+                                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
+                            }
+                        }
+                        else
+                        {
+                            if (ViewBag.TableName != null)
+                            {
+                                <span class="text text-center" id="selected-submenu">@ViewBag.TableName</span>
+                            }
+                            else
+                            {
+                                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
+                            }
+                        }
+
+                    </div>
+
+                    @if (Context.Request.Path == "/Home/Index")
+                    {
+                        <div class="tableContent">
+                            <h1 class='tableHeading'> Home Page </h1>
+                            <div>Please select an item </div>
+                        </div>
+                    }
+
+                    <main role="main">
+                        @RenderBody()
+                    </main>
+
+                </div>
+            </section>
+        }
+        else
+        {
+            <main role="main">
+                @RenderBody()
+            </main>
+        }
+
     }
     else
     {
+        <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
+            <h1>Please Log In</h1>
+            <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Go to Login Page</a>
+        </div>
         <main role="main">
             @RenderBody()
         </main>
     }
+
+
 
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

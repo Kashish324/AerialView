@@ -3,13 +3,38 @@ using DevExpress.AspNetCore.Reporting;
 using DevExpress.XtraReports.Web.Extensions;
 using final_aerialview.Data;
 using final_aerialview.Services;
+using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+builder.Services.AddRazorPages();
+
+
+// Add authentication and authorization
+builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+
+    .AddCookie(options =>
+    {
+        options.LoginPath = "/Account/Login";
+        options.LogoutPath = "/Account/Logout";
+    });
+
 builder.Services.AddScoped<DataAccess>();
 //builder.Services.AddTransient<DataAccess>();
+
+
+// Add session services
+builder.Services.AddDistributedMemoryCache();
+builder.Services.AddSession(options =>
+{
+    options.Cookie.HttpOnly = true;
+    options.Cookie.IsEssential = true;
+});
+
+//Add session services
+//builder.Services.AddSession();
 
 builder.Services.AddDevExpressControls();
 
@@ -25,6 +50,7 @@ builder.Services.AddTransient<ReportStorageWebExtension>(serviceProvider =>
 
 builder.Services.AddMvc();
 
+//configure reporting services
 builder.Services.ConfigureReportingServices(configurator =>
 {
     if (builder.Environment.IsDevelopment())
@@ -65,9 +91,28 @@ app.UseDevExpressControls();
 app.UseHttpsRedirection();
 app.UseStaticFiles();
 
+
+
 app.UseRouting();
 
+app.UseAuthentication();
 app.UseAuthorization();
+
+// Use session middleware
+app.UseSession();
+
+// Add middleware to check authentication
+app.Use(async (context, next) =>
+{
+    if (context.Request.Path != "/Account/Login" && !context.User.Identity.IsAuthenticated)
+    {
+        context.Response.Redirect("/Account/Login");
+    }
+    else
+    {
+        await next();
+    }
+});
 
 //submenu routing 
 app.MapControllerRoute(
@@ -78,8 +123,6 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "default",
-    pattern: "{controller=Home}/{action=Index}/{id?}");
-
-
+    pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();

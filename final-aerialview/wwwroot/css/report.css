@@ -6,16 +6,9 @@
 }
 
 .reportConfig-nav .badge {
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.5);
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .3);
 }
 
-   
-
-.reportConfig {
-    /*height: 96vh;*/
-    /*background-color: skyblue;*/
-    /*padding: 2vh 0vw;*/
-}
 
 
 .reportList {
@@ -73,4 +66,8 @@
 .form-control:focus {
     box-shadow: none !important;
     outline: none !important;
+}
+
+.reportConfig-nav .input-group {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
 }
