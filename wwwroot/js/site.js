@@ -1,17 +1,23 @@
-﻿function sidebarToggleHandling() {
+﻿
+function sidebarToggleHandling() {
 
-let sidebar = document.querySelector(".sidebar");
-let sidebarBtn = document.querySelector(".bx-menu");
+    let sidebar = document.querySelector(".sidebar");
+    let sidebarBtn = document.querySelector(".bx-menu");
 
-sidebarBtn.addEventListener("click", () => {
-    var toggleState = sidebar.classList.toggle("close");
+    //const sidebarToggle = document.getElementById('sidebarToggle');
+    if (sidebarBtn) {
 
-    if (!toggleState) {
-        sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
-    } else {
-        sidebarBtn.style.transform = "rotate(0deg) translateX(0px)";
+        sidebarBtn.addEventListener("click", () => {
+            var toggleState = sidebar.classList.toggle("close");
+
+            if (!toggleState) {
+                sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
+            } else {
+                sidebarBtn.style.transform = "rotate(0deg) translateX(0px)";
+            }
+        });
     }
-});
+
 }
 
 function menuToggleHandling() {
@@ -41,7 +47,7 @@ function subMenuToggleHandling() {
     childMenuItems.forEach(item => {
         item.addEventListener('click', function (e) {
             //e.preventDefault(); 
-            e.stopPropagation(); 
+            e.stopPropagation();
         });
     });
     function toggleSubMenu(element) {
@@ -62,8 +68,8 @@ function subMenuToggleHandling() {
         }
     });
 
-   
-   
+
+
 }
 
 sidebarToggleHandling();

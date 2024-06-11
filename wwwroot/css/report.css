@@ -1,8 +1,18 @@
-﻿.reportConfig {
-    height: 96vh;
-    /*background-color: skyblue;*/
-    padding: 2vh 0vw;
+﻿.reportConfig-nav {
+    background-color: #E4E9F7;
+    position: sticky;
+    top: 3.9%;
+    z-index: 9;
+    cursor: pointer;
 }
+
+
+
+.reportConfig-nav .badge {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .3);
+}
+
+
 
 .reportList {
     height: 100%;
@@ -32,25 +42,18 @@
     padding: 0vh 0vw;
 }
 
-.typeBox {
-    position: relative;
-    padding: .5vh 1vw;
-    /*background-color: lightgrey;*/
-    /*border-radius: .1vw;*/
-    transition: .2s ease;
-    font-weight:500;
+
+
+.form-control:focus {
+    box-shadow: none !important;
+    outline: none !important;
 }
 
-    .typeBox:hover {
-        background-color: lightgray;
-        box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
-       
-        /*transform:translateY(-5px)*/
-    }
+.reportConfig-nav .input-group {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
+}
 
+.searchBox input{
+    cursor:pointer;
 
-.reportDesignerWrapper {
-    position: relative;
-    background-color: lightgray;
-    /*box-shadow: 0 0 5px #808080;*/
 }

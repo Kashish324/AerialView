@@ -1,0 +1,84 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="23.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v23.2, Version=23.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report" DisplayName="Report2" PageWidth="850" PageHeight="1100" Version="23.2" DataSource="#Ref-0">
+  <Bands>
+    <Item1 Ref="2" ControlType="TopMarginBand" Name="TopMargin" />
+    <Item2 Ref="3" ControlType="ReportHeaderBand" Name="ReportHeader1" HeightF="86.458336">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRTable" Name="table2" KeepTogether="true" SizeF="237.5,50" LocationFloat="300,0" Padding="2,2,0,0,100" Borders="All">
+          <Rows>
+            <Item1 Ref="5" ControlType="XRTableRow" Name="tableRow2" Weight="1">
+              <Cells>
+                <Item1 Ref="6" ControlType="XRTableCell" Name="tableCell5" Weight="3" Multiline="true" Text="tableCell5" />
+              </Cells>
+            </Item1>
+            <Item2 Ref="7" ControlType="XRTableRow" Name="tableRow5" Weight="1">
+              <Cells>
+                <Item1 Ref="8" ControlType="XRTableCell" Name="tableCell13" Weight="1" Multiline="true" Text="tableCell13" />
+                <Item2 Ref="9" ControlType="XRTableCell" Name="tableCell14" Weight="1" Multiline="true" Text="tableCell14" />
+                <Item3 Ref="10" ControlType="XRTableCell" Name="tableCell15" Weight="1" Multiline="true" Text="tableCell15" />
+              </Cells>
+            </Item2>
+          </Rows>
+          <StylePriority Ref="11" UseBorders="false" />
+        </Item1>
+        <Item2 Ref="12" ControlType="XRTable" Name="table1" KeepTogether="true" SizeF="300,25" LocationFloat="0,0" Padding="2,2,0,0,100" Borders="All">
+          <Rows>
+            <Item1 Ref="13" ControlType="XRTableRow" Name="tableRow1" Weight="1">
+              <Cells>
+                <Item1 Ref="14" ControlType="XRTableCell" Name="tableCell1" Weight="1" Multiline="true" Text="tableCell1" />
+                <Item2 Ref="15" ControlType="XRTableCell" Name="tableCell2" Weight="1" Multiline="true" Text="tableCell2" />
+                <Item3 Ref="16" ControlType="XRTableCell" Name="tableCell3" Weight="1" Multiline="true" Text="tableCell3" />
+              </Cells>
+            </Item1>
+          </Rows>
+          <StylePriority Ref="17" UseBorders="false" />
+        </Item2>
+        <Item3 Ref="18" ControlType="XRLabel" Name="label38" Multiline="true" Text="label38" TextAlignment="MiddleCenter" SizeF="75,25" LocationFloat="762.5,12.5" Padding="2,2,0,0,100" Borders="All">
+          <ExpressionBindings>
+            <Item1 Ref="19" EventName="BeforePrint" PropertyName="Text" Expression="[Homo_Izer_Feed]" />
+          </ExpressionBindings>
+          <StylePriority Ref="20" UseBorders="false" UseTextAlignment="false" />
+        </Item3>
+        <Item4 Ref="21" ControlType="XRLabel" Name="label22" Multiline="true" Text="Homogenizer feed pressure" TextAlignment="MiddleCenter" SizeF="75,50" LocationFloat="762.5,0" Font="Times New Roman, 7.75pt" Padding="2,2,0,0,100" Borders="Top, Right, Bottom">
+          <StylePriority Ref="22" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+        </Item4>
+      </Controls>
+    </Item2>
+    <Item3 Ref="23" ControlType="GroupHeaderBand" Name="GroupHeader1" HeightF="25">
+      <Controls>
+        <Item1 Ref="24" ControlType="XRTable" Name="table4" SizeF="300,25" LocationFloat="300,0" Padding="2,2,0,0,100" Borders="All">
+          <Rows>
+            <Item1 Ref="25" ControlType="XRTableRow" Name="tableRow4" Weight="1">
+              <Cells>
+                <Item1 Ref="26" ControlType="XRTableCell" Name="tableCell10" Weight="1" Multiline="true" Text="tableCell10" />
+                <Item2 Ref="27" ControlType="XRTableCell" Name="tableCell11" Weight="1" Multiline="true" Text="tableCell11" />
+                <Item3 Ref="28" ControlType="XRTableCell" Name="tableCell12" Weight="1" Multiline="true" Text="tableCell12" />
+              </Cells>
+            </Item1>
+          </Rows>
+          <StylePriority Ref="29" UseBorders="false" />
+        </Item1>
+        <Item2 Ref="30" ControlType="XRTable" Name="table3" SizeF="300,25" LocationFloat="0,0" Padding="2,2,0,0,100" Borders="All">
+          <Rows>
+            <Item1 Ref="31" ControlType="XRTableRow" Name="tableRow3" Weight="1">
+              <Cells>
+                <Item1 Ref="32" ControlType="XRTableCell" Name="tableCell7" Weight="1" Multiline="true" Text="tableCell7" />
+                <Item2 Ref="33" ControlType="XRTableCell" Name="tableCell8" Weight="1" Multiline="true" Text="tableCell8" />
+                <Item3 Ref="34" ControlType="XRTableCell" Name="tableCell9" Weight="1" Multiline="true" Text="tableCell9" />
+              </Cells>
+            </Item1>
+          </Rows>
+          <StylePriority Ref="35" UseBorders="false" />
+        </Item2>
+      </Controls>
+    </Item3>
+    <Item4 Ref="36" ControlType="DetailBand" Name="Detail" DrillDownControl="#Ref-27" KeepTogether="true" />
+    <Item5 Ref="37" ControlType="BottomMarginBand" Name="BottomMargin" />
+  </Bands>
+  <Watermarks>
+    <Item1 Ref="38" Id="watermark1" />
+  </Watermarks>
+  <ObjectStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v23.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IlZhcmFuYXNpX0JhbmFzIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJTZWxlY3RRdWVyeSIgTmFtZT0iSUNFX0NSRUFNX1Bhc3RfUHJvZF9SZXBvcnQiPjxUYWJsZXM+PFRhYmxlIE5hbWU9IklDRV9DUkVBTV9QYXN0X1Byb2RfUmVwb3J0IiAvPjwvVGFibGVzPjxDb2x1bW5zPjxDb2x1bW4gVGFibGU9IklDRV9DUkVBTV9QYXN0X1Byb2RfUmVwb3J0IiBOYW1lPSJJRCIgLz48Q29sdW1uIFRhYmxlPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCIgTmFtZT0iU3RhcnREYXRlVGltZSIgLz48Q29sdW1uIFRhYmxlPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCIgTmFtZT0iRW5kRGF0ZVRpbWUiIC8+PENvbHVtbiBUYWJsZT0iSUNFX0NSRUFNX1Bhc3RfUHJvZF9SZXBvcnQiIE5hbWU9IlBhc3RfU3RhdHVzIiAvPjxDb2x1bW4gVGFibGU9IklDRV9DUkVBTV9QYXN0X1Byb2RfUmVwb3J0IiBOYW1lPSJCYXRjaElkIiAvPjxDb2x1bW4gVGFibGU9IklDRV9DUkVBTV9QYXN0X1Byb2RfUmVwb3J0IiBOYW1lPSJTb3VyY2UiIC8+PENvbHVtbiBUYWJsZT0iSUNFX0NSRUFNX1Bhc3RfUHJvZF9SZXBvcnQiIE5hbWU9IkRlc3RpbmF0aW9uIiAvPjxDb2x1bW4gVGFibGU9IklDRV9DUkVBTV9QYXN0X1Byb2RfUmVwb3J0IiBOYW1lPSJGbG93IiAvPjxDb2x1bW4gVGFibGU9IklDRV9DUkVBTV9QYXN0X1Byb2RfUmVwb3J0IiBOYW1lPSJIZWF0X0ZEVl9TdGF0dXMiIC8+PENvbHVtbiBUYWJsZT0iSUNFX0NSRUFNX1Bhc3RfUHJvZF9SZXBvcnQiIE5hbWU9IkNoaWxsaW5nX0ZEVl9TdGF0dXMiIC8+PENvbHVtbiBUYWJsZT0iSUNFX0NSRUFNX1Bhc3RfUHJvZF9SZXBvcnQiIE5hbWU9IlBhc3RfSGVhdGluZyIgLz48Q29sdW1uIFRhYmxlPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCIgTmFtZT0iUGFzdF9BY3RfSGVhdCIgLz48Q29sdW1uIFRhYmxlPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCIgTmFtZT0iUGFzdF9DaGlsbGluZ19TUCIgLz48Q29sdW1uIFRhYmxlPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCIgTmFtZT0iUGFzdF9BY3RfQ2hpbGxpbmciIC8+PENvbHVtbiBUYWJsZT0iSUNFX0NSRUFNX1Bhc3RfUHJvZF9SZXBvcnQiIE5hbWU9IkhvbW9fSW5sZXRfVGVtcCIgLz48Q29sdW1uIFRhYmxlPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCIgTmFtZT0iSG9tb19JbmxpbmUiIC8+PENvbHVtbiBUYWJsZT0iSUNFX0NSRUFNX1Bhc3RfUHJvZF9SZXBvcnQiIE5hbWU9IkhvbW9fSXplcl9GZWVkIiAvPjxDb2x1bW4gVGFibGU9IklDRV9DUkVBTV9QYXN0X1Byb2RfUmVwb3J0IiBOYW1lPSJIb21vX1N0YWdlMV9CYXIiIC8+PENvbHVtbiBUYWJsZT0iSUNFX0NSRUFNX1Bhc3RfUHJvZF9SZXBvcnQiIE5hbWU9IkhvbW9fU3RhZ2UyX0JhciIgLz48Q29sdW1uIFRhYmxlPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCIgTmFtZT0iUmVtYXJrcyIgLz48Q29sdW1uIFRhYmxlPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCIgTmFtZT0iVG90YWxfUHJvZHVjdGlvbiIgLz48L0NvbHVtbnM+PC9RdWVyeT48UmVzdWx0U2NoZW1hPjxEYXRhU2V0IE5hbWU9InNxbERhdGFTb3VyY2UxIj48VmlldyBOYW1lPSJJQ0VfQ1JFQU1fUGFzdF9Qcm9kX1JlcG9ydCI+PEZpZWxkIE5hbWU9IklEIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iU3RhcnREYXRlVGltZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkVuZERhdGVUaW1lIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iUGFzdF9TdGF0dXMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQmF0Y2hJZCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTb3VyY2UiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRGVzdGluYXRpb24iIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iRmxvdyIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJIZWF0X0ZEVl9TdGF0dXMiIFR5cGU9IkludDMyIiAvPjxGaWVsZCBOYW1lPSJDaGlsbGluZ19GRFZfU3RhdHVzIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iUGFzdF9IZWF0aW5nIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IlBhc3RfQWN0X0hlYXQiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iUGFzdF9DaGlsbGluZ19TUCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJQYXN0X0FjdF9DaGlsbGluZyIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJIb21vX0lubGV0X1RlbXAiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iSG9tb19JbmxpbmUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iSG9tb19JemVyX0ZlZWQiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iSG9tb19TdGFnZTFfQmFyIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkhvbW9fU3RhZ2UyX0JhciIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJSZW1hcmtzIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlRvdGFsX1Byb2R1Y3Rpb24iIFR5cGU9IlNpbmdsZSIgLz48L1ZpZXc+PC9EYXRhU2V0PjwvUmVzdWx0U2NoZW1hPjxDb25uZWN0aW9uT3B0aW9ucyBDbG9zZUNvbm5lY3Rpb249InRydWUiIC8+PC9TcWxEYXRhU291cmNlPg==" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

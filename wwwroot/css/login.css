@@ -1,0 +1,28 @@
+﻿/*login form*/
+.login-font {
+    font-size: 1.8vw;
+}
+
+.login-wrapper {
+    width: 50vw;
+    height: 50vh;
+}
+
+.copyright-text{
+    font-size: .65vw;
+}
+
+
+.img-part img {
+    animation: anim 5s infinite !important;
+}
+
+@keyframes anim{
+    0% {
+        transform: translateY(0) !important;
+    }
+
+    100% {
+        transform: translateY(100px) !important;
+    }
+}
