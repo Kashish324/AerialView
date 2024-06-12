@@ -16,8 +16,8 @@
 
 <body>
 
-    <div class="login-page position-relative d-flex align-items-center justify-content-center ms-auto" style="height: 100vh; background-image: linear-gradient( 89.5deg,  rgba(131,204,255,1) 0.4%, rgba(66,144,251,1) 100.3% ) !important;">
-        <div class=" position-absolute login-wrapper bg-white d-flex align-items-center gap-4 shadow-lg  p-3 rounded-5">
+    <div class="login-page position-relative d-flex align-items-center justify-content-center ms-auto" >
+        <div class=" position-absolute login-wrapper bg-white d-flex align-items-center gap-4 shadow-lg  p-3 rounded-5 overflow-hidden">
 
             <div class="form-part w-50 h-100 d-flex flex-column ps-2">
                 <img src="~/images/AerialView-Logo.png" class="logo-img position-sticky top-0 end-0 object-fit-cover d-block" alt="LOGO" width="10%" />
@@ -30,7 +30,7 @@
                 </div> *@
 
                 <div class="text-muted copyright-text" id="copyright-year">
-                    Copyright © Hi-Mak Pvt. Ltd.
+                    @* Copyright © Hi-Mak Pvt. Ltd. *@
                 </div>
 
             </div>
@@ -52,6 +52,7 @@
 
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js" integrity="sha512-7eHRwcbYkK4d9g/6tD/mhkf++eoTHwpNM9woBxtPUBWm67zeAfFC+HrdoE2GanKeocly/VxeLvIqwvCdk7qScg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)

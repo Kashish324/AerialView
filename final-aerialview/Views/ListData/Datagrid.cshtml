@@ -16,6 +16,12 @@
             .ApplyFilter(GridApplyFilterMode.Auto)
             )
 
+            .StateStoring(s => s
+            .Enabled(true)
+            .Type(StateStoringType.LocalStorage)
+            .StorageKey("storage")
+            )
+
             .ColumnAutoWidth(true)
             .AllowColumnReordering(true)
             .ShowColumnLines(true)
@@ -82,6 +88,19 @@
 
         @if (reportItem != null)
         {
+
+            @if (User.IsInRole("admin"))
+            {
+                <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })">
+                    @(Html.DevExtreme().Button()
+                        .Text("Design")
+                        .Icon("edit")
+                        .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
+                        .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
+                        )
+                </a>
+            }
+
             @if (string.IsNullOrEmpty(reportItem.WebReportPath))
             {
                 <div>
@@ -109,5 +128,6 @@
         {
             <p>No report found for the given RptId.</p>
         }
+        
     </div>
 </div>

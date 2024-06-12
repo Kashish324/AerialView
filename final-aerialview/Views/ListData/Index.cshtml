@@ -39,7 +39,10 @@
         </div>
     }
 
-    <div class='filterOptions d-flex  align-items-center gap-2'>
+
+   
+
+    <div class='filterOptions position-relative d-flex align-items-center gap-2'>
         <div class="dx-field-label"><i class="ri-filter-2-line filter-icon"></i> Filter : </div>
         <div class="dx-field-value radioOption d-flex">
             @(Html.DevExtreme().RadioGroup()
@@ -84,7 +87,6 @@
                                 .DisplayFormat("dd-MM-yyyy HH:mm:ss")
                                 .ShowClearButton(true)
                                 .OnValueChanged("toDate")
-
                                 )
                         </div>
                     </div>
@@ -92,14 +94,11 @@
             </div>
         </div>
 
-
-
         <form id="filterForm" action="/ListData/DataGrid" method="post">
             <input type="hidden" id="selectedOption" name="option">
             <input type="hidden" id="selectedValue" name="selectedValue">
             <input type="hidden" id="fromDate" name="fromDate">
             <input type="hidden" id="toDate" name="toDate">
-
 
             <input type="hidden" name="tableName" value="@Model.TableName" />
             <input type="hidden" name="connString" value="@Model.ConnectionString" />
@@ -116,7 +115,12 @@
                     )
             </div>
         </form>
+
+        <a class="text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3" title="Refresh" onclick="onStateResetClick()">
+            <i class="ri-refresh-line"></i>
+        </a>
     </div>
+
 
     <partial name="~/Views/ListData/Datagrid.cshtml" />
 
@@ -124,6 +128,9 @@
 <div id="toast"></div>
 
 <script>
+
+    
+
     function formatDate(date) {
         var day = date.getDate();
         var month = date.getMonth() + 1; // Months are zero-based
