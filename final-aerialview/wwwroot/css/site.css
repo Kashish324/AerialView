@@ -607,3 +607,7 @@ body, html {
 }
 
 
+.dxrd-create-query-page-content .dx-radiobutton .dx-item-content {
+    color: #000 !important;
+    font-size: 1.2em;
+}

@@ -42,7 +42,7 @@
 
    
 
-    <div class='filterOptions position-relative d-flex align-items-center gap-2'>
+    <div class='filterOptions position-relative d-flex align-items-center gap-2 shadow-lg'>
         <div class="dx-field-label"><i class="ri-filter-2-line filter-icon"></i> Filter : </div>
         <div class="dx-field-value radioOption d-flex">
             @(Html.DevExtreme().RadioGroup()
@@ -104,14 +104,14 @@
             <input type="hidden" name="connString" value="@Model.ConnectionString" />
             <input type="hidden" name="rptId" value="@Model.RptId" />
 
-            <div class="previewBtn">
+            <div class="previewBtn shadow">
                 @(Html.DevExtreme().Button()
                     .Text("Apply")
                     .Icon("check")
                     .StylingMode(ButtonStylingMode.Contained)
                     .Type(ButtonType.Normal)
                     .Width(100)
-                    @* .Disabled(true) *@
+                   
                     )
             </div>
         </form>

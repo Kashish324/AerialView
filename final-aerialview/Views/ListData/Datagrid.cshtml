@@ -3,9 +3,9 @@
 @{
     Layout = null;
 }
-<div id="dataTable">
+<div id="dataTable" class="position-relative shadow-lg rounded">
 
-<div class="datagridWrapper bg-light bg-gradient" >
+    <div class="datagridWrapper bg-light bg-gradient">
 
         @(Html.DevExtreme().DataGrid()
             .ID("dataGridContainer")
@@ -74,11 +74,72 @@
                 paging.PageSize(10);
             })
             )
+    </div>
+
+    @{
+        int datagridRptid = Model.RptId;
+        var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
+        var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
+    }
+
+    <div class="exportBtn position-sticky bg-white  d-flex justify-content-end align-items-center gap-2 border-top ">
+
+        @if (User.IsInRole("admin"))
+        {
+            <button type="button" class="btn btn-light shadow border-dark btn-custom">
+                <a class="text-decoration-none text-dark" href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })">
+                    <i class="ri-edit-line"></i> Design
+                </a>
+            </button>
+
+            @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
+            {
+                <button type="button" class="btn btn-light shadow border-dark btn-custom">
+                    <a class="text-decoration-none text-dark" href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
+                        <i class="ri-printer-line"></i> Preview
+                    </a>
+                </button>
+            }
+            else
+            {
+                <div>
+                    @(Html.DevExtreme().Button()
+                        .Text("No Report Available")
+                        .Type(ButtonType.Normal)
+                        .StylingMode(ButtonStylingMode.Text)
+                        )
+                </div>
+               
+            }
+        }
+        else // for users other than admin
+        {
+            @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
+            {
+                <button type="button" class="btn btn-light shadow border-dark btn-custom">
+                    <a class="text-decoration-none text-dark" href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
+                        <i class="ri-printer-line"></i> Preview
+                    </a>
+                </button>
+            }
+            else
+            {
+                <div>
+                    @(Html.DevExtreme().Button()
+                        .Text("No Report Available")
+                        .Type(ButtonType.Normal)
+                        .StylingMode(ButtonStylingMode.Text)
+                        )
+                </div>
+            }
+        }
+
 
 
     </div>
+</div>
 
-    <div class="exportBtn position-sticky d-flex align-items-center justify-content-end gap-2 border-top">
+@* <div class="exportBtn position-sticky d-flex align-items-center justify-content-end gap-2 border-top ">
 
         @{
             int datagridRptid = Model.RptId;
@@ -86,21 +147,20 @@
             var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
         }
 
+        @if (User.IsInRole("admin"))
+        {
+            <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })">
+                @(Html.DevExtreme().Button()
+                    .Text("Design")
+                    .Icon("edit")
+                    .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
+                    .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
+                    )
+            </a>
+
+        }
         @if (reportItem != null)
         {
-
-            @if (User.IsInRole("admin"))
-            {
-                <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })">
-                    @(Html.DevExtreme().Button()
-                        .Text("Design")
-                        .Icon("edit")
-                        .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
-                        .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
-                        )
-                </a>
-            }
-
             @if (string.IsNullOrEmpty(reportItem.WebReportPath))
             {
                 <div>
@@ -128,6 +188,5 @@
         {
             <p>No report found for the given RptId.</p>
         }
-        
-    </div>
-</div>
+
+    </div> *@

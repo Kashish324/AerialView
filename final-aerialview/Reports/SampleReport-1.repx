@@ -31,26 +31,26 @@
           <Rows>
             <Item1 Ref="17" ControlType="XRTableRow" Name="tableRow1" Weight="1">
               <Cells>
-                <Item1 Ref="18" ControlType="XRTableCell" Name="tableCell1" Weight="0.05371204669658954" Text="ID" TextAlignment="MiddleRight" StyleName="DetailCaption1" BorderColor="Black" Borders="All">
-                  <StylePriority Ref="19" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                <Item1 Ref="18" ControlType="XRTableCell" Name="tableCell1" Weight="0.05371204669658954" Text="ID" TextAlignment="MiddleCenter" StyleName="DetailCaption1" Font="Arial, 9.75pt, style=Bold" BorderColor="Black" Borders="All">
+                  <StylePriority Ref="19" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item1>
-                <Item2 Ref="20" ControlType="XRTableCell" Name="tableCell2" Weight="0.20636866642878607" Text="Start Date Time" StyleName="DetailCaption1" BorderColor="Black" Borders="All">
-                  <StylePriority Ref="21" UseBorderColor="false" UseBorders="false" />
+                <Item2 Ref="20" ControlType="XRTableCell" Name="tableCell2" Weight="0.20636866642878607" Text="Start Date Time" TextAlignment="MiddleCenter" StyleName="DetailCaption1" Font="Arial, 9.75pt, style=Bold" BorderColor="Black" Borders="All">
+                  <StylePriority Ref="21" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item2>
-                <Item3 Ref="22" ControlType="XRTableCell" Name="tableCell3" Weight="0.11130387526292067" Text="Source" StyleName="DetailCaption1" BorderColor="Black" Borders="All">
-                  <StylePriority Ref="23" UseBorderColor="false" UseBorders="false" />
+                <Item3 Ref="22" ControlType="XRTableCell" Name="tableCell3" Weight="0.11130387526292067" Text="Source" TextAlignment="MiddleCenter" StyleName="DetailCaption1" Font="Arial, 9.75pt, style=Bold" BorderColor="Black" Borders="All">
+                  <StylePriority Ref="23" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item3>
-                <Item4 Ref="24" ControlType="XRTableCell" Name="tableCell4" Weight="0.2090747305063101" Text="Chemical Name" StyleName="DetailCaption1" BorderColor="Black" Borders="All">
-                  <StylePriority Ref="25" UseBorderColor="false" UseBorders="false" />
+                <Item4 Ref="24" ControlType="XRTableCell" Name="tableCell4" Weight="0.2090747305063101" Text="Chemical Name" TextAlignment="MiddleCenter" StyleName="DetailCaption1" Font="Arial, 9.75pt, style=Bold" BorderColor="Black" Borders="All">
+                  <StylePriority Ref="25" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item4>
-                <Item5 Ref="26" ControlType="XRTableCell" Name="tableCell5" Weight="0.1528006098820613" Text="Before Qty" TextAlignment="MiddleRight" StyleName="DetailCaption1" BorderColor="Black" Borders="All">
-                  <StylePriority Ref="27" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                <Item5 Ref="26" ControlType="XRTableCell" Name="tableCell5" Weight="0.1528006098820613" Text="Before Qty" TextAlignment="MiddleCenter" StyleName="DetailCaption1" Font="Arial, 9.75pt, style=Bold" BorderColor="Black" Borders="All">
+                  <StylePriority Ref="27" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item5>
-                <Item6 Ref="28" ControlType="XRTableCell" Name="tableCell6" Weight="0.13270521897536058" Text="After Qty" TextAlignment="MiddleRight" StyleName="DetailCaption1" BorderColor="Black" Borders="All">
-                  <StylePriority Ref="29" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                <Item6 Ref="28" ControlType="XRTableCell" Name="tableCell6" Weight="0.13270521897536058" Text="After Qty" TextAlignment="MiddleCenter" StyleName="DetailCaption1" Font="Arial, 9.75pt, style=Bold" BorderColor="Black" Borders="All">
+                  <StylePriority Ref="29" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item6>
-                <Item7 Ref="30" ControlType="XRTableCell" Name="tableCell7" Weight="0.13403490506685697" Text="Total Qty" TextAlignment="MiddleRight" StyleName="DetailCaption1" BorderColor="Black" Borders="All">
-                  <StylePriority Ref="31" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                <Item7 Ref="30" ControlType="XRTableCell" Name="tableCell7" Weight="0.13403490506685697" Text="Total Qty" TextAlignment="MiddleCenter" StyleName="DetailCaption1" Font="Arial, 9.75pt, style=Bold" BorderColor="Black" Borders="All">
+                  <StylePriority Ref="31" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item7>
               </Cells>
             </Item1>
@@ -64,43 +64,43 @@
           <Rows>
             <Item1 Ref="34" ControlType="XRTableRow" Name="tableRow2" Weight="11.5">
               <Cells>
-                <Item1 Ref="35" ControlType="XRTableCell" Name="tableCell8" Weight="0.05371204669658954" TextAlignment="MiddleRight" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
+                <Item1 Ref="35" ControlType="XRTableCell" Name="tableCell8" Weight="0.05371204669658954" TextAlignment="MiddleCenter" StyleName="DetailData1" Font="Arial, 9.75pt, style=Bold" BorderColor="Black" Borders="Left, Right, Bottom">
                   <ExpressionBindings>
                     <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="[ID]" />
                   </ExpressionBindings>
-                  <StylePriority Ref="37" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
+                  <StylePriority Ref="37" UseFont="false" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item1>
-                <Item2 Ref="38" ControlType="XRTableCell" Name="tableCell9" Weight="0.20636866642878607" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
+                <Item2 Ref="38" ControlType="XRTableCell" Name="tableCell9" Weight="0.20636866642878607" TextAlignment="MiddleCenter" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
                   <ExpressionBindings>
                     <Item1 Ref="39" EventName="BeforePrint" PropertyName="Text" Expression="[StartDateTime]" />
                   </ExpressionBindings>
-                  <StylePriority Ref="40" UseBorderColor="false" UseBorders="false" />
+                  <StylePriority Ref="40" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item2>
-                <Item3 Ref="41" ControlType="XRTableCell" Name="tableCell10" Weight="0.11130386352539062" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
+                <Item3 Ref="41" ControlType="XRTableCell" Name="tableCell10" Weight="0.11130386352539062" TextAlignment="MiddleCenter" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
                   <ExpressionBindings>
                     <Item1 Ref="42" EventName="BeforePrint" PropertyName="Text" Expression="[Source]" />
                   </ExpressionBindings>
-                  <StylePriority Ref="43" UseBorderColor="false" UseBorders="false" />
+                  <StylePriority Ref="43" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item3>
-                <Item4 Ref="44" ControlType="XRTableCell" Name="tableCell11" Weight="0.2090747305063101" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
+                <Item4 Ref="44" ControlType="XRTableCell" Name="tableCell11" Weight="0.2090747305063101" TextAlignment="MiddleCenter" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
                   <ExpressionBindings>
                     <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="[ChemicalName]" />
                   </ExpressionBindings>
-                  <StylePriority Ref="46" UseBorderColor="false" UseBorders="false" />
+                  <StylePriority Ref="46" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item4>
-                <Item5 Ref="47" ControlType="XRTableCell" Name="tableCell12" Weight="0.15280059814453126" TextAlignment="MiddleRight" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
+                <Item5 Ref="47" ControlType="XRTableCell" Name="tableCell12" Weight="0.15280059814453126" TextAlignment="MiddleCenter" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
                   <ExpressionBindings>
                     <Item1 Ref="48" EventName="BeforePrint" PropertyName="Text" Expression="[Before_Qty]" />
                   </ExpressionBindings>
                   <StylePriority Ref="49" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item5>
-                <Item6 Ref="50" ControlType="XRTableCell" Name="tableCell13" Weight="0.13270520723783052" TextAlignment="MiddleRight" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
+                <Item6 Ref="50" ControlType="XRTableCell" Name="tableCell13" Weight="0.13270520723783052" TextAlignment="MiddleCenter" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
                   <ExpressionBindings>
                     <Item1 Ref="51" EventName="BeforePrint" PropertyName="Text" Expression="[After_Qty]" />
                   </ExpressionBindings>
                   <StylePriority Ref="52" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item6>
-                <Item7 Ref="53" ControlType="XRTableCell" Name="tableCell14" Weight="0.1340349872295673" TextAlignment="MiddleRight" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
+                <Item7 Ref="53" ControlType="XRTableCell" Name="tableCell14" Weight="0.1340349872295673" TextAlignment="MiddleCenter" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
                   <ExpressionBindings>
                     <Item1 Ref="54" EventName="BeforePrint" PropertyName="Text" Expression="[Total_Qty]" />
                   </ExpressionBindings>
@@ -117,13 +117,13 @@
         <Item1 Ref="57" ControlType="XRLine" Name="line1" SizeF="100,12.58138" LocationFloat="48.791664,39.501953" Padding="0,0,0,0,100">
           <StylePriority Ref="58" UsePadding="false" />
         </Item1>
-        <Item2 Ref="59" ControlType="XRLabel" Name="label5" Multiline="true" Text="Shift:" SizeF="45.666664,22.998047" LocationFloat="3.125,29.083336" Font="Times New Roman, 12.75pt" Padding="2,2,0,0,100">
+        <Item2 Ref="59" ControlType="XRLabel" Name="label5" Multiline="true" Text="Shift:" SizeF="45.666664,22.998047" LocationFloat="3.125,29.083336" Font="Arial Narrow, 12.75pt, style=Bold" Padding="2,2,0,0,100">
           <StylePriority Ref="60" UseFont="false" />
         </Item2>
         <Item3 Ref="61" ControlType="XRLine" Name="line2" SizeF="100,12.58138" LocationFloat="116.5,63.460285" Padding="0,0,0,0,100">
           <StylePriority Ref="62" UsePadding="false" />
         </Item3>
-        <Item4 Ref="63" ControlType="XRLabel" Name="label7" Multiline="true" Text="Shift Incharge:" SizeF="113.375,23.958332" LocationFloat="3.125,52.083336" Font="Times New Roman, 12.75pt" Padding="2,2,0,0,100">
+        <Item4 Ref="63" ControlType="XRLabel" Name="label7" Multiline="true" Text="Shift Incharge:" SizeF="113.375,23.958332" LocationFloat="3.125,52.083336" Font="Arial Narrow, 12.75pt, style=Bold" Padding="2,2,0,0,100">
           <StylePriority Ref="64" UseFont="false" />
         </Item4>
       </Controls>
