@@ -25,7 +25,7 @@
         </Item2>
       </Controls>
     </Item2>
-    <Item3 Ref="15" ControlType="GroupHeaderBand" Name="GroupHeader1" GroupUnion="WithFirstDetail" HeightF="28.005207">
+    <Item3 Ref="15" ControlType="PageHeaderBand" Name="PageHeader1" HeightF="28.125">
       <Controls>
         <Item1 Ref="16" ControlType="XRTable" Name="table1" SizeF="650,28" LocationFloat="0,0">
           <Rows>

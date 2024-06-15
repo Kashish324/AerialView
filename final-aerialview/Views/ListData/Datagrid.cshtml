@@ -116,7 +116,7 @@
         {
             @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
             {
-                <button type="button" class="btn btn-light shadow border-dark btn-custom">
+                <button type="button" class="btn btn-light shadow border-secondary btn-custom">
                     <a class="text-decoration-none text-dark" href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
                         <i class="ri-printer-line"></i> Preview
                     </a>

@@ -26,6 +26,8 @@
 
 
 <div class='dataGridView rounded'>
+    @if(Model.PdfImageData != null)
+    {
     @foreach (var item in Model.PdfImageData)
     {
         <div class="d-flex gap-2 mt-2">
@@ -37,6 +39,7 @@
                 <h4>Client: @item.ClientName</h4>
             </div>
         </div>
+    }
     }
 
 
@@ -116,7 +119,7 @@
             </div>
         </form>
 
-        <a class="text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3" title="Refresh" onclick="onStateResetClick()">
+        <a class="btn text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3" title="Refresh" onclick="onStateResetClick()">
             <i class="ri-refresh-line"></i>
         </a>
     </div>
