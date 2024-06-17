@@ -96,6 +96,7 @@ body, html {
         position: relative;
         list-style: none;
         transition: all 0.4s ease;
+        
     }
 
         .sidebar .nav-links li:hover {
@@ -122,6 +123,7 @@ body, html {
         text-align: center;
         line-height: 50px;
         color: #fff;
+      
         font-size: 20px;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -404,9 +406,9 @@ body, html {
     gap: 0vw !important;
     width: 100%;
     /*padding: .3vh 2vw;*/
-    padding: 0.1vh 2vw;
+    padding: 0vh 1vw;
     border-radius: .3vw;
-    background-color: #11101dec;
+    background-color: #11101d;
     margin: 1vh 0;
 }
 
@@ -418,7 +420,8 @@ body, html {
         width: fit-content;
         color: #fff;
         font-weight: 500;
-        font-size: 1.4em;
+        /*font-size: 1.4em;*/
+        font-size: 1.3em;
         letter-spacing: .1vw;
         white-space: nowrap
     }
@@ -456,7 +459,9 @@ body, html {
 #standardFilter {
     width: 100% !important;
     height: 36px !important;
+    /*height: 32px !important;*/
 }
+
 
 .datePicker {
     width: 100% !important;
@@ -464,6 +469,8 @@ body, html {
     align-items: center;
     justify-content: flex-start;
     gap: 1vh;
+    /*height: 32px;*/
+
 }
 
     .datePicker .dx-field {
@@ -605,3 +612,7 @@ body, html {
 }
 
 
+.dxrd-create-query-page-content .dx-radiobutton .dx-item-content {
+    color: #000 !important;
+    font-size: 1.2em;
+}

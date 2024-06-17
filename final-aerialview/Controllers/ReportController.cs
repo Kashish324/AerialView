@@ -6,6 +6,8 @@ namespace final_aerialview.Controllers
 {
     public class ReportController(DataAccess dataAccess) : BaseController(dataAccess)
     {
+
+       
         [HttpGet]
         public IActionResult ReportDesigner(int datagridRptid)
         {

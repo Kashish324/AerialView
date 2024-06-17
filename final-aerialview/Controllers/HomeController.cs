@@ -2,8 +2,6 @@ using final_aerialview.Data;
 using final_aerialview.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
-using System.Security.Claims;
-using final_aerialview.ViewModels;
 using Microsoft.AspNetCore.Authorization;
 
 namespace final_aerialview.Controllers
@@ -18,26 +16,19 @@ namespace final_aerialview.Controllers
             var menuParentData = _dataAccess.GetMenuParentData();
             var subMenuData = _dataAccess.GetSubMenuData();
             var childMenuData = _dataAccess.GetChildMenuData();
-
-
-
-            //var roleClaim = User.FindFirst(ClaimTypes.Role);
-            //string role = roleClaim?.Value ?? string.Empty;
-
-            //ViewBag.UserMasterData = _dataAccess.GetAccessibleControlsForUserAsync(role).Result;
-
+            var userMasterData = _dataAccess.GetUserMasterData();
 
             ViewData["MenuParentData"] = menuParentData;
             ViewData["SubMenuData"] = subMenuData;
             ViewData["ChildMenuData"] = childMenuData;
+            ViewData["UserMasterData"] = userMasterData;
 
-            //var viewModel = new MenuViewModel
-            //{
-            //    MenuParentData = menuParentData,
-            //    SubMenuData = subMenuData,
-            //    ChildMenuData = childMenuData
-            //};
+            return View();
+        }
 
+        public IActionResult NoReportAvailable(int datagridRptid)
+        {
+            ViewBag.DatagridRptid = datagridRptid;
             return View();
         }
 

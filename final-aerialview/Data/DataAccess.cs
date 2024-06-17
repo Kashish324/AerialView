@@ -42,6 +42,8 @@ namespace final_aerialview.Data
             }
         }
 
+
+        //Segregate the sidebar navigation based on whether a user or an admin is logged in 
         public async Task<IEnumerable<UserMasterModel>> GetAccessibleControlsForUserAsync(string role)
         {
             using (var connection = CreateConnection())
@@ -51,31 +53,35 @@ namespace final_aerialview.Data
             }
         }
 
-        public IEnumerable<ListDataModel> GetMenuParentData()
-        {
-            string query = "SELECT * FROM Menu_Parent";
-            return ExecuteQuery<ListDataModel>(query);
-        }
-
+        //full user master table
         public IEnumerable<UserMasterModel> GetUserMasterData()
         {
             string query = "SELECT * FROM UserControlMaster";
             return ExecuteQuery<UserMasterModel>(query);
         }
 
+        //main parent data
+        public IEnumerable<ListDataModel> GetMenuParentData()
+        {
+            string query = "SELECT * FROM Menu_Parent";
+            return ExecuteQuery<ListDataModel>(query);
+        }
+
+        //sub menu data
         public IEnumerable<SubMenuModel> GetSubMenuData()
         {
             string query = "SELECT * FROM Menu_Child_New";
             return ExecuteQuery<SubMenuModel>(query);
         }
 
+        //child menu data
         public IEnumerable<ChildMenuModel> GetChildMenuData()
         {
             string query = "SELECT * FROM ReportDATA_View";
             return ExecuteQuery<ChildMenuModel>(query);
         }
 
-
+        //project setting which includes pdf image, client name, project name, etc.
         public IEnumerable<PdfImageModel> GetPdfImageData()
         {
             string query = "SELECT CONVERT(VARCHAR(MAX), Logo, 2) AS Logo, ClientName, ProjectName FROM ProjectSettings";
@@ -84,7 +90,7 @@ namespace final_aerialview.Data
 
         }
 
-
+        //my reports table
         public IEnumerable<LocalReportModel> GetReportData()
         {
             string query = "SELECT * FROM MyReports";
@@ -92,7 +98,7 @@ namespace final_aerialview.Data
         }
 
 
-
+        //to update the saved report path in database
         public void UpdateReportPath(string url)
         {
             var rptid = UpdateModel.DatagridRptid;
@@ -101,6 +107,7 @@ namespace final_aerialview.Data
             CreateConnection().Execute(query, new { reportName = url, DatagridRptid = rptid });
         }
 
+        //to fetch the saved report from the database
         public string GetReportFromDatabase()
         {
             try
@@ -116,6 +123,7 @@ namespace final_aerialview.Data
             }
         }
 
+        //to connect with dynamic connection string 
         public IEnumerable<dynamic> DynamicConnString(string connectionString, string tableName, string option, string selectedValue, string fromDate, string toDate)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -129,6 +137,7 @@ namespace final_aerialview.Data
             }
         }
 
+        //for generating where clause according to datagrid filter
         private string? GenerateWhereClause(string option, string selectedValue, string fromDate, string toDate)
         {
             string whereClause = "";
@@ -190,5 +199,6 @@ namespace final_aerialview.Data
 
             return whereClause;
         }
+
     }
 }

@@ -5,19 +5,6 @@
     ViewData["Title"] = @Model.ChildMenuName;
 }
 
-@section ExternalDependencies {
-    @* export pdf *@
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script>
-        window.jsPDF = window.jspdf.jsPDF;
-    </script>
-
-    @* export excel *@
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.10.1/polyfill.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.3.0/exceljs.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
-}
-
 @{
     var priorities = new[] { "Standard", "Date" };
     var Items = new[] { "Previous Day", "1 Week", "1 Month", "3 Months", "6 Months", "1 Year", "All" };
@@ -30,21 +17,18 @@
     {
     @foreach (var item in Model.PdfImageData)
     {
-        <div class="d-flex gap-2 mt-2">
-            <div class="overflow-hidden" style="width: auto;">
-                <img class="d-inline" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
+            <div class="d-flex align-items-end  gap-2 mt-2">
+                <div class="overflow-hidden shadow rounded" style="width: auto; ">
+                    <img class="d-inline object-fit-contain" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
             </div>
-            <div>
-                <h4>Project: @item.ProjectName</h4>
-                <h4>Client: @item.ClientName</h4>
+                <div class="mt-3">
+                <h6>Project: @item.ProjectName</h6>
+                <h6>Client: @item.ClientName</h6>
             </div>
         </div>
     }
     }
-
-
-   
-
+    
     <div class='filterOptions position-relative d-flex align-items-center gap-2 shadow-lg'>
         <div class="dx-field-label"><i class="ri-filter-2-line filter-icon"></i> Filter : </div>
         <div class="dx-field-value radioOption d-flex">
@@ -67,9 +51,9 @@
             </div>
 
             <div id="datePickerContainer" style="display: none;">
-                <div class="datePicker">
-                    <div class="dx-field fromDate">
-                        <div class="dx-field-value">
+                <div class="datePicker ">
+                    <div class="dx-field fromDate ">
+                        <div class="dx-field-value ">
                             @(Html.DevExtreme().DateBox()
                                 .InputAttr("aria-label", "Date And Time")
                                 .Type(DateBoxType.DateTime)
@@ -117,12 +101,17 @@
                    
                     )
             </div>
+
+           
         </form>
 
         <a class="btn text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3" title="Refresh" onclick="onStateResetClick()">
             <i class="ri-refresh-line"></i>
         </a>
     </div>
+
+
+
 
 
     <partial name="~/Views/ListData/Datagrid.cshtml" />

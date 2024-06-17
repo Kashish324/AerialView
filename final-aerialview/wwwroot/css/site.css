@@ -30,6 +30,8 @@ body, html {
     overflow:hidden;
 }
 
+
+
     .sidebar.close {
         width: 78px;
         z-index: 103;
@@ -52,6 +54,8 @@ body, html {
         width: 100%;
         display: flex;
         align-items: center;
+        opacity: 1;
+       
     }
 
         .sidebar .logo-details i {
@@ -64,7 +68,7 @@ body, html {
         }
 
         .sidebar .logo-details .logo_name {
-            font-size: 22px;
+            font-size: 21px;
             color: #fff;
             font-weight: 600;
             opacity: 1;
@@ -363,7 +367,7 @@ body, html {
     align-items: center;
     justify-content: center;
     text-align: center;
-    cursor: pointer;
+    
     background-color: #E4E9F7;
     z-index: 9;
     margin-left: 1vw;
@@ -373,10 +377,11 @@ body, html {
 .tableHeading {
     position: relative;
     width: fit-content;
-    margin: 2vh 0;
+    margin: 2vh 0 1vh;
     color: #11101d;
     font-size: 1.4em;
     text-transform: capitalize;
+    cursor: pointer;
 }
 
     .tableHeading::before {
@@ -406,9 +411,9 @@ body, html {
     gap: 0vw !important;
     width: 100%;
     /*padding: .3vh 2vw;*/
-    padding: 0.1vh 1vw;
+    padding: 0vh 1vw;
     border-radius: .3vw;
-    background-color: #11101dec;
+    background-color: #11101d;
     margin: 1vh 0;
 }
 
@@ -420,7 +425,8 @@ body, html {
         width: fit-content;
         color: #fff;
         font-weight: 500;
-        font-size: 1.4em;
+        /*font-size: 1.4em;*/
+        font-size: 1.3em;
         letter-spacing: .1vw;
         white-space: nowrap
     }
@@ -458,7 +464,9 @@ body, html {
 #standardFilter {
     width: 100% !important;
     height: 36px !important;
+    /*height: 32px !important;*/
 }
+
 
 .datePicker {
     width: 100% !important;
@@ -466,6 +474,8 @@ body, html {
     align-items: center;
     justify-content: flex-start;
     gap: 1vh;
+    /*height: 32px;*/
+
 }
 
     .datePicker .dx-field {
@@ -572,7 +582,7 @@ body, html {
 .sidebar .profile-details .logOut {
     border-radius: 16px;
     margin: 0 10px 0 12px;
-    background: #1d1b31;
+    /*background: #1d1b31;*/
     transition: all 0.5s ease;
 }
 
@@ -581,7 +591,7 @@ body, html {
     }
 
 .sidebar.close .profile-details .logOut i {
-    font-size: 2.5vh;
+    font-size: 1.9vh;
 }
 
 .sidebar.close .profile-details .logOut {

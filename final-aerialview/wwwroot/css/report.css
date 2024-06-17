@@ -60,7 +60,6 @@
 
 
 .btn:hover {
-    background-color: transparent !important;
     cursor: pointer;
     transform: translateY(1px);
 }

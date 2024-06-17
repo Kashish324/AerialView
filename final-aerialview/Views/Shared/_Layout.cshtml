@@ -4,11 +4,10 @@
     var menuParentData = ViewData["MenuParentData"] as IEnumerable<final_aerialview.Models.ListDataModel>;
     var subMenuData = ViewData["SubMenuData"] as IEnumerable<final_aerialview.Models.SubMenuModel>;
     var childMenuData = ViewData["ChildMenuData"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
-
-    // var menuParentData = Model.MenuParentData;
-    // var subMenuData = Model.SubMenuData;
-    // var childMenuData = Model.ChildMenuData;
+    var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
     var userMasterData = ViewBag.UserMasterData as IEnumerable<final_aerialview.Models.UserMasterModel>;
+    var userMasterInfo = ViewData["UserMasterData"] as IEnumerable<final_aerialview.Models.UserMasterModel>;
+
 
     // Assuming userMasterData contains the controls accessible to the logged-in user.
     // var accessibleControls = userMasterData?.Select(um => um.ControlName).ToList() ?? new List<string>();
@@ -25,7 +24,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/report.css" asp-append-version="true" />
-    
+
 
     @* dev extreme links *@
     <script src="~/js/site.js" asp-append-version="true"></script>
@@ -66,9 +65,13 @@
         @if (ViewContext.RouteData.Values["controller"].ToString() != "Report")
         {
             <div class="sidebar close">
-                <div class="logo-details">
-                    <i class="bi bi-buildings"></i>
-                    <span class="logo_name">Hi-Mak Pvt. Ltd.</span>
+                <div class="logo-details ">
+
+                    <i class="bi bi-buildings fs-4" style="cursor: none"></i>
+                    <span class="logo_name text-nowrap" style="cursor: none"> Hi-Mak Pvt. Ltd. </span>
+
+                    <i id="sidebarPin" class="ri-pushpin-line fs-6 ml-2" style="cursor: pointer;"></i>
+
                 </div>
 
                 <ul class="nav-links">
@@ -90,17 +93,17 @@
                                         <div class="listMenu">
                                             @if (correspondingIcon != default)
                                             {
-                                                <i class="@correspondingIcon.Item2"></i>
+                                                <i class="@correspondingIcon.Item2 fs-6"></i>
                                             }
                                             else
                                             {
-                                                <i class="ri-list-indefinite"></i>
+                                                <i class="ri-list-indefinite fs-5"></i>
                                             }
                                             <span class="link_name">@mainItem.MenuName</span>
                                         </div>
                                         @if (hasSubmenu)
                                         {
-                                            <i class="ri-arrow-down-s-line arrow"></i>
+                                            <i class="ri-arrow-down-s-line arrow fs-6"></i>
                                         }
                                     </div>
 
@@ -116,17 +119,15 @@
                                                     var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode);
 
                                                     <li class="subMenu-link">
-                                                        @if (mainItem.MenuName == "Reports")
+                                                        @* @if (mainItem.MenuName == "Reports") *@
+                                                        @if (hasChildmenu)
                                                         {
                                                             <div class="icon-link">
                                                                 <div class="listMenu">
-                                                                    <i class="ri-box-3-line"></i>
+                                                                    <i class="ri-box-3-line fs-6"></i>
                                                                     <span>@subItem.SubMenuName</span>
                                                                 </div>
-                                                                @if (hasChildmenu)
-                                                                {
-                                                                    <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
-                                                                }
+                                                                    <i class="ri-arrow-right-s-line sub-menu-arrow fs-6"></i>
                                                             </div>
                                                         }
                                                         else
@@ -135,12 +136,12 @@
                                                             <a href="@Url.Action("ReportConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
                                                                 <div class="icon-link">
                                                                     <div class="listMenu">
-                                                                        <i class="ri-box-3-line"></i>
+                                                                        <i class="ri-box-3-line fs-6"></i>
                                                                         <span>@subItem.SubMenuName</span>
                                                                     </div>
                                                                     @if (hasChildmenu)
                                                                     {
-                                                                        <i class="ri-arrow-right-s-line sub-menu-arrow"></i>
+                                                                        <i class="ri-arrow-right-s-line sub-menu-arrow fs-6"></i>
                                                                     }
                                                                 </div>
                                                             </a>
@@ -152,14 +153,78 @@
                                                                 @foreach (var childItem in childMenuData.Where(childItem => childItem.SubMenuCode == subItem.SubMenuCode))
                                                                 {
                                                                     <li>
-                                                                        <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none">
-                                                                            <div class="icon-link">
-                                                                                <div class="listMenu">
-                                                                                    <i class="ri-bard-line"></i>
-                                                                                    <span>@childItem.SubChildName</span>
+                                                                        @if (childItem.ReportType == "Tabular")
+                                                                        {
+                                                                            <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none">
+                                                                                <div class="icon-link">
+                                                                                    <div class="listMenu">
+                                                                                        <i class="ri-bard-line fs-6"></i>
+                                                                                        @* @childItem.ReportType *@
+                                                                                        <span>@childItem.SubChildName </span>
+                                                                                    </div>
                                                                                 </div>
-                                                                            </div>
-                                                                        </a>
+                                                                            </a>
+                                                                        }
+                                                                        else
+                                                                        {
+
+                                                                            int datagridRptid = childItem.RptId;
+                                                                            var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
+                                                                            var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
+
+                                                                            @if (User.IsInRole("admin"))
+                                                                            {
+                                                                                @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
+                                                                                {
+                                                                                    <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none">
+                                                                                        <div class="icon-link">
+                                                                                            <div class="listMenu">
+                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <span>@childItem.SubChildName </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none">
+                                                                                        <div class="icon-link">
+                                                                                            <div class="listMenu">
+                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <span>@childItem.SubChildName </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                }
+                                                                            }
+                                                                            else // for users other than admin
+
+                                                                            {
+                                                                                @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
+                                                                                {
+                                                                                    <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none">
+                                                                                        <div class="icon-link">
+                                                                                            <div class="listMenu">
+                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <span>@childItem.SubChildName </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <a href="@Url.Action("NoReportAvailable", "Home")" class="text-decoration-none">
+                                                                                        <div class="icon-link">
+                                                                                            <div class="listMenu">
+                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <span>@childItem.SubChildName </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                }
+                                                                            }
+
+                                                                        }
                                                                     </li>
                                                                 }
                                                             </ul>
@@ -182,9 +247,9 @@
                             <div class="d-flex align-items-center justify-content-center flex-row-reverse">
 
                                 <div class="profile-content">
-                                    <form class="logOut" method="post" action="/Account/Logout">
+                                    <form class="logOut fs-6" method="post" action="/Account/Logout">
                                         @Html.AntiForgeryToken()
-                                        <button class="nav-link btn btn-link text-light border-0" type="submit"> <i title="Logout" style="color: #F9B975;" class="ri-logout-circle-line"></i></button>
+                                        <button class="nav-link btn btn-sm text-light border-0 " type="submit"> <i title="Logout" style="color: #F9B975;" class="ri-logout-circle-line"></i></button>
                                     </form>
                                 </div>
                                 <div class="name-job">
@@ -204,7 +269,7 @@
             <section class="home-section">
                 <div class="home-content">
                     <div class="headerContent">
-                        <i class="ri-arrow-right-double-line bx bx-menu"></i>
+                        <i class="ri-arrow-right-double-line bx bx-menu fs-5"></i>
                         @if (ViewContext.RouteData.Values["controller"].ToString() != "ListData")
                         {
                             if (ViewData["MenuName"] != null)
@@ -213,7 +278,10 @@
                             }
                             else
                             {
-                                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
+                                @foreach (var item in projectData)
+                                {
+                                    <span class="text text-center text-capitalize" id="selected-submenu">@item.ProjectName</span>
+                                }
                             }
                         }
                         else
@@ -234,7 +302,7 @@
                     {
                         <div class="tableContent">
                             <h1 class='tableHeading'> Home Page </h1>
-                            <div>Please select an item </div>
+                            <div style="cursor: none">Please select an item </div>
                         </div>
                     }
 

@@ -5,25 +5,27 @@
 
 
 <div class="login-form ">
-    <section class="pe-5 mt-2">
-        <div class="login-font fw-bold " style="color: #1C75C7; text-shadow: 2px 2px 4px rgba(0, 0, 9, 0.3);">
-            AerialView Reporting Software 
-        </div>
+    <section class=" mt-2">
+        <div class="login-font fw-bold text-center" style="color: #1C75C7; text-shadow: 2px 2px 4px rgba(0, 0, 9, 0.3);">
+    AerialView Reporting Software 
+</div>
+
        
 
 
             <form id="account" method="post">
+                <br />
                 @* <hr /> *@
             <div class="form-floating mt-5 my-2 mb-md-1 mt-md-2">
                     <input class="form-control border-0 border-bottom rounded-0" type="text" id="userId" name="userId" placeholder="userId" autocomplete="userId" style="background-color: transparent;" required />
-                <label class="form-label">User Id</label>
+                <label class="form-label fs-6">User Id</label>
                 </div>
             <div class="form-floating mt-2 mb-3 mb-md-2 mt-md-1">
                 <input class="form-control border-0 border-bottom rounded-0" type="password" id="password" name="password" autocomplete="current-password" placeholder="password" style="background-color: transparent;" required />
-                <label class="form-label  bg-transparent">Password</label>
+                <label class="form-label  bg-transparent fs-6">Password</label>
                 </div>
                 <div>
-                <button id="login-submit" type="submit" class="w-25 mt-2 btn btn-sm text-capitalize  border-0 text-white text-nowrap shadow" style="background-color: #1c75c7;" disabled>Log in</button>
+                <button id="login-submit" type="submit" class="w-25 mt-2 btn btn-sm text-capitalize  border-0 text-white text-nowrap shadow overflow-hidden" style="background-color: #1c75c7;" disabled>Log in</button>
                 </div>
 
                 @if (ViewBag.Message != null)

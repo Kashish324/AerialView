@@ -9,5 +9,7 @@
         public string? SubChildName { get; set; }
         public string? DataTableName { get; set; }
         public string? stringName { get; set; }
+
+        public string? ReportType { get; set; }
     }
 }
