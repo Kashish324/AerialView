@@ -6,58 +6,6 @@ var subMenuItems = document.querySelectorAll('.sub-menu > .subMenu-link');
 var childMenuItems = document.querySelectorAll('.childSubMenu .icon-link');
 
 // Function to handle sidebar pinning
-//function sidebarPinHandling() {
-//    if (sidebarPin) {
-//        sidebarPin.addEventListener("click", function () {
-//            var isPinned = sidebar.classList.contains("pinned");
-
-//            // Toggle the "pinned" class
-//            sidebar.classList.toggle("pinned");
-
-//            if (sidebar.classList.contains("pinned")) {
-//                sidebarPin.classList.remove("ri-pushpin-line");
-//                sidebarPin.classList.add("ri-pushpin-fill");
-//                sidebarPin.setAttribute("title", "Unpin Sidebar");
-//            } else {
-//                sidebarPin.classList.remove("ri-pushpin-fill");
-//                sidebarPin.classList.add("ri-pushpin-line");
-//                sidebarPin.setAttribute("title", "Pin Sidebar");
-//            }
-
-//            // If sidebar is pinned, ensure "close" class is not added
-//            if (sidebar.classList.contains("pinned")) {
-//                sidebar.classList.remove("close");
-//            }
-
-
-
-//        });
-//    }
-//}
-
-//function sidebarToggleHandling() {
-//    //const sidebarToggle = document.getElementById('sidebarToggle');
-//    if (sidebarBtn) {
-
-//        sidebarBtn.addEventListener("click", () => {
-//            var isPinned = sidebar.classList.contains("pinned");
-
-//            if (!isPinned) {
-//                var toggleState = sidebar.classList.toggle("close");
-//                if (!toggleState) {
-//                    sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
-//                } else {
-//                    sidebarBtn.style.transform = "rotate(0deg) translateX(0px)";
-//                }
-//            }
-
-
-//        });
-//    }
-
-//}
-
-// Function to handle sidebar pinning
 function sidebarPinHandling() {
     if (sidebar && sidebarPin) {
         sidebarPin.addEventListener("click", function () {
@@ -96,14 +44,7 @@ function sidebarToggleHandling() {
     }
 }
 
-// Function to initialize sidebar state based on localStorage
-//function initializeSidebarState() {
-//    var isPinned = localStorage.getItem('sidebarPinned') === 'true';
 
-//    sidebar.classList.toggle("pinned", isPinned);
-//    sidebar.classList.toggle("close", !isPinned);
-//    sidebarBtn.style.transform = isPinned ? "rotate(180deg) translateX(5px)" : "rotate(0deg) translateX(0px)";
-//}
 
 function initializeSidebarState() {
     var isPinned = localStorage.getItem('sidebarPinned') === 'true';

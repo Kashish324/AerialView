@@ -438,9 +438,9 @@ body, html {
 }
 
 /*radio option*/
-.radioOption {
+/*.radioOption {
     width: 13% !important;
-}
+}*/
 
     .radioOption .dx-radiogroup-horizontal .dx-collection {
         display: flex;
@@ -620,4 +620,21 @@ body, html {
 .dxrd-create-query-page-content .dx-radiobutton .dx-item-content {
     color: #000 !important;
     font-size: 1.2em;
+}
+
+
+
+
+.small-select-box .dx-texteditor-input {
+    height: 1.5rem; /* Adjust height */
+    font-size: 0.875rem; /* Adjust font size */
+}
+
+.small-select-box .dx-lookup-field {
+    height: 1.5rem; /* Adjust height */
+    font-size: 0.875rem; /* Adjust font size */
+}
+
+.small-select-box .dx-texteditor-buttons-container {
+    height: 1.5rem; /* Adjust height to match input */
 }
