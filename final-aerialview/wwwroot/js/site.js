@@ -50,20 +50,26 @@ function initializeSidebarState() {
     var isPinned = localStorage.getItem('sidebarPinned') === 'true';
     var pinIconState = localStorage.getItem('pinIconState');
 
-    sidebar.classList.toggle("pinned", isPinned);
-    sidebar.classList.toggle("close", !isPinned);
-
-    if (pinIconState === 'fill') {
-        sidebarPin.classList.remove("ri-pushpin-line");
-        sidebarPin.classList.add("ri-pushpin-fill");
-        sidebarPin.setAttribute("title", "Unpin Sidebar");
-    } else {
-        sidebarPin.classList.remove("ri-pushpin-fill");
-        sidebarPin.classList.add("ri-pushpin-line");
-        sidebarPin.setAttribute("title", "Pin Sidebar");
+    if (sidebar) {
+        sidebar.classList.toggle("pinned", isPinned);
+        sidebar.classList.toggle("close", !isPinned);
     }
 
-    sidebarBtn.style.transform = isPinned ? "rotate(180deg) translateX(5px)" : "rotate(0deg) translateX(0px)";
+    if (sidebarPin) {
+        if (pinIconState === 'fill') {
+            sidebarPin.classList.remove("ri-pushpin-line");
+            sidebarPin.classList.add("ri-pushpin-fill");
+            sidebarPin.setAttribute("title", "Unpin Sidebar");
+        } else {
+            sidebarPin.classList.remove("ri-pushpin-fill");
+            sidebarPin.classList.add("ri-pushpin-line");
+            sidebarPin.setAttribute("title", "Pin Sidebar");
+        }
+    }
+
+    if (sidebarBtn) {
+        sidebarBtn.style.transform = isPinned ? "rotate(180deg) translateX(5px)" : "rotate(0deg) translateX(0px)";
+    }
 }
 
 
@@ -128,6 +134,7 @@ subMenuToggleHandling();
 function onStateResetClick() {
     const dataGrid = $("#dataGridContainer").dxDataGrid("instance");
     dataGrid.state(null);
+    console.log('reset')
 }
 
 

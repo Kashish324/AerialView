@@ -13,24 +13,24 @@
 
 
 <div class='dataGridView rounded'>
-    @if(Model.PdfImageData != null)
+    @if (Model.PdfImageData != null)
     {
-    @foreach (var item in Model.PdfImageData)
-    {
-            <div class="d-flex align-items-end  gap-2 mt-2">
-                <div class="overflow-hidden shadow rounded" style="width: auto; ">
-                    <img class="d-inline object-fit-contain" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
+        @foreach (var item in Model.PdfImageData)
+        {
+            <div class="d-flex align-items-end  gap-2">
+                <div class="overflow-hidden shadow rounded" style="width: auto; height:57px;">
+                    <img class="d-inline object-fit-contain h-100 w-100" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
+                </div> 
+                <div class="mt-4 ">
+                    <h6 class="mb-0 lh-lg fw-bold">Project:  <span class="fw-medium">@item.ProjectName</span></h6>
+                    <h6 class="mb-0 lh-sm fw-bold">Client: <span class="fw-medium">@item.ClientName</span></h6>
+                </div>
             </div>
-                <div class="mt-3">
-                <h6>Project: @item.ProjectName</h6>
-                <h6>Client: @item.ClientName</h6>
-            </div>
-        </div>
+        }
     }
-    }
-    
-    <div class='filterOptions position-relative d-flex align-items-center justify-content-start gap-2 shadow-lg text-light py-1 px-3'>
-        <div class=" fs-5"><i class="ri-filter-line"></i> Filter :</div>
+
+    <div class='filterOptions position-relative d-flex align-items-center justify-content-start gap-2 shadow-lg border py-1 px-3 text-light'>
+        <div class=" fs-5 fw-medium"><i class="ri-equalizer-2-fill"></i> Filter :</div>
 
         @if (priorities != null)
         {
@@ -38,9 +38,9 @@
             {
                 var option = priorities[i];
                 var isChecked = i == 0 ? "checked" : "";
-                <div class="radioOption d-flex align-items-center">
+                <div class="radioOption d-flex align-items-center ms-2">
                     <div class="form-check mb-0">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault@i" @isChecked onchange="selectedOption('@option')">
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="@option" @isChecked onchange="selectedOption('@option')">
                         <label class="form-check-label">
                             @option
                         </label>
@@ -50,31 +50,33 @@
         }
 
         <div class="radioGroupContainer">
-            <div id="standardFilterContainer" style="display: block;">
+            <div id="standardFilterContainer" class="ms-2" style="display: block;">
                 <div class="input-group input-group-sm">
-                    <select class="form-select form-select-sm">
-                        <option selected>Choose...</option>
+                    <select id="standardFilter" class="form-select form-select-sm" onchange="selectBox_valueChanged(event)">
+                        <option value="" selected disabled>Choose...</option>
                         @foreach (var item in Items)
                         {
-                            <option value="@item">@item</option>
+                            <option value="@item" >@item</option>
                         }
                     </select>
                 </div>
-            </div> 
+            </div>
 
-            <div id="datePickerContainer" style="display: none;">
+            <div id="datePickerContainer" class="ms-2" style="display: none;">
                 <div class="datePicker">
                     <div class="fromDate w-50">
-                        <input type="datetime-local" id="fromDateInput" class="form-control form-control-sm">
+                        <input type="datetime-local" id="fromDateInput" class="form-control form-control-sm" onchange="fromDate(event)">
                     </div>
 
                     <div class="toDate w-50">
-                        <input type="datetime-local" id="toDateInput" class="form-control form-control-sm">
+                        <input type="datetime-local" id="toDateInput" class="form-control form-control-sm" onchange="toDate(event)">
                     </div>
                 </div>
             </div>
+            
         </div>
 
+       
         <form id="filterForm" action="/ListData/DataGrid" method="post">
             <input type="hidden" id="selectedOption" name="option">
             <input type="hidden" id="selectedValue" name="selectedValue">
@@ -86,106 +88,24 @@
             <input type="hidden" name="rptId" value="@Model.RptId" />
 
             <div class="previewBtn">
-                <button type="button" class="btn btn-light btn-sm shadow-sm border-secondary d-flex align-items-center justify-content-center gap-1 py-0" style="padding: .25rem 0.5rem !important; ">
+                <button title="Apply Filter" type="button" class="btn btn-light btn-sm shadow-sm border d-flex align-items-center justify-content-center gap-1 py-0" style="padding: .25rem 0.5rem !important; ">
                     <i class="ri-send-plane-fill"></i>Apply
                 </button>
             </div>
         </form>
+        
 
-        <a class="btn text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3" title="Refresh" onclick="onStateResetClick()">
+        <a class="btn text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3" title="Reset" onclick="onStateResetClick()">
             <i class="ri-refresh-line"></i>
         </a>
-
-       
-        @* <div class="dx-field-label"><i class="ri-filter-2-line filter-icon"></i> Filter : </div>
-        <div class="dx-field-value radioOption d-flex">
-            @(Html.DevExtreme().RadioGroup()
-                .Items(priorities)
-                .Value("Standard")
-                .OnValueChanged("selectedOption")
-                .Layout(Orientation.Horizontal)
-                .ID("radioOption")
-                )
-        </div>
-        <div class="radioGroupContainer">
-            <div id="standardFilterContainer" style="display: block;">
-                @(Html.DevExtreme().SelectBox()
-                    .DataSource(Items)
-                    .OnValueChanged("selectBox_valueChanged")
-                    .InputAttr("aria-label", "Standard Time")
-                    .ID("standardFilter")
-                    )
-            </div>
-
-            <div id="datePickerContainer" style="display: none;">
-                <div class="datePicker ">
-                    <div class="dx-field fromDate ">
-                        <div class="dx-field-value ">
-                            @(Html.DevExtreme().DateBox()
-                                .InputAttr("aria-label", "Date And Time")
-                                .Type(DateBoxType.DateTime)
-                                .Value(DateTime.Now.AddHours(-1))
-                                .DisplayFormat("dd-MM-yyyy HH:mm:ss")
-                                .ShowClearButton(true)
-                                .OnValueChanged("fromDate")
-                                )
-                        </div>
-                    </div>
-
-                    <div class="dx-field toDate">
-                        <div class="dx-field-value">
-                            @(Html.DevExtreme().DateBox()
-                                .InputAttr("aria-label", "Date And Time")
-                                .Type(DateBoxType.DateTime)
-                                .Value(DateTime.Now)
-                                .DisplayFormat("dd-MM-yyyy HH:mm:ss")
-                                .ShowClearButton(true)
-                                .OnValueChanged("toDate")
-                                )
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <form id="filterForm" action="/ListData/DataGrid" method="post">
-            <input type="hidden" id="selectedOption" name="option">
-            <input type="hidden" id="selectedValue" name="selectedValue">
-            <input type="hidden" id="fromDate" name="fromDate">
-            <input type="hidden" id="toDate" name="toDate">
-
-            <input type="hidden" name="tableName" value="@Model.TableName" />
-            <input type="hidden" name="connString" value="@Model.ConnectionString" />
-            <input type="hidden" name="rptId" value="@Model.RptId" />
-
-            <div class="previewBtn shadow">
-                @(Html.DevExtreme().Button()
-                    .Text("Apply")
-                    .Icon("check")
-                    .StylingMode(ButtonStylingMode.Contained)
-                    .Type(ButtonType.Normal)
-                    .Width(100)
-                   
-                    )
-            </div>
-
-           
-        </form>
-
-        <a class="btn text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3" title="Refresh" onclick="onStateResetClick()">
-            <i class="ri-refresh-line"></i>
-        </a> *@
     </div>
 
     <partial name="~/Views/ListData/Datagrid.cshtml" />
 
 </div>
-<div id="toast"></div>
+<div id="toast" class="fw-normal"></div>
 
 <script>
-
-    
-
     function formatDate(date) {
         var day = date.getDate();
         var month = date.getMonth() + 1; // Months are zero-based
@@ -201,21 +121,14 @@
         minutes = minutes < 10 ? '0' + minutes : minutes;
         seconds = seconds < 10 ? '0' + seconds : seconds;
 
-        // Return the formatted date string without commas
+        // Return the formatted date string
         return `${day}-${month}-${year} ${hours}:${minutes}:${seconds}`;
     }
 
-    // function logSelectedOption(option) {
-    //     console.log("Selected option:", option);
-    // }
-
+    //select radio option
     function selectedOption(e) {
-        // console.log("Selected option:", e);
-        // var option = e.component.option("value");
         var option = e;
         console.log(option);
-
-
         if (option === 'Standard') {
             $('#standardFilterContainer').show();
             $('#datePickerContainer').hide();
@@ -223,31 +136,33 @@
             $('#standardFilterContainer').hide();
             $('#datePickerContainer').show();
         }
-        // console.log("option:", option);
         $("#selectedOption").val(option);
     }
 
-    function selectBox_valueChanged(data) {
-        var selectedValue = data.value;
-        $(".current-value > span").text(selectedValue);
+    //select box(dropdown value)
+    function selectBox_valueChanged(event) {
+        var selectedValue = event.target.value;
 
         $("#selectedValue").val(selectedValue);
         console.log("selected value", selectedValue);
     }
 
-    function fromDate(data) {
-        var fromDateAndTime = new Date(data.value);
+    //from date selected value 
+    function fromDate(event) {
+        var fromDateAndTime = new Date(event.target.value);
         var formattedFromDate = formatDate(fromDateAndTime);
         $("#fromDate").val(formattedFromDate);
         console.log("from date", formattedFromDate);
     }
 
-    function toDate(data) {
-        var toDateAndTime = new Date(data.value);
+    //to date selected value
+    function toDate(event) {
+        var toDateAndTime = new Date(event.target.value);
         var formattedToDate = formatDate(toDateAndTime);
         $("#toDate").val(formattedToDate);
         console.log("to date", formattedToDate);
     }
+
 
     function validateForm() {
         var option = $("#selectedOption").val();
@@ -274,6 +189,7 @@
         toast.show();
     }
 
+
     $(document).ready(function () {
         // Initialize the toast instance
         $("#toast").dxToast({
@@ -287,15 +203,16 @@
                 of: window
             }
         });
-
         // Set default value for selectedOption on page load
         $("#selectedOption").val("Standard");
 
+        // Submit the form
         $(".previewBtn").click(function () {
-            $("#filterForm").submit(); // Submit the form
+            $("#filterForm").submit();
         });
 
         $("#filterForm").submit(function (event) {
+
             // Prevent the default form submission behavior
             event.preventDefault();
 
@@ -318,7 +235,11 @@
                     // Handle errors, if any
                     console.error("Error:", error);
                 }
+
             });
+
+
         });
     });
+
 </script>

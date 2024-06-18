@@ -4,7 +4,7 @@
     margin: 0;
     padding: 0;
     box-sizing: border-box;
-    font-family: 'Poppins';
+    font-family: 'Poppins', Helvetica !important;
     /*cursor: pointer !important;*/
 }
 
@@ -70,7 +70,7 @@ body, html {
         .sidebar .logo-details .logo_name {
             font-size: 21px;
             color: #fff;
-            font-weight: 600;
+            /*font-weight: 600;*/
             opacity: 1;
         }
 
@@ -367,10 +367,9 @@ body, html {
     align-items: center;
     justify-content: center;
     text-align: center;
-    
     background-color: #E4E9F7;
     z-index: 9;
-    margin-left: 1vw;
+    margin-left: .5vw;
 }
 
 
@@ -463,7 +462,7 @@ body, html {
 
 #standardFilter {
     width: 100% !important;
-    height: 36px !important;
+    /*height: 36px !important;*/
     /*height: 32px !important;*/
 }
 
@@ -502,7 +501,7 @@ body, html {
     position: relative;
     /*overflow: scroll;*/
     overflow: auto;
-    height: 70vh;
+    height: 75vh;
     /*height: 62vh;*/
     width: 100%;
     background-color: #fff;
@@ -517,7 +516,7 @@ body, html {
     .datagridWrapper .dx-datagrid-headers,
     .datagridWrapper .dx-datagrid-pager {
         position: sticky;
-        top: 0;
+        top: -.1%;
         z-index: 1;
         background-color: #fff;
     }
@@ -625,16 +624,16 @@ body, html {
 
 
 
-.small-select-box .dx-texteditor-input {
-    height: 1.5rem; /* Adjust height */
-    font-size: 0.875rem; /* Adjust font size */
-}
+/*.small-select-box .dx-texteditor-input {
+    height: 1.5rem;*/ /* Adjust height */
+    /*font-size: 0.875rem;*/ /* Adjust font size */
+/*}
 
 .small-select-box .dx-lookup-field {
-    height: 1.5rem; /* Adjust height */
-    font-size: 0.875rem; /* Adjust font size */
-}
+    height: 1.5rem;*/ /* Adjust height */
+    /*font-size: 0.875rem;*/ /* Adjust font size */
+/*}
 
 .small-select-box .dx-texteditor-buttons-container {
-    height: 1.5rem; /* Adjust height to match input */
-}
+    height: 1.5rem;*/ /* Adjust height to match input */
+/*}*/

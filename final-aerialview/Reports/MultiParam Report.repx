@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="23.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v23.2, Version=23.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report1" DisplayName="MultiParam Report" Margins="100, 100, 117.708336, 100" PaperKind="Custom" PageWidth="1500" PageHeight="1100" Version="23.2" DataMember="Product_Transfer" DataSource="#Ref-0" Font="Arial, 9pt">
+  <Bands>
+    <Item1 Ref="2" ControlType="TopMarginBand" Name="TopMargin1" HeightF="117.708336" />
+    <Item2 Ref="3" ControlType="PageHeaderBand" Name="PageHeader1" HeightF="98.958">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRTable" Name="table1" TextAlignment="MiddleCenter" SizeF="1300,25" LocationFloat="0,73.958336" Padding="2,2,0,0,100" Borders="All">
+          <Rows>
+            <Item1 Ref="5" ControlType="XRTableRow" Name="tableRow1" Weight="1">
+              <Cells>
+                <Item1 Ref="6" ControlType="XRTableCell" Name="tableCell1" Weight="0.2727272727272727" Multiline="true" Text="ID" />
+                <Item2 Ref="7" ControlType="XRTableCell" Name="tableCell6" Weight="0.2727272727272727" Multiline="true" Text="Transfer Name" />
+                <Item3 Ref="8" ControlType="XRTableCell" Name="tableCell11" Weight="0.2727272727272727" Multiline="true" Text="Source" />
+                <Item4 Ref="9" ControlType="XRTableCell" Name="tableCell2" Weight="0.2727272727272727" Multiline="true" Text="Destination" />
+                <Item5 Ref="10" ControlType="XRTableCell" Name="tableCell10" Weight="0.2727272727272727" Multiline="true" Text="Batch ID" />
+                <Item6 Ref="11" ControlType="XRTableCell" Name="tableCell5" Weight="0.2727272727272727" Multiline="true" Text="Start Date" />
+                <Item7 Ref="12" ControlType="XRTableCell" Name="tableCell9" Weight="0.2727272727272727" Multiline="true" Text="End Date" />
+                <Item8 Ref="13" ControlType="XRTableCell" Name="tableCell3" Weight="0.2727272727272727" Multiline="true" Text="Transfer Qty(Kg)" />
+                <Item9 Ref="14" ControlType="XRTableCell" Name="tableCell8" Weight="0.2727272727272727" Multiline="true" Text="Source Initial Qty(kg)" />
+                <Item10 Ref="15" ControlType="XRTableCell" Name="tableCell4" Weight="0.2727272727272727" Multiline="true" Text="Source Final Qty(Kg)" />
+                <Item11 Ref="16" ControlType="XRTableCell" Name="tableCell7" Weight="0.2727272727272727" Multiline="true" Text="Reason for Termination" />
+              </Cells>
+            </Item1>
+          </Rows>
+          <StylePriority Ref="17" UseBorders="false" UseTextAlignment="false" />
+        </Item1>
+      </Controls>
+    </Item2>
+    <Item3 Ref="18" ControlType="DetailBand" Name="Detail1" HeightF="25">
+      <Controls>
+        <Item1 Ref="19" ControlType="XRTable" Name="table2" TextAlignment="MiddleCenter" SizeF="1300,25" LocationFloat="0,0" Padding="2,2,0,0,100" Borders="All">
+          <Rows>
+            <Item1 Ref="20" ControlType="XRTableRow" Name="tableRow2" Weight="1">
+              <Cells>
+                <Item1 Ref="21" ControlType="XRTableCell" Name="tableCell12" Weight="0.2727272727272727" Multiline="true" Text="tableCell1">
+                  <ExpressionBindings>
+                    <Item1 Ref="22" EventName="BeforePrint" PropertyName="Text" Expression="[ID]" />
+                  </ExpressionBindings>
+                </Item1>
+                <Item2 Ref="23" ControlType="XRTableCell" Name="tableCell13" Weight="0.2727272727272727" Multiline="true" Text="tableCell6">
+                  <ExpressionBindings>
+                    <Item1 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="[Transfer_Name]" />
+                  </ExpressionBindings>
+                </Item2>
+                <Item3 Ref="25" ControlType="XRTableCell" Name="tableCell14" Weight="0.2727272727272727" Multiline="true" Text="tableCell11">
+                  <ExpressionBindings>
+                    <Item1 Ref="26" EventName="BeforePrint" PropertyName="Text" Expression="[Source]" />
+                  </ExpressionBindings>
+                </Item3>
+                <Item4 Ref="27" ControlType="XRTableCell" Name="tableCell15" Weight="0.2727272727272727" Multiline="true" Text="tableCell2">
+                  <ExpressionBindings>
+                    <Item1 Ref="28" EventName="BeforePrint" PropertyName="Text" Expression="[Destination]" />
+                  </ExpressionBindings>
+                </Item4>
+                <Item5 Ref="29" ControlType="XRTableCell" Name="tableCell16" Weight="0.2727272727272727" Multiline="true" Text="tableCell10">
+                  <ExpressionBindings>
+                    <Item1 Ref="30" EventName="BeforePrint" PropertyName="Text" Expression="[Batch_ID]" />
+                  </ExpressionBindings>
+                </Item5>
+                <Item6 Ref="31" ControlType="XRTableCell" Name="tableCell17" Weight="0.2727272727272727" Multiline="true" Text="tableCell5">
+                  <ExpressionBindings>
+                    <Item1 Ref="32" EventName="BeforePrint" PropertyName="Text" Expression="[StartDate]" />
+                  </ExpressionBindings>
+                </Item6>
+                <Item7 Ref="33" ControlType="XRTableCell" Name="tableCell18" Weight="0.2727272727272727" Multiline="true" Text="tableCell9">
+                  <ExpressionBindings>
+                    <Item1 Ref="34" EventName="BeforePrint" PropertyName="Text" Expression="[EndDate]" />
+                  </ExpressionBindings>
+                </Item7>
+                <Item8 Ref="35" ControlType="XRTableCell" Name="tableCell19" Weight="0.2727272727272727" Multiline="true" Text="tableCell3">
+                  <ExpressionBindings>
+                    <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="[Quantity]" />
+                  </ExpressionBindings>
+                </Item8>
+                <Item9 Ref="37" ControlType="XRTableCell" Name="tableCell20" Weight="0.2727272727272727" Multiline="true" Text="tableCell8">
+                  <ExpressionBindings>
+                    <Item1 Ref="38" EventName="BeforePrint" PropertyName="Text" Expression="[Initial_Qty]" />
+                  </ExpressionBindings>
+                </Item9>
+                <Item10 Ref="39" ControlType="XRTableCell" Name="tableCell21" Weight="0.2727272727272727" Multiline="true" Text="tableCell4">
+                  <ExpressionBindings>
+                    <Item1 Ref="40" EventName="BeforePrint" PropertyName="Text" Expression="[Final_Qty]" />
+                  </ExpressionBindings>
+                </Item10>
+                <Item11 Ref="41" ControlType="XRTableCell" Name="tableCell22" Weight="0.2727272727272727" Multiline="true" Text="tableCell7">
+                  <ExpressionBindings>
+                    <Item1 Ref="42" EventName="BeforePrint" PropertyName="Text" Expression="[Reason]" />
+                  </ExpressionBindings>
+                </Item11>
+              </Cells>
+            </Item1>
+          </Rows>
+          <StylePriority Ref="43" UseBorders="false" UseTextAlignment="false" />
+        </Item1>
+      </Controls>
+    </Item3>
+    <Item4 Ref="44" ControlType="BottomMarginBand" Name="BottomMargin1" />
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v23.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IlZhcmFuYXNpX0JhbmFzIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJTZWxlY3RRdWVyeSIgTmFtZT0iUHJvZHVjdF9UcmFuc2ZlciI+PFRhYmxlcz48VGFibGUgTmFtZT0iUHJvZHVjdF9UcmFuc2ZlciIgLz48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJJRCIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJTdGFydERhdGUiIC8+PENvbHVtbiBUYWJsZT0iUHJvZHVjdF9UcmFuc2ZlciIgTmFtZT0iRW5kRGF0ZSIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJUcmFuc2Zlcl9OYW1lIiAvPjxDb2x1bW4gVGFibGU9IlByb2R1Y3RfVHJhbnNmZXIiIE5hbWU9IlNvdXJjZSIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJEZXN0aW5hdGlvbiIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJCYXRjaF9JRCIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJRdWFudGl0eSIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJJbml0aWFsX1F0eSIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJGaW5hbF9RdHkiIC8+PENvbHVtbiBUYWJsZT0iUHJvZHVjdF9UcmFuc2ZlciIgTmFtZT0iUmVhc29uIiAvPjwvQ29sdW1ucz48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlByb2R1Y3RfVHJhbnNmZXIiPjxGaWVsZCBOYW1lPSJJRCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlN0YXJ0RGF0ZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkVuZERhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJUcmFuc2Zlcl9OYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNvdXJjZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJEZXN0aW5hdGlvbiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCYXRjaF9JRCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJRdWFudGl0eSIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJJbml0aWFsX1F0eSIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJGaW5hbF9RdHkiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iUmVhc29uIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>
