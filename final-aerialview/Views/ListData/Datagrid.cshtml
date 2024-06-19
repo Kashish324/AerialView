@@ -5,7 +5,7 @@
 }
 <div id="dataTable" class="position-relative shadow-lg ">
 
-    <div class="datagridWrapper bg-light bg-gradient rounded">
+    <div class="datagridWrapper bg-light bg-gradient rounded-top">
 
         @(Html.DevExtreme().DataGrid()
             .ID("dataGridContainer")
@@ -21,7 +21,6 @@
             .Type(StateStoringType.LocalStorage)
             .StorageKey("storage")
             )
-
             .ColumnAutoWidth(true)
             .AllowColumnReordering(true)
             .ShowColumnLines(true)
@@ -86,19 +85,16 @@
 
         @if (User.IsInRole("admin"))
         {
-            <button type="button" class="btn btn-light shadow border-dark btn-sm btn-custom">
-                <a class="text-decoration-none text-dark" href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })">
-                    <i class="ri-edit-line"></i> Design
-                </a>
-            </button>
+            <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })" class="btn btn-light shadow border-dark btn-sm btn-custom text-decoration-none text-dark">
+                <i class="ri-edit-line"></i> Design
+            </a>
+
 
             @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
             {
-                <button type="button" class="btn btn-light shadow border-dark btn-sm btn-custom">
-                    <a class="text-decoration-none text-dark" href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
-                        <i class="ri-printer-line"></i> Preview
+                    <a  href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })" class="btn btn-light shadow border-dark btn-sm btn-custom text-decoration-none text-dark">
+                    <i class="ri-printer-line"></i> Preview
                     </a>
-                </button>
             }
             else
             {
@@ -116,11 +112,10 @@
         {
             @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
             {
-                <button type="button" class="btn btn-light shadow border-dark btn-sm btn-custom">
-                    <a class="text-decoration-none text-dark" href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
-                        <i class="ri-printer-line"></i> Preview
-                    </a>
-                </button>
+
+                <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })" class="btn btn-light shadow border-dark btn-sm btn-custom text-decoration-none text-dark">
+                    <i class="ri-printer-line"></i> Preview
+                </a>
             }
             else
             {
@@ -139,54 +134,3 @@
     </div>
 </div>
 
-@* <div class="exportBtn position-sticky d-flex align-items-center justify-content-end gap-2 border-top ">
-
-        @{
-            int datagridRptid = Model.RptId;
-            var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
-            var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
-        }
-
-        @if (User.IsInRole("admin"))
-        {
-            <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })">
-                @(Html.DevExtreme().Button()
-                    .Text("Design")
-                    .Icon("edit")
-                    .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
-                    .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
-                    )
-            </a>
-
-        }
-        @if (reportItem != null)
-        {
-            @if (string.IsNullOrEmpty(reportItem.WebReportPath))
-            {
-                <div>
-                    @(Html.DevExtreme().Button()
-                        .Text("No Report Available")
-                        .Type(ButtonType.Normal)
-                        .StylingMode(ButtonStylingMode.Text)
-                        )
-                </div>
-
-            }
-            else
-            {
-                <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })">
-                    @(Html.DevExtreme().Button()
-                        .Text("Preview")
-                        .Icon("print")
-                        .StylingMode(DevExtreme.AspNet.Mvc.ButtonStylingMode.Contained)
-                        .Type(DevExtreme.AspNet.Mvc.ButtonType.Normal)
-                        )
-                </a>
-            }
-        }
-        else
-        {
-            <p>No report found for the given RptId.</p>
-        }
-
-    </div> *@

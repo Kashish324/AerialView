@@ -1,5 +1,9 @@
-﻿@{
+﻿@using final_aerialview.Reports
+
+@{
     ViewData["Title"] = "Report Designer";
+    var reportName = ViewData["ReportName"] as string;
+    var datagridRptid = ViewData["DatagridRptid"] as int?;
 }
 
 <link rel="stylesheet" href="~/css/designer.part.bundle.css" />
@@ -10,8 +14,17 @@
 
 @{
     var designerRender = Html.DevExpress().ReportDesigner("reportDesigner")
-    .Height("100vh");
-   
+        .Height("100vh");
+
+    if (!string.IsNullOrEmpty(reportName))
+    {
+        designerRender.Bind(reportName);
+    }
+    else
+    {
+        Console.WriteLine("Opening blank report designer");
+    }
+
     @designerRender.RenderHtml()
 }
 
@@ -19,3 +32,6 @@
     <link href="~/css/dx-reporting-skeleton-screen.css" rel="stylesheet" />
     @designerRender.RenderScripts()
 }
+
+ 
+

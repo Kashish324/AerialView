@@ -6,16 +6,18 @@ namespace final_aerialview.Controllers
 {
     public class ReportController(DataAccess dataAccess) : BaseController(dataAccess)
     {
-
-       
         [HttpGet]
         public IActionResult ReportDesigner(int datagridRptid)
         {
+
             UpdateModel.DatagridRptid = datagridRptid;
-            //to bring the data according to some specific rptid
-            //var reportDesignerData = GetReportDesignerData(datagridRptid);
-            //return View(reportDesignerData);
+            ViewData["DatagridRptid"] = datagridRptid;
+
+            string reportName = _dataAccess.GetReportFromDatabase();
+            ViewData["ReportName"] = reportName ?? string.Empty;
+
             return View();
+
         }
 
         public IActionResult DocumentViewer(int datagridRptid)
@@ -31,6 +33,6 @@ namespace final_aerialview.Controllers
             return View();
         }
 
-        
+
     }
 }
