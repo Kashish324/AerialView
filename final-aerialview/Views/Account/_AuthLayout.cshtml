@@ -10,27 +10,20 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/report.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
-
-
 </head>
 
 <body>
 
-    <div class="login-page position-relative d-flex align-items-center justify-content-center ms-auto" >
+    <div class="login-page position-relative d-flex align-items-center justify-content-center ms-auto">
         <div class=" position-absolute login-wrapper bg-white d-flex align-items-center gap-4 shadow-lg  p-3 rounded-5 overflow-hidden">
 
             <div class="form-part w-50 h-100 d-flex flex-column">
-                @* <img src="~/images/AerialView-Logo.png" class="logo-img position-sticky top-0 end-0 object-fit-cover d-block " alt="LOGO" width="15%" /> *@
                 <img src="~/images/AerialView-Logo.png" class="logo-img position-sticky object-fit-cover d-block mx-auto" alt="LOGO" width="30%" />
 
-                @* <div class="h-100  py-3 mt-3 mt-md-1"> *@
-                    <div class="h-100  py-1  ">
+
+                <div class="h-100  py-1">
                     @RenderBody()
                 </div>
-
-                @* <div class="text-muted copyright-text">
-                    Copyright © Hi-Mak Pvt. Ltd.
-                </div> *@
 
                 <div class="text-muted copyright-text" id="copyright-year">
                     @* Copyright © Hi-Mak Pvt. Ltd. *@

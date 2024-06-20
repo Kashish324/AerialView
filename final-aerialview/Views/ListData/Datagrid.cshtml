@@ -1,11 +1,20 @@
 ﻿@model ListDataViewModel
-
+@using System.Linq;
 @{
     Layout = null;
 }
-<div id="dataTable" class="position-relative shadow-lg ">
+<div id="dataTable" class="position-relative shadow-lg rounded ">
 
-    <div class="datagridWrapper bg-light bg-gradient rounded-top">
+    @if (Model.TableData == null || !Model.TableData.Any())
+    {
+       <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+            <p class="text-body-secondary fw-medium">No Data</p>
+       </div>
+
+    }
+    else
+    {
+         <div class="datagridWrapper bg-light bg-gradient rounded-top">
 
         @(Html.DevExtreme().DataGrid()
             .ID("dataGridContainer")
@@ -75,11 +84,10 @@
             )
     </div>
 
-    @{
+    
         int datagridRptid = Model.RptId;
         var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
         var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
-    }
 
     <div class="exportBtn position-sticky bg-white  d-flex justify-content-end align-items-center gap-2 border-top ">
 
@@ -132,5 +140,9 @@
 
 
     </div>
-</div>
+    }
+
+
+  
+</>
 

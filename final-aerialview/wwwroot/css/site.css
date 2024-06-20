@@ -501,30 +501,49 @@ body, html {
     position: relative;
     /*overflow: scroll;*/
     overflow: auto;
-    height: 75vh;
+    height: 74vh;
+    width: 100%;
+    background-color: #fff;
+}
+
+#dataTable {
+    position: relative;
+    /*overflow: scroll;*/
+    overflow: auto;
+    height: 80vh;
     /*height: 62vh;*/
     width: 100%;
     background-color: #fff;
 }
 
-    .datagridWrapper::-webkit-scrollbar {
-        display: none;
-    }
+.datagridWrapper::-webkit-scrollbar {
+    display: none;
+}
 
 
     /*.datagridWrapper .dx-datagrid-header-panel*/
-    .datagridWrapper .dx-datagrid-headers,
-    .datagridWrapper .dx-datagrid-pager {
-        position: sticky;
-        top: -.1%;
-        z-index: 1;
-        background-color: #fff;
-    }
+
+#dataTable .dx-datagrid-header-panel
+{
+    position: sticky;
+    top: 0%;
+    z-index: 9;
+    background-color: #fff;
+}
+
+.datagridWrapper .dx-datagrid-headers,
+.datagridWrapper .dx-datagrid-pager {
+    position: sticky;
+    top: 8.4%;
+    z-index: 9;
+    background-color: #fff;
+}
 
     .datagridWrapper .dx-datagrid-pager {
         bottom: -1px;
         top: auto;
         padding-left: .5vw;
+        padding-bottom: 0;
     }
 
     .datagridWrapper .dx-datagrid-header-panel {
@@ -623,7 +642,7 @@ body, html {
 
 .image-container {
     position: relative;
-    width:500px;
+    width:400px;
 }
 
     .image-container img {
