@@ -17,12 +17,12 @@
     {
         @foreach (var item in Model.PdfImageData)
         {
-            <div class="d-flex align-items-end  gap-2">
+            <div class="d-flex align-items-center  gap-2 mt-3">
                 <div class="overflow-hidden shadow rounded" style="width: auto; height:57px;">
                     <img class="d-inline object-fit-contain h-100 w-100" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
                 </div> 
-                <div class="mt-4 ">
-                    <h6 class="mb-0 lh-lg fw-bold">Project:  <span class="fw-medium">@item.ProjectName</span></h6>
+                <div class="d-flex flex-column gap-1">
+                    <h6 class="mb-0 lh-sm fw-bold">Project:  <span class="fw-medium">@item.ProjectName</span></h6>
                     <h6 class="mb-0 lh-sm fw-bold">Client: <span class="fw-medium">@item.ClientName</span></h6>
                 </div>
             </div>

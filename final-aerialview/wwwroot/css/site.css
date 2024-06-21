@@ -510,7 +510,7 @@ body, html {
     position: relative;
     /*overflow: scroll;*/
     overflow: auto;
-    height: 80vh;
+    height: 81vh;
     /*height: 62vh;*/
     width: 100%;
     background-color: #fff;
@@ -564,7 +564,7 @@ body, html {
     top: 100%;
     z-index: 99;
     background-color: #fff;
-    padding: 1vh .5vw;
+    padding: 0vh .5vw;
     border-radius: 0px 0px .3vw .3vw;
 }
 

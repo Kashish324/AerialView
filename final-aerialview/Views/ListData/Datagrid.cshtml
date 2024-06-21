@@ -1,148 +1,290 @@
 ﻿@model ListDataViewModel
-@using System.Linq;
+
 @{
+    ViewData["Title"] = @Model.ChildMenuName;
     Layout = null;
 }
-<div id="dataTable" class="position-relative shadow-lg rounded ">
 
+@section ExternalDependencies {
+    @* export pdf *@
+    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> *@
+@*     <script>
+        window.jsPDF = window.jspdf.jsPDF;
+    </script> *@
+
+    @* export excel *@
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.10.1/polyfill.min.js"></script>
+}
+
+
+<div id="dataTable" class="position-relative shadow-lg rounded " data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName" data-pdf-image-data="@Model.PdfImageData">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
-       <div class="h-100 w-100 d-flex align-items-center justify-content-center">
-            <p class="text-body-secondary fw-medium">No Data</p>
-       </div>
-
+        <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+            <p class="text-body-secondary fw-medium">No data to show</p>
+        </div>
     }
     else
     {
-         <div class="datagridWrapper bg-light bg-gradient rounded-top">
-
-        @(Html.DevExtreme().DataGrid()
-            .ID("dataGridContainer")
-            .DataSource(Model.TableData)
-
-            .FilterRow(filterRow => filterRow
-            .Visible(true)
-            .ApplyFilter(GridApplyFilterMode.Auto)
-            )
-
-            .StateStoring(s => s
-            .Enabled(true)
-            .Type(StateStoringType.LocalStorage)
-            .StorageKey("storage")
-            )
-            .ColumnAutoWidth(true)
-            .AllowColumnReordering(true)
-            .ShowColumnLines(true)
-            .ShowRowLines(true)
-            .ColumnChooser(c => c.Enabled(true))
-            .ColumnFixing(c => c.Enabled(true))
-            .WordWrapEnabled(true)
-            .HoverStateEnabled(true)
-            .HeaderFilter(hf => hf
-            .Visible(true)
-            .Search(hfs => hfs.Enabled(true))
-            )
-            .GroupPanel(g => g.Visible(true))
-            .Grouping(g => g.AutoExpandAll(false))
-
-            .Columns(c =>
-            {
-                if (Model.TableData != null && Model.TableData.Any())
+        <div class="datagridWrapper bg-light bg-gradient rounded-top">
+            @(Html.DevExtreme().DataGrid()
+                .ID("dataGridContainer")
+                .DataSource(Model.TableData)
+                .FilterRow(filterRow => filterRow
+                .Visible(true)
+                .ApplyFilter(GridApplyFilterMode.Auto)
+                )
+                .StateStoring(s => s
+                .Enabled(true)
+                .Type(StateStoringType.LocalStorage)
+                .StorageKey("storage")
+                )
+                .ColumnAutoWidth(true)
+                .AllowColumnReordering(true)
+                .ShowColumnLines(true)
+                .ShowRowLines(true)
+                .ColumnChooser(c => c.Enabled(true))
+                .ColumnFixing(c => c.Enabled(true))
+                .WordWrapEnabled(true)
+                .HoverStateEnabled(true)
+                .HeaderFilter(hf => hf
+                .Visible(true)
+                .Search(hfs => hfs.Enabled(true))
+                )
+                .GroupPanel(g => g.Visible(true))
+                .Grouping(g => g.AutoExpandAll(false))
+                .Columns(c =>
                 {
-                    var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault();
-                    if (firstItem != null)
+                    if (Model.TableData != null && Model.TableData.Any())
                     {
-                        foreach (var property in firstItem.Keys)
+                        var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault();
+                        if (firstItem != null)
                         {
-                            if (property == "DateAndTime")
+                            foreach (var property in firstItem.Keys)
                             {
-                                c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss");
-                            }
-                            else
-                            {
-                                c.Add().DataField(property).Caption(property);
+                                if (property == "DateAndTime")
+                                {
+                                    c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss");
+                                }
+                                else
+                                {
+                                    c.Add().DataField(property).Caption(property);
+                                }
                             }
                         }
                     }
+                })
+                .ShowColumnHeaders(true)
+                .Pager(pager =>
+                {
+                    pager.Visible(true);
+                    pager.DisplayMode(GridPagerDisplayMode.Compact);
+                    pager.ShowPageSizeSelector(true);
+                    pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+                    pager.ShowInfo(true);
+                    pager.ShowNavigationButtons(true);
+                })
+                .Paging(paging =>
+                {
+                    paging.Enabled(true);
+                    paging.PageSize(10);
+                })
+                @* .Export(e => e.Enabled(true)
+                .AllowExportSelectedData(true)
+                .Formats(new[] { "pdf" })
+                )
+                .OnExporting("exportGridToPdf") *@
+
+                )
+        </div>
+
+        <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-1 border-top ">
+
+            <button title="Export To Excel" id="excelExportButton" class="btn  btn-sm  text-decoration-none text-dark p-0">
+                <i class="ri-file-excel-2-fill fs-2" style="color: #1D6F42;"></i>
+            </button>
+            <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
+                <i class="ri-file-pdf-2-fill fs-2" style="color: #F40F02;"></i>
+            </button>
+
+        </div>
+    }
+</div>
+
+<script>
+    var tableData = @Html.Raw(Json.Serialize(Model.TableData));
+    var pdfImageData = @Html.Raw(Json.Serialize(Model.PdfImageData));
+
+
+    var date = new Date();
+    var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+
+    document.getElementById('excelExportButton').addEventListener('click', function (event) {
+        exportGridToExcel(event);
+    });
+
+    document.getElementById('pdfExportButton').addEventListener('click', function (event) {
+        exportGridToPdf(event);
+    });
+
+
+
+    // Export grid data to Excel
+    function exportGridToExcel(e) {
+        var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
+        var childMenuName = document.getElementById('dataTable').getAttribute('data-child-menu-name');
+      
+        // DataGrid instance
+        var dataGridElement = document.getElementById("dataGridContainer");
+        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet(tableName);
+
+        // Assuming tableData is defined elsewhere in your code and contains the data
+        var excelHeaders = Object.keys(tableData[0]);
+        var headerLength = excelHeaders.length;
+
+        DevExpress.excelExporter.exportDataGrid({
+            component: dataGridInstance,
+            worksheet: worksheet,
+            autoFilterEnabled: true,
+            topLeftCell: { row: 5, column: 1 }
+        }).then(function () {
+            // Format column headers with bold text
+            var headerRow = worksheet.getRow(5);
+            headerRow.font = { bold: true };
+
+            headerRow.eachCell(function (cell, colNumber) {
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'ffffffcc' }
+                };
+
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            });
+
+            function getColumnLetter(columnIndex) {
+                var columnName = '';
+                while (columnIndex > 0) {
+                    var remainder = (columnIndex - 1) % 26;
+                    columnName = String.fromCharCode(65 + remainder) + columnName;
+                    columnIndex = Math.floor((columnIndex - 1) / 26);
                 }
-            })
-            .ShowColumnHeaders(true)
-            .Pager(pager =>
-            {
-                pager.Visible(true);
-                pager.DisplayMode(GridPagerDisplayMode.Compact);
-                pager.ShowPageSizeSelector(true);
-                pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
-                pager.ShowInfo(true);
-                pager.ShowNavigationButtons(true);
-            })
-            .Paging(paging =>
-            {
-                paging.Enabled(true);
-                paging.PageSize(10);
-            })
-            )
-    </div>
-
-    
-        int datagridRptid = Model.RptId;
-        var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
-        var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
-
-    <div class="exportBtn position-sticky bg-white  d-flex justify-content-end align-items-center gap-2 border-top ">
-
-        @if (User.IsInRole("admin"))
-        {
-            <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = datagridRptid })" class="btn btn-light shadow border-dark btn-sm btn-custom text-decoration-none text-dark">
-                <i class="ri-edit-line"></i> Design
-            </a>
-
-
-            @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
-            {
-                    <a  href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })" class="btn btn-light shadow border-dark btn-sm btn-custom text-decoration-none text-dark">
-                    <i class="ri-printer-line"></i> Preview
-                    </a>
+                return columnName;
             }
-            else
-            {
-                <div>
-                    @(Html.DevExtreme().Button()
-                        .Text("No Report Available")
-                        .Type(ButtonType.Normal)
-                        .StylingMode(ButtonStylingMode.Text)
-                        )
-                </div>
-               
-            }
-        }
-        else // for users other than admin
-        {
-            @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
-            {
 
-                <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = datagridRptid })" class="btn btn-light shadow border-dark btn-sm btn-custom text-decoration-none text-dark">
-                    <i class="ri-printer-line"></i> Preview
-                </a>
-            }
-            else
-            {
-                <div>
-                    @(Html.DevExtreme().Button()
-                        .Text("No Report Available")
-                        .Type(ButtonType.Normal)
-                        .StylingMode(ButtonStylingMode.Text)
-                        )
-                </div>
-            }
-        }
+            var last = getColumnLetter(headerLength);
 
+            worksheet.mergeCells('B3:' + last + '3');
+            worksheet.getCell('B3').value = tableName;
+            worksheet.getCell('B3').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B3').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B3').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' }
+            };
 
+            worksheet.mergeCells('B2:' + last + '2');
+            worksheet.getCell('B2').value = 'pdfImageData[0].ProjectName;' // Corrected to use pdfImageData
+            worksheet.getCell('B2').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B2').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B2').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFFFFFFF' }
+            };
 
-    </div>
+            worksheet.mergeCells('B1:' + last + '1');
+            worksheet.getCell('B1').value = 'pdfImageData[0].ClientName;' // Corrected to use pdfImageData
+            worksheet.getCell('B1').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B1').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B1').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' }
+            };
+
+            // Loop through all cells and add borders
+            worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
+            });
+
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), childMenuName + '.xlsx');
+            });
+        });
     }
 
 
-  
-</>
 
+
+
+
+
+    //export grid data to pdf 
+    function exportGridToPdf(e) {
+
+        var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
+
+        // datagrid instance
+        var dataGridElement = document.getElementById("dataGridContainer");
+        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+
+        var columnWidth = 25;
+        var columnWidths = [];
+        var columnCount = dataGridInstance.columnCount();
+        for (var i = 0; i < columnCount; i++) {
+            columnWidths.push(columnWidth);
+        }
+
+        var doc = new jsPDF();
+
+        DevExpress.pdfExporter.exportDataGrid({
+            jsPDFDocument: doc,
+            component: dataGridInstance,
+            topLeft: { x: 1, y: 40 },
+            columnWidths: columnWidths,
+            indent: 5,
+        }).then(function () {
+            // Calculate the number of pages
+            var pageCount = doc.internal.getNumberOfPages();
+
+            // Add footer to each page
+            for (var i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                addFooter(i, pageCount);
+            }
+
+            // Save the PDF document
+            doc.save(tableName);
+        });
+
+        // Function to add footer with paging
+        var addFooter = function (pageNumber, pageCount) {
+            doc.setFontSize(9);
+            doc.setTextColor('#cccccc');
+            doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+        };
+
+        // Add header
+        doc.setFontSize(15);
+        doc.setTextColor(0);
+        doc.text(tableName +' '+ 'Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+    }
+
+</script>
