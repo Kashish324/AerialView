@@ -18,13 +18,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.10.1/polyfill.min.js"></script>
 }
 
-@{
-    var client = @Html.Raw(Json.Serialize(Model.PdfImageData));
-}
-    
-
-
-<div id="dataTable" class="position-relative shadow-lg rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName" data-pdf-image-data="@client">
+<div id="dataTable" class="position-relative shadow-lg rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName" >
     @if (Model.TableData == null || !Model.TableData.Any())
     {
         <div class="h-100 w-100 d-flex align-items-center justify-content-center">
@@ -101,11 +95,13 @@
 
         <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-1 border-top ">
 
-            <button title="Export To Excel" id="excelExportButton" class="btn  btn-sm  text-decoration-none text-dark p-0">
-                <i class="ri-file-excel-fill fs-2" style="color: #1D6F42;"></i>
+            <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
+                @* <i class="ri-file-excel-fill fs-2" style="color: #1D6F42;"></i> *@
+                <i class="bi bi-file-earmark-excel-fill fs-2" style="color: #1D6F42;"></i>
             </button>
             <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
-                <i class="ri-file-pdf-2-fill fs-2" style="color: #F40F02;"></i>
+                @* <i class="ri-file-pdf-2-fill fs-2" style="color: #F40F02;"></i> *@
+                <i class="bi bi-file-earmark-pdf-fill fs-2" style="color: #F40F02;"></i>
             </button>
 
         </div>
