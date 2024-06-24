@@ -21,6 +21,7 @@ namespace final_aerialview.Controllers
             ViewData["PdfImageData"] = _dataAccess.GetPdfImageData();
             ViewData["ReportData"] = _dataAccess.GetReportData();
             ViewData["UserMasterData"] = _dataAccess.GetUserMasterData();
+            //ViewData[""]
 
             // to get the navigation menu according to user logged in
             var roleClaim = User.FindFirst(ClaimTypes.Role);

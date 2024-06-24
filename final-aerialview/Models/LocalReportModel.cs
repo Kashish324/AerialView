@@ -13,5 +13,7 @@
         public string? ReportType { get; set;}
         public string? ConnName { get; set; }
         public string? Status { get;set; }
+
+        public string? ViewType {get; set;}
     }
 }

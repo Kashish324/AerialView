@@ -54,9 +54,15 @@ body, html {
         width: 100%;
         display: flex;
         align-items: center;
+        justify-content: space-between;
         opacity: 1;
-       
     }
+
+        /*.sidebar .logo-details img {
+    max-width: 150px;*/ /* Set maximum width */
+    /*height: auto;*/ /* Maintain aspect ratio */
+    /*display: inline-block;*/ /* Ensure proper alignment with text */
+    /*}*/
 
         .sidebar .logo-details i {
             font-size: 30px;
@@ -639,18 +645,3 @@ body, html {
     color: #000 !important;
     font-size: 1.2em;
 }
-
-.image-container {
-    position: relative;
-    width:400px;
-}
-
-    .image-container img {
-        width: 100%;
-        height: auto;
-        transition: transform 0.5s ease; 
-    }
-
-    .image-container:hover img {
-        transform: translateY(-20px); 
-    }

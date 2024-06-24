@@ -1,4 +1,6 @@
 ﻿@model ListDataViewModel
+@using Newtonsoft.Json
+@using System.Web
 
 @{
     ViewData["Title"] = @Model.ChildMenuName;
@@ -16,8 +18,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.10.1/polyfill.min.js"></script>
 }
 
+@{
+    var client = @Html.Raw(Json.Serialize(Model.PdfImageData));
+}
+    
 
-<div id="dataTable" class="position-relative shadow-lg rounded " data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName" data-pdf-image-data="@Model.PdfImageData">
+
+<div id="dataTable" class="position-relative shadow-lg rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName" data-pdf-image-data="@client">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
         <div class="h-100 w-100 d-flex align-items-center justify-content-center">
@@ -89,19 +96,13 @@
                     paging.Enabled(true);
                     paging.PageSize(10);
                 })
-                @* .Export(e => e.Enabled(true)
-                .AllowExportSelectedData(true)
-                .Formats(new[] { "pdf" })
-                )
-                .OnExporting("exportGridToPdf") *@
-
                 )
         </div>
 
         <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-1 border-top ">
 
             <button title="Export To Excel" id="excelExportButton" class="btn  btn-sm  text-decoration-none text-dark p-0">
-                <i class="ri-file-excel-2-fill fs-2" style="color: #1D6F42;"></i>
+                <i class="ri-file-excel-fill fs-2" style="color: #1D6F42;"></i>
             </button>
             <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
                 <i class="ri-file-pdf-2-fill fs-2" style="color: #F40F02;"></i>
@@ -113,8 +114,8 @@
 
 <script>
     var tableData = @Html.Raw(Json.Serialize(Model.TableData));
-    var pdfImageData = @Html.Raw(Json.Serialize(Model.PdfImageData));
-
+    var client = @Html.Raw(Json.Serialize(Model.PdfImageData));
+    var pdfImageData = document.getElementById('dataTable').getAttribute('data-pdf-image-data');
 
     var date = new Date();
     var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
@@ -127,13 +128,13 @@
         exportGridToPdf(event);
     });
 
-
-
+    
+    
     // Export grid data to Excel
     function exportGridToExcel(e) {
         var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
         var childMenuName = document.getElementById('dataTable').getAttribute('data-child-menu-name');
-      
+
         // DataGrid instance
         var dataGridElement = document.getElementById("dataGridContainer");
         var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
@@ -192,8 +193,9 @@
                 fgColor: { argb: 'FFDDDDDD' }
             };
 
+            // Set ProjectName in cell B2
             worksheet.mergeCells('B2:' + last + '2');
-            worksheet.getCell('B2').value = 'pdfImageData[0].ProjectName;' // Corrected to use pdfImageData
+            // worksheet.getCell('B2').value = pdfImageData.ProjectName; // Corrected to use pdfImageData
             worksheet.getCell('B2').alignment = { horizontal: 'center', vertical: 'middle' };
             worksheet.getCell('B2').font = { bold: true, name: 'Arial' };
             worksheet.getCell('B2').fill = {
@@ -202,8 +204,9 @@
                 fgColor: { argb: 'FFFFFFFF' }
             };
 
+            // Set ClientName in cell B1
             worksheet.mergeCells('B1:' + last + '1');
-            worksheet.getCell('B1').value = 'pdfImageData[0].ClientName;' // Corrected to use pdfImageData
+            // worksheet.getCell('B1').value = pdfImageData.ClientName; // Corrected to use pdfImageData
             worksheet.getCell('B1').alignment = { horizontal: 'center', vertical: 'middle' };
             worksheet.getCell('B1').font = { bold: true, name: 'Arial' };
             worksheet.getCell('B1').fill = {
@@ -229,11 +232,6 @@
             });
         });
     }
-
-
-
-
-
 
 
     //export grid data to pdf 

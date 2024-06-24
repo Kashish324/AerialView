@@ -7,8 +7,7 @@
     var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
     var userMasterData = ViewBag.UserMasterData as IEnumerable<final_aerialview.Models.UserMasterModel>;
     var userMasterInfo = ViewData["UserMasterData"] as IEnumerable<final_aerialview.Models.UserMasterModel>;
-
-
+    var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
     // Assuming userMasterData contains the controls accessible to the logged-in user.
     // var accessibleControls = userMasterData?.Select(um => um.ControlName).ToList() ?? new List<string>();
 }
@@ -65,16 +64,24 @@
 <body>
 
 
+    @if (Context.Request.Path == "/Home/Index")
+    {
+        <div class="image-container overflow-hidden vh-100 w-100">
+            <img src="~/images/IMAGE-SmartIndustryIOT-e1523990569925-1.jpg" class="img-fluid h-100 w-100" width="" alt="...">
+        </div>
+    }
+
     @if (User.Identity != null && User.Identity.IsAuthenticated)
     {
         @if (ViewContext.RouteData.Values["controller"].ToString() != "Report")
         {
             <div class="sidebar close">
-                <div class="logo-details ">
-                    <i class="bi bi-buildings fs-4" style="cursor: none"></i>
-                    <span class="logo_name text-nowrap fw-normal" style="cursor: none"> Hi-Mak Pvt. Ltd. </span>
+                <div class="logo-details">
+                    <img src="~/images/AerialView-Logo.png" alt="Alternate Text" class="img-fluid ml-3" style="max-width: 45px;">
+                    <span class="logo_name text-nowrap fw-medium" style="cursor: none"> Hi-Mak Pvt. Ltd. </span>
                     <i id="sidebarPin" class="ri-pushpin-line fs-6 ml-2" style="cursor: pointer;"></i>
                 </div>
+
                 <ul class="nav-links">
                     @if (menuParentData != null && subMenuData != null && childMenuData != null)
                     {
@@ -116,11 +123,9 @@
                                                 bool subMenuAccessible = userMasterData != null && userMasterData.Any(uc => uc.ControlName == subItem.SubMenuName);
                                                 if (subMenuAccessible)
                                                 {
-
                                                     var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode);
 
                                                     <li class="subMenu-link">
-                                                        @* @if (mainItem.MenuName == "Reports") *@
                                                         @if (hasChildmenu)
                                                         {
                                                             <div class="icon-link">
@@ -147,37 +152,22 @@
                                                                 </div>
                                                             </a>
                                                         }
-
                                                         @if (hasChildmenu)
                                                         {
                                                             <ul class="childSubMenu">
                                                                 @foreach (var childItem in childMenuData.Where(childItem => childItem.SubMenuCode == subItem.SubMenuCode))
                                                                 {
+                                                                    int datagridRptid = childItem.RptId;
+                                                                    var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
+                                                                    var viewType = reportItem?.ViewType;
                                                                     <li>
                                                                         @if (childItem.ReportType == "Tabular")
                                                                         {
-                                                                            <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none">
-                                                                                <div class="icon-link">
-                                                                                    <div class="listMenu">
-                                                                                        <i class="ri-bard-line fs-6"></i>
-                                                                                        @* @childItem.ReportType *@
-                                                                                        <span>@childItem.SubChildName </span>
-                                                                                    </div>
-                                                                                </div>
-                                                                            </a>
-                                                                        }
-                                                                        else
-                                                                        {
-
-                                                                            int datagridRptid = childItem.RptId;
-                                                                            var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
-                                                                            var reportItem = reportData?.FirstOrDefault(r => r.RptId == datagridRptid);
-
-                                                                            @if (User.IsInRole("admin"))
+                                                                            if (viewType == "Preview")
                                                                             {
                                                                                 @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
                                                                                 {
-                                                                                    <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none">
+                                                                                    <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none" target="_blank">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
                                                                                                 <i class="ri-bard-line fs-6"></i>
@@ -188,7 +178,46 @@
                                                                                 }
                                                                                 else
                                                                                 {
-                                                                                    <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none">
+                                                                                    <a href="@Url.Action("NoReportAvailable", "Home")" class="text-decoration-none">
+                                                                                        <div class="icon-link">
+                                                                                            <div class="listMenu">
+                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <span>@childItem.SubChildName </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                }
+                                                                            }
+                                                                            else
+                                                                            {
+                                                                                <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none">
+                                                                                    <div class="icon-link">
+                                                                                        <div class="listMenu">
+                                                                                            <i class="ri-bard-line fs-6"></i>
+                                                                                            <span>@childItem.SubChildName</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
+                                                                            }
+                                                                        }
+                                                                        else
+                                                                        {
+                                                                            @if (User.IsInRole("admin"))
+                                                                            {
+                                                                                @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
+                                                                                {
+                                                                                    <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none" target="_blank">
+                                                                                        <div class="icon-link">
+                                                                                            <div class="listMenu">
+                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <span>@childItem.SubChildName </span>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </a>
+                                                                                }
+                                                                                else
+                                                                                {
+                                                                                    <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none" target="_blank">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
                                                                                                 <i class="ri-bard-line fs-6"></i>
@@ -199,11 +228,10 @@
                                                                                 }
                                                                             }
                                                                             else // for users other than admin
-
                                                                             {
                                                                                 @if (reportItem != null && !string.IsNullOrEmpty(reportItem.WebReportPath))
                                                                                 {
-                                                                                    <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none">
+                                                                                    <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none" target="_blank">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
                                                                                                 <i class="ri-bard-line fs-6"></i>
@@ -239,12 +267,10 @@
                             }
                         }
                     }
+
                     <li>
-
                         <div class="profile-details d-flex align-items-center justify-content-between">
-
-                            <div class="software-version text-light fw-medium fs-6">AerialView 3.0</div>
-
+                            <div class="software-version text-light fw-medium" style="font-size: 12px;">© Hi-Mak Pvt. Ltd.</div>
                             <div class="d-flex align-items-center justify-content-center flex-row-reverse">
 
                                 <div class="profile-content">
@@ -254,20 +280,16 @@
                                     </form>
                                 </div>
                                 <div class="name-job">
-                                    <div class="profile_name fw-medium fs-6">@User.Identity.Name</div>
+                                    <div class="profile_name fw-medium" style="font-size: 12px;">@User.Identity.Name</div>
                                 </div>
 
                             </div>
-
                         </div>
                     </li>
-
-
                 </ul>
-
             </div>
 
-            <section class="home-section">
+            <section class="home-section  position-fixed top-0">
                 <div class="home-content">
                     <div class="headerContent">
                         <i class="ri-arrow-right-double-line bx bx-menu fs-5"></i>
@@ -299,16 +321,16 @@
 
                     </div>
 
-                    @if (Context.Request.Path == "/Home/Index")
-                    {
-                        <div class="tableContent d-flex align-items-center justify-content-center ">
-                            @* <h1 class='tableHeading'> Home Page </h1>  *@
-                            @* <div style="cursor: none">Please select an item </div>  *@
-                            <div class="image-container">
-                                <img src="~/images/33477137_AerialView-Logo_with-tagline.png" class="img-fluid opacity-75" width="400" alt="...">
-                            </div>
-                        </div>
-                    }
+                    @* @if (Context.Request.Path == "/Home/Index")
+            {
+            <div class="tableContent d-flex align-items-center justify-content-center">
+            <h1 class='tableHeading'> Home Page </h1>
+            <div style="cursor: none">Please select an item </div>
+            <div class="image-container w-100 h-100">
+            <img src="~/images/IMAGE-SmartIndustryIOT-e1523990569925-1.jpg" class="img-fluid" width="" alt="...">
+            </div>
+            </div>
+            } *@
 
                     <main role="main">
                         @RenderBody()
