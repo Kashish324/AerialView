@@ -65,10 +65,22 @@ namespace final_aerialview.Controllers
         {
             var dynamicData = _dataAccess.DynamicConnString(connString, tableName, option, selectedValue, fromDate, toDate);
 
+            IEnumerable<PdfImageModel> pdfImageData = _dataAccess.GetPdfImageData();
+
+            // Convert logo data to Base64
+            foreach (var item in pdfImageData)
+            {
+                if (!string.IsNullOrEmpty(item.Logo))
+                {
+                    item.Logo = ImageConverter.ConvertHexToBase64(item.Logo);
+                }
+            }
+
             var viewModel = new ListDataViewModel
             {
                 TableData = dynamicData,
                 RptId = rptId,
+                PdfImageData = pdfImageData,
             };
 
 

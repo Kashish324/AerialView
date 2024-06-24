@@ -18,12 +18,14 @@
     @* <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.10.1/polyfill.min.js"></script> *@
 }
 
-<div id="dataTable" class="position-relative shadow-lg rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName" >
+<div id="dataTable" class="position-relative shadow-lg rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
         <div class="h-100 w-100 d-flex align-items-center justify-content-center">
             <p class="text-body-secondary fw-medium">No data to show</p>
         </div>
+
+       
     }
     else
     {
@@ -109,12 +111,6 @@
 </div>
 
 <script>
-    var tableData = @Html.Raw(Json.Serialize(Model.TableData));
-    var client = @Html.Raw(Json.Serialize(Model.PdfImageData));
-    var pdfImageData = document.getElementById('dataTable').getAttribute('data-pdf-image-data');
-
-    var date = new Date();
-    var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
 
     document.getElementById('excelExportButton').addEventListener('click', function (event) {
         exportGridToExcel(event);
@@ -124,7 +120,15 @@
         exportGridToPdf(event);
     });
 
-    
+
+    var tableData = @Html.Raw(Json.Serialize(Model.TableData));
+    var clientData = @Html.Raw(Json.Serialize(Model.PdfImageData));
+    console.log(clientData)
+
+    // Get the current date and time
+    var date = new Date();
+    var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+    var formattedTime = date.getHours() + '' + date.getMinutes() + '' + date.getSeconds();
     
     // Export grid data to Excel
     function exportGridToExcel(e) {
@@ -137,6 +141,14 @@
 
         var workbook = new ExcelJS.Workbook();
         var worksheet = workbook.addWorksheet(tableName);
+
+        // Merge cells and add image to the workbook
+        worksheet.mergeCells("A1:A4");
+        const imageId = workbook.addImage({
+            base64: clientData[0].Logo,
+            extension: 'jpeg',
+        });
+        worksheet.addImage(imageId, "A1:A3");
 
         // Assuming tableData is defined elsewhere in your code and contains the data
         var excelHeaders = Object.keys(tableData[0]);
@@ -191,7 +203,7 @@
 
             // Set ProjectName in cell B2
             worksheet.mergeCells('B2:' + last + '2');
-            // worksheet.getCell('B2').value = pdfImageData.ProjectName; // Corrected to use pdfImageData
+            worksheet.getCell('B2').value = clientData[0].ProjectName; 
             worksheet.getCell('B2').alignment = { horizontal: 'center', vertical: 'middle' };
             worksheet.getCell('B2').font = { bold: true, name: 'Arial' };
             worksheet.getCell('B2').fill = {
@@ -202,7 +214,7 @@
 
             // Set ClientName in cell B1
             worksheet.mergeCells('B1:' + last + '1');
-            // worksheet.getCell('B1').value = pdfImageData.ClientName; // Corrected to use pdfImageData
+            worksheet.getCell('B1').value = clientData[0].ClientName; 
             worksheet.getCell('B1').alignment = { horizontal: 'center', vertical: 'middle' };
             worksheet.getCell('B1').font = { bold: true, name: 'Arial' };
             worksheet.getCell('B1').fill = {
@@ -223,8 +235,10 @@
                 });
             });
 
+
             workbook.xlsx.writeBuffer().then(function (buffer) {
-                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), childMenuName + '.xlsx');
+            var fileName = childMenuName + '_' + formattedDate + '_' + formattedTime + '.xlsx';
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), fileName);
             });
         });
     }
@@ -264,8 +278,9 @@
                 addFooter(i, pageCount);
             }
 
+            var fileName = tableName + '_' + formattedDate + '_' + formattedTime;
             // Save the PDF document
-            doc.save(tableName);
+            doc.save(fileName);
         });
 
         // Function to add footer with paging
@@ -273,6 +288,27 @@
             doc.setFontSize(9);
             doc.setTextColor('#cccccc');
             doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+
+            var startY = 30;
+            for (var i = 0; i < clientData.length; i++) {
+                var item = clientData[i];
+                var imgData = item.Logo;
+                var projectName = item.ProjectName;
+                var clientName = item.ClientName;
+
+                // Add image
+                doc.addImage(imgData, 'JPEG', 15, startY, 40, 20);
+                doc.setTextColor(0, 0, 0);
+                doc.setFontSize(13);
+
+                // Add project and client names
+                doc.text('Project:' + ' ' + projectName, 60, (startY - 6) + 15);
+                doc.text('Client:' + ' ' + clientName, 60, 15 + 30);
+                doc.setTextColor(0);
+                doc.setFontSize(0);
+                // Update startY for the next iteration
+                startY += 50; // Adjust this value as needed based on the height of the content
+            }
         };
 
         // Add header
