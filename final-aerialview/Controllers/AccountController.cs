@@ -32,7 +32,6 @@ namespace final_aerialview.Controllers
             var user = await _dataAccess.GetUserByUsernameAsync(userId);
             if (user != null && user.Password == password)
             {
-
                 // Determine the role based on the user ID
                 string role = user.UserId ?? string.Empty;
                 var username =  user.UserName ?? string.Empty;

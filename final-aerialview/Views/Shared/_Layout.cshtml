@@ -6,7 +6,7 @@
     var childMenuData = ViewData["ChildMenuData"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
     var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
     var userMasterData = ViewBag.UserMasterData as IEnumerable<final_aerialview.Models.UserMasterModel>;
-    var userMasterInfo = ViewData["UserMasterData"] as IEnumerable<final_aerialview.Models.UserMasterModel>;
+    // var userMasterInfo = ViewData["UserMasterData"] as IEnumerable<final_aerialview.Models.UserMasterModel>;
     var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
     // Assuming userMasterData contains the controls accessible to the logged-in user.
     // var accessibleControls = userMasterData?.Select(um => um.ControlName).ToList() ?? new List<string>();
@@ -91,10 +91,14 @@
                     {
                         @foreach (var mainItem in menuParentData)
                         {
-
+                            //check if menu is accessible to the user
                             bool menuAccessible = userMasterData != null && userMasterData.Any(uc => uc.ControlName == mainItem.MenuName);
 
-                            if (menuAccessible)
+                            // Check if the current user is admin
+                            bool isAdmin = User.IsInRole("admin");
+
+                            //exclude "master" and "utility" for admin
+                            if (menuAccessible && !(isAdmin && mainItem.MenuName == "Master" || mainItem.MenuName == "Utility"))
                             {
 
                                 var hasSubmenu = subMenuData.Any(subItem => subItem.MainMenuCode == mainItem.MenuCode);
@@ -274,7 +278,7 @@
 
                     <li>
                         <div class="profile-details d-flex align-items-center justify-content-between">
-                            <div class="software-version text-light fw-medium" style="font-size: 12px;">© Hi-Mak Pvt. Ltd.</div>
+                            <div class="software-version text-light fw-medium" style="font-size: 14px;">© Hi-Mak Pvt. Ltd.</div>
                             <div class="d-flex align-items-center justify-content-center flex-row-reverse">
 
                                 <div class="profile-content">
@@ -284,7 +288,7 @@
                                     </form>
                                 </div>
                                 <div class="name-job">
-                                    <div class="profile_name fw-medium" style="font-size: 12px;">@User.Identity.Name</div>
+                                    <div class="profile_name fw-medium" style="font-size: 14px;">@User.Identity.Name</div>
                                 </div>
 
                             </div>

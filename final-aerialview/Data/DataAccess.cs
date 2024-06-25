@@ -54,11 +54,11 @@ namespace final_aerialview.Data
         }
 
         //full user master table
-        public IEnumerable<UserMasterModel> GetUserMasterData()
-        {
-            string query = "SELECT * FROM UserControlMaster";
-            return ExecuteQuery<UserMasterModel>(query);
-        }
+        //public IEnumerable<UserMasterModel> GetUserMasterData()
+        //{
+        //    string query = "SELECT * FROM UserControlMaster";
+        //    return ExecuteQuery<UserMasterModel>(query);
+        //}
 
         //main parent data
         public IEnumerable<ListDataModel> GetMenuParentData()

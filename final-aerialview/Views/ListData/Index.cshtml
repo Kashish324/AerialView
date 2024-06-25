@@ -17,13 +17,13 @@
     {
         @foreach (var item in Model.PdfImageData)
         {
-            <div class="d-flex align-items-center gap-2 mt-3">
+            <div class="d-flex align-items-center gap-2 mt-3 w-100">
                 <div class="overflow-hidden shadow rounded" style="width: auto; height:57px;">
                     <img class="d-inline object-fit-contain h-100 w-100" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
-                </div> 
-                <div class="d-flex flex-column gap-1">
-                    <h6 class="mb-0 lh-sm fw-bold">Project:  <span class="fw-medium">@item.ProjectName</span></h6>
-                    <h6 class="mb-0 lh-sm fw-bold">Client: <span class="fw-medium">@item.ClientName</span></h6>
+                </div>
+                <div class="d-flex flex-column gap-1 w-100 text-center text-capitalize mr-5 ml-1 pr-3">
+                    <h6 class="mb-0 lh-sm fw-bold">@item.ProjectName</h6>
+                    <h6 class="mb-0 lh-sm fw-bold">@item.ClientName</h6>
                 </div>
             </div>
         }
@@ -106,6 +106,7 @@
 <div id="toast" class="fw-normal"></div>
 
 <script>
+
     //setting default values for date fields and hidden form date fields 
     var now = new Date();
     var utcString = now.toISOString().substring(0, 19);
@@ -181,7 +182,6 @@
         var selectedValue = event.target.value;
 
         $("#selectedValue").val(selectedValue);
-        console.log("selected value", selectedValue);
     }
 
     //from date selected value 
@@ -203,6 +203,7 @@
 
     function validateForm() {
         var option = $("#selectedOption").val();
+
         if (option === 'Standard') {
             var selectedValue = $("#selectedValue").val();
             if (!selectedValue) {
@@ -212,6 +213,7 @@
         } else if (option === 'Date') {
             var fromDate = $("#fromDate").val();
             var toDate = $("#toDate").val();
+
             if (!fromDate || !toDate) {
                 showToast("Please select both from and to dates.");
                 return false;
