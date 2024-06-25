@@ -8,7 +8,7 @@
     height: 50vh;
 }
 
-.copyright-text{
+.copyright-text {
     font-size: .65vw;
 }
 
@@ -29,4 +29,37 @@
 .btn-disabled {
     background-color: #cccccc; /* or any color to indicate disabled state */
     cursor: not-allowed;
+}
+
+.carousel-item {
+    transition: opacity 1.5s ease-in-out !important;
+}
+
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition-property: opacity, transform;
+    animation: bounce ease-in-out 3.2s infinite;
+}
+
+    .carousel-fade .carousel-item.active,
+    .carousel-fade .carousel-item-next.carousel-item-start,
+    .carousel-fade .carousel-item-prev.carousel-item-end {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+    opacity: 0;
+    transform: translateY(0);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
 }

@@ -1,15 +1,11 @@
-﻿@* @model MenuViewModel *@
-
+﻿
 @{
     var menuParentData = ViewData["MenuParentData"] as IEnumerable<final_aerialview.Models.ListDataModel>;
     var subMenuData = ViewData["SubMenuData"] as IEnumerable<final_aerialview.Models.SubMenuModel>;
     var childMenuData = ViewData["ChildMenuData"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
     var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
     var userMasterData = ViewBag.UserMasterData as IEnumerable<final_aerialview.Models.UserMasterModel>;
-    // var userMasterInfo = ViewData["UserMasterData"] as IEnumerable<final_aerialview.Models.UserMasterModel>;
     var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
-    // Assuming userMasterData contains the controls accessible to the logged-in user.
-    // var accessibleControls = userMasterData?.Select(um => um.ControlName).ToList() ?? new List<string>();
 }
 
 <!DOCTYPE html>
