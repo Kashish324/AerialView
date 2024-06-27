@@ -1,6 +1,5 @@
 ﻿@model ListDataViewModel
 
-
 @{
     ViewData["Title"] = @Model.ChildMenuName;
 }
@@ -10,20 +9,18 @@
     var Items = new[] { "Previous Day", "1 Week", "1 Month", "3 Months", "6 Months", "1 Year", "All" };
 }
 
-
-
 <div class='dataGridView rounded'>
     @if (Model.PdfImageData != null)
     {
         @foreach (var item in Model.PdfImageData)
         {
-            <div class="d-flex align-items-center gap-2 mt-3 w-100">
+            <div class="d-flex align-items-center gap-2 mt-3 w-100 text-center">
                 <div class="overflow-hidden shadow rounded" style="width: auto; height:57px;">
                     <img class="d-inline object-fit-contain h-100 w-100" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
                 </div>
-                <div class="d-flex flex-column gap-1 w-100 text-center text-capitalize mr-5 ml-1 pr-3">
-                    <h6 class="mb-0 lh-sm fw-bold">@item.ProjectName</h6>
-                    <h6 class="mb-0 lh-sm fw-bold">@item.ClientName</h6>
+                <div class="d-flex flex-column gap-1 w-100 text-center text-capitalize mr-5 ml-1 pr-4">
+                    <h6 class="mb-0 lh-sm fw-bold text-primary-emphasis">@item.ProjectName</h6>
+                    <h6 class="mb-0 lh-sm fw-bold text-primary-emphasis">@item.ClientName</h6>
                 </div>
             </div>
         }
@@ -75,7 +72,6 @@
             </div>
             
         </div>
-
        
         <form id="filterForm" action="/ListData/DataGrid" method="post">
             <input type="hidden" id="selectedOption" name="option">
@@ -93,7 +89,6 @@
                 </button>
             </div>
         </form>
-        
 
         <a class="btn text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3 bottom-0 " title="Reset" onclick="onStateResetClick()">
             <i class="ri-refresh-line"></i>

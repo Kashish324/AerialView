@@ -7,17 +7,6 @@
     Layout = null;
 }
 
-@section ExternalDependencies {
-    @* export pdf *@
-    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script> *@
-    @*     <script>
-        window.jsPDF = window.jspdf.jsPDF;
-    </script> *@
-
-    @* export excel *@
-    @* <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.10.1/polyfill.min.js"></script> *@
-}
-
 <div id="dataTable" class="position-relative shadow-lg rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
@@ -95,15 +84,12 @@
                 )
         </div>
 
-        <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-1 border-top ">
-
+        <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-2 border-top ">
             <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
-                @* <i class="ri-file-excel-fill fs-2" style="color: #1D6F42;"></i> *@
-                <i class="bi bi-file-earmark-excel-fill fs-2" style="color: #1D6F42;"></i>
+                <i class="ri-file-excel-2-line fs-2 shadow-sm" style="color: #1D6F42;"></i>
             </button>
             <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
-                @* <i class="ri-file-pdf-2-fill fs-2" style="color: #F40F02;"></i> *@
-                <i class="bi bi-file-earmark-pdf-fill fs-2" style="color: #F40F02;"></i>
+                <i class="ri-file-pdf-2-line fs-2 shadow-sm" style="color: #F40F02;"></i>
             </button>
 
         </div>
@@ -111,10 +97,11 @@
 </div>
 
 <script>
-
-    document.addEventListener('DOMContentLoaded', function () {
         var excelExportBtn = document.getElementById('excelExportButton');
         var pdfExportBtn = document.getElementById('pdfExportButton');
+
+        var pdfPortraitExportBtn = document.getElementById('pdfPortraitExport');
+        var pdfLandscapeExportBtn = document.getElementById('pdfLandscapeExport');
 
         if (excelExportBtn) {
             excelExportBtn.addEventListener('click', function (event) {
@@ -127,7 +114,6 @@
                 exportGridToPdf(event);
             });
         }
-
 
         var tableData = @Html.Raw(Json.Serialize(Model.TableData));
         var clientData = @Html.Raw(Json.Serialize(Model.PdfImageData));
@@ -323,5 +309,4 @@
             doc.setTextColor(0);
             doc.text(tableName + ' ' + 'Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
         }
-    });
 </script>

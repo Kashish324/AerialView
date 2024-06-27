@@ -3,12 +3,19 @@ using DevExpress.AspNetCore.Reporting;
 using DevExpress.XtraReports.Web.Extensions;
 using final_aerialview.Data;
 using final_aerialview.Services;
+using DevExpress.DashboardAspNetCore;
+using DevExpress.DashboardWeb;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.AspNetCore.Authentication.Cookies;
 
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
+
+IFileProvider? fileProvider = builder.Environment.ContentRootFileProvider;
+IConfiguration? configuration = builder.Configuration;
+
 builder.Services.AddRazorPages();
 
 
@@ -48,6 +55,17 @@ builder.Services.AddTransient<ReportStorageWebExtension>(serviceProvider =>
 });
 
 
+builder.Services.AddDevExpressControls();
+
+builder.Services.AddScoped<DashboardConfigurator>((IServiceProvider serviceProvider) => {
+    DashboardConfigurator configurator = new DashboardConfigurator();
+    configurator.SetDashboardStorage(new DashboardFileStorage(fileProvider.GetFileInfo("Data/Dashboards").PhysicalPath));
+    configurator.SetConnectionStringsProvider(new DashboardConnectionStringsProvider(configuration));
+    return configurator;
+});
+
+
+
 builder.Services.AddMvc();
 
 //configure reporting services
@@ -72,10 +90,13 @@ builder.Services.ConfigureReportingServices(configurator =>
     });
 });
 
+
+
 var app = builder.Build();
 
 app.UseDevExpressControls();
 System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
+app.MapDashboardRoute("api/dashboard", "DefaultDashboard");
 
 
 // Configure the HTTP request pipeline.

@@ -10,9 +10,22 @@
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/report.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/login.css" asp-append-version="true" />
-
-
 </head>
+
+@{
+    var CarouselImgs = new[]
+    {
+        ("login-img1.png"),
+        ("login-img2.jpg"),
+        ("login-img3.jpg"),
+        ("login-img4.jpg"),
+        ("login-img5.jpg"),
+        ("login-img6.jpg"),
+        ("login-img7.jpg")
+    };
+}
+
+
 
 <body>
 
@@ -34,14 +47,21 @@
             </div>
 
             <div class=" img-part h-100 w-50 overflow-hidden rounded-4 shadow" style="background-color: #FBAB7E; background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%) !important;">
-                @* <img src="~/images/login-img4.jpg" class="object-fit-contain rounded w-100 h-100 mx-auto d-block" alt="....." /> *@
-                @* <img src="~/images/login-img2.jpg" class="object-fit-contain rounded w-100 h-100 mx-auto d-block" /> *@
                 <div id="carouselExampleSlidesOnly" class="carousel slide carousel-fade" data-bs-ride="carousel" data-bs-interval="3000">
                     <div class="carousel-inner">
-                        <div class="carousel-item active">
+
+                        @foreach (var img in CarouselImgs)
+                        {
+                            <div class="carousel-item @((img == CarouselImgs[0] ? "active mt-5": ""))">
+                                <img src="~/images/@img" class="object-fit-cover rounded w-100 h-100 mx-auto d-block" alt="....." />
+                            </div>
+                        }
+
+                        @*  <div class="carousel-item active">
                             <img src="~/images/login-img1.png" class="object-fit-contain rounded w-100 h-100 mx-auto d-block mt-5" alt="....." />
-                        </div>
-                        <div class="carousel-item">
+                        </div> *@
+
+                        @* <div class="carousel-item">
                             <img src="~/images/login-img2.jpg" class="object-fit-contain rounded w-100 h-100 mx-auto d-block" alt="....." />
                         </div>
                         <div class="carousel-item">
@@ -59,11 +79,10 @@
 
                         <div class="carousel-item">
                             <img src="~/images/login-img7.jpg" class="object-fit-contain rounded w-100 h-100 mx-auto d-block" alt="....." />
-                        </div>
+                        </div> *@
                     </div>
                 </div>
             </div>
-
         </div>
     </div>
 

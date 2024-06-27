@@ -1,0 +1,141 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="New Dashboard" />
+  <DataSources>
+    <SqlDataSource Name="BatchNo 1" ComponentName="sqlDataSource1">
+      <Connection Name="Hccb_Khudra_Gea" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="BatchNo">
+        <Tables>
+          <Table Name="BatchNo" />
+        </Tables>
+        <Columns>
+          <Column Table="BatchNo" Name="Id" />
+          <Column Table="BatchNo" Name="DateTime" />
+          <Column Table="BatchNo" Name="BatchNo" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="BatchNo">
+      <DataItems>
+        <Measure DataMember="BatchNo" SummaryType="Count" DefaultId="DataItem0" />
+        <Measure DataMember="DateTime" SummaryType="Count" DefaultId="DataItem1" />
+        <Dimension DataMember="BatchNo" SortOrder="Descending" IsDiscreteScale="true" SortByMeasure="DataItem0" DefaultId="DataItem2" />
+      </DataItems>
+      <FormatRules>
+        <ChartItemFormatRule Name="Format Rule 1" DataItem="DataItem2" SeriesId="DataItem0">
+          <FormatConditionTopBottom>
+            <ColorStyleSettings PredefinedColor="Blue" />
+          </FormatConditionTopBottom>
+        </ChartItemFormatRule>
+      </FormatRules>
+      <Arguments>
+        <Argument DefaultId="DataItem2" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem0" />
+            </Simple>
+          </Series>
+        </Pane>
+        <Pane Name="Pane 2">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem1" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" DataSource="sqlDataSource1" DataMember="BatchNo">
+      <GridOptions />
+      <ColumnFilterOptions />
+    </Grid>
+    <Image ComponentName="imageDashboardItem1" Name="Image 1" Url="sss" />
+    <GeoPointMap ComponentName="geoPointMapDashboardItem1" Name="Map 1" DataSource="sqlDataSource1" DataMember="BatchNo">
+      <ViewArea TopLatitude="83.64513000000001" BottomLatitude="-55.61182999999996" LeftLongitude="-179.99999999999997" CenterPointLatitude="44.08908074480383" CenterPointLongitude="10.098071356993813" />
+      <MapLegend />
+      <WeightedLegend />
+    </GeoPointMap>
+    <RangeFilter ComponentName="rangeFilterDashboardItem1" Name="Range Filter 1" DataSource="sqlDataSource1" DataMember="BatchNo" />
+    <RangeFilter ComponentName="rangeFilterDashboardItem2" Name="Range Filter 2" DataSource="sqlDataSource1" DataMember="BatchNo">
+      <ColoringOptions MeasuresColoringMode="Hue" />
+      <DataItems>
+        <Measure DataMember="BatchNo" DefaultId="DataItem0" />
+        <Dimension DataMember="BatchNo" DefaultId="DataItem1" />
+        <Measure DataMember="BatchNo" SummaryType="Count" Expression="CountNotNull([BatchNo])" DefaultId="DataItem2">
+          <NumericFormat FormatType="Percent" Precision="34" IncludeGroupSeparator="true" />
+          <WindowDefinition>
+            <RangeFilterWindowDefinition />
+          </WindowDefinition>
+        </Measure>
+      </DataItems>
+      <Argument DefaultId="DataItem1" />
+      <Series>
+        <Simple SeriesType="Line">
+          <Value DefaultId="DataItem0" />
+        </Simple>
+        <Simple ShowPointMarkers="true" SeriesType="Line">
+          <Value DefaultId="DataItem2" />
+        </Simple>
+      </Series>
+    </RangeFilter>
+    <TabContainer ComponentName="tabContainerDashboardItem1" Name="Tab Container 1">
+      <Pages>
+        <Page ComponentName="dashboardTabPage1" Name="Page 1" />
+        <Page ComponentName="dashboardTabPage2" Name="Page 2" ShowItemAsTabPage="false" />
+      </Pages>
+    </TabContainer>
+  </Items>
+  <Groups>
+    <Group ComponentName="groupDashboardItem1" Name="Group 1" />
+  </Groups>
+  <ColorScheme>
+    <Entry DataSource="sqlDataSource1" DataMember="BatchNo" Color="-1855351713">
+      <MeasureKey>
+        <Definition DataMember="BatchNo" />
+      </MeasureKey>
+    </Entry>
+    <Entry DataSource="sqlDataSource1" DataMember="BatchNo" Color="-1990227051">
+      <MeasureKey>
+        <Definition DataMember="BatchNo" SummaryType="Count" Expression="CountNotNull([BatchNo])">
+          <WindowDefinition>
+            <RangeFilterWindowDefinition />
+          </WindowDefinition>
+        </Definition>
+      </MeasureKey>
+    </Entry>
+    <Entry DataSource="sqlDataSource1" DataMember="BatchNo" Color="979340181">
+      <MeasureKey>
+        <Definition DataMember="BatchNo" SummaryType="Count" />
+      </MeasureKey>
+    </Entry>
+  </ColorScheme>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutGroup>
+          <LayoutItem DashboardItem="geoPointMapDashboardItem1" />
+          <LayoutItem DashboardItem="gridDashboardItem1" />
+        </LayoutGroup>
+        <LayoutGroup>
+          <LayoutTabContainer DashboardItem="tabContainerDashboardItem1">
+            <LayoutTabPage DashboardItem="dashboardTabPage1" />
+            <LayoutTabPage DashboardItem="dashboardTabPage2" />
+          </LayoutTabContainer>
+          <LayoutItem DashboardItem="rangeFilterDashboardItem1" />
+          <LayoutItem DashboardItem="imageDashboardItem1" />
+        </LayoutGroup>
+        <LayoutGroup>
+          <LayoutGroup DashboardItem="groupDashboardItem1" />
+          <LayoutItem DashboardItem="rangeFilterDashboardItem2" />
+          <LayoutItem DashboardItem="chartDashboardItem1" />
+        </LayoutGroup>
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

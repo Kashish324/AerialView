@@ -1,4 +1,6 @@
-﻿
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
 @{
     var menuParentData = ViewData["MenuParentData"] as IEnumerable<final_aerialview.Models.ListDataModel>;
     var subMenuData = ViewData["SubMenuData"] as IEnumerable<final_aerialview.Models.SubMenuModel>;
@@ -35,6 +37,7 @@
     <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
     <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
 
+
     @* export excel *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js" integrity="sha512-uzOpZ74myvXTYZ+mXUsPhDF+/iL/n32GDxdryI2SJronkEyKC8FBFRLiBQ7l7U/PTYebDbgTtbqTa6/vGtU23A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js" integrity="sha512-dlPw+ytv/6JyepmelABrgeYgHI0O+frEwgfnPdXDTOIZz+eDgfW07QXG02/O8COfivBdGNINy+Vex+lYmJ5rxw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -45,7 +48,7 @@
     <script>
         window.jsPDF = window.jspdf.jsPDF;
     </script>
-    @RenderSection("ExternalDependencies", false)
+    @* @RenderSection("ExternalDependencies", false) *@
 </head>
 
 @{
@@ -77,10 +80,11 @@
         {
             <div class="sidebar close">
                 <div class="logo-details">
-                    <img src="~/images/AerialView-Logo.png" alt="Alternate Text" class="img-fluid ml-3" style="max-width: 45px;">
-                    <span class="logo_name text-nowrap fw-medium" style="cursor: none"> Hi-Mak Pvt. Ltd. </span>
-                    <i id="sidebarPin" class="ri-pushpin-line fs-6 ml-2" style="cursor: pointer;"></i>
+                    <img src="~/images/AerialView-Logo.png" alt="Alternate Text" class="img-fluid ml-4" style="max-width: 35px;">
+                    <span class="logo_name text-nowrap fw-medium mx-3" style="cursor: none"> Hi-Mak Pvt. Ltd. </span>
+                    <i id="sidebarPin" class="ri-pushpin-line fs-6 " style="cursor: pointer;"></i>
                 </div>
+               
 
                 <ul class="nav-links">
                     @if (menuParentData != null && subMenuData != null && childMenuData != null)
@@ -102,7 +106,7 @@
 
                                 <li>
                                     <div class="icon-link">
-                                        <div class="listMenu">
+                                        <div class="listMenu" title="@mainItem.MenuName">
                                             @if (correspondingIcon != default)
                                             {
                                                 <i class="@correspondingIcon.Item2 fs-6"></i>
@@ -142,8 +146,7 @@
                                                         }
                                                         else
                                                         {
-
-                                                            <a href="@Url.Action("ReportConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
+                                                            <a href="@Url.Action("SubMenuConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
                                                                 <div class="icon-link">
                                                                     <div class="listMenu">
                                                                         <i class="ri-box-3-line fs-6"></i>
@@ -272,6 +275,8 @@
                         }
                     }
 
+                    
+
                     <li>
                         <div class="profile-details d-flex align-items-center justify-content-between">
                             <div class="software-version text-light fw-medium" style="font-size: 14px;">© Hi-Mak Pvt. Ltd.</div>
@@ -354,8 +359,9 @@
     else
     {
         <div class="d-flex flex-column align-items-center justify-content-center" style="height: 100vh;">
-            <h1>Please Log In</h1>
-            <a href="@Url.Action("Login", "Account")" class="btn btn-primary">Go to Login Page</a>
+            <img src="~/images/logo-tm2.png" class="img-fluid logo-img position-sticky object-fit-cover d-block mx-auto mt-2" alt="LOGO" width="10%" />
+            <h3>Please Log In</h3>
+            <a href="@Url.Action("Login", "Account")" class="btn btn-sm btn-outline-dark">Go to Login Page</a>
         </div>
         <main role="main">
             @RenderBody()

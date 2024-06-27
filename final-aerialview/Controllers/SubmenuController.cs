@@ -5,7 +5,7 @@ namespace final_aerialview.Controllers
 {
     public class SubmenuController(DataAccess dataAccess) : BaseController(dataAccess)
     {
-        public IActionResult ReportConfiguration(string parentMenu, string submenu)
+        public IActionResult SubMenuConfiguration(string parentMenu, string submenu)
         {
             var reportData = _dataAccess.GetReportData();
             var uniqueReportTypes = reportData
@@ -16,6 +16,9 @@ namespace final_aerialview.Controllers
             ViewData["ReportType"] = uniqueReportTypes;
 
 
+            ViewBag.ParentMenu = parentMenu;    
+            ViewBag.Submenu = submenu;
+
 
             ViewData["MenuName"] = submenu;
 
@@ -23,6 +26,9 @@ namespace final_aerialview.Controllers
             {
                 case "report configuration":
                     return View("ReportConfiguration");
+
+                case "dash designer":
+                    return View("DashDesigner");
                 // Add more cases as needed
                 default:
                     return View("DefaultView");

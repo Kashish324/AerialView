@@ -516,8 +516,7 @@ body, html {
     position: relative;
     /*overflow: scroll;*/
     overflow: auto;
-    height: 81vh;
-    /*height: 62vh;*/
+    height: 80vh;
     width: 100%;
     background-color: #fff;
 }
@@ -525,9 +524,6 @@ body, html {
 .datagridWrapper::-webkit-scrollbar {
     display: none;
 }
-
-
-    /*.datagridWrapper .dx-datagrid-header-panel*/
 
 #dataTable .dx-datagrid-header-panel
 {
@@ -546,7 +542,7 @@ body, html {
 }
 
     .datagridWrapper .dx-datagrid-pager {
-        bottom: -1px;
+        bottom: 1px;
         top: auto;
         padding-left: .5vw;
         padding-bottom: 0;
