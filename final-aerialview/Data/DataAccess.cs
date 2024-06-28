@@ -193,5 +193,12 @@ namespace final_aerialview.Data
             return whereClause;
         }
 
+        //dashboard master table
+        public IEnumerable<DashboardDataModel> GetDashboardMaterData()
+        {
+            string query = "SELECT * FROM DashboardMaster";
+            return ExecuteQuery<DashboardDataModel>(query);
+        }
+
     }
 }

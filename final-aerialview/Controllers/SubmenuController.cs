@@ -29,7 +29,9 @@ namespace final_aerialview.Controllers
 
                 case "dash designer":
                     return View("DashDesigner");
-                // Add more cases as needed
+
+                case "dash configuration":
+                    return View("DashConfig");
                 default:
                     return View("DefaultView");
             }

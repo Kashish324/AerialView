@@ -27,8 +27,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
     });
 
 builder.Services.AddScoped<DataAccess>();
-//builder.Services.AddTransient<DataAccess>();
-
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();
@@ -61,7 +59,7 @@ builder.Services.AddScoped<DashboardConfigurator>((IServiceProvider serviceProvi
     return configurator;
 });
 
-builder.Services.AddMvc();
+
 
 //configure reporting services
 builder.Services.ConfigureReportingServices(configurator =>
@@ -85,6 +83,8 @@ builder.Services.ConfigureReportingServices(configurator =>
     });
 });
 
+builder.Services.AddMvc();
+
 var app = builder.Build();
 
 app.UseDevExpressControls();
@@ -99,7 +99,6 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseDevExpressControls();
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();

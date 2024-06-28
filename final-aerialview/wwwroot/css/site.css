@@ -27,7 +27,7 @@ body, html {
     background: #11101d;
     z-index: 100;
     transition: all 0.5s ease;
-    overflow:hidden;
+    overflow: hidden;
 }
 
 
@@ -60,9 +60,9 @@ body, html {
 
         /*.sidebar .logo-details img {
     max-width: 150px;*/ /* Set maximum width */
-    /*height: auto;*/ /* Maintain aspect ratio */
-    /*display: inline-block;*/ /* Ensure proper alignment with text */
-    /*}*/
+        /*height: auto;*/ /* Maintain aspect ratio */
+        /*display: inline-block;*/ /* Ensure proper alignment with text */
+        /*}*/
 
         .sidebar .logo-details i {
             font-size: 30px;
@@ -106,7 +106,6 @@ body, html {
         position: relative;
         list-style: none;
         transition: all 0.4s ease;
-        
     }
 
         .sidebar .nav-links li:hover {
@@ -117,7 +116,7 @@ body, html {
             display: flex;
             align-items: center;
             justify-content: space-between;
-            cursor:pointer;
+            cursor: pointer;
         }
 
 
@@ -133,7 +132,6 @@ body, html {
         text-align: center;
         line-height: 50px;
         color: #fff;
-      
         font-size: 20px;
         cursor: pointer;
         transition: all 0.3s ease;
@@ -447,12 +445,12 @@ body, html {
     width: 13% !important;
 }*/
 
-    .radioOption .dx-radiogroup-horizontal .dx-collection {
-        display: flex;
-        /* flex-wrap: wrap; */
-        -moz-column-gap: 17px;
-        column-gap: 10px;
-    }
+.radioOption .dx-radiogroup-horizontal .dx-collection {
+    display: flex;
+    /* flex-wrap: wrap; */
+    -moz-column-gap: 17px;
+    column-gap: 10px;
+}
 
 .radioGroupContainer {
     position: relative;
@@ -480,7 +478,6 @@ body, html {
     justify-content: flex-start;
     gap: 1vh;
     /*height: 32px;*/
-
 }
 
     .datePicker .dx-field {
@@ -514,9 +511,8 @@ body, html {
 
 #dataTable {
     position: relative;
-    /*overflow: scroll;*/
     overflow: auto;
-    height: 80vh;
+    height: 79vh;
     width: 100%;
     background-color: #fff;
 }
@@ -525,8 +521,7 @@ body, html {
     display: none;
 }
 
-#dataTable .dx-datagrid-header-panel
-{
+#dataTable .dx-datagrid-header-panel {
     position: sticky;
     top: 0%;
     z-index: 9;
@@ -541,23 +536,28 @@ body, html {
     background-color: #fff;
 }
 
-    .datagridWrapper .dx-datagrid-pager {
-        bottom: 1px;
-        top: auto;
-        padding-left: .5vw;
-        padding-bottom: 0;
-    }
+.datagridWrapper .dx-datagrid-pager {
+    bottom: 1px;
+    top: auto;
+    padding-left: .5vw;
+    padding-bottom: 0;
+}
 
-    .datagridWrapper .dx-datagrid-header-panel {
-        background-color: #fff;
-        padding: 1vh .5vw .3vh;
-        border-radius: .3vw .3vw 0px 0px;
-    }
+.datagridWrapper .dx-datagrid-header-panel {
+    background-color: #fff;
+    padding: 1vh .5vw .3vh;
+    border-radius: .3vw .3vw 0px 0px;
+}
 
 .dx-datagrid .dx-header-filter {
     position: relative;
     color: #757575;
     font: 11px / 1 DXIcons !important;
+}
+
+.datagridCol {
+    text-align: center !important;
+    vertical-align: middle !important;
 }
 
 /*footer section*/
@@ -631,7 +631,7 @@ body, html {
 }
 
 
-.sidebar.close .profile-details .software-version{
+.sidebar.close .profile-details .software-version {
     display: none;
     opacity: 0;
 }
@@ -640,4 +640,56 @@ body, html {
 .dxrd-create-query-page-content .dx-radiobutton .dx-item-content {
     color: #000 !important;
     font-size: 1.2em;
+}
+
+
+
+@media (max-width: 600px) {
+    .sidebar.close .nav-links li .sub-menu {
+        display: none;
+    }
+
+    .sidebar {
+        width: 78px;
+    }
+
+        .sidebar.close {
+            width: 0;
+        }
+
+    .home-section {
+        left: 78px;
+        width: calc(100% - 78px);
+        z-index: 100;
+    }
+
+    .sidebar.close ~ .home-section {
+        width: 100%;
+        left: 0;
+    }
+
+
+    .dx-field-label {
+        float: left;
+        width: 44%;
+        overflow: hidden;
+        color: #ba1f1f;
+        cursor: default;
+        padding: 8px 15px 9px 0;
+    }
+}
+
+/* laptop view */
+@media (min-width: 769px) and (max-width: 1440px) {
+    .datagridWrapper .dx-datagrid-pager {
+        bottom: 0px;
+    }
+
+    .datagridWrapper .dx-datagrid-headers {
+        top: 10%;
+    }
+
+    #dataTable {
+        height: 80vh;
+    }
 }

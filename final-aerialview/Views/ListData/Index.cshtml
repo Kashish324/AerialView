@@ -14,7 +14,7 @@
     {
         @foreach (var item in Model.PdfImageData)
         {
-            <div class="d-flex align-items-center gap-2 mt-3 w-100 text-center">
+            <div class="d-flex align-items-center gap-2 mt-3 mt-md-1 w-100 text-center">
                 <div class="overflow-hidden shadow rounded" style="width: auto; height:57px;">
                     <img class="d-inline object-fit-contain h-100 w-100" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
                 </div>
@@ -84,9 +84,10 @@
             <input type="hidden" name="rptId" value="@Model.RptId" />
 
             <div class="previewBtn">
-                <button title="Apply Filter" type="button" class="btn btn-outline-light btn-sm border-light border-opacity-50 shadow-sm  d-flex align-items-center justify-content-center gap-1 py-0" style="padding: .25rem 0.5rem !important; ">
-                    @* <i class="ri-send-plane-fill"></i>Apply *@
+                <button title="Apply Filter" type="button" class="btn btn-sm border-0 text-white shadow-sm bg-dark  d-flex align-items-center justify-content-center gap-1" style="padding: .25rem 0.5rem;">
+                    @* Apply<i class="ri-telegram-2-fill mt-1"></i> *@
                     <i class="ri-telegram-2-fill"></i>
+                    @* <i class="ri-telegram-2-fill"></i> *@
                 </button>
             </div>
         </form>

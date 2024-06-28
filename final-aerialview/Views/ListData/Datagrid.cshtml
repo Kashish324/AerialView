@@ -47,6 +47,7 @@
                 .Grouping(g => g.AutoExpandAll(false))
                 .Columns(c =>
                 {
+
                     if (Model.TableData != null && Model.TableData.Any())
                     {
                         var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault();
@@ -56,11 +57,13 @@
                             {
                                 if (property == "DateAndTime")
                                 {
-                                    c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss");
+                                    c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss")
+                                    .CssClass("datagridCol");
                                 }
                                 else
                                 {
-                                    c.Add().DataField(property).Caption(property);
+                                    c.Add().DataField(property).Caption(property)
+                                    .CssClass("datagridCol");
                                 }
                             }
                         }
@@ -89,19 +92,18 @@
                 <div class="input-group input-group-sm">
                     <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
                     <select id="pdfOrientationSelect" class="form-select form-select-sm">
-                        <option value="" selected disabled>Choose...</option>
+                        <option value="landscape" selected>Landscape</option>
                         <option value="portrait">Portrait</option>
-                        <option value="landscape">Landscape</option>
                     </select>
                 </div>
             </div>
 
 
             <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
-                <i class="ri-file-excel-2-line fs-2 shadow-sm" style="color: #1D6F42;"></i>
+                <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i>
             </button>
             <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
-                <i class="ri-file-pdf-2-line fs-2 shadow-sm" style="color: #F40F02;"></i>
+                <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i>
             </button>
 
         </div>
@@ -109,73 +111,127 @@
 </div>
 
 <script>
-        var excelExportBtn = document.getElementById('excelExportButton');
-        var pdfExportBtn = document.getElementById('pdfExportButton');
+    var excelExportBtn = document.getElementById('excelExportButton');
+    var pdfExportBtn = document.getElementById('pdfExportButton');
+    var pdfOrientationSelect = document.getElementById('pdfOrientationSelect');
 
-        var pdfPortraitExportBtn = document.getElementById('pdfPortraitExport');
-        var pdfLandscapeExportBtn = document.getElementById('pdfLandscapeExport');
 
-        if (excelExportBtn) {
-            excelExportBtn.addEventListener('click', function (event) {
-                exportGridToExcel(event);
+    if (excelExportBtn) {
+        excelExportBtn.addEventListener('click', function (event) {
+            exportGridToExcel(event);
+        });
+    }
+
+    if (pdfExportBtn) {
+        pdfExportBtn.addEventListener('click', function (event) {
+            exportGridToPdf(event);
+        });
+    }
+
+    var tableData = @Html.Raw(Json.Serialize(Model.TableData));
+    var clientData = @Html.Raw(Json.Serialize(Model.PdfImageData));
+
+    // Get the current date and time
+    var date = new Date();
+    var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+    var formattedTime = date.getHours() + '' + date.getMinutes() + '' + date.getSeconds();
+
+    // Export grid data to Excel
+    function exportGridToExcel(e) {
+        var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
+        var childMenuName = document.getElementById('dataTable').getAttribute('data-child-menu-name');
+
+        // DataGrid instance
+        var dataGridElement = document.getElementById("dataGridContainer");
+        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet(tableName);
+
+        // Merge cells and add image to the workbook
+        worksheet.mergeCells("A1:A4");
+        const imageId = workbook.addImage({
+            base64: clientData[0].Logo,
+            extension: 'jpeg',
+        });
+        worksheet.addImage(imageId, "A1:A3");
+
+        // Assuming tableData is defined elsewhere in your code and contains the data
+        var excelHeaders = Object.keys(tableData[0]);
+        var headerLength = excelHeaders.length;
+
+        DevExpress.excelExporter.exportDataGrid({
+            component: dataGridInstance,
+            worksheet: worksheet,
+            autoFilterEnabled: true,
+            topLeftCell: { row: 5, column: 1 }
+        }).then(function () {
+            // Format column headers with bold text
+            var headerRow = worksheet.getRow(5);
+            headerRow.font = { bold: true };
+
+            headerRow.eachCell(function (cell, colNumber) {
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'ffffffcc' }
+                };
+
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
             });
-        }
 
-        if (pdfExportBtn) {
-            pdfExportBtn.addEventListener('click', function (event) {
-                exportGridToPdf(event);
-            });
-        }
+            function getColumnLetter(columnIndex) {
+                var columnName = '';
+                while (columnIndex > 0) {
+                    var remainder = (columnIndex - 1) % 26;
+                    columnName = String.fromCharCode(65 + remainder) + columnName;
+                    columnIndex = Math.floor((columnIndex - 1) / 26);
+                }
+                return columnName;
+            }
 
-        var tableData = @Html.Raw(Json.Serialize(Model.TableData));
-        var clientData = @Html.Raw(Json.Serialize(Model.PdfImageData));
+            var last = getColumnLetter(headerLength);
 
-        // Get the current date and time
-        var date = new Date();
-        var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
-        var formattedTime = date.getHours() + '' + date.getMinutes() + '' + date.getSeconds();
+            worksheet.mergeCells('B3:' + last + '3');
+            worksheet.getCell('B3').value = tableName;
+            worksheet.getCell('B3').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B3').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B3').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' }
+            };
 
-        // Export grid data to Excel
-        function exportGridToExcel(e) {
-            var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
-            var childMenuName = document.getElementById('dataTable').getAttribute('data-child-menu-name');
+            // Set ProjectName in cell B2
+            worksheet.mergeCells('B2:' + last + '2');
+            worksheet.getCell('B2').value = clientData[0].ProjectName;
+            worksheet.getCell('B2').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B2').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B2').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFFFFFFF' }
+            };
 
-            // DataGrid instance
-            var dataGridElement = document.getElementById("dataGridContainer");
-            var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+            // Set ClientName in cell B1
+            worksheet.mergeCells('B1:' + last + '1');
+            worksheet.getCell('B1').value = clientData[0].ClientName;
+            worksheet.getCell('B1').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B1').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B1').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' }
+            };
 
-            var workbook = new ExcelJS.Workbook();
-            var worksheet = workbook.addWorksheet(tableName);
-
-            // Merge cells and add image to the workbook
-            worksheet.mergeCells("A1:A4");
-            const imageId = workbook.addImage({
-                base64: clientData[0].Logo,
-                extension: 'jpeg',
-            });
-            worksheet.addImage(imageId, "A1:A3");
-
-            // Assuming tableData is defined elsewhere in your code and contains the data
-            var excelHeaders = Object.keys(tableData[0]);
-            var headerLength = excelHeaders.length;
-
-            DevExpress.excelExporter.exportDataGrid({
-                component: dataGridInstance,
-                worksheet: worksheet,
-                autoFilterEnabled: true,
-                topLeftCell: { row: 5, column: 1 }
-            }).then(function () {
-                // Format column headers with bold text
-                var headerRow = worksheet.getRow(5);
-                headerRow.font = { bold: true };
-
-                headerRow.eachCell(function (cell, colNumber) {
-                    cell.fill = {
-                        type: 'pattern',
-                        pattern: 'solid',
-                        fgColor: { argb: 'ffffffcc' }
-                    };
-
+            // Loop through all cells and add borders
+            worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
                     cell.border = {
                         top: { style: 'thin' },
                         left: { style: 'thin' },
@@ -183,142 +239,193 @@
                         right: { style: 'thin' }
                     };
                 });
-
-                function getColumnLetter(columnIndex) {
-                    var columnName = '';
-                    while (columnIndex > 0) {
-                        var remainder = (columnIndex - 1) % 26;
-                        columnName = String.fromCharCode(65 + remainder) + columnName;
-                        columnIndex = Math.floor((columnIndex - 1) / 26);
-                    }
-                    return columnName;
-                }
-
-                var last = getColumnLetter(headerLength);
-
-                worksheet.mergeCells('B3:' + last + '3');
-                worksheet.getCell('B3').value = tableName;
-                worksheet.getCell('B3').alignment = { horizontal: 'center', vertical: 'middle' };
-                worksheet.getCell('B3').font = { bold: true, name: 'Arial' };
-                worksheet.getCell('B3').fill = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: 'FFDDDDDD' }
-                };
-
-                // Set ProjectName in cell B2
-                worksheet.mergeCells('B2:' + last + '2');
-                worksheet.getCell('B2').value = clientData[0].ProjectName;
-                worksheet.getCell('B2').alignment = { horizontal: 'center', vertical: 'middle' };
-                worksheet.getCell('B2').font = { bold: true, name: 'Arial' };
-                worksheet.getCell('B2').fill = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: 'FFFFFFFF' }
-                };
-
-                // Set ClientName in cell B1
-                worksheet.mergeCells('B1:' + last + '1');
-                worksheet.getCell('B1').value = clientData[0].ClientName;
-                worksheet.getCell('B1').alignment = { horizontal: 'center', vertical: 'middle' };
-                worksheet.getCell('B1').font = { bold: true, name: 'Arial' };
-                worksheet.getCell('B1').fill = {
-                    type: 'pattern',
-                    pattern: 'solid',
-                    fgColor: { argb: 'FFDDDDDD' }
-                };
-
-                // Loop through all cells and add borders
-                worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
-                    row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
-                        cell.border = {
-                            top: { style: 'thin' },
-                            left: { style: 'thin' },
-                            bottom: { style: 'thin' },
-                            right: { style: 'thin' }
-                        };
-                    });
-                });
-
-
-                workbook.xlsx.writeBuffer().then(function (buffer) {
-                    var fileName = childMenuName + '_' + formattedDate + '_' + formattedTime + '.xlsx';
-                    saveAs(new Blob([buffer], { type: 'application/octet-stream' }), fileName);
-                });
             });
+
+
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                var fileName = childMenuName + '_' + formattedDate + '_' + formattedTime + '.xlsx';
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), fileName);
+            });
+        });
+    }
+
+    //export grid data to pdf
+    // function exportGridToPdf(e) {
+
+    //     var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
+    //     var orientation = pdfOrientationSelect.value;
+
+    //     // datagrid instance
+    //     var dataGridElement = document.getElementById("dataGridContainer");
+    //     var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+
+    //     var columnWidth = 22;
+    //     var columnWidths = [];
+    //     var columnCount = dataGridInstance.columnCount();
+    //     for (var i = 0; i < columnCount; i++) {
+    //         columnWidths.push(columnWidth);
+    //     }
+
+    //     var doc = new jsPDF({
+    //         orientation: orientation,
+    //         unit: 'mm', // Set units to millimeters for accurate margin control
+    //         format: 'a4'
+    //     });
+
+    //     // Set margins
+    //     var margin = {
+    //         top: 20, // Adjust top margin as needed based on your header height
+    //         bottom: 20,
+    //         left: 15,
+    //         right: 15
+    //     };
+
+    //     // Function to add footer with paging
+    //     var addFooter = function (pageNumber, pageCount) {
+    //         doc.setFontSize(9);
+    //         doc.setTextColor('#cccccc');
+    //         doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+
+    //         var startY = 30;
+    //         for (var i = 0; i < clientData.length; i++) {
+    //             var item = clientData[i];
+    //             var imgData = item.Logo;
+    //             var projectName = item.ProjectName;
+    //             var clientName = item.ClientName;
+
+    //             // Add image
+    //             doc.addImage(imgData, 'JPEG', 15, startY + 5, 25, 15);
+    //             doc.setTextColor(0, 0, 0);
+    //             doc.setFontSize(11);
+
+    //             // Add project and client names
+
+    //             doc.text('Project:' + ' ' + projectName, 45, 10 + 32);
+    //             doc.text('Client:' + ' ' + clientName, 45, 13 + 35);
+    //             doc.setTextColor(0);
+    //             doc.setFontSize(0);
+    //             // Update startY for the next iteration
+    //             startY += 50; // Adjust this value as needed based on the height of the content
+    //         }
+    //     };
+
+    //     // Add header
+    //     doc.setFontSize(13);
+    //     doc.setTextColor(0);
+    //     doc.text(tableName + ' ' + 'Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+
+
+    //     DevExpress.pdfExporter.exportDataGrid({
+    //         jsPDFDocument: doc,
+    //         component: dataGridInstance,
+    //         topLeft: { x: 1, y: 40 },
+    //         columnWidths: columnWidths,
+    //         indent: 5,
+    //     }).then(function () {
+    //         // Calculate the number of pages
+    //         var pageCount = doc.internal.getNumberOfPages();
+
+    //         // Add footer to each page
+    //         for (var i = 1; i <= pageCount; i++) {
+    //             doc.setPage(i);
+    //             addFooter(i, pageCount);
+    //         }
+
+    //         var fileName = tableName + '_' + formattedDate + '_' + formattedTime;
+    //         // Save the PDF document
+    //         doc.save(fileName);
+    //     });
+
+       
+        
+    // }
+
+
+    function exportGridToPdf(e) {
+        
+
+        var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
+        var orientation = pdfOrientationSelect.value;
+
+        // datagrid instance
+        var dataGridElement = document.getElementById("dataGridContainer");
+        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+
+        var columnWidth = 22;
+        var columnWidths = [];
+        var columnCount = dataGridInstance.columnCount();
+        for (var i = 0; i < columnCount; i++) {
+            columnWidths.push(columnWidth);
         }
 
+        var doc = new jsPDF({
+            orientation: orientation,
+            unit: 'mm', // Set units to millimeters for accurate margin control
+            format: 'a4'
+        });
 
-        //export grid data to pdf
-        function exportGridToPdf(e) {
 
-            var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
+        // Set margins
+        var margin = {
+            top: 25, 
+            bottom: 20,
+            left: 15,
+            right: 15
+        };
 
-            // datagrid instance
-            var dataGridElement = document.getElementById("dataGridContainer");
-            var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+        // Function to add header content
+        var addHeader = function () {
+            doc.setFontSize(13);
+            doc.setTextColor(0);
+            doc.text(tableName + ' ' + 'Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center'});
 
-            var columnWidth = 25;
-            var columnWidths = [];
-            var columnCount = dataGridInstance.columnCount();
-            for (var i = 0; i < columnCount; i++) {
-                columnWidths.push(columnWidth);
+            // Add logo, project name, client name
+            var item = clientData[0]; 
+            var imgData = item.Logo;
+            var projectName = item.ProjectName;
+            var clientName = item.ClientName;
+
+            doc.addImage(imgData, 'JPEG', 15, 25, 25, 15); 
+
+            doc.setFontSize(11);
+            doc.text('Project:' + ' ' + projectName, doc.internal.pageSize.getWidth() / 2, 31, { align: 'center' });
+            doc.text('Client:' + ' ' + clientName, doc.internal.pageSize.getWidth() / 2, 37, { align: 'center' });
+            doc.setTextColor(0);
+            doc.setFontSize(0);
+        };
+
+        // Call addHeader for the first page
+        addHeader();
+
+        // Export data grid to PDF
+        DevExpress.pdfExporter.exportDataGrid({
+            jsPDFDocument: doc,
+            component: dataGridInstance,
+            topLeft: { x: 1, y: 30 }, // Adjust the x and y values to start the table lower
+            columnWidths: columnWidths,
+            indent: 5,
+        }).then(function () {
+            // Calculate the number of pages
+            var pageCount = doc.internal.getNumberOfPages();
+
+            // Add footer to each page
+            for (var i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                addFooter(i, pageCount); // Add footer with page number
             }
 
-            var doc = new jsPDF();
+            var fileName = tableName + '_' + formattedDate + '_' + formattedTime;
+            // Save the PDF document
+            doc.save(fileName);
+        });
 
-            DevExpress.pdfExporter.exportDataGrid({
-                jsPDFDocument: doc,
-                component: dataGridInstance,
-                topLeft: { x: 1, y: 40 },
-                columnWidths: columnWidths,
-                indent: 5,
-            }).then(function () {
-                // Calculate the number of pages
-                var pageCount = doc.internal.getNumberOfPages();
+        // Function to add footer with paging
+        var addFooter = function (pageNumber, pageCount) {
+            doc.setFontSize(9);
+            doc.setTextColor('#cccccc');
+            doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+        };
+    }
 
-                // Add footer to each page
-                for (var i = 1; i <= pageCount; i++) {
-                    doc.setPage(i);
-                    addFooter(i, pageCount);
-                }
 
-                var fileName = tableName + '_' + formattedDate + '_' + formattedTime;
-                // Save the PDF document
-                doc.save(fileName);
-            });
-
-            // Function to add footer with paging
-            var addFooter = function (pageNumber, pageCount) {
-                doc.setFontSize(9);
-                doc.setTextColor('#cccccc');
-                doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
-
-                var startY = 30;
-                for (var i = 0; i < clientData.length; i++) {
-                    var item = clientData[i];
-                    var imgData = item.Logo;
-                    var projectName = item.ProjectName;
-                    var clientName = item.ClientName;
-
-                    // Add image
-                    doc.addImage(imgData, 'JPEG', 15, startY, 40, 20);
-                    doc.setTextColor(0, 0, 0);
-                    doc.setFontSize(13);
-
-                    // Add project and client names
-                    doc.text('Project:' + ' ' + projectName, 60, (startY - 6) + 15);
-                    doc.text('Client:' + ' ' + clientName, 60, 15 + 30);
-                    doc.setTextColor(0);
-                    doc.setFontSize(0);
-                    // Update startY for the next iteration
-                    startY += 50; // Adjust this value as needed based on the height of the content
-                }
-            };
-
-            // Add header
-            doc.setFontSize(15);
-            doc.setTextColor(0);
-            doc.text(tableName + ' ' + 'Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
-        }
 </script>
