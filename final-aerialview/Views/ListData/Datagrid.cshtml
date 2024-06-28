@@ -84,7 +84,19 @@
                 )
         </div>
 
-        <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-2 border-top ">
+        <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-2 border-top">
+            <div id="exportOrientation" class="ms-2">
+                <div class="input-group input-group-sm">
+                    <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
+                    <select id="pdfOrientationSelect" class="form-select form-select-sm">
+                        <option value="" selected disabled>Choose...</option>
+                        <option value="portrait">Portrait</option>
+                        <option value="landscape">Landscape</option>
+                    </select>
+                </div>
+            </div>
+
+
             <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
                 <i class="ri-file-excel-2-line fs-2 shadow-sm" style="color: #1D6F42;"></i>
             </button>

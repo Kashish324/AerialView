@@ -9,7 +9,6 @@ namespace final_aerialview.Controllers
         [HttpGet]
         public IActionResult ReportDesigner(int datagridRptid)
         {
-
             UpdateModel.DatagridRptid = datagridRptid;
             ViewData["DatagridRptid"] = datagridRptid;
 
@@ -17,7 +16,6 @@ namespace final_aerialview.Controllers
             ViewData["ReportName"] = reportName ?? string.Empty;
 
             return View();
-
         }
 
         public IActionResult DocumentViewer(int datagridRptid)
@@ -26,13 +24,11 @@ namespace final_aerialview.Controllers
 
             ViewData["DatagridRptid"] = datagridRptid;
 
-
             string reportName = _dataAccess.GetReportFromDatabase();
             ViewData["ReportName"] = reportName;
 
             return View();
         }
-
 
     }
 }
