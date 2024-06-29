@@ -91,7 +91,7 @@
             <div id="exportOrientation" class="ms-2">
                 <div class="input-group input-group-sm">
                     <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
-                    <select id="pdfOrientationSelect" class="form-select form-select-sm">
+                    <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example">
                         <option value="landscape" selected>Landscape</option>
                         <option value="portrait">Portrait</option>
                     </select>
@@ -100,10 +100,12 @@
 
 
             <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
-                <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i>
+                @* <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i> *@
+                <i class="ri-file-excel-2-line fs-3 shadow-sm text-success"></i>
             </button>
             <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
-                <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i>
+                @* <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i> *@
+                <i class="ri-file-pdf-2-line fs-3 shadow-sm text-danger"></i>
             </button>
 
         </div>

@@ -1,34 +1,111 @@
-﻿@{
+﻿@model List<DashboardDataModel>
+
+@{
     ViewData["Title"] = "Dash Config";
 }
 
-<table class="table table-striped mt-3 rounded table-light">
-    <thead>
-        <tr>
-            <th scope="col">#</th>
-            <th scope="col">First</th>
-            <th scope="col">Last</th>
-            <th scope="col">Handle</th>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            <th scope="row">1</th>
-            <td>Mark</td>
-            <td class="active">Otto</td>
-            <td>mdo</td>
-        </tr>
-        <tr>
-            <th scope="row">2</th>
-            <td>Jacob</td>
-            <td>Thornton</td>
-            <td>fat</td>
-        </tr>
-        <tr>
-            <th scope="row">3</th>
-            <td>Larry</td>
-            <td>Bird</td>
-            <td>fat</td>
-        </tr>
-    </tbody>
-</table>
+<div class="table-responsive pt-4">
+    <table class="table table-hover table-bordered border-light shadow-sm">
+        <thead>
+            <tr>
+                <th scope="col" class="text-center align-middle text-primary-emphasis"><i class="ri-edit-fill"></i></th>
+                @foreach (var prop in typeof(DashboardDataModel).GetProperties())
+                {
+                    <th scope="col" class="text-center align-middle text-primary-emphasis">@prop.Name</th>
+                }
+                <th scope="col" class="text-center align-middle text-primary-emphasis">Select Path</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td class="text-center align-middle" onclick="updateDefaultDashboard(@item.DashId)" >
+                        <i class="ri-pencil-line hover-icon"></i>
+                    </td>
+                    <td scope="row" class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">@item.DashId</td>
+                    <td class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">@item.DashName</td>
+                    @* <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all">@item.DashPath</td> *@
+
+                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all" style="max-width: 250px; font-size: 14px;">@item.DashPath </td>
+
+                    <td class="text-center align-middle" >
+                        <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill"
+                              onclick="updateDashboardStatus(@item.DashId)" style="cursor: pointer;">
+                            @((item.DashStatus) ? "Active" : "Inactive")
+                        </span>
+                    </td>
+                    <td class="text-center align-middle">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-@item.DashId" @(item.DashDefault ? "checked" : "")>
+                        </div>
+                    </td>
+                    <td class="text-center align-middle">
+                        <i class="ri-folder-open-fill text-warning"></i>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex align-items-center justify-content-end gap-2">
+    <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium" id="addBtn" ><i class="ri-menu-add-line mr-1"></i>Add</button>
+    <button title="Update database" type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium" id="updateBtn"><i class="bi bi-database-add mr-1"></i>Update</button>
+</div>
+
+
+<div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+        <div class="toast-header">
+            <strong class="me-auto text-muted">AerialView</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body text-dark">
+            Data updated successfully!!
+        </div>
+    </div>
+</div>
+
+<script>
+    var liveToastBtn = document.getElementById('updateBtn');
+    var addBtn = document.getElementById('addBtn');
+
+    // Toast handling
+    var liveToast = new bootstrap.Toast(document.getElementById('liveToast'), {
+        autohide: true,
+        delay: 2000
+    });
+
+    liveToastBtn.addEventListener('click', function () {
+        liveToast.show();
+    });
+
+    // Add list
+    addBtn.addEventListener('click', function () {
+        console.log('clicked');
+    });
+
+    
+    // Update dashboard active/inactive status 
+    function updateDashboardStatus(dashId) {
+        var statusElement = document.getElementById('dashStatus-' + dashId);
+        if (statusElement.classList.contains('bg-success')) {
+            statusElement.classList.remove('bg-success');
+            statusElement.classList.add('bg-danger');
+            statusElement.textContent = 'Inactive';
+        } else {
+            statusElement.classList.remove('bg-danger');
+            statusElement.classList.add('bg-success');
+            statusElement.textContent = 'Active';
+        }
+    }
+
+    // Update default dashboard
+    function updateDefaultDashboard(dashId) {
+        console.log('Setting default dashboard to ID:', dashId);
+    }
+</script>
+
+
+
