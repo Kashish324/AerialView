@@ -23,13 +23,23 @@
                     <td class="text-center align-middle" onclick="updateDefaultDashboard(@item.DashId)">
                         <i class="ri-pencil-line hover-icon"></i>
                     </td>
-                    <td scope="row" class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">@item.DashId</td>
-                    <td class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">@item.DashName</td>
-                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell" style="max-width: 250px; font-size: 14px;">@item.DashPath</td>
+                    <td scope="row" class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">
+                        @item.DashId
+                      <input type="hidden" name="Dashboards[@item.DashId].DashId" value="@item.DashId" />  
+                    </td>
+                    <td class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">
+                        @item.DashName
+                        <input type="hidden" name="Dashboards[@item.DashId].DashName" value="@item.DashName" />
+                    </td>
+                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell" style="max-width: 250px; font-size: 14px;">
+                        @item.DashPath
+                        <input type="hidden" name="Dashboards[@item.DashId].DashPath" value="@item.DashPath" />
+                    </td>
                     <td class="text-center align-middle">
                         <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill" onclick="updateDashboardStatus(@item.DashId)" style="cursor: pointer;">
                             @((item.DashStatus) ? "Active" : "Inactive")
                         </span>
+                        <input type="hidden" name="Dashboards[@item.DashId].DashStatus" value="@item.DashStatus" />
                     </td>
                     <td class="text-center align-middle">
                         <div class="form-check">
@@ -39,6 +49,7 @@
                     <td class="text-center align-middle">
                         <input type="file" name="dialog" id="dialog-@item.DashId" value="" hidden />
                         <button class="btn border-none p-0" onclick="dialogHandling(@item.DashId)"><i class="ri-folder-open-fill text-warning"></i></button>
+                        <input type="hidden" class="dash-path-input" name="Dashboards[@item.DashId].DashPath" value="@item.DashPath" />
                     </td>
                 </tr>
             }
@@ -48,7 +59,7 @@
 
 <div class="d-flex align-items-center justify-content-end gap-2">
     <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium" id="addBtn"><i class="ri-menu-add-line mr-1"></i>Add</button>
-    <button title="Update database" type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium" id="updateBtn"><i class="bi bi-database-add mr-1"></i>Update</button>
+    <button title="Update database" type="submit" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium" id="updateBtn"><i class="bi bi-database-add mr-1"></i>Update</button>
 </div>
 
 <div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
@@ -69,25 +80,30 @@
     var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
     var rowCount = @Model.Count;
 
+
+    // Toast handling
+    var liveToast = new bootstrap.Toast(document.getElementById('liveToast'), {
+        autohide: true,
+        delay: 2000
+    });
+
+    liveToastBtn.addEventListener('click', function () {
+        liveToast.show();
+    });
+
+
+
     // Function to handle opening file dialog
     function dialogHandling(dashId) {
-        console.log('Dialog handling initiated for DashId:', dashId);
-
         var input = document.createElement('input');
         input.type = 'file';
         input.accept = '.xml';
         input.onchange = function (event) {
-            console.log('File selected event triggered.');
-
             var file = event.target.files[0];
             if (file) {
-                console.log('File selected:', file);
-
                 var row = document.getElementById(`dashRow-${dashId}`);
-                console.log("row", row);
 
-                var dashPathCell = row.querySelector('.dash-path-cell'); // Use querySelector instead of getElementsByClassName
-                console.log("dashPathCell", dashPathCell);
+                var dashPathCell = row.querySelector('.dash-path-cell'); 
 
                 if (!row) {
                     console.error('Row not found.');
@@ -99,37 +115,20 @@
                     return;
                 }
 
-                dashPathCell.textContent = file.name; // Update text content with file name
-                dashPathCell.dataset.filename = file.name; // Store file name in dataset for future reference
+                dashPathCell.textContent = file.name; 
+                dashPathCell.dataset.filename = file.name; 
 
                 // Optionally update hidden input value for submitting form if needed
                 var hiddenInput = row.querySelector('.dash-path-input');
                 if (hiddenInput) {
                     hiddenInput.value = file.name;
-                    console.log('Hidden input value updated:', hiddenInput.value);
                 }
-
-                console.log('Selected file:', {
-                    DashId: dashId,
-                    DashName: row.cells[2].textContent.trim(), // Adjust index based on your table structure
-                    DashPath: file.name
-                });
             }
         };
 
         input.click();
     }
 
-
-    // Toast handling
-    var liveToast = new bootstrap.Toast(document.getElementById('liveToast'), {
-        autohide: true,
-        delay: 2000
-    });
-
-    liveToastBtn.addEventListener('click', function () {
-        liveToast.show();
-    });
 
     // Update dashboard active/inactive status
     function updateDashboardStatus(dashId) {
@@ -143,11 +142,11 @@
             statusElement.classList.add('bg-success');
             statusElement.textContent = 'Active';
         }
-    }
+        // Update hidden input value
+        var statusInput = document.querySelector(`input[name='Dashboards[${dashId}].DashStatus']`);
+        console.log(statusInput)
+        statusInput.value = statusElement.classList.contains('bg-success');
 
-    // Update default dashboard
-    function updateDefaultDashboard(dashId) {
-        console.log('Setting default dashboard to ID:', dashId);
     }
 
     // Function to add a new row
@@ -191,68 +190,9 @@
     // Event listener for adding a new row (event delegation)
     addBtn.addEventListener('click', addNewRow);
 
-</script>
-
-
-@* <script>
-    var liveToastBtn = document.getElementById('updateBtn');
-    var addBtn = document.getElementById('addBtn');
-
-    // Toast handling
-    var liveToast = new bootstrap.Toast(document.getElementById('liveToast'), {
-        autohide: true,
-        delay: 2000
-    });
-
-    liveToastBtn.addEventListener('click', function () {
-        liveToast.show();
-    });
-
-    // Insert row
-    function insertRowHandling() {
-        var configTable = document.getElementById('dashConfigTable');
-        var row = configTable.insertRow(4);
-        var cell1 = row.insertCell(0);
-        var cell2 = row.insertCell(1);
-        var cell3 = row.insertCell(2);
-        var cell4 = row.insertCell(3);
-        var cell5 = row.insertCell(4);
-        var cell6 = row.insertCell(5);
-        var cell7 = row.insertCell(6);
-        cell1.innerHTML = `<i class="ri-pencil-line hover-icon" > </i>`;
-        cell2.innerHTML = "NEW CELL2";
-        cell3.innerHTML = "NEW CELL2";
-        cell4.innerHTML = "NEW CELL2";
-        cell5.innerHTML = "NEW CELL2";
-        cell6.innerHTML = "NEW CELL2";
-        cell7.innerHTML = "NEW CELL2";
-        <td class="text-center align-middle">
-                                    <input type="file" name="dialog" id="dialog" value="" hidden />
-                                            <button class="btn border-none p-0" onclick="dialogHandling(${newDashId})"><i class="ri-folder-open-fill text-warning"></i></button>
-                                </td>
-    addBtn.addEventListener('click', function () {
-        console.log('clicked');
-    });
-
-    }
-
-
-    // Update dashboard active/inactive status
-    function updateDashboardStatus(dashId) {
-        var statusElement = document.getElementById('dashStatus-' + dashId);
-        if (statusElement.classList.contains('bg-success')) {
-            statusElement.classList.remove('bg-success');
-            statusElement.classList.add('bg-danger');
-            statusElement.textContent = 'Inactive';
-        } else {
-            statusElement.classList.remove('bg-danger');
-            statusElement.classList.add('bg-success');
-            statusElement.textContent = 'Active';
-        }
-    }
 
     // Update default dashboard
     function updateDefaultDashboard(dashId) {
         console.log('Setting default dashboard to ID:', dashId);
     }
-</script> *@
+</script>
