@@ -47,8 +47,8 @@
         {
             @foreach (var reportItem in reportData)
             {
-                <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start bg-transparent border-0 p-0 overflow-hidden">
-                        <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none text-dark report-item w-100 bg-white border rounded" data-type="@reportItem.ReportType">
+                <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start bg-transparent border-0 p-0 overflow-hidden shadow rounded">
+                        <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = reportItem.RptId })" class="text-decoration-none text-dark report-item w-100 bg-white border rounded px-1" data-type="@reportItem.ReportType" style="padding: 1px 0;">
                             <div class=" d-flex flex-wrap justify-content-between align-items-center">
                             <div class="ms-2 me-auto" style="margin-right: 10px;">
                                 <div class="fw-bold reportName fs-6 text-wrap">
@@ -59,14 +59,11 @@
                             <span class="badge rounded-pill text-muted" style="font-size: 12px;">@reportItem.ReportType</span>
                             </div>
                         </a>
-
                 </li>
             }
         }
     </ul>
 </div>
-
-
 
 
 <script>

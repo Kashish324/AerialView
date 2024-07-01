@@ -25,7 +25,7 @@
                     </td>
                     <td scope="row" class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">
                         @item.DashId
-                      <input type="hidden" name="Dashboards[@item.DashId].DashId" value="@item.DashId" />  
+                      @* <input type="hidden" name="Dashboards[@item.DashId].DashId" value="@item.DashId" />   *@
                     </td>
                     <td class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">
                         @item.DashName
@@ -146,9 +146,8 @@
         var statusInput = document.querySelector(`input[name='Dashboards[${dashId}].DashStatus']`);
         console.log(statusInput)
         statusInput.value = statusElement.classList.contains('bg-success');
-
     }
-
+  
     // Function to add a new row
     function addNewRow() {
         var newDashId = ++rowCount;
