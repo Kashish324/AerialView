@@ -1,55 +1,13 @@
-﻿//using final_aerialview.Data;
-//using Microsoft.AspNetCore.Mvc;
-
-//namespace final_aerialview.Controllers
-//{
-//    public class SubmenuController(DataAccess dataAccess) : BaseController(dataAccess)
-//    {
-//        public IActionResult SubMenuConfiguration(string parentMenu, string submenu)
-//        {
-//            var reportData = _dataAccess.GetReportData();
-//            var dashboardListData = _dataAccess.GetDashboardMaterData();
-
-//            var uniqueReportTypes = reportData
-//                .GroupBy(r => r.ReportType)
-//                .Select(g => g.First())
-//                .ToList();
-//            ViewData["ReportData"] = reportData;
-//            ViewData["ReportType"] = uniqueReportTypes;
-
-
-//            ViewBag.ParentMenu = parentMenu;    
-//            ViewBag.Submenu = submenu;
-
-
-//            ViewData["MenuName"] = submenu;
-
-//            switch (submenu.ToLower())
-//            {
-//                case "report configuration":
-//                    return View("ReportConfiguration");
-
-//                case "dash designer":
-//                    return View("DashDesigner");
-
-//                case "dash configuration":
-//                    return View("DashConfig");
-//                default:
-//                    return View("DefaultView");
-//            }
-//        }
-//    }
-//}
-
+﻿
 using final_aerialview.Controllers;
 using final_aerialview.Data;
+using final_aerialview.Models;
 using Microsoft.AspNetCore.Mvc;
 
 public class SubmenuController(DataAccess dataAccess) : BaseController(dataAccess)
 {
     public IActionResult ReportConfiguration(string parentMenu, string submenu)
     {
-        // Example logic specific to ReportConfiguration view
         var reportData = _dataAccess.GetReportData();
         var uniqueReportTypes = reportData
             .GroupBy(r => r.ReportType)
@@ -77,8 +35,8 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
     public IActionResult DashConfig(string parentMenu, string submenu)
     {
-       
-        var dashboardListData = _dataAccess.GetDashboardMaterData();
+
+        var dashboardListData = _dataAccess.GetDashboardMasterData();
 
         ViewBag.ParentMenu = parentMenu;
         ViewBag.Submenu = submenu;
@@ -86,6 +44,39 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
         return View(dashboardListData);
     }
+
+
+
+    [HttpPost]
+    public IActionResult UpdateData([FromBody] List<DashboardDataModel> data)
+    {
+        if (data == null || data.Count == 0)
+        {
+            return BadRequest("No data to update.");
+        }
+
+        var existingRows = data.Where(d => d.DashId <= 50).ToList();
+        var newRows = data.Where(d => d.DashId > 50 && d.DashId <= 100).ToList();
+
+
+        if (existingRows.Any())
+        {
+            _dataAccess.UpdateDashboardData(existingRows);
+        }
+
+        if (newRows.Any())
+        {
+            _dataAccess.InsertDashboardData(newRows);
+        }
+
+        return Ok("Data updated successfully.");
+    }
+
+
+
+
+
+
 
     // Add more actions as needed for each submenu view
 

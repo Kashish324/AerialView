@@ -12,14 +12,3 @@ tr:hover .hover-icon {
     display:none;
 }
 
-
-
-/*devexpress*/
-
-.dx-header-row .dx-column {
-    text-align: center !important;
-}
-
-.dx-data-row .dx-column {
-    text-align: center !important;
-}

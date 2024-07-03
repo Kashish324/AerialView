@@ -1,8 +1,10 @@
-﻿namespace final_aerialview.Models
+﻿
+namespace final_aerialview.Models
 {
     public class DashboardDataModel
     {
         public int DashId { get; set; }
+
         public string? DashName { get; set; }  
         
         public string? DashPath { get; set; }   

@@ -53,7 +53,7 @@
                         <option value="" selected disabled>Choose...</option>
                         @foreach (var item in Items)
                         {
-                            <option value="@item" >@item</option>
+                            <option value="@item">@item</option>
                         }
                     </select>
                 </div>
@@ -70,9 +70,9 @@
                     </div>
                 </div>
             </div>
-            
+
         </div>
-       
+
         <form id="filterForm" action="/ListData/DataGrid" method="post">
             <input type="hidden" id="selectedOption" name="option">
             <input type="hidden" id="selectedValue" name="selectedValue">
@@ -85,9 +85,9 @@
 
             <div class="previewBtn">
                 @* <button title="Apply Filter" type="button" class="btn btn-sm border-0 text-white shadow-sm bg-dark  d-flex align-items-center justify-content-center gap-1 bg-success" style="padding: .25rem 0.5rem;"> *@
-                    @* Apply<i class="ri-telegram-2-fill mt-1"></i> *@
-                    @* <i class="ri-telegram-2-fill"></i> *@
-                    @* <i class="ri-telegram-2-fill"></i> *@
+                @* Apply<i class="ri-telegram-2-fill mt-1"></i> *@
+                @* <i class="ri-telegram-2-fill"></i> *@
+                @* <i class="ri-telegram-2-fill"></i> *@
                 @* </button> *@
                 <button title="Apply Filter" type="button" class="btn text-warning bg-dark  btn-sm  border-0 "><i class="ri-telegram-2-fill"></i></button>
             </div>
@@ -105,7 +105,7 @@
 
 <script>
 
-    //setting default values for date fields and hidden form date fields 
+    //setting default values for date fields and hidden form date fields
     var now = new Date();
     var utcString = now.toISOString().substring(0, 19);
     var year = now.getFullYear();
@@ -182,7 +182,7 @@
         $("#selectedValue").val(selectedValue);
     }
 
-    //from date selected value 
+    //from date selected value
     function fromDate(event) {
         var fromDateAndTime = new Date(event.target.value);
         var formattedFromDate = formatDate(fromDateAndTime);
@@ -241,7 +241,7 @@
         });
         // Set default value for selectedOption on page load
         $("#selectedOption").val("Standard");
-      
+
         // Submit the form
         $(".previewBtn").click(function () {
             $("#filterForm").submit();

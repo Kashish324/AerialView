@@ -3,7 +3,10 @@ using DevExpress.XtraReports.Wizards;
 using final_aerialview.Models;
 using final_aerialview.ViewModels;
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.AspNetCore.Mvc;
+using System;
 using System.Data;
+using System.Data.Common;
 using System.Data.SqlClient;
 
 namespace final_aerialview.Data
@@ -194,11 +197,63 @@ namespace final_aerialview.Data
         }
 
         //dashboard master table
-        public IEnumerable<DashboardDataModel> GetDashboardMaterData()
+        public IEnumerable<DashboardDataModel> GetDashboardMasterData()
         {
             string query = "SELECT * FROM DashboardMaster";
             return ExecuteQuery<DashboardDataModel>(query);
         }
 
+        public void UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
+
+
+                foreach (var data in updatedData)
+                {
+                    // Convert DashStatus and DashDefault to bool explicitly
+                    var parameters = new
+                    {
+                        data.DashId,
+                        data.DashName,
+                        data.DashPath,
+                        DashStatus = data.DashStatus ? true : false, // Ensure it's a boolean value
+                        DashDefault = data.DashDefault ? true : false, // Ensure it's a boolean value
+                    };
+
+                    connection.Execute(sql, parameters);
+                }
+            }
+        }
+
+
+        public void InsertDashboardData(IEnumerable<DashboardDataModel> newData)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                var sql = "INSERT INTO DashboardMaster (DashName, DashPath, DashStatus, DashDefault) VALUES (@DashName, @DashPath, CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END)";
+
+
+                foreach (var data in newData)
+                {
+                    // Convert DashStatus and DashDefault to bool explicitly
+                    var parameters = new
+                    {
+                        data.DashName,
+                        data.DashPath,
+                        DashStatus = data.DashStatus ? true : false, // Ensure it's a boolean value
+                        DashDefault = data.DashDefault ? true : false, // Ensure it's a boolean value
+                    };
+
+                    connection.Execute(sql, parameters);
+                }
+            }
+        }
+
+
     }
 }
+

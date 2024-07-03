@@ -1,17 +1,19 @@
-﻿@model List<DashboardDataModel>
+﻿@* @model List<DashboardDataModel>
 
 @{
     ViewData["Title"] = "Dash Config";
 }
 
-<div class="table-responsive pt-4">
-    <table id="dashConfigTable" class="table table-hover table-bordered border-light shadow-sm">
+<div class="table-responsive pt-4 ">
+    <table id="dashConfigTable" class="table table-hover table-bordered border-light shadow-sm table-sm">
         <thead>
             <tr>
-                <th scope="col" class="text-center align-middle text-primary-emphasis"><i class="ri-edit-fill"></i></th>
                 @foreach (var prop in typeof(DashboardDataModel).GetProperties())
                 {
-                    <th scope="col" class="text-center align-middle text-primary-emphasis">@prop.Name</th>
+                    if (prop.Name != nameof(DashboardDataModel.DashId))
+                    {
+                        <th scope="col" class="text-center align-middle text-primary-emphasis">@prop.Name</th>
+                    }
                 }
                 <th scope="col" class="text-center align-middle text-primary-emphasis">Select Path</th>
             </tr>
@@ -20,39 +22,28 @@
             @foreach (var item in Model)
             {
                 <tr id="dashRow-@item.DashId">
-                    <td class="text-center align-middle" onclick="updateDefaultDashboard(@item.DashId)">
-                        <i class="ri-pencil-line hover-icon"></i>
+
+                    <td>
+                        <input type="text" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize" value="@item.DashName" onchange="updateField('@item.DashId', 'DashName', this.value)">
                     </td>
-                    <td scope="row" class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">
-                        @item.DashId
-                      @* <input type="hidden" name="Dashboards[@item.DashId].DashId" value="@item.DashId" />   *@
-                    </td>
-                    <td class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">
-                        @item.DashName
-                        <input type="hidden" name="Dashboards[@item.DashId].DashName" value="@item.DashName" />
-                    </td>
-                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell" style="max-width: 250px; font-size: 14px;">
+                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;">
                         @item.DashPath
-                        <input type="hidden" name="Dashboards[@item.DashId].DashPath" value="@item.DashPath" />
                     </td>
-                    <td class="text-center align-middle">
-                        <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill" onclick="updateDashboardStatus(@item.DashId)" style="cursor: pointer;">
-                            @((item.DashStatus) ? "Active" : "Inactive")
-                        </span>
-                        <input type="hidden" name="Dashboards[@item.DashId].DashStatus" value="@item.DashStatus" />
+                    <td class="text-center align-middle p-0">
+                        <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill" onclick="updateDashboardStatus(@item.DashId)" style="cursor: pointer;">@((item.DashStatus) ? "Active" : "Inactive")</span>
                     </td>
-                    <td class="text-center align-middle">
+                    <td class="text-center align-middle p-0">
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-@item.DashId" @(item.DashDefault ? "checked" : "") style="cursor: pointer;">
                         </div>
                     </td>
-                    <td class="text-center align-middle">
+                    <td class="text-center align-middle p-0">
                         <input type="file" name="dialog" id="dialog-@item.DashId" value="" hidden />
                         <button class="btn border-none p-0" onclick="dialogHandling(@item.DashId)"><i class="ri-folder-open-fill text-warning"></i></button>
-                        <input type="hidden" class="dash-path-input" name="Dashboards[@item.DashId].DashPath" value="@item.DashPath" />
                     </td>
                 </tr>
             }
+
         </tbody>
     </table>
 </div>
@@ -61,6 +52,7 @@
     <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium" id="addBtn"><i class="ri-menu-add-line mr-1"></i>Add</button>
     <button title="Update database" type="submit" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium" id="updateBtn"><i class="bi bi-database-add mr-1"></i>Update</button>
 </div>
+
 
 <div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
@@ -91,44 +83,180 @@
         liveToast.show();
     });
 
+    // Update dashboard active/inactive status
+    function updateDashboardStatus(dashId) {
+        var statusElement = document.getElementById('dashStatus-' + dashId);
+        if (statusElement.classList.contains('bg-success')) {
+            statusElement.classList.remove('bg-success');
+            statusElement.classList.add('bg-danger');
+            statusElement.textContent = 'Inactive';
+        } else {
+            statusElement.classList.remove('bg-danger');
+            statusElement.classList.add('bg-success');
+            statusElement.textContent = 'Active';
+        }
+        console.log('status', statusElement.textContent, dashId)
+    }
 
+    // Generate a unique identifier for each new row
+    function generateUniqueId() {
+        return 'id-' + Math.random().toString(36).substr(2, 9);
+    }
 
     // Function to handle opening file dialog
-    function dialogHandling(dashId) {
+    function dialogHandling(uniqueRowId) {
         var input = document.createElement('input');
         input.type = 'file';
         input.accept = '.xml';
         input.onchange = function (event) {
             var file = event.target.files[0];
             if (file) {
-                var row = document.getElementById(`dashRow-${dashId}`);
-
-                var dashPathCell = row.querySelector('.dash-path-cell'); 
+                var row = document.getElementById(`dashRow-${uniqueRowId}`);
 
                 if (!row) {
                     console.error('Row not found.');
                     return;
                 }
 
+                var dashPathCell = row.querySelector('.dash-path-cell');
                 if (!dashPathCell) {
                     console.error('Dash path cell not found.');
                     return;
                 }
 
-                dashPathCell.textContent = file.name; 
-                dashPathCell.dataset.filename = file.name; 
+                dashPathCell.textContent = file.name;
+                dashPathCell.dataset.filename = file.name;
 
-                // Optionally update hidden input value for submitting form if needed
-                var hiddenInput = row.querySelector('.dash-path-input');
-                if (hiddenInput) {
-                    hiddenInput.value = file.name;
-                }
             }
         };
 
         input.click();
     }
 
+    // Function to add a new row
+    function addNewRow() {
+        var uniqueRowId = generateUniqueId();
+
+        var newRow = dashConfigTable.insertRow();
+        newRow.id = `dashRow-${uniqueRowId}`;
+
+        newRow.innerHTML = `
+                        <td>
+                         <input type="text" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize" value=" " onchange="updateField('${uniqueRowId}', 'DashName', this.value)">
+                        </td>
+                        <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
+                        <td class="text-center align-middle p-0">
+                            <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
+                        </td>
+                        <td class="text-center align-middle p-0">
+                            <div class="form-check">
+                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;">
+                            </div>
+                        </td>
+                        <td class="text-center align-middle p-0">
+                            <input type="file" name="dialog" id="dialog-${uniqueRowId}" value="" hidden />
+                            <button class="btn border-none p-0" onclick="dialogHandling('${uniqueRowId}')"><i class="ri-folder-open-fill text-warning"></i></button>
+                        </td>
+                    `;
+    }
+
+    // Function to handle existing rows (called when fetching rows from SQL)
+    function initializeExistingRow(dashId) {
+        var row = document.getElementById(`dashRow-${dashId}`);
+
+        if (row) {
+            var fileButton = row.querySelector('.file-dialog-button');
+            if (fileButton) {
+                fileButton.onclick = function () {
+                    dialogHandling(dashId, true);
+                };
+            }
+        }
+    }
+
+    // Event listener for adding a new row
+    addBtn.addEventListener('click', addNewRow);
+
+
+    function updateField(dashId, dashName, updatedValue) {
+        console.log('dashId', dashId, 'updatedValue', updatedValue)
+    }
+</script> *@
+
+
+@* 
+@model List<DashboardDataModel>
+
+@{
+    ViewData["Title"] = "Dash Config";
+}
+
+<div class="table-responsive pt-4">
+    <table id="dashConfigTable" class="table table-hover table-bordered border-light shadow-sm table-sm">
+        <thead>
+            <tr>
+                @foreach (var prop in typeof(DashboardDataModel).GetProperties())
+                {
+                    if (prop.Name != nameof(DashboardDataModel.DashId))
+                    {
+                        <th scope="col" class="text-center align-middle text-primary-emphasis">@prop.Name</th>
+                    }
+                }
+                <th scope="col" class="text-center align-middle text-primary-emphasis">Select Path</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="dashRow-@item.DashId">
+                    <td>
+                        <input type="text" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize" value="@item.DashName" onchange="updateField('@item.DashId', 'DashName', this.value)">
+                    </td>
+                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;">
+                        @item.DashPath
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill" onclick="updateDashboardStatus('@item.DashId')" style="cursor: pointer;">@((item.DashStatus) ? "Active" : "Inactive")</span>
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-@item.DashId" @(item.DashDefault ? "checked" : "") style="cursor: pointer;" onchange="updateRadioValue('@item.DashId')">
+                        </div>
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <input type="file" name="dialog" id="dialog-@item.DashId" hidden />
+                        <button class="btn border-none p-0" onclick="dialogHandling('@item.DashId')"><i class="ri-folder-open-fill text-warning"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex align-items-center justify-content-end gap-2">
+    <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium" id="addBtn"><i class="ri-menu-add-line mr-1"></i>Add</button>
+    <button title="Update database" type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium" id="updateBtn" onclick="sendDataToServer()">
+        <i class="bi bi-database-add mr-1"></i>Update
+    </button>
+</div>
+
+<div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+        <div class="toast-header">
+            <strong class="me-auto text-muted">AerialView</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body text-dark">
+            Data updated successfully!!
+        </div>
+    </div>
+</div>
+
+<script>
+    var liveToastBtn = document.getElementById('updateBtn');
+    var addBtn = document.getElementById('addBtn');
+    var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
+    var rowCount = @Model.Count;
 
     // Update dashboard active/inactive status
     function updateDashboardStatus(dashId) {
@@ -142,56 +270,412 @@
             statusElement.classList.add('bg-success');
             statusElement.textContent = 'Active';
         }
-        // Update hidden input value
-        var statusInput = document.querySelector(`input[name='Dashboards[${dashId}].DashStatus']`);
-        console.log(statusInput)
-        statusInput.value = statusElement.classList.contains('bg-success');
     }
-  
+
+    // Generate a unique identifier for each new row
+    function generateUniqueId() {
+        // return 'id-' + Math.random().toString(36).substr(2, 9);
+        return Math.floor(Math.random() * 50) + 51;
+    }
+
+    // Function to handle opening file dialog
+    function dialogHandling(uniqueRowId) {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.xml';
+        input.onchange = function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                var row = document.getElementById(`dashRow-${uniqueRowId}`);
+                if (!row) {
+                    console.error('Row not found.');
+                    return;
+                }
+
+                var dashPathCell = row.querySelector('.dash-path-cell');
+                if (!dashPathCell) {
+                    console.error('Dash path cell not found.');
+                    return;
+                }
+
+                dashPathCell.textContent = file.name;
+                dashPathCell.dataset.filename = file.name;
+                updatePath(uniqueRowId, file.name);
+            }
+        };
+
+        input.click();
+    }
+
     // Function to add a new row
     function addNewRow() {
-        var newDashId = ++rowCount;
-
+        var uniqueRowId = generateUniqueId();
         var newRow = dashConfigTable.insertRow();
-        newRow.id = `dashRow-${newDashId}`;
+        newRow.id = `dashRow-${uniqueRowId}`;
 
         newRow.innerHTML = `
-                <td class="text-center align-middle" onclick="updateDefaultDashboard(${newDashId})">
-                    <i class="ri-pencil-line hover-icon"></i>
-                </td>
-                <td scope="row" class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">${newDashId}</td>
-                <td class="text-center align-middle text-nowrap text-truncate text-dark fw-medium">
-                    <input type="text" class="form-control form-control-sm" value="">
-                </td>
-                <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell" style="max-width: 250px; font-size: 14px;"></td>
-                <td class="text-center align-middle">
-                    <span id="dashStatus-${newDashId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus(${newDashId})" style="cursor: pointer;">Inactive</span>
-                </td>
-                <td class="text-center align-middle">
-                    <div class="form-check">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-${newDashId}" style="cursor: pointer;">
-                    </div>
-                </td>
-                <td class="text-center align-middle">
-                    <input type="file" name="dialog" id="dialog-${newDashId}" value="" hidden />
-                    <button class="btn border-none p-0" onclick="dialogHandling(${newDashId})"><i class="ri-folder-open-fill text-warning"></i></button>
-                    <input type="hidden" class="dash-path-input" name="DashPath" value="">
-                </td>
-            `;
+                    <td>
+                        <input type="text" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize" value=" " onchange="updateField('${uniqueRowId}', 'DashName', this.value)">
+                    </td>
+                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
+                    <td class="text-center align-middle p-0">
+                        <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
+                        </div>
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
+                        <button class="btn border-none p-0" onclick="dialogHandling('${uniqueRowId}')"><i class="ri-folder-open-fill text-warning"></i></button>
+                    </td>
+                `;
+    }
 
-        // Add event listener for file input change
-        var fileInput = newRow.querySelector(`#dialog-${newDashId}`);
-        fileInput.addEventListener('change', function (event) {
-            dialogHandling(newDashId);
+    
+
+
+    // Event listener for adding a new row
+    addBtn.addEventListener('click', addNewRow);
+
+    function updateField(dashId, dashName, updatedValue) {
+        // console.log('dashId', dashId, 'updatedValue', updatedValue);
+    }
+
+    function updatePath(uniqueRowId, filename) {
+        // console.log('Updated Path for Row ID:', uniqueRowId, 'Filename:', filename);
+        // Here you can add your logic to handle the updated path
+    }
+
+    function updateRadioValue(dashId) {
+        var radioButton = document.getElementById('flexRadioDefault-' + dashId);
+        if (radioButton.checked) {
+            // console.log('Radio button changed to true for DashId:', dashId, true);
+        }
+    }
+
+    // Toast handling
+    var liveToast = new bootstrap.Toast(document.getElementById('liveToast'), {
+        autohide: true,
+        delay: 2000
+    });
+
+    liveToastBtn.addEventListener('click', function () {
+        liveToast.show();
+    });
+
+    // function collectTableData() {
+    //     var tableRows = document.querySelectorAll('#dashConfigTable tbody tr');
+    //     var data = [];
+
+    //     tableRows.forEach(function (row) {
+    //         var rowData = {
+    //             DashId: row.id.replace('dashRow-', ''),
+    //             DashName: row.querySelector('input[type="text"]').value.trim(),
+    //             DashPath: row.querySelector('.dash-path-cell').textContent.trim(),
+    //             DashStatus: row.querySelector('.badge').classList.contains('bg-success'),
+    //             DashDefault: row.querySelector('input[type="radio"]').checked
+    //         };
+
+    //         // Convert DashStatus and DashDefault to boolean explicitly if needed
+    //         rowData.DashStatus = !!rowData.DashStatus; // Ensures boolean value
+    //         rowData.DashDefault = !!rowData.DashDefault; // Ensures boolean value
+
+    //         data.push(rowData);
+    //     });
+
+    //     console.log('Collected Data:', data); // Log collected data for verification
+    //     return data;
+    // }
+
+    function collectTableData() {
+        var tableRows = document.querySelectorAll('#dashConfigTable tbody tr');
+        var data = [];
+
+        tableRows.forEach(function (row) {
+            var rowData = {
+                DashId: row.id.replace('dashRow-', ''), // This will be a temporary ID for new rows
+                DashName: row.querySelector('input[type="text"]').value.trim(),
+                DashPath: row.querySelector('.dash-path-cell').textContent.trim(),
+                DashStatus: row.querySelector('.badge').classList.contains('bg-success'),
+                DashDefault: row.querySelector('input[type="radio"]').checked
+            };
+
+            // Convert DashStatus and DashDefault to boolean explicitly if needed
+            rowData.DashStatus = !!rowData.DashStatus; // Ensures boolean value
+            rowData.DashDefault = !!rowData.DashDefault; // Ensures boolean value
+
+            data.push(rowData);
+        });
+
+        console.log('Collected Data:', data); // Log collected data for verification
+        return data;
+    }
+
+
+    function sendDataToServer() {
+        var data = collectTableData();
+
+        $.ajax({
+            url: '/Submenu/UpdateData', // Replace with your controller action URL
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(data),
+            success: function (response) {
+                console.log('Data sent successfully:', response);
+                liveToast.show(); // Show toast on successful update
+                // Handle success response if needed
+            },
+            error: function (xhr, status, error) {
+                console.error('Error sending data:', error);
+                console.log('Response:', xhr.responseText); // Log the server's response for more details
+                // Handle error response if needed
+            }
+        });
+    }
+</script> *@
+
+
+
+@model List<DashboardDataModel>
+
+@{
+    ViewData["Title"] = "Dashboard Configuration";
+}
+
+<div class="table-responsive pt-4">
+    <table id="dashConfigTable" class="table table-hover table-bordered border-light shadow-sm table-sm">
+        <thead>
+            <tr>
+                @foreach (var prop in typeof(DashboardDataModel).GetProperties())
+                {
+                    if (prop.Name != nameof(DashboardDataModel.DashId))
+                    {
+                        <th scope="col" class="text-center align-middle text-primary-emphasis">@prop.Name</th>
+                    }
+                }
+                <th scope="col" class="text-center align-middle text-primary-emphasis">Select Path</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="dashRow-@item.DashId">
+                    <td>
+                        <input type="text" id="DashName-@item.DashId" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="@item.DashName" onchange="updateField('@item.DashId', 'DashName', this.value)">
+                    </td>
+                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;">
+                        @item.DashPath
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill" onclick="updateDashboardStatus('@item.DashId')" style="cursor: pointer;">@((item.DashStatus) ? "Active" : "Inactive")</span>
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <div class="form-check">
+                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-@item.DashId" @(item.DashDefault ? "checked" : "") style="cursor: pointer;" onchange="updateRadioValue('@item.DashId')">
+                        </div>
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <input type="file" name="dialog" id="dialog-@item.DashId" hidden />
+                        <button class="btn border-none p-0" onclick="dialogHandling('@item.DashId')"><i class="ri-folder-open-fill text-warning"></i></button>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex align-items-center justify-content-end gap-2">
+    <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium" id="addBtn"><i class="ri-menu-add-line mr-1"></i>Add</button>
+    <button title="Update database" type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium" id="updateBtn" onclick="sendDataToServer()">
+        <i class="bi bi-database-add mr-1"></i>Update
+    </button>
+</div>
+
+<div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+        <div class="toast-header">
+            <strong class="me-auto text-muted">AerialView</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body text-dark">
+            <!-- Message content will be updated dynamically -->
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var addBtn = document.getElementById('addBtn');
+    var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
+
+    // Update dashboard active/inactive status
+    function updateDashboardStatus(dashId) {
+        var statusElement = document.getElementById('dashStatus-' + dashId);
+        if (statusElement.classList.contains('bg-success')) {
+            statusElement.classList.remove('bg-success');
+            statusElement.classList.add('bg-danger');
+            statusElement.textContent = 'Inactive';
+        } else {
+            statusElement.classList.remove('bg-danger');
+            statusElement.classList.add('bg-success');
+            statusElement.textContent = 'Active';
+        }
+        markRowAsUpdated(dashId); // Mark the row as updated
+    }
+
+    // Function to mark a row as updated
+    function markRowAsUpdated(dashId) {
+        var row = document.getElementById('dashRow-' + dashId);
+        if (row) {
+            row.classList.add('updated-row'); // Add a class to mark the row as updated
+        }
+    }
+
+    // Function to handle updating any field in a row
+    function updateField(dashId, fieldName, updatedValue) {
+        var inputField = document.getElementById(fieldName + '-' + dashId);
+        if (inputField) {
+            inputField.value = updatedValue;
+            markRowAsUpdated(dashId); // Mark the row as updated
+        } else {
+            console.error('Input field not found for:', fieldName);
+        }
+    }
+
+    // Function to handle opening file dialog
+    function dialogHandling(uniqueRowId) {
+        var input = document.createElement('input');
+        input.type = 'file';
+        input.accept = '.xml';
+        input.onchange = function (event) {
+            var file = event.target.files[0];
+            if (file) {
+                var row = document.getElementById('dashRow-' + uniqueRowId);
+                if (!row) {
+                    console.error('Row not found.');
+                    return;
+                }
+                var dashPathCell = row.querySelector('.dash-path-cell');
+                if (!dashPathCell) {
+                    console.error('Dash path cell not found.');
+                    return;
+                }
+                dashPathCell.textContent = file.name;
+                dashPathCell.dataset.filename = file.name;
+                markRowAsUpdated(uniqueRowId); // Mark the row as updated
+            }
+        };
+        input.click();
+    }
+
+    // Function to add a new row
+    function addNewRow() {
+        var uniqueRowId = Math.floor(Math.random() * 50) + 51; // Generate a unique ID
+        var newRow = dashConfigTable.insertRow();
+        newRow.id = 'dashRow-' + uniqueRowId;
+
+        newRow.innerHTML = `
+            <td>
+                <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" onchange="updateField('${uniqueRowId}', 'DashName', this.value)">
+            </td>
+            <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
+            <td class="text-center align-middle p-0">
+                <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
+            </td>
+            <td class="text-center align-middle p-0">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
+                </div>
+            </td>
+            <td class="text-center align-middle p-0">
+                <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
+                <button class="btn border-none p-0" onclick="dialogHandling('${uniqueRowId}')"><i class="ri-folder-open-fill text-warning"></i></button>
+            </td>
+        `;
+        markRowAsUpdated(uniqueRowId); // Mark the new row as updated
+    }
+
+    // Event listener for adding a new row
+    addBtn.addEventListener('click', addNewRow);
+
+    // Function to handle radio button value updates
+    function updateRadioValue(uniqueRowId) {
+        var radioBtn = document.getElementById('flexRadioDefault-' + uniqueRowId);
+        if (radioBtn) {
+            markRowAsUpdated(uniqueRowId); // Mark the row as updated
+        }
+    }
+
+    // Function to collect all updated rows
+    function collectUpdatedRows() {
+        var updatedRows = [];
+        var rows = document.querySelectorAll('.updated-row');
+        rows.forEach(function (row) {
+            var rowData = {
+                DashId: row.id.replace('dashRow-', ''),
+                DashName: row.querySelector('.dash-name-field').value.trim(),
+                DashPath: row.querySelector('.dash-path-cell').textContent.trim(),
+                DashStatus: row.querySelector('.badge').classList.contains('bg-success'),
+                DashDefault: row.querySelector('input[type="radio"]').checked
+            };
+            // Convert DashStatus and DashDefault to boolean explicitly if needed
+            rowData.DashStatus = !!rowData.DashStatus; // Ensures boolean value
+            rowData.DashDefault = !!rowData.DashDefault; // Ensures boolean value
+            updatedRows.push(rowData);
+        });
+        return updatedRows;
+    }
+
+    // Function to send updated data to server
+    function sendDataToServer() {
+        var updatedRows = collectUpdatedRows();
+
+        // Update toast message dynamically
+        var toastMessage = updatedRows.length > 0 ? 'Data updated successfully!' : 'Nothing to update.';
+        var toastBody = document.querySelector('.toast-body');
+        if (toastBody) {
+            toastBody.textContent = toastMessage;
+        }
+
+        // Show the toast
+        var toastLive = document.getElementById('liveToast');
+        var toast = new bootstrap.Toast(toastLive, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+
+        if (updatedRows.length === 0) {
+            return; // Exit early if there are no rows to update
+        }
+
+        // Replace with actual AJAX or Fetch API call to send data to server
+        console.log('Updated Rows:', updatedRows);
+
+        // Example using jQuery for AJAX
+        $.ajax({
+            url: '/Submenu/UpdateData',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(updatedRows),
+            success: function (response) {
+                console.log('Data sent successfully');
+                // Clear updated-row class after successful update
+                var rows = document.querySelectorAll('.updated-row');
+                rows.forEach(function (row) {
+                    row.classList.remove('updated-row');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error sending data:', error);
+                console.log('Response:', xhr.responseText); // Log the server's response for more details
+            }
         });
     }
 
-    // Event listener for adding a new row (event delegation)
-    addBtn.addEventListener('click', addNewRow);
 
 
-    // Update default dashboard
-    function updateDefaultDashboard(dashId) {
-        console.log('Setting default dashboard to ID:', dashId);
-    }
+
 </script>
