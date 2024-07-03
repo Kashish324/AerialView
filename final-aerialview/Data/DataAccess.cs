@@ -210,7 +210,6 @@ namespace final_aerialview.Data
                 connection.Open();
                 var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
 
-
                 foreach (var data in updatedData)
                 {
                     // Convert DashStatus and DashDefault to bool explicitly
@@ -221,12 +220,26 @@ namespace final_aerialview.Data
                         data.DashPath,
                         DashStatus = data.DashStatus ? true : false, // Ensure it's a boolean value
                         DashDefault = data.DashDefault ? true : false, // Ensure it's a boolean value
+
+                        
                     };
 
                     connection.Execute(sql, parameters);
                 }
+
+                var test = updatedData.Select(s => s.DashId).FirstOrDefault();
+
+                var sql1 = $"update DashboardMaster set DashDefault = 'false' where DashId <> {test}";
+                connection.Execute(sql1);
             }
         }
+
+
+
+
+
+
+
 
 
         public void InsertDashboardData(IEnumerable<DashboardDataModel> newData)

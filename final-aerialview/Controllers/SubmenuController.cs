@@ -71,12 +71,7 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
         return Ok("Data updated successfully.");
     }
-
-
-
-
-
-
+    
 
     // Add more actions as needed for each submenu view
 
