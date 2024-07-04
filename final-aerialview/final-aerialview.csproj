@@ -6,6 +6,15 @@
     <RootNamespace>final_aerialview</RootNamespace>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Remove="Data\Dashboards\**" />
+    <Content Remove="Data\Dashboards\**" />
+    <EmbeddedResource Remove="Data\Dashboards\**" />
+    <None Remove="Data\Dashboards\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Dashboards\dashboard1.xml" />
+  </ItemGroup>
+  <ItemGroup>
     <PackageReference Include="bootstrap" Version="5.3.3" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Dapper" Version="2.1.35" />
@@ -20,8 +29,5 @@
     <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
     <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Data\Dashboards\" />
   </ItemGroup>
 </Project>

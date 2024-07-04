@@ -1,4 +1,5 @@
 ﻿@model List<DashboardDataModel>
+@using System;
 
 @{
     ViewData["Title"] = "Dashboard Configuration";
@@ -47,10 +48,16 @@
 </div>
 
 <div class="d-flex align-items-center justify-content-end gap-2">
-    <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium" id="addBtn"><i class="ri-menu-add-line mr-1"></i>Add</button>
+    <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium" id="addBtn"><i class="ri-menu-add-line"></i> Add</button>
     <button title="Update database" type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium" id="updateBtn" onclick="sendDataToServer()">
-        <i class="bi bi-database-add mr-1"></i>Update
+        <i class="bi bi-database-add"></i> Update
     </button>
+
+    <a href="/DashboardFolder/DashInfo" class="btn bg-info-subtle btn-sm border-info-subtle shadow fw-medium" title="Get Dashboard">
+        <i class="ri-dashboard-2-line"></i> Get Dashboard
+    </a>
+
+
 </div>
 
 <div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
@@ -69,6 +76,13 @@
 <script>
     var addBtn = document.getElementById('addBtn');
     var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
+
+    var getDashBtn = document.getElementById('getDashBoard');
+    var directory = ;
+    getDashBtn.addEventListener('click', function () {
+        console.log(directory)
+    })
+
 
     // Update dashboard active/inactive status
     function updateDashboardStatus(dashId) {

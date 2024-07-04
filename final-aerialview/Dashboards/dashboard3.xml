@@ -1,0 +1,307 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Sample Dashboard" />
+  <DataSources>
+    <SqlDataSource Name="T_KW" ComponentName="sqlDataSource1">
+      <Connection Name="Godiva_Pump" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="T_KW">
+        <Tables>
+          <Table Name="T_KW" />
+        </Tables>
+        <Columns>
+          <Column Table="T_KW" Name="DateAndTime" />
+          <Column Table="T_KW" Name="C2" />
+          <Column Table="T_KW" Name="C3" />
+          <Column Table="T_KW" Name="C4" />
+          <Column Table="T_KW" Name="C5" />
+          <Column Table="T_KW" Name="C6" />
+          <Column Table="T_KW" Name="C7" />
+          <Column Table="T_KW" Name="C8" />
+          <Column Table="T_KW" Name="C9" />
+          <Column Table="T_KW" Name="C10" />
+          <Column Table="T_KW" Name="C11" />
+          <Column Table="T_KW" Name="C12" />
+          <Column Table="T_KW" Name="C13" />
+          <Column Table="T_KW" Name="C14" />
+          <Column Table="T_KW" Name="C15" />
+          <Column Table="T_KW" Name="C16" />
+          <Column Table="T_KW" Name="C17" />
+          <Column Table="T_KW" Name="C18" />
+          <Column Table="T_KW" Name="C19" />
+          <Column Table="T_KW" Name="C20" />
+          <Column Table="T_KW" Name="C21" />
+          <Column Table="T_KW" Name="C22" />
+          <Column Table="T_KW" Name="C23" />
+          <Column Table="T_KW" Name="C24" />
+          <Column Table="T_KW" Name="C25" />
+          <Column Table="T_KW" Name="C26" />
+          <Column Table="T_KW" Name="C27" />
+          <Column Table="T_KW" Name="C28" />
+          <Column Table="T_KW" Name="C29" />
+          <Column Table="T_KW" Name="C30" />
+          <Column Table="T_KW" Name="C31" />
+          <Column Table="T_KW" Name="C32" />
+          <Column Table="T_KW" Name="C33" />
+          <Column Table="T_KW" Name="C34" />
+          <Column Table="T_KW" Name="C35" />
+          <Column Table="T_KW" Name="C36" />
+          <Column Table="T_KW" Name="C37" />
+          <Column Table="T_KW" Name="C38" />
+          <Column Table="T_KW" Name="C39" />
+          <Column Table="T_KW" Name="C40" />
+          <Column Table="T_KW" Name="C41" />
+          <Column Table="T_KW" Name="C42" />
+          <Column Table="T_KW" Name="C43" />
+          <Column Table="T_KW" Name="C44" />
+          <Column Table="T_KW" Name="C45" />
+          <Column Table="T_KW" Name="C46" />
+          <Column Table="T_KW" Name="C47" />
+          <Column Table="T_KW" Name="C48" />
+          <Column Table="T_KW" Name="C49" />
+          <Column Table="T_KW" Name="C50" />
+          <Column Table="T_KW" Name="C51" />
+          <Column Table="T_KW" Name="C52" />
+          <Column Table="T_KW" Name="C53" />
+          <Column Table="T_KW" Name="C54" />
+          <Column Table="T_KW" Name="C55" />
+          <Column Table="T_KW" Name="C56" />
+          <Column Table="T_KW" Name="C57" />
+          <Column Table="T_KW" Name="C58" />
+          <Column Table="T_KW" Name="C59" />
+          <Column Table="T_KW" Name="C60" />
+          <Column Table="T_KW" Name="C61" />
+          <Column Table="T_KW" Name="C62" />
+          <Column Table="T_KW" Name="C63" />
+          <Column Table="T_KW" Name="C64" />
+          <Column Table="T_KW" Name="C65" />
+          <Column Table="T_KW" Name="C66" />
+          <Column Table="T_KW" Name="C67" />
+          <Column Table="T_KW" Name="C68" />
+          <Column Table="T_KW" Name="C69" />
+          <Column Table="T_KW" Name="C70" />
+          <Column Table="T_KW" Name="C71" />
+          <Column Table="T_KW" Name="C72" />
+          <Column Table="T_KW" Name="C73" />
+          <Column Table="T_KW" Name="C74" />
+          <Column Table="T_KW" Name="C75" />
+          <Column Table="T_KW" Name="C76" />
+          <Column Table="T_KW" Name="C77" />
+          <Column Table="T_KW" Name="C78" />
+          <Column Table="T_KW" Name="C79" />
+          <Column Table="T_KW" Name="C80" />
+          <Column Table="T_KW" Name="C81" />
+          <Column Table="T_KW" Name="C82" />
+          <Column Table="T_KW" Name="C83" />
+          <Column Table="T_KW" Name="C84" />
+          <Column Table="T_KW" Name="C85" />
+          <Column Table="T_KW" Name="C86" />
+          <Column Table="T_KW" Name="C87" />
+          <Column Table="T_KW" Name="C88" />
+          <Column Table="T_KW" Name="C89" />
+          <Column Table="T_KW" Name="C90" />
+          <Column Table="T_KW" Name="C91" />
+          <Column Table="T_KW" Name="C92" />
+          <Column Table="T_KW" Name="C93" />
+          <Column Table="T_KW" Name="C94" />
+          <Column Table="T_KW" Name="C95" />
+          <Column Table="T_KW" Name="C96" />
+          <Column Table="T_KW" Name="C97" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C11" DefaultId="DataItem1" />
+        <Measure DataMember="C12" DefaultId="DataItem2" />
+        <Measure DataMember="C13" DefaultId="DataItem3" />
+        <Measure DataMember="C15" DefaultId="DataItem4" />
+        <Dimension DataMember="C18" DefaultId="DataItem5" />
+        <Dimension DataMember="C32" DefaultId="DataItem6" />
+      </DataItems>
+      <GridColumns>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem0" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem1" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem3" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem4" />
+        </GridMeasureColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem5" />
+        </GridDimensionColumn>
+        <GridHyperlinkColumn>
+          <DisplayValue DefaultId="DataItem6" />
+        </GridHyperlinkColumn>
+      </GridColumns>
+      <GridOptions />
+      <ColumnFilterOptions />
+    </Grid>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C11" DefaultId="DataItem1" />
+        <Measure DataMember="C12" DefaultId="DataItem2" />
+        <Measure DataMember="C13" DefaultId="DataItem3" />
+        <Measure DataMember="C14" DefaultId="DataItem4" />
+        <Measure DataMember="C79" SummaryType="Count" DefaultId="DataItem5" />
+        <Measure DataMember="C33" SummaryType="Count" DefaultId="DataItem6" />
+        <Measure DataMember="C69" DefaultId="DataItem7" />
+        <Measure DataMember="C89" SummaryType="Count" DefaultId="DataItem8" />
+        <Measure DataMember="C4" SummaryType="Count" DefaultId="DataItem9" />
+        <Dimension DataMember="C10" DefaultId="DataItem10" />
+        <Dimension DataMember="C13" DefaultId="DataItem11" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem10" />
+        <Argument DefaultId="DataItem11" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem0" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem4" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem5" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem6" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem7" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem8" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem9" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Pie ComponentName="pieDashboardItem1" Name="Pies 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C11" DefaultId="DataItem1" />
+        <Measure DataMember="C14" DefaultId="DataItem2" />
+        <Measure DataMember="C32" SummaryType="Count" DefaultId="DataItem3" />
+        <Measure DataMember="C32" SummaryType="Count" DefaultId="DataItem4" />
+        <Measure DataMember="C42" SummaryType="Max" DefaultId="DataItem5" />
+      </DataItems>
+      <Values>
+        <Value DefaultId="DataItem0" />
+        <Value DefaultId="DataItem1" />
+        <Value DefaultId="DataItem2" />
+        <Value DefaultId="DataItem3" />
+        <Value DefaultId="DataItem4" />
+        <Value DefaultId="DataItem5" />
+      </Values>
+    </Pie>
+    <ChoroplethMap ComponentName="choroplethMapDashboardItem1" Name="Choropleth Map 1" DataSource="sqlDataSource1" DataMember="T_KW" AttributeName="NAME">
+      <DataItems>
+        <Dimension DataMember="C11" DefaultId="DataItem0" />
+        <Measure DataMember="C11" DefaultId="DataItem1" />
+      </DataItems>
+      <ViewArea TopLatitude="83.64513000000001" BottomLatitude="-55.61182999999996" LeftLongitude="-179.99999999999997" CenterPointLatitude="44.08908074480383" CenterPointLongitude="10.098071356993813" />
+      <MapLegend />
+      <WeightedLegend />
+      <AttributeDimension DefaultId="DataItem0" />
+      <Maps>
+        <ValueMap>
+          <Value DefaultId="DataItem1" />
+          <UniformScale />
+        </ValueMap>
+      </Maps>
+    </ChoroplethMap>
+    <Treemap ComponentName="treemapDashboardItem1" Name="Treemap 1" ParentContainer="groupDashboardItem1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C11" DefaultId="DataItem0" />
+        <Measure DataMember="C14" DefaultId="DataItem1" />
+        <Measure DataMember="C16" DefaultId="DataItem2" />
+        <Measure DataMember="C17" SummaryType="Count" DefaultId="DataItem3" />
+        <Measure DataMember="C32" SummaryType="Count" DefaultId="DataItem4" />
+        <Measure DataMember="C8" DefaultId="DataItem5" />
+        <Measure DataMember="C43" DefaultId="DataItem6" />
+        <Measure DataMember="C17" SummaryType="Count" DefaultId="DataItem7" />
+      </DataItems>
+      <Values>
+        <Value DefaultId="DataItem0" />
+        <Value DefaultId="DataItem1" />
+        <Value DefaultId="DataItem2" />
+        <Value DefaultId="DataItem3" />
+        <Value DefaultId="DataItem4" />
+        <Value DefaultId="DataItem5" />
+        <Value DefaultId="DataItem6" />
+        <Value DefaultId="DataItem7" />
+      </Values>
+    </Treemap>
+  </Items>
+  <Groups>
+    <Group ComponentName="groupDashboardItem1" Name="Group 1" />
+  </Groups>
+  <ColorScheme>
+    <Entry DataSource="sqlDataSource1" DataMember="T_KW" Color="-9711128">
+      <MeasureKey>
+        <Definition DataMember="C10" />
+      </MeasureKey>
+    </Entry>
+    <Entry DataSource="sqlDataSource1" DataMember="T_KW" Color="-5381651">
+      <MeasureKey>
+        <Definition DataMember="C11" />
+      </MeasureKey>
+    </Entry>
+    <Entry DataSource="sqlDataSource1" DataMember="T_KW" Color="-4997912">
+      <MeasureKey>
+        <Definition DataMember="C43" />
+      </MeasureKey>
+    </Entry>
+    <Entry DataSource="sqlDataSource1" DataMember="T_KW" Color="-6566703">
+      <MeasureKey>
+        <Definition DataMember="C8" />
+      </MeasureKey>
+    </Entry>
+    <Entry DataSource="sqlDataSource1" DataMember="T_KW" Color="-5657941">
+      <MeasureKey>
+        <Definition DataMember="C89" SummaryType="Count" />
+      </MeasureKey>
+    </Entry>
+  </ColorScheme>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutItem DashboardItem="pieDashboardItem1" />
+        <LayoutItem DashboardItem="choroplethMapDashboardItem1" />
+      </LayoutGroup>
+      <LayoutGroup DashboardItem="groupDashboardItem1">
+        <LayoutItem DashboardItem="treemapDashboardItem1" />
+      </LayoutGroup>
+      <LayoutItem DashboardItem="chartDashboardItem1" />
+      <LayoutItem DashboardItem="gridDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

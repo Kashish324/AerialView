@@ -4,7 +4,6 @@ using DevExpress.XtraReports.Web.Extensions;
 using final_aerialview.Data;
 using final_aerialview.Services;
 using Microsoft.AspNetCore.Authentication.Cookies;
-
 using DevExpress.DashboardAspNetCore;
 using DevExpress.DashboardWeb;
 using Microsoft.Extensions.FileProviders;
@@ -43,7 +42,6 @@ builder.Services.AddTransient<ReportStorageWebExtension>(serviceProvider =>
     return new CustomReportStorageWebExtension(
         Path.Combine(Directory.GetCurrentDirectory(), "Reports"),
         serviceProvider.GetRequiredService<DataAccess>()
-
     );
 });
 
@@ -51,13 +49,23 @@ builder.Services.AddTransient<ReportStorageWebExtension>(serviceProvider =>
 // Configure DevExpress Dashboard storage
 IFileProvider? fileProvider = builder.Environment.ContentRootFileProvider;
 IConfiguration? configuration = builder.Configuration;
+
+string dashboardFolderPath = Path.Combine(Directory.GetCurrentDirectory(), "Dashboards");
+
+if (!Directory.Exists(dashboardFolderPath))
+{
+    Directory.CreateDirectory(dashboardFolderPath);
+}
+
 builder.Services.AddScoped<DashboardConfigurator>((IServiceProvider serviceProvider) =>
 {
     DashboardConfigurator configurator = new DashboardConfigurator();
-    configurator.SetDashboardStorage(new DashboardFileStorage(fileProvider.GetFileInfo("Data/Dashboards").PhysicalPath));
+    configurator.SetDashboardStorage(new DashboardFileStorage(dashboardFolderPath));
     configurator.SetConnectionStringsProvider(new DashboardConnectionStringsProvider(configuration));
     return configurator;
 });
+// Add this in ConfigureServices method
+builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.GetCurrentDirectory()));
 
 
 
@@ -132,6 +140,13 @@ app.MapControllerRoute(
     pattern: "{parentMenu}/{submenu}",
     defaults: new { controller = "Submenu", action = "HandleSubmenu" }
 );
+
+app.MapControllerRoute(
+    name: "DashboardFolder",
+    pattern: "DashboardFolder",
+    defaults: new { controller = "DashboardFolder", action = "DashInfo" }
+);
+
 
 app.MapControllerRoute(
     name: "default",

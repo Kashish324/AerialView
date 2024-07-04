@@ -82,8 +82,6 @@ namespace final_aerialview.Controllers
                 RptId = rptId,
                 PdfImageData = pdfImageData,
             };
-
-
             return View(viewModel);
         }
 

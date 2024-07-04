@@ -290,12 +290,63 @@
         </LayoutTemplate>
       </Card>
     </Card>
+    <Gauge ComponentName="gaugeDashboardItem1" Name="Gauges 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C10" SummaryType="Average" DefaultId="DataItem0" />
+        <Measure DataMember="C12" DefaultId="DataItem1" />
+        <Measure DataMember="C18" SummaryType="CountDistinct" DefaultId="DataItem2" />
+      </DataItems>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem0" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem1" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem2" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+    </Gauge>
+    <BubbleMap ComponentName="bubbleMapDashboardItem1" Name="Map 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Dimension DataMember="C12" DefaultId="DataItem0" />
+        <Dimension DataMember="C12" DefaultId="DataItem1" />
+        <Measure DataMember="C10" DefaultId="DataItem2" />
+        <Measure DataMember="C11" DefaultId="DataItem3" />
+        <Measure DataMember="C17" SummaryType="Count" DefaultId="DataItem4" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem0" />
+        <Dimension DefaultId="DataItem1" />
+      </HiddenDimensions>
+      <HiddenMeasures>
+        <Measure DefaultId="DataItem4" />
+      </HiddenMeasures>
+      <ViewArea TopLatitude="83.64513000000001" BottomLatitude="-55.61182999999996" LeftLongitude="-179.99999999999997" CenterPointLatitude="44.08908074480383" CenterPointLongitude="1.4210854715202004E-13" />
+      <MapLegend />
+      <WeightedLegend />
+      <Weight DefaultId="DataItem2" />
+      <Color DefaultId="DataItem3" />
+      <UniformScale />
+    </BubbleMap>
   </Items>
   <LayoutTree>
     <LayoutGroup>
-      <LayoutItem DashboardItem="cardDashboardItem1" />
       <LayoutItem DashboardItem="chartDashboardItem1" />
-      <LayoutItem DashboardItem="gridDashboardItem1" />
+      <LayoutGroup Orientation="Vertical">
+        <LayoutItem DashboardItem="bubbleMapDashboardItem1" Weight="0.7073760580411125" />
+        <LayoutItem DashboardItem="gridDashboardItem1" Weight="0.7073760580411125" />
+        <LayoutItem DashboardItem="cardDashboardItem1" Weight="1.2926239419588876" />
+        <LayoutItem DashboardItem="gaugeDashboardItem1" Weight="1.2926239419588876" />
+      </LayoutGroup>
     </LayoutGroup>
   </LayoutTree>
 </Dashboard>

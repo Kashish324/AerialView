@@ -218,10 +218,8 @@ namespace final_aerialview.Data
                         data.DashId,
                         data.DashName,
                         data.DashPath,
-                        DashStatus = data.DashStatus ? true : false, // Ensure it's a boolean value
-                        DashDefault = data.DashDefault ? true : false, // Ensure it's a boolean value
-
-                        
+                        DashStatus = data.DashStatus ? true : false,
+                        DashDefault = data.DashDefault ? true : false,
                     };
 
                     connection.Execute(sql, parameters);
@@ -229,6 +227,7 @@ namespace final_aerialview.Data
 
                 var test = updatedData.Select(s => s.DashId).FirstOrDefault();
 
+                //<> = not equal to
                 var sql1 = $"update DashboardMaster set DashDefault = 'false' where DashId <> {test}";
                 connection.Execute(sql1);
             }

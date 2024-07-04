@@ -1,0 +1,14 @@
+﻿ @model Microsoft.Extensions.FileProviders.IDirectoryContents
+
+@{
+    ViewData["Title"] = "Dashboard Folder Contents";
+}
+
+<h1>Dashboard Folder Contents</h1>
+
+<ul>
+    @foreach (var item in Model)
+    {
+        <li>@item.Name</li>
+    }
+</ul>
