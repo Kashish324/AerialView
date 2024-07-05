@@ -19,6 +19,7 @@ namespace final_aerialview.Controllers
         public IActionResult DashInfo()
         {
             var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
+            ViewBag.Contents = contents;
             return View(contents);
         }
     }

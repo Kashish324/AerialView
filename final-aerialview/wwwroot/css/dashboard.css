@@ -1,5 +1,4 @@
-﻿/* Custom CSS for showing icon on hover */
-.hover-icon {
+﻿.hover-icon {
     opacity: 0; /* Initially hide the icon */
     transition: opacity 0.3s ease; /* Hide the icon by default */
 }
@@ -11,4 +10,9 @@ tr:hover .hover-icon {
 #dialog{
     display:none;
 }
+
+.modal-backdrop {
+    display: none;
+}
+
 

@@ -1,5 +1,4 @@
-﻿
-namespace final_aerialview.Models
+﻿namespace final_aerialview.Models
 {
     public class DashboardDataModel
     {

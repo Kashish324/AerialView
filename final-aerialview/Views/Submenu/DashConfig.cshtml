@@ -30,16 +30,19 @@
                         @item.DashPath
                     </td>
                     <td class="text-center align-middle p-0">
-                        <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill" onclick="updateDashboardStatus('@item.DashId')" style="cursor: pointer;">@((item.DashStatus) ? "Active" : "Inactive")</span>
+                        <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill " onclick="updateDashboardStatus('@item.DashId')" style="cursor: pointer;">@((item.DashStatus) ? "Active" : "Inactive")</span>
                     </td>
                     <td class="text-center align-middle p-0">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-@item.DashId" @(item.DashDefault ? "checked" : "") style="cursor: pointer;" onchange="updateRadioValue('@item.DashId')">
+                            <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-@item.DashId" @(item.DashDefault ? "checked" : "") style="cursor: pointer;" onchange="updateRadioValue('@item.DashId')">
                         </div>
                     </td>
                     <td class="text-center align-middle p-0">
                         <input type="file" name="dialog" id="dialog-@item.DashId" hidden />
-                        <button class="btn border-none p-0" onclick="dialogHandling('@item.DashId')"><i class="ri-folder-open-fill text-warning"></i></button>
+                        @* <button class="btn border-none p-0" onclick="dialogHandling('@item.DashId')"><i class="ri-folder-open-fill text-warning"></i></button> *@
+                        <a href="#" class="btn border-none p-0 " title="Get Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal">
+                            <i class="ri-folder-open-fill text-warning "></i>
+                        </a>
                     </td>
                 </tr>
             }
@@ -53,10 +56,26 @@
         <i class="bi bi-database-add"></i> Update
     </button>
 
-    <a href="/DashboardFolder/DashInfo" class="btn bg-info-subtle btn-sm border-info-subtle shadow fw-medium" title="Get Dashboard">
-        <i class="ri-dashboard-2-line"></i> Get Dashboard
-    </a>
-
+    <!-- Modal -->
+    <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="getDashboardModal" tabindex="-1" aria-labelledby="getDashboardModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-6" id="getDashboardModalLabel">Dashboard Information</h1>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="dashboard-content">
+                    <!-- Content will be loaded here -->
+                    <div class="spinner-grow" role="status">
+                        <span class="visually-hidden">Loading...</span>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
 </div>
 
@@ -77,11 +96,11 @@
     var addBtn = document.getElementById('addBtn');
     var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
 
-    var getDashBtn = document.getElementById('getDashBoard');
-    var directory = ;
-    getDashBtn.addEventListener('click', function () {
-        console.log(directory)
-    })
+    // var getDashBtn = document.getElementById('getDashBoard');
+    // var directory = ;
+    // getDashBtn.addEventListener('click', function () {
+    //     console.log(directory)
+    // })
 
 
     // Update dashboard active/inactive status
@@ -249,6 +268,19 @@
         });
     }
 
+
+    //get saved dashboard list from /dashboardFolder/DashInfo
+    $('#getDashboardModal').on('show.bs.modal', function () {
+        $.ajax({
+            url: '/DashboardFolder/DashInfo',
+            success: function (data) {
+                $('#dashboard-content').html(data);
+            },
+            error: function () {
+                $('#dashboard-content').html('<p>Error loading dashboard information.</p>');
+            }
+        });
+    });
 
 
 
