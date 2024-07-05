@@ -66,36 +66,36 @@
       <GridOptions />
       <ColumnFilterOptions />
     </Grid>
-    <Pie ComponentName="pieDashboardItem1" Name="Pies 1" DataSource="sqlDataSource1" DataMember="Chocolate_Ripple_Prep">
+    <Pie ComponentName="pieDashboardItem1" Name="Pies 1" DataSource="sqlDataSource1" DataMember="Chocolate_Ripple_Prep" ShowPieCaptions="false">
       <DataItems>
-        <Measure DataMember="chilling_Act_Temp" SummaryType="Count" DefaultId="DataItem0" />
-        <Measure DataMember="Chilling_temp" SummaryType="Count" DefaultId="DataItem1" />
-        <Measure DataMember="Cocount_Batch_id" SummaryType="Count" DefaultId="DataItem2" />
-        <Measure DataMember="Cooling_Temp" SummaryType="Count" DefaultId="DataItem3" />
-        <Measure DataMember="Heating_Time" SummaryType="Count" DefaultId="DataItem4" />
-        <Measure DataMember="Cooling_Temp" SummaryType="Count" DefaultId="DataItem5" />
-        <Measure DataMember="Chilling_time" SummaryType="Count" DefaultId="DataItem6" />
-        <Measure DataMember="Cooling_time" SummaryType="Count" DefaultId="DataItem7" />
-        <Measure DataMember="EndDate" SummaryType="Count" DefaultId="DataItem8" />
-        <Dimension DataMember="chilling_Act_Temp" DefaultId="DataItem9" />
-        <Dimension DataMember="chilling_Act_Temp" DefaultId="DataItem10" />
+        <Dimension DataMember="chilling_Act_Temp" DefaultId="DataItem0" />
+        <Dimension DataMember="chilling_Act_Temp" DefaultId="DataItem1" />
+        <Measure DataMember="Chilling_temp" SummaryType="Count" DefaultId="DataItem2" />
+        <Measure DataMember="Cocount_Batch_id" SummaryType="Count" DefaultId="DataItem3" />
+        <Measure DataMember="Cooling_Temp" SummaryType="Count" DefaultId="DataItem4" />
+        <Measure DataMember="Heating_Time" SummaryType="Count" DefaultId="DataItem5" />
+        <Measure DataMember="Cooling_Temp" SummaryType="Count" DefaultId="DataItem6" />
+        <Measure DataMember="Chilling_time" SummaryType="Count" DefaultId="DataItem7" />
+        <Measure DataMember="Cooling_time" SummaryType="Count" DefaultId="DataItem8" />
+        <Measure DataMember="EndDate" SummaryType="Count" DefaultId="DataItem9" />
+        <Measure DataMember="chilling_Act_Temp" SummaryType="Count" DefaultId="DataItem10" />
       </DataItems>
-      <SeriesDimensions>
-        <SeriesDimension DefaultId="DataItem10" />
-      </SeriesDimensions>
-      <Arguments>
-        <Argument DefaultId="DataItem9" />
-      </Arguments>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem0" />
+        <Dimension DefaultId="DataItem1" />
+      </HiddenDimensions>
+      <HiddenMeasures>
+        <Measure DefaultId="DataItem2" />
+        <Measure DefaultId="DataItem3" />
+        <Measure DefaultId="DataItem4" />
+        <Measure DefaultId="DataItem5" />
+        <Measure DefaultId="DataItem6" />
+        <Measure DefaultId="DataItem7" />
+        <Measure DefaultId="DataItem8" />
+        <Measure DefaultId="DataItem9" />
+      </HiddenMeasures>
       <Values>
-        <Value DefaultId="DataItem0" />
-        <Value DefaultId="DataItem1" />
-        <Value DefaultId="DataItem2" />
-        <Value DefaultId="DataItem3" />
-        <Value DefaultId="DataItem4" />
-        <Value DefaultId="DataItem5" />
-        <Value DefaultId="DataItem6" />
-        <Value DefaultId="DataItem7" />
-        <Value DefaultId="DataItem8" />
+        <Value DefaultId="DataItem10" />
       </Values>
     </Pie>
     <BubbleMap ComponentName="bubbleMapDashboardItem1" Name="Bubble Map 1" DataSource="sqlDataSource1" DataMember="Chocolate_Ripple_Prep">
@@ -191,6 +191,8 @@
       </Card>
     </Card>
     <TextBox ComponentName="textBoxDashboardItem1" Name="Text Box 1" ParentContainer="groupDashboardItem1" DataSource="sqlDataSource1" DataMember="Chocolate_Ripple_Prep" />
+    <Gauge ComponentName="gaugeDashboardItem1" Name="Gauges 1" DataSource="sqlDataSource1" DataMember="Chocolate_Ripple_Prep" />
+    <DateFilter ComponentName="dateFilterDashboardItem1" Name="Date Filter 1" DataSource="sqlDataSource1" DataMember="Chocolate_Ripple_Prep" />
   </Items>
   <Groups>
     <Group ComponentName="groupDashboardItem1" Name="Group 1">
@@ -200,18 +202,22 @@
   <LayoutTree>
     <LayoutGroup>
       <LayoutGroup Orientation="Vertical">
-        <LayoutItem DashboardItem="pieDashboardItem1" />
+        <LayoutGroup>
+          <LayoutItem DashboardItem="pieDashboardItem1" />
+          <LayoutItem DashboardItem="dateFilterDashboardItem1" />
+        </LayoutGroup>
         <LayoutGroup DashboardItem="groupDashboardItem1">
           <LayoutItem DashboardItem="textBoxDashboardItem1" />
         </LayoutGroup>
       </LayoutGroup>
       <LayoutGroup Orientation="Vertical">
         <LayoutItem DashboardItem="cardDashboardItem3" />
+        <LayoutItem DashboardItem="cardDashboardItem1" />
         <LayoutItem DashboardItem="cardDashboardItem2" />
       </LayoutGroup>
       <LayoutGroup Orientation="Vertical">
         <LayoutItem DashboardItem="cardDashboardItem4" />
-        <LayoutItem DashboardItem="cardDashboardItem1" />
+        <LayoutItem DashboardItem="gaugeDashboardItem1" />
       </LayoutGroup>
       <LayoutGroup Orientation="Vertical">
         <LayoutItem DashboardItem="bubbleMapDashboardItem1" />

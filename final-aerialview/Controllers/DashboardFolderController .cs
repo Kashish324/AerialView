@@ -1,7 +1,6 @@
 ﻿using final_aerialview.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
-using System.IO;
 
 namespace final_aerialview.Controllers
 {
@@ -16,6 +15,7 @@ namespace final_aerialview.Controllers
             _dashboardFolderPath = "Dashboards";
         }
 
+        //taking all the files in dashboards folder to set in dash configuration
         public IActionResult DashInfo()
         {
             var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
@@ -24,29 +24,3 @@ namespace final_aerialview.Controllers
         }
     }
 }
-
-//using final_aerialview.Data;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.Extensions.FileProviders;
-//using System.IO;
-
-//namespace final_aerialview.Controllers
-//{
-//    public class DashboardFolderController : BaseController
-//    {
-//        private readonly IFileProvider _fileProvider;
-//        private readonly string _dashboardFolderPath;
-
-//        public DashboardFolderController(DataAccess dataAccess, IFileProvider fileProvider) : base(dataAccess)
-//        {
-//            _fileProvider = fileProvider;
-//            _dashboardFolderPath = "Dashboards";
-//        }
-
-//        public IActionResult DashInfo()
-//        {
-//            var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
-//            return View(contents);
-//        }
-//    }
-//}

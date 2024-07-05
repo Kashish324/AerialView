@@ -199,7 +199,7 @@ namespace final_aerialview.Data
         //dashboard master table
         public IEnumerable<DashboardDataModel> GetDashboardMasterData()
         {
-            string query = "SELECT * FROM DashboardMaster";
+            string query = "SELECT * FROM DashboardMaster order by DashId";
             return ExecuteQuery<DashboardDataModel>(query);
         }
 
@@ -232,14 +232,6 @@ namespace final_aerialview.Data
                 connection.Execute(sql1);
             }
         }
-
-
-
-
-
-
-
-
 
         public void InsertDashboardData(IEnumerable<DashboardDataModel> newData)
         {

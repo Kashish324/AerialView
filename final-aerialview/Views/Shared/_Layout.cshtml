@@ -47,7 +47,6 @@
     <script>
         window.jsPDF = window.jspdf.jsPDF;
     </script>
-    @* @RenderSection("ExternalDependencies", false) *@
 </head>
 
 @{
@@ -63,9 +62,8 @@
     };
 }
 
+
 <body>
-
-
     @if (Context.Request.Path == "/Home/Index")
     {
         <div class="image-container vh-100 w-100">

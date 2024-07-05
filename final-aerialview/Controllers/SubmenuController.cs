@@ -43,11 +43,8 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         ViewBag.Submenu = submenu;
         ViewData["MenuName"] = submenu;
 
-        ViewData["Iframe"] = @"<iframe name='myIframe' id='myIframe' width='200' height='200' src='/DashboardFolder/DashInfo'></iframe> ";
-
         return View(dashboardListData);
     }
-
 
 
     [HttpPost]
