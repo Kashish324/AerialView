@@ -1,4 +1,4 @@
-﻿@{
+﻿@* @{
     ViewData["Title"] = "Login";
     Layout = "_AuthLayout.cshtml";
 }
@@ -12,14 +12,11 @@
 
         <form id="account" method="post">
             <br />
-            @* <hr /> *@
             <div class=" mt-5 my-2 mb-md-1 mt-md-3 ">
                 <input class="form-control border-0 border-bottom rounded-0 shadow-sm" type="text" id="userId" name="userId" placeholder="User Id" autocomplete="userId" style="background-color: transparent; font-size: 14px !important;" required />
-                @* <label class="form-label fs-6">User Id</label> *@
             </div>
             <div class=" mt-2 mb-3 mb-md-2 mt-md-1 pt-3 pb-2 ">
                 <input class="form-control border-0 border-bottom rounded-0 shadow-sm" type="password" id="password" name="password" autocomplete="current-password" placeholder="Password" style="background-color: transparent; font-size: 14px !important;" required />
-                @* <label class="form-label  bg-transparent fs-6">Password</label> *@
             </div>
             <div>
                 <button id="login-submit" type="submit" class="w-25 mt-2 btn btn-sm text-capitalize  border-0 text-white text-nowrap shadow-lg overflow-hidden" style="background-color: #1c75c7;" disabled>Log in</button>
@@ -32,12 +29,62 @@
 
         </form>
     </section>
-
-
 </div>
 
+@section Scripts {
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const userIdInput = document.getElementById('userId');
+            const passwordInput = document.getElementById('password');
+            const loginButton = document.getElementById('login-submit');
+
+            // Clear the input fields on page load
+            userIdInput.value = '';
+            passwordInput.value = '';
+
+            function toggleButtonState() {
+                loginButton.disabled = !(userIdInput.value.trim() && passwordInput.value.trim());
+            }
+
+            userIdInput.addEventListener('input', toggleButtonState);
+            passwordInput.addEventListener('input', toggleButtonState);
+        });
+    </script>
+}
+
+ *@
+@{
+    ViewData["Title"] = "Login";
+    Layout = "_AuthLayout.cshtml";
+}
 
 
+<div class="login-form ">
+    <section class=" mt-2">
+        <div class="login-font fw-bold text-center" style="color: #1C75C7; text-shadow: 2px 2px 4px rgba(0, 0, 9, 0.3);">
+            AerialView Reporting Software
+        </div>
+
+        <form id="account" method="post">
+            <br />
+            <div class=" mt-5 my-2 mb-md-1 mt-md-3 ">
+                <input class="form-control border-0 border-bottom rounded-0 shadow-sm" type="text" id="userId" name="userId" placeholder="User Id" autocomplete="userId" style="background-color: transparent; font-size: 14px !important;" required />
+            </div>
+            <div class=" mt-2 mb-3 mb-md-2 mt-md-1 pt-3 pb-2 ">
+                <input class="form-control border-0 border-bottom rounded-0 shadow-sm" type="password" id="password" name="password" autocomplete="current-password" placeholder="Password" style="background-color: transparent; font-size: 14px !important;" required />
+            </div>
+            <div>
+                <button id="login-submit" type="submit" class="w-25 mt-2 btn btn-sm text-capitalize  border-0 text-white text-nowrap shadow-lg overflow-hidden" style="background-color: #1c75c7;" disabled>Log in</button>
+            </div>
+
+            @if (ViewBag.Message != null)
+            {
+                <p class="text-danger">@ViewBag.Message</p>
+            }
+
+        </form>
+    </section>
+</div>
 
 @section Scripts {
     <script>
@@ -53,5 +100,60 @@
             userIdInput.addEventListener('input', toggleButtonState);
             passwordInput.addEventListener('input', toggleButtonState);
         });
+
+        // Function to detect autofill status for both password and user ID fields
+        function detectAutofill(element) {
+            return new Promise(resolve => {
+                setTimeout(() => {
+                    const computedStyle = window.getComputedStyle(element, null);
+
+                    // Check for common indicators of autofill
+                    const isAutofilled = computedStyle.getPropertyValue('appearance') === 'none' ||
+                        computedStyle.getPropertyValue('background-color') !== 'rgba(0, 0, 0, 0)' ||
+                        computedStyle.getPropertyValue('background-image') !== 'none';
+
+                    // Logging to console
+                    console.log(`Element autofill detection result: ${isAutofilled}`);
+
+                    resolve(isAutofilled);
+                }, 600);
+            });
+        }
+
+        // Function to handle enabling/disabling login button based on autofill status
+        function handleLoginButton() {
+            const passwordElement = document.getElementById('password');
+            const userIdElement = document.getElementById('userId');
+            const loginButton = document.getElementById('login-submit');
+
+            // Detect autofill for both fields
+            Promise.all([
+                detectAutofill(passwordElement),
+                detectAutofill(userIdElement)
+            ])
+                .then(([isPasswordAutofilled, isUserIdAutofilled]) => {
+                    if (isPasswordAutofilled && isUserIdAutofilled) {
+                        // Enable the login button
+                        loginButton.removeAttribute('disabled');
+                    } else {
+                        // Disable the login button
+                        loginButton.setAttribute('disabled', 'disabled');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error detecting autofill:', error);
+                });
+        }
+
+        // Event listener to trigger handleLoginButton on input change
+        document.getElementById('password').addEventListener('input', handleLoginButton);
+        document.getElementById('userId').addEventListener('input', handleLoginButton);
+
+        // Initial check on page load
+        handleLoginButton();
+
+
     </script>
 }
+
+
