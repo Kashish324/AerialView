@@ -214,7 +214,8 @@
         </Pane>
       </Panes>
     </Chart>
-    <Card ComponentName="cardDashboardItem1" Name="Cards 1" DataSource="sqlDataSource1" DataMember="T_KW">
+    <Card ComponentName="cardDashboardItem1" Name="Cards 1" DataSource="sqlDataSource1" DataMember="T_KW" IsMasterFilterCrossDataSource="true">
+      <InteractivityOptions IgnoreMasterFilters="true" MasterFilterMode="Single" IsDrillDownEnabled="true" />
       <DataItems>
         <Measure DataMember="C10" DefaultId="DataItem0" />
         <Measure DataMember="C12" DefaultId="DataItem1" />

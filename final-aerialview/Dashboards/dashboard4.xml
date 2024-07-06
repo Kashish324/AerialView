@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="New Dashboard" />
+  <DataSources>
+    <SqlDataSource Name="T_d1" ComponentName="sqlDataSource1">
+      <Connection Name="pgl_connection" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="T_d1">
+        <Tables>
+          <Table Name="T_d1" />
+        </Tables>
+        <Columns>
+          <Column Table="T_d1" Name="DateAndTime" />
+          <Column Table="T_d1" Name="Device_name" />
+          <Column Table="T_d1" Name="VPP_RY" />
+          <Column Table="T_d1" Name="VPP_YB" />
+          <Column Table="T_d1" Name="VPP_RB" />
+          <Column Table="T_d1" Name="AMP_1" />
+          <Column Table="T_d1" Name="AMP_2" />
+          <Column Table="T_d1" Name="AMP_3" />
+          <Column Table="T_d1" Name="KVA_R" />
+          <Column Table="T_d1" Name="KVA_Y" />
+          <Column Table="T_d1" Name="KVA_B" />
+          <Column Table="T_d1" Name="KW_R" />
+          <Column Table="T_d1" Name="KW_Y" />
+          <Column Table="T_d1" Name="KW_B" />
+          <Column Table="T_d1" Name="KVAR_R" />
+          <Column Table="T_d1" Name="KVAR_Y" />
+          <Column Table="T_d1" Name="KVAR_B" />
+          <Column Table="T_d1" Name="PF_R" />
+          <Column Table="T_d1" Name="PF_Y" />
+          <Column Table="T_d1" Name="PF_B" />
+          <Column Table="T_d1" Name="THDv_R" />
+          <Column Table="T_d1" Name="THDv_Y" />
+          <Column Table="T_d1" Name="THDv_B" />
+          <Column Table="T_d1" Name="THDI_R" />
+          <Column Table="T_d1" Name="THDI_Y" />
+          <Column Table="T_d1" Name="THDI_B" />
+          <Column Table="T_d1" Name="Vavg" />
+          <Column Table="T_d1" Name="Iavg" />
+          <Column Table="T_d1" Name="KVA" />
+          <Column Table="T_d1" Name="KW" />
+          <Column Table="T_d1" Name="KVAR" />
+          <Column Table="T_d1" Name="PF" />
+          <Column Table="T_d1" Name="Frequency" />
+          <Column Table="T_d1" Name="KWH" />
+          <Column Table="T_d1" Name="KVAH" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <RangeFilter ComponentName="rangeFilterDashboardItem1" Name="Range Filter 1" DataSource="sqlDataSource1" DataMember="T_d1">
+      <DataItems>
+        <Measure DataMember="AMP_1" DefaultId="DataItem0" />
+        <Measure DataMember="AMP_2" DefaultId="DataItem1" />
+        <Measure DataMember="AMP_3" DefaultId="DataItem2" />
+        <Dimension DataMember="DateAndTime" DefaultId="DataItem3" />
+      </DataItems>
+      <Argument DefaultId="DataItem3" />
+      <Series>
+        <Simple SeriesType="Line">
+          <Value DefaultId="DataItem0" />
+        </Simple>
+        <Simple SeriesType="Line">
+          <Value DefaultId="DataItem1" />
+        </Simple>
+        <Simple SeriesType="Line">
+          <Value DefaultId="DataItem2" />
+        </Simple>
+      </Series>
+    </RangeFilter>
+    <ScatterChart ComponentName="scatterChartDashboardItem1" Name="Scatter Chart 1" DataSource="sqlDataSource1" DataMember="T_d1">
+      <DataItems>
+        <Measure DataMember="AMP_1" DefaultId="DataItem0" />
+        <Measure DataMember="Device_name" SummaryType="Count" DefaultId="DataItem1" />
+        <Measure DataMember="Vavg" DefaultId="DataItem2" />
+      </DataItems>
+      <MeasureX DefaultId="DataItem0" />
+      <MeasureY DefaultId="DataItem1" />
+      <MeasureWeight DefaultId="DataItem2" />
+    </ScatterChart>
+    <ScatterChart ComponentName="scatterChartDashboardItem2" Name="Scatter Chart 2" DataSource="sqlDataSource1" DataMember="T_d1">
+      <DataItems>
+        <Measure DataMember="AMP_2" DefaultId="DataItem0" />
+        <Measure DataMember="Device_name" SummaryType="Count" DefaultId="DataItem1" />
+        <Measure DataMember="Vavg" DefaultId="DataItem2" />
+      </DataItems>
+      <MeasureX DefaultId="DataItem0" />
+      <MeasureY DefaultId="DataItem1" />
+      <MeasureWeight DefaultId="DataItem2" />
+    </ScatterChart>
+    <ScatterChart ComponentName="scatterChartDashboardItem3" Name="Scatter Chart 3" DataSource="sqlDataSource1" DataMember="T_d1">
+      <DataItems>
+        <Measure DataMember="AMP_3" DefaultId="DataItem0" />
+        <Measure DataMember="Device_name" SummaryType="Count" DefaultId="DataItem1" />
+        <Measure DataMember="Vavg" DefaultId="DataItem2" />
+        <Dimension DataMember="DateAndTime" DefaultId="DataItem3" />
+      </DataItems>
+      <MeasureX DefaultId="DataItem0" />
+      <MeasureY DefaultId="DataItem1" />
+      <MeasureWeight DefaultId="DataItem2" />
+      <Dimensions>
+        <Dimension DefaultId="DataItem3" />
+      </Dimensions>
+    </ScatterChart>
+    <Card ComponentName="cardDashboardItem1" Name="Cards 1" DataSource="sqlDataSource1" DataMember="T_d1">
+      <DataItems>
+        <Measure DataMember="AMP_1" DefaultId="DataItem0" />
+        <Measure DataMember="AMP_1" SummaryType="Max" DefaultId="DataItem1" />
+        <Dimension DataMember="AMP_3" DefaultId="DataItem2" />
+      </DataItems>
+      <SeriesDimensions>
+        <SeriesDimension DefaultId="DataItem2" />
+      </SeriesDimensions>
+      <Card>
+        <ActualValue DefaultId="DataItem0" />
+        <TargetValue DefaultId="DataItem1" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+        <LayoutTemplate MinWidth="100" Type="Lightweight">
+          <MainValue Visible="true" ValueType="ActualValue" DimensionIndex="0" />
+          <SubValue Visible="true" ValueType="Title" DimensionIndex="0" />
+          <BottomValue Visible="true" ValueType="Subtitle" DimensionIndex="0" />
+          <DeltaIndicator Visible="false" />
+          <Sparkline Visible="false" />
+        </LayoutTemplate>
+      </Card>
+    </Card>
+    <Pie ComponentName="pieDashboardItem1" Name="Pies 1" DataSource="sqlDataSource1" DataMember="T_d1">
+      <DataItems>
+        <Measure DataMember="AMP_1" DefaultId="DataItem0" />
+        <Measure DataMember="AMP_2" DefaultId="DataItem1" />
+        <Measure DataMember="AMP_3" DefaultId="DataItem2" />
+        <Dimension DataMember="Frequency" DefaultId="DataItem3" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem3" />
+      </Arguments>
+      <Values>
+        <Value DefaultId="DataItem0" />
+        <Value DefaultId="DataItem1" />
+        <Value DefaultId="DataItem2" />
+      </Values>
+    </Pie>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutItem DashboardItem="scatterChartDashboardItem1" />
+        <LayoutItem DashboardItem="scatterChartDashboardItem3" />
+        <LayoutItem DashboardItem="scatterChartDashboardItem2" />
+      </LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutItem DashboardItem="cardDashboardItem1" />
+        <LayoutItem DashboardItem="pieDashboardItem1" />
+      </LayoutGroup>
+      <LayoutItem DashboardItem="rangeFilterDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

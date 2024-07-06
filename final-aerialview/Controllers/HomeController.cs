@@ -13,14 +13,14 @@ namespace final_aerialview.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            var menuParentData = _dataAccess.GetMenuParentData();
-            var subMenuData = _dataAccess.GetSubMenuData();
-            var childMenuData = _dataAccess.GetChildMenuData();
-            //var userMasterData = _dataAccess.GetUserMasterData();
+            //var menuParentData = _dataAccess.GetMenuParentData();
+            //var subMenuData = _dataAccess.GetSubMenuData();
+            //var childMenuData = _dataAccess.GetChildMenuData();
+            ////var userMasterData = _dataAccess.GetUserMasterData();
 
-            ViewData["MenuParentData"] = menuParentData;
-            ViewData["SubMenuData"] = subMenuData;
-            ViewData["ChildMenuData"] = childMenuData;
+            //ViewData["MenuParentData"] = menuParentData;
+            //ViewData["SubMenuData"] = subMenuData;
+            //ViewData["ChildMenuData"] = childMenuData;
             //ViewData["UserMasterData"] = userMasterData;
 
             return View();
@@ -29,11 +29,6 @@ namespace final_aerialview.Controllers
         public IActionResult NoReportAvailable(int datagridRptid)
         {
             ViewBag.DatagridRptid = datagridRptid;
-            return View();
-        }
-
-        public IActionResult Privacy()
-        {
             return View();
         }
 

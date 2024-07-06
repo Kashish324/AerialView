@@ -1,59 +1,4 @@
-﻿@* @{
-    ViewData["Title"] = "Login";
-    Layout = "_AuthLayout.cshtml";
-}
-
-
-<div class="login-form ">
-    <section class=" mt-2">
-        <div class="login-font fw-bold text-center" style="color: #1C75C7; text-shadow: 2px 2px 4px rgba(0, 0, 9, 0.3);">
-            AerialView Reporting Software
-        </div>
-
-        <form id="account" method="post">
-            <br />
-            <div class=" mt-5 my-2 mb-md-1 mt-md-3 ">
-                <input class="form-control border-0 border-bottom rounded-0 shadow-sm" type="text" id="userId" name="userId" placeholder="User Id" autocomplete="userId" style="background-color: transparent; font-size: 14px !important;" required />
-            </div>
-            <div class=" mt-2 mb-3 mb-md-2 mt-md-1 pt-3 pb-2 ">
-                <input class="form-control border-0 border-bottom rounded-0 shadow-sm" type="password" id="password" name="password" autocomplete="current-password" placeholder="Password" style="background-color: transparent; font-size: 14px !important;" required />
-            </div>
-            <div>
-                <button id="login-submit" type="submit" class="w-25 mt-2 btn btn-sm text-capitalize  border-0 text-white text-nowrap shadow-lg overflow-hidden" style="background-color: #1c75c7;" disabled>Log in</button>
-            </div>
-
-            @if (ViewBag.Message != null)
-            {
-                <p class="text-danger">@ViewBag.Message</p>
-            }
-
-        </form>
-    </section>
-</div>
-
-@section Scripts {
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const userIdInput = document.getElementById('userId');
-            const passwordInput = document.getElementById('password');
-            const loginButton = document.getElementById('login-submit');
-
-            // Clear the input fields on page load
-            userIdInput.value = '';
-            passwordInput.value = '';
-
-            function toggleButtonState() {
-                loginButton.disabled = !(userIdInput.value.trim() && passwordInput.value.trim());
-            }
-
-            userIdInput.addEventListener('input', toggleButtonState);
-            passwordInput.addEventListener('input', toggleButtonState);
-        });
-    </script>
-}
-
- *@
-@{
+﻿@{
     ViewData["Title"] = "Login";
     Layout = "_AuthLayout.cshtml";
 }
@@ -112,8 +57,7 @@
                         computedStyle.getPropertyValue('background-color') !== 'rgba(0, 0, 0, 0)' ||
                         computedStyle.getPropertyValue('background-image') !== 'none';
 
-                    // Logging to console
-                    console.log(`Element autofill detection result: ${isAutofilled}`);
+                    // console.log(`Element autofill detection result: ${isAutofilled}`);
 
                     resolve(isAutofilled);
                 }, 600);

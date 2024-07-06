@@ -84,17 +84,12 @@
             <input type="hidden" name="rptId" value="@Model.RptId" />
 
             <div class="previewBtn">
-                @* <button title="Apply Filter" type="button" class="btn btn-sm border-0 text-white shadow-sm bg-dark  d-flex align-items-center justify-content-center gap-1 bg-success" style="padding: .25rem 0.5rem;"> *@
-                @* Apply<i class="ri-telegram-2-fill mt-1"></i> *@
-                @* <i class="ri-telegram-2-fill"></i> *@
-                @* <i class="ri-telegram-2-fill"></i> *@
-                @* </button> *@
-                <button title="Apply Filter" type="button" class="btn text-warning bg-dark  btn-sm  border-0 "><i class="ri-telegram-2-fill"></i></button>
+                <button title="Apply Filter" type="button" class="btn text-dark bg-white  btn-sm  border-0 "><i class="ri-telegram-2-fill"></i> Apply</button>
             </div>
         </form>
 
         <a class="btn text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3 bottom-0 " title="Reset" onclick="onStateResetClick()">
-            <i class="ri-refresh-line"></i>
+            <i class="ri-refresh-line text-warning"></i>
         </a>
     </div>
 

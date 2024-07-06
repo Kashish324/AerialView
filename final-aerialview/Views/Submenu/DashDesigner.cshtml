@@ -24,10 +24,6 @@
     <script src="~/js/site.min.js"></script>
 </head>
 <body>
-
-    <!-- Add the Web Dashboard with the "clientDashboardControl1" name to a View, specify its size, and set the Working Mode to Designer. -->
-    @* <button id="switchButton" type="button" class="btn btn-sm btn-outline-dark position-absolute top-0 end-0 mt-2 me-2 p-0 px-1 shadow-sm"><i class="ri-eye-2-line"></i> Switch to Viewer</button> *@
-
     <div id="Dashboard" style="position: absolute; left:0;top:0px;right:0;bottom:0;">
         @(Html.DevExpress().Dashboard("clientDashboardControl")
             .ControllerName("DefaultDashboard")
@@ -41,29 +37,5 @@
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
    
-   @*  <script>
-        document.addEventListener("DOMContentLoaded", function () {
-            // Get the dashboard control
-            var control = clientDashboardControl;
-
-
-            // Switch mode function
-            function switchMode() {
-                if (control) {
-                    if (control.isDesignMode) {
-                        control.switchToViewer;
-                        document.getElementById('switchButton').innerHTML = '<i class="ri-eye-2-line"></i> Switch to Designer';
-                        console.log("if")
-                    } else {
-                        control.switchToDesigner;
-                        document.getElementById('switchButton').innerHTML = '<i class="ri-eye-2-line"></i> Switch to Viewer';
-                        console.log("else")
-                    }
-                }
-            }
-            // Attach the switchMode function to the button
-            document.getElementById('switchButton').onclick = switchMode;
-        });
-    </script> *@
 </body>
 </html>

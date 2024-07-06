@@ -80,6 +80,7 @@
 
 </div>
 
+<!--update toaster-->
 <div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
     <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
         <div class="toast-header">
@@ -245,7 +246,7 @@
         }
 
         // Replace with actual AJAX or Fetch API call to send data to server
-        console.log('Updated Rows:', updatedRows);
+        // console.log('Updated Rows:', updatedRows);
 
         // Example using jQuery for AJAX
         $.ajax({
@@ -254,7 +255,7 @@
             contentType: 'application/json',
             data: JSON.stringify(updatedRows),
             success: function (response) {
-                console.log('Data sent successfully');
+                // console.log('Data sent successfully');
                 // Clear updated-row class after successful update
                 var rows = document.querySelectorAll('.updated-row');
                 rows.forEach(function (row) {
