@@ -44,30 +44,33 @@ function sidebarToggleHandling() {
     }
 }
 
-if (sidebar) {
-    sidebar.addEventListener("mouseenter", function () {
-        sidebar.classList.remove("close");
-        sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
-})
-
-}
-
-
-if (sidebar) {
-    var isPinned = sidebar.classList.contains("pinned");
-    sidebar.addEventListener("mouseleave", function () {
-        var isPinned = sidebar.classList.contains("pinned");
-
-        if (!isPinned) {
-            sidebar.classList.add("close");
-            sidebarBtn.style.transform = "rotate(0deg) translateX(0px)";
-        } else {
+function sidebarHandlingOnHover() {
+    if (sidebar) {
+        sidebar.addEventListener("mouseenter", function () {
             sidebar.classList.remove("close");
             sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
-        }
-    })
-   
+        })
+
+    }
+
+
+    if (sidebar) {
+        var isPinned = sidebar.classList.contains("pinned");
+        sidebar.addEventListener("mouseleave", function () {
+            var isPinned = sidebar.classList.contains("pinned");
+
+            if (!isPinned) {
+                sidebar.classList.add("close");
+                sidebarBtn.style.transform = "rotate(0deg) translateX(0px)";
+            } else {
+                sidebar.classList.remove("close");
+                sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
+            }
+        })
+
+    }
 }
+
 
 
 
@@ -150,12 +153,14 @@ function subMenuToggleHandling() {
 initializeSidebarState();
 sidebarPinHandling();
 sidebarToggleHandling();
+sidebarHandlingOnHover();
 menuToggleHandling();
 subMenuToggleHandling();
 
 
 
-//reset state persistence
+
+//reset state persistence of datagrid
 function onStateResetClick() {
     const dataGrid = $("#dataGridContainer").dxDataGrid("instance");
     dataGrid.state(null);

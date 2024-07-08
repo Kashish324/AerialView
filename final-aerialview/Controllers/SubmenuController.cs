@@ -73,6 +73,19 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
     }
 
 
+    [HttpPost]
+    public IActionResult DeleteDashboardByDashId(int dashId)
+    {
+     
+        Console.WriteLine($"Received dashId: {dashId}");
+
+        _dataAccess.DeleteDashById(dashId);
+
+        return Json(new { success = true, message = "Dashboard deleted successfully" });
+    }
+
+
+
     // Add more actions as needed for each submenu view
 
     public IActionResult SubMenuConfiguration(string parentMenu, string submenu)

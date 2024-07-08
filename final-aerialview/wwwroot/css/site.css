@@ -105,7 +105,7 @@ body, html {
     .sidebar .nav-links li {
         position: relative;
         list-style: none;
-        transition: all 0.4s ease;
+        /*transition: all 0.4s ease;*/
     }
 
         .sidebar .nav-links li:hover {
