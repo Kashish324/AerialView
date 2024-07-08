@@ -1,0 +1,232 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="filter dashboard" />
+  <DataSources>
+    <SqlDataSource Name="T1" ComponentName="sqlDataSource1">
+      <Connection Name="Godiva_Pump" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="T1">
+        <Tables>
+          <Table Name="T1" />
+        </Tables>
+        <Columns>
+          <Column Table="T1" Name="DateAndTime" />
+          <Column Table="T1" Name="C2" />
+          <Column Table="T1" Name="C3" />
+          <Column Table="T1" Name="C4" />
+          <Column Table="T1" Name="C5" />
+          <Column Table="T1" Name="C6" />
+          <Column Table="T1" Name="C7" />
+          <Column Table="T1" Name="C8" />
+          <Column Table="T1" Name="C9" />
+          <Column Table="T1" Name="C10" />
+          <Column Table="T1" Name="C11" />
+          <Column Table="T1" Name="C12" />
+          <Column Table="T1" Name="C13" />
+          <Column Table="T1" Name="C14" />
+          <Column Table="T1" Name="C15" />
+          <Column Table="T1" Name="C16" />
+          <Column Table="T1" Name="C17" />
+          <Column Table="T1" Name="C18" />
+          <Column Table="T1" Name="C19" />
+          <Column Table="T1" Name="C20" />
+          <Column Table="T1" Name="C21" />
+          <Column Table="T1" Name="C22" />
+          <Column Table="T1" Name="C23" />
+          <Column Table="T1" Name="C24" />
+          <Column Table="T1" Name="C25" />
+          <Column Table="T1" Name="C26" />
+          <Column Table="T1" Name="C27" />
+          <Column Table="T1" Name="C28" />
+          <Column Table="T1" Name="C29" />
+          <Column Table="T1" Name="C30" />
+          <Column Table="T1" Name="C31" />
+          <Column Table="T1" Name="C32" />
+          <Column Table="T1" Name="C33" />
+          <Column Table="T1" Name="C34" />
+          <Column Table="T1" Name="C35" />
+          <Column Table="T1" Name="C36" />
+          <Column Table="T1" Name="C37" />
+          <Column Table="T1" Name="C38" />
+          <Column Table="T1" Name="C39" />
+          <Column Table="T1" Name="C40" />
+          <Column Table="T1" Name="C41" />
+          <Column Table="T1" Name="C42" />
+          <Column Table="T1" Name="C43" />
+          <Column Table="T1" Name="C44" />
+          <Column Table="T1" Name="C45" />
+          <Column Table="T1" Name="C46" />
+          <Column Table="T1" Name="C47" />
+          <Column Table="T1" Name="C48" />
+          <Column Table="T1" Name="C49" />
+          <Column Table="T1" Name="C50" />
+          <Column Table="T1" Name="C51" />
+          <Column Table="T1" Name="C52" />
+          <Column Table="T1" Name="C53" />
+          <Column Table="T1" Name="C54" />
+          <Column Table="T1" Name="C55" />
+          <Column Table="T1" Name="C56" />
+          <Column Table="T1" Name="C57" />
+          <Column Table="T1" Name="C58" />
+          <Column Table="T1" Name="C59" />
+          <Column Table="T1" Name="C60" />
+          <Column Table="T1" Name="C61" />
+          <Column Table="T1" Name="C62" />
+          <Column Table="T1" Name="C63" />
+          <Column Table="T1" Name="C64" />
+          <Column Table="T1" Name="C65" />
+          <Column Table="T1" Name="C66" />
+          <Column Table="T1" Name="C67" />
+          <Column Table="T1" Name="C68" />
+          <Column Table="T1" Name="C69" />
+          <Column Table="T1" Name="C70" />
+          <Column Table="T1" Name="C71" />
+          <Column Table="T1" Name="C72" />
+          <Column Table="T1" Name="C73" />
+          <Column Table="T1" Name="C74" />
+          <Column Table="T1" Name="C75" />
+          <Column Table="T1" Name="C76" />
+          <Column Table="T1" Name="C77" />
+          <Column Table="T1" Name="C78" />
+          <Column Table="T1" Name="C79" />
+          <Column Table="T1" Name="C80" />
+          <Column Table="T1" Name="C81" />
+          <Column Table="T1" Name="C82" />
+          <Column Table="T1" Name="C83" />
+          <Column Table="T1" Name="C84" />
+          <Column Table="T1" Name="C85" />
+          <Column Table="T1" Name="C86" />
+          <Column Table="T1" Name="C87" />
+          <Column Table="T1" Name="C88" />
+          <Column Table="T1" Name="C89" />
+          <Column Table="T1" Name="C90" />
+          <Column Table="T1" Name="C91" />
+          <Column Table="T1" Name="C92" />
+          <Column Table="T1" Name="C93" />
+          <Column Table="T1" Name="C94" />
+          <Column Table="T1" Name="C95" />
+          <Column Table="T1" Name="C96" />
+          <Column Table="T1" Name="C97" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <ComboBox ComponentName="comboBoxDashboardItem1" Name="Combo Box 1" DataSource="sqlDataSource1" DataMember="T1">
+      <DataItems>
+        <Dimension DataMember="C10" DefaultId="DataItem0" />
+        <Dimension DataMember="C11" DefaultId="DataItem1" />
+        <Dimension DataMember="C12" DefaultId="DataItem2" />
+        <Dimension DataMember="C13" DefaultId="DataItem3" />
+        <Dimension DataMember="C14" DefaultId="DataItem4" />
+        <Dimension DataMember="C16" DefaultId="DataItem5" />
+        <Dimension DataMember="C18" DefaultId="DataItem6" />
+        <Dimension DataMember="C20" DefaultId="DataItem7" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem5" />
+        <Dimension DefaultId="DataItem6" />
+        <Dimension DefaultId="DataItem7" />
+      </HiddenDimensions>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+        <Dimension DefaultId="DataItem1" />
+        <Dimension DefaultId="DataItem2" />
+        <Dimension DefaultId="DataItem3" />
+        <Dimension DefaultId="DataItem4" />
+      </FilterDimensions>
+    </ComboBox>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" DataSource="sqlDataSource1" DataMember="T1">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C11" DefaultId="DataItem1" />
+        <Measure DataMember="C12" DefaultId="DataItem2" />
+        <Measure DataMember="C13" DefaultId="DataItem3" />
+        <Measure DataMember="C14" DefaultId="DataItem4" />
+      </DataItems>
+      <GridColumns>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem0" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem1" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem3" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem4" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions />
+      <ColumnFilterOptions />
+    </Grid>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="T1">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C11" DefaultId="DataItem1" />
+        <Measure DataMember="C12" DefaultId="DataItem2" />
+        <Measure DataMember="C13" DefaultId="DataItem3" />
+        <Measure DataMember="C14" DefaultId="DataItem4" />
+        <Dimension DataMember="C10" DefaultId="DataItem5" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem5" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem0" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem2" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem3" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem4" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Pie ComponentName="pieDashboardItem1" Name="Pies 1" DataSource="sqlDataSource1" DataMember="T1">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C11" DefaultId="DataItem1" />
+        <Measure DataMember="C12" DefaultId="DataItem2" />
+        <Measure DataMember="C13" DefaultId="DataItem3" />
+        <Measure DataMember="C14" DefaultId="DataItem4" />
+      </DataItems>
+      <Values>
+        <Value DefaultId="DataItem0" />
+        <Value DefaultId="DataItem1" />
+        <Value DefaultId="DataItem2" />
+        <Value DefaultId="DataItem3" />
+        <Value DefaultId="DataItem4" />
+      </Values>
+    </Pie>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutItem DashboardItem="comboBoxDashboardItem1" />
+        <LayoutGroup>
+          <LayoutItem DashboardItem="gridDashboardItem1" />
+          <LayoutGroup Orientation="Vertical">
+            <LayoutItem DashboardItem="chartDashboardItem1" />
+            <LayoutItem DashboardItem="pieDashboardItem1" />
+          </LayoutGroup>
+        </LayoutGroup>
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

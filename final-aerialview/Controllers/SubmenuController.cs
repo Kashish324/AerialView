@@ -81,7 +81,7 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
         _dataAccess.DeleteDashById(dashId);
 
-        return Json(new { success = true, message = "Dashboard deleted successfully" });
+        return Ok("Dashboard deleted successfully");
     }
 
 

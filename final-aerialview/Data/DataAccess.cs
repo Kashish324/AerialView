@@ -260,8 +260,7 @@ namespace final_aerialview.Data
         //to delete the dash config by id
         public void DeleteDashById(int dashId)
         {
-            //string query = "UPDATE MyReports SET WebReportPath = @reportName WHERE RptId = @DatagridRptid";
-            string query = "delete from DashboardMaster where DashId = @DashId";
+            string query = "DELETE from DashboardMaster where DashId = @DashId";
 
             CreateConnection().Execute(query, new { DashId = dashId });
         }

@@ -110,7 +110,7 @@
                     <input type="hidden" id="deleteDashId" />
                 </div>
                 <div class="modal-footer">
-                    <button id="deleteBtn" type="button" class="btn bg-danger btn-sm text-white shadow-sm" onclick="confirmDelete()">Yes</button>
+                    <button id="deleteBtn" type="button" class="btn bg-danger btn-sm text-white shadow-sm" onclick="confirmDelete()" data-bs-dismiss="modal">Yes</button>
                     <button type="button" class="btn bg-secondary-subtle btn-sm shadow-sm" data-bs-dismiss="modal">No</button>
                 </div>
             </div>
@@ -342,45 +342,23 @@
         document.getElementById('deleteDashId').value = dashId;
     }
 
-    // //confirm delete
-    //  function confirmDelete() {
-    //      var dashId = parseInt(document.getElementById('deleteDashId').value);
-    //      console.log(dashId);
-
-    //      $.ajax({
-    //          url: '/Submenu/DeleteDashboardByDashId',
-    //          type: 'POST',
-    //          contentType: 'application/json',
-    //          data: JSON.stringify(dashId), // Send dashId directly as an integer
-    //          success: function (response) {
-    //              // alert(response.message);
-    //              console.log(response);
-    //          },
-    //          error: function (request, status, error) {
-    //              // alert(request.responseText);
-    //              console.log(error);
-
-    //          }
-    //      });
-    //  }
-
-
-
-    // Confirm delete function
+    //confirm delete
     function confirmDelete() {
         var dashId = document.getElementById('deleteDashId').value;
+        var deleteBtn = document.getElementById('deleteBtn');
 
         $.ajax({
             url: '/Submenu/DeleteDashboardByDashId',
             type: 'POST',
-            data: { dashId: dashId }, // Send dashId directly as an integer
+            data: { dashId: dashId },
             success: function (response) {
+                // Add data-bs-dismiss attribute
+                $('#deleteBtn').attr('data-bs-dismiss', 'modal');
+                window.location.reload();
                 console.log(response);
-                // Handle success response as needed
             },
             error: function (request, status, error) {
                 console.log(error);
-                // Handle error response as needed
             }
         });
     }
