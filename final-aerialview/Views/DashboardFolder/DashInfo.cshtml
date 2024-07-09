@@ -20,7 +20,7 @@
         {
             foreach (var item in Model)
             {
-                <li class="list-group-item fw-medium" onclick="selectDashboard('@item.Name')" style="cursor: pointer;" data-bs-dismiss="modal">
+                <li class="list-group-item list-group-item-action fw-medium" onclick="selectDashboard('@item.Name')" style="cursor: pointer;" data-bs-dismiss="modal">
                     <i class="ri-dashboard-line text-primary-emphasis me-2"></i>@item.Name
                 </li>
             }

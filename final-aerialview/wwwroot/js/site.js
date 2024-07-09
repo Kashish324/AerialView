@@ -44,20 +44,28 @@ function sidebarToggleHandling() {
     }
 }
 
+//sidebar toggle handling on hover 
 function sidebarHandlingOnHover() {
     if (sidebar) {
         sidebar.addEventListener("mouseenter", function () {
             sidebar.classList.remove("close");
             sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
         })
-
     }
 
+    
 
+   
     if (sidebar) {
-        var isPinned = sidebar.classList.contains("pinned");
         sidebar.addEventListener("mouseleave", function () {
             var isPinned = sidebar.classList.contains("pinned");
+
+            let menuState = JSON.parse(localStorage.getItem('menuState'));
+
+            //if any is open the sidebar won't close 
+            if (menuState) {
+                return;
+            }
 
             if (!isPinned) {
                 sidebar.classList.add("close");
@@ -69,6 +77,8 @@ function sidebarHandlingOnHover() {
         })
 
     }
+
+
 }
 
 
@@ -103,7 +113,6 @@ function initializeSidebarState() {
 
 
 function menuToggleHandling() {
-
     function toggleMenu(element) {
         let parentLi = element;
         parentLi.classList.toggle("showMenu");
@@ -115,10 +124,9 @@ function menuToggleHandling() {
             if (menuItem.querySelector('.sub-menu')) {
                 toggleMenu(menuItem);
             }
+            localStorage.setItem('menuState', menuItem.classList.contains("showMenu") ? 'true' : 'false');
         });
     });
-
-
 }
 
 function subMenuToggleHandling() {
