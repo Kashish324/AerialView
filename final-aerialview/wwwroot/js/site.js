@@ -44,6 +44,9 @@ function sidebarToggleHandling() {
     }
 }
 
+
+
+
 //sidebar toggle handling on hover 
 function sidebarHandlingOnHover() {
     if (sidebar) {
@@ -109,6 +112,18 @@ function initializeSidebarState() {
 }
 
 
+function initializeMenuState() {
+    //check each menu item and update local storage based on their state
+    let anyMenuOpen = false;
+    menuItems.forEach(menuItem => {
+        if (menuItem.classList.contains("showMenu")) {
+            anyMenuOpen = true;
+        }
+    });
+    localStorage.setItem('menuState', anyMenuOpen ? 'true' : 'false');
+}
+
+
 
 function menuToggleHandling() {
     function toggleMenu(element) {
@@ -156,7 +171,9 @@ function subMenuToggleHandling() {
 
 }
 
+
 initializeSidebarState();
+initializeMenuState();
 sidebarPinHandling();
 sidebarToggleHandling();
 sidebarHandlingOnHover();
