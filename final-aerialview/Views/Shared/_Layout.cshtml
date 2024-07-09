@@ -79,7 +79,7 @@
                 <div class="logo-details">
                     <img src="~/images/AerialView-Logo.png" alt="Alternate Text" class="img-fluid ml-4" style="max-width: 35px;">
                     <span class="logo_name text-nowrap fw-medium mx-3" style="cursor: none"> Hi-Mak Pvt. Ltd. </span>
-                    <i id="sidebarPin" class="ri-pushpin-line fs-6 " style="cursor: pointer;"></i>
+                    <i id="sidebarPin" class="ri-pushpin-line" style="cursor: pointer; font-size: 14px;"></i>
                 </div>
                
 
@@ -110,9 +110,9 @@
                                             }
                                             else
                                             {
-                                                <i class="ri-list-indefinite fs-5"></i>
+                                                <i class="ri-list-indefinite fs-6"></i>
                                             }
-                                            <span class="link_name">@mainItem.MenuName</span>
+                                            <span class="link_name fs-6">@mainItem.MenuName</span>
                                         </div>
                                         @if (hasSubmenu)
                                         {
@@ -135,7 +135,7 @@
                                                         {
                                                             <div class="icon-link">
                                                                 <div class="listMenu">
-                                                                    <i class="ri-box-3-line fs-6"></i>
+                                                                    <i class="ri-box-3-line"></i>
                                                                     <span>@subItem.SubMenuName</span>
                                                                 </div>
                                                                 <i class="ri-arrow-right-s-line sub-menu-arrow fs-6"></i>
@@ -146,7 +146,7 @@
                                                             <a href="@Url.Action("SubMenuConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
                                                                 <div class="icon-link text-capitalize">
                                                                     <div class="listMenu">
-                                                                        <i class="ri-box-3-line fs-6"></i>
+                                                                        <i class="ri-box-3-line"></i>
                                                                         <span>@subItem.SubMenuName</span>
                                                                     </div>
                                                                     @if (hasChildmenu)
@@ -174,7 +174,7 @@
                                                                                     <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none" target="_blank">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
-                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <i class="ri-bard-line"></i>
                                                                                                 <span>@childItem.SubChildName </span>
                                                                                             </div>
                                                                                         </div>
@@ -185,7 +185,7 @@
                                                                                     <a href="@Url.Action("NoReportAvailable", "Home")" class="text-decoration-none">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
-                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <i class="ri-bard-line"></i>
                                                                                                 <span>@childItem.SubChildName </span>
                                                                                             </div>
                                                                                         </div>
@@ -197,7 +197,7 @@
                                                                                 <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none">
                                                                                     <div class="icon-link">
                                                                                         <div class="listMenu">
-                                                                                            <i class="ri-bard-line fs-6"></i>
+                                                                                            <i class="ri-bard-line"></i>
                                                                                             <span>@childItem.SubChildName</span>
                                                                                         </div>
                                                                                     </div>
@@ -213,7 +213,7 @@
                                                                                     <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none" target="_blank">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
-                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <i class="ri-bard-line"></i>
                                                                                                 <span>@childItem.SubChildName </span>
                                                                                             </div>
                                                                                         </div>
@@ -224,7 +224,7 @@
                                                                                     <a href="@Url.Action("ReportDesigner", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none" target="_blank">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
-                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <i class="ri-bard-line"></i>
                                                                                                 <span>@childItem.SubChildName </span>
                                                                                             </div>
                                                                                         </div>
@@ -238,7 +238,7 @@
                                                                                     <a href="@Url.Action("DocumentViewer", "Report", new { datagridRptid = childItem.RptId})" class="text-decoration-none" target="_blank">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
-                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <i class="ri-bard-line"></i>
                                                                                                 <span>@childItem.SubChildName </span>
                                                                                             </div>
                                                                                         </div>
@@ -249,7 +249,7 @@
                                                                                     <a href="@Url.Action("NoReportAvailable", "Home")" class="text-decoration-none">
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
-                                                                                                <i class="ri-bard-line fs-6"></i>
+                                                                                                <i class="ri-bard-line"></i>
                                                                                                 <span>@childItem.SubChildName </span>
                                                                                             </div>
                                                                                         </div>

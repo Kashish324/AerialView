@@ -53,8 +53,6 @@ function sidebarHandlingOnHover() {
         })
     }
 
-    
-
    
     if (sidebar) {
         sidebar.addEventListener("mouseleave", function () {
@@ -62,7 +60,7 @@ function sidebarHandlingOnHover() {
 
             let menuState = JSON.parse(localStorage.getItem('menuState'));
 
-            //if any is open the sidebar won't close 
+            //if any parent menu is open the sidebar won't close 
             if (menuState) {
                 return;
             }

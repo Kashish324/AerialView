@@ -74,7 +74,7 @@ body, html {
         }
 
         .sidebar .logo-details .logo_name {
-            font-size: 21px;
+            font-size: 20px;
             color: #fff;
             /*font-weight: 600;*/
             opacity: 1;
@@ -132,7 +132,6 @@ body, html {
         text-align: center;
         line-height: 50px;
         color: #fff;
-        font-size: 20px;
         cursor: pointer;
         transition: all 0.3s ease;
     }
@@ -163,7 +162,7 @@ body, html {
     }
 
         .sidebar .nav-links li .listMenu .link_name {
-            font-size: 18px;
+            /*font-size: 18px;*/
             font-weight: 400;
         }
 
@@ -201,7 +200,7 @@ body, html {
 
     .sidebar .nav-links li .sub-menu .listMenu {
         color: #fff;
-        font-size: 15px;
+        font-size: 15px !important;
         opacity: 0.6;
         transition: all 0.3s ease;
     }
