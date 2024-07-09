@@ -573,10 +573,6 @@ body, html {
     position: fixed;
     bottom: 0;
     width: var(--sidebar-width);
-    /*display: flex;
-    align-items: center;
-    justify-content: space-between;
-    flex-direction: row-reverse;*/
     background: #1d1b31;
     transition: all 0.5s ease;
     padding: 0vh .5vw;
@@ -638,6 +634,7 @@ body, html {
     color: #000 !important;
     font-size: 1.2em;
 }
+
 
 
 
