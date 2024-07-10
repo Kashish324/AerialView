@@ -1,0 +1,44 @@
+﻿
+<form class="p-4 text-primary-emphasis">
+    <div class="form-group">
+        <label for="profileName">Profile Name</label>
+        <input type="text" class="form-control form-control-sm" id="profileName" value="@Model.EMailProfileName">
+    </div>
+    <div class="form-group">
+        <label for="emailId">Email ID</label>
+        <input type="email" class="form-control form-control-sm" id="emailId" value="@Model.SendEmailId">
+    </div>
+    <div class="form-group">
+        <label for="password">Password</label>
+        <input type="password" class="form-control form-control-sm" id="password" value="@Model.Password">
+    </div>
+    <div class="form-group">
+        <label for="smtpName">SMTP Name</label>
+        <input type="text" class="form-control form-control-sm" id="smtpName" value="@Model.SmptName">
+    </div>
+    <div class="form-group">
+        <label for="smtpPort">SMTP Port</label>
+        <input type="text" class="form-control form-control-sm" id="smtpPort" value="@Model.smtpPort">
+    </div>
+
+    <div class="form-group">
+        <label for="testMailId">Test Mail ID</label>
+        <input type="email" class="form-control form-control-sm" id="testMailId">
+    </div>
+    <div class="form-group">
+        <label for="subject">Subject</label>
+        <input type="text" class="form-control form-control-sm" id="subject" value="Test Mail">
+    </div>
+    <div class="form-group">
+        <label for="bodyText">Body Text</label>
+        <textarea class="form-control form-control-sm" id="bodyText" rows="2">Mail Profile Configured Successfully...!!!</textarea>
+    </div>
+</form>
+<div class="card-footer bg-transparent border-dark-subtle">
+    <div class="d-flex align-items-center justify-content-end gap-1">
+        <button type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium mr-2"> <i class="ri-edit-line"></i> Edit</button>
+        <button type="button" class="btn bg-secondary-subtle btn-sm border-secondary-subtle shadow fw-medium mr-2"> <i class="ri-mail-open-line"></i> Test Mail</button>
+        <button type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium mr-2"> <i class="ri-save-line"></i> Save</button>
+        <button type="button" class="btn bg-danger-subtle btn-sm border-danger-subtle shadow fw-medium"><i class="ri-close-line"></i> Cancel</button>
+    </div>
+</div>

@@ -1,0 +1,35 @@
+﻿@model EmailSettingViewModel
+
+@{
+    ViewData["Title"] = "Email Setting";
+}
+
+<div class="container mt-5">
+
+    <div class="card border-dark mb-3 shadow">
+        <div class="card-header bg-white border-dark-subtle">
+            <ul class="nav nav-underline d-flex align-item-center justify-content-center" id="myTab" role="tablist">
+                <li class="nav-item">
+                    <a class="nav-link active text-dark fw-medium" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="true">Your Profile</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-dark fw-medium" id="contacts-tab" data-toggle="tab" href="#contacts" role="tab" aria-controls="contacts" aria-selected="false">Add Contacts</a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-body p-0 fw-medium ">
+            <div class="tab-content" id="myTabContent">
+                <div class="tab-pane fade show active" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                    <partial name="Partials/_ProfilePartial" for="Profile">
+                </div>
+                <div class="tab-pane fade" id="contacts" role="tabpanel" aria-labelledby="contacts-tab">
+                    <partial name="Partials/_ContactPartial" for="Contacts">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    @* <img src="https://images.unsplash.com/photo-1637089827720-22f789208c71?q=80&w=1964&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" class="position-fixed z-n1 top-50 start-50 translate-middle img-thumbnail border-0 mx-auto d-block w-100 bg-transparent ms-5 opacity-75" alt="..."> *@
+    <img src="~/images/email-setting-bg.png" class="position-fixed z-n1 top-50 start-50 translate-middle img-thumbnail border-0  mx-auto d-block w-100 bg-transparent ms-5 opacity-75" alt="...">
+
+</div>

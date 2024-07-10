@@ -223,26 +223,32 @@
                     </td>
                     <td class="text-center align-middle p-0">
                         <div class="form-check">
-                            <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
+                                <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
                         </div>
                     </td>
                             <td class="text-center align-middle p-0">
                                     <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
-                                    <a href="#" class="btn border-none p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
+                                    <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
                                     <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
-                                               trigger="hover"
+                                                    trigger="morph"
+                           state="morph-folder"
+
                                                colors="primary:#FFC107"
                                                style="width:16px;height:16px">
                                     </lord-icon>
                                 </a>
                             </td>
-                                 <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate text-danger p-0 bg-white" style="cursor: pointer;">
-                                <lord-icon src="https://cdn.lordicon.com/skkahier.json"
-                                           trigger="hover"
-                                           colors="primary:#ee6d66"
-                                           style="width:16px;height:16px">
-                                </lord-icon>
-                            </td>
+                                <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-0 bg-white" style="cursor: pointer;">
+                <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('${uniqueRowId}')">
+                <lord-icon src="https://cdn.lordicon.com/skkahier.json"
+                           trigger="hover"
+                           colors="primary:#ee6d66"
+                           style="width:16px;height:16px">
+                </lord-icon>
+            </button>
+
+        </td>
+
                 `;
         markRowAsUpdated(uniqueRowId); // Mark the new row as updated
     }

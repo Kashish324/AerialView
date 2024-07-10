@@ -2,6 +2,7 @@
 using final_aerialview.Controllers;
 using final_aerialview.Data;
 using final_aerialview.Models;
+using final_aerialview.ViewModels;
 using Microsoft.AspNetCore.Mvc;
 using System.IO;
 
@@ -85,6 +86,25 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
     }
 
 
+    public IActionResult EmailSetting(string parentMenu, string submenu)
+    {
+
+        var profileData = _dataAccess.GetSettingProfileData().FirstOrDefault();
+        var contactData = _dataAccess.GetSettingContactData().ToList();
+
+        var viewModel = new EmailSettingViewModel
+        {
+            Contacts = contactData,
+            Profile = profileData
+        };
+
+        ViewBag.ParentMenu = parentMenu;
+        ViewBag.Submenu = submenu;
+        ViewData["MenuName"] = submenu;
+
+        return View(viewModel);
+    }
+
 
     // Add more actions as needed for each submenu view
 
@@ -101,6 +121,9 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
             case "dash configuration":
                 return RedirectToAction(nameof(DashConfig), new { parentMenu, submenu });
+
+            case "email setting":
+                return RedirectToAction(nameof(EmailSetting), new { parentMenu, submenu });
 
             default:
                 return View("DefaultView");

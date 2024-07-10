@@ -1,0 +1,39 @@
+﻿<div class="table-responsive p-4">
+    <table id="contactTable" class="table table-hover">
+        <thead class="border-bottom">
+            <tr>
+                <th scope="col" class="border-0 text-center">CId</th>
+                <th scope="col" class="border-0 text-center">Contact Name</th>
+                <th scope="col" class="border-0 text-center">Contact EmailId</th>
+                <th scope="col" class="border-0 text-center">Auto Mail</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach(var contact in Model)
+            {
+            <tr>
+                    <td class=" text-center">@contact.CId</td>
+                    <td class="text-center">@contact.ContactName</td>
+                    <td class="text-center">@contact.ContactEmailId</td>
+                <td class="text-center">
+                    <div class="form-check d-flex justify-content-center">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" @(contact.AutoMail ? "checked" : "")>
+                    </div>
+                </td>
+            </tr>
+                
+            
+            }
+
+        </tbody>
+    </table>
+</div>
+
+<div class="card-footer bg-transparent border-dark-subtle">
+    <div class="d-flex align-items-center justify-content-end gap-1">
+        <button type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium mr-auto" id="btnAddContact"><i class="ri-add-line"></i> Add Contact</button>
+        <button type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium mr-2"><i class="ri-edit-line"></i> Edit</button>
+        <button type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium mr-2"><i class="ri-save-line"></i> Save</button>
+        <button type="button" class="btn bg-danger-subtle btn-sm border-danger-subtle shadow fw-medium"><i class="ri-close-line"></i> Cancel</button>
+    </div>
+</div>

@@ -266,6 +266,18 @@ namespace final_aerialview.Data
         }
 
 
+        public IEnumerable<SettingProfileModel> GetSettingProfileData()
+        {
+            string query = "SELECT * FROM EmailSettings";
+            return ExecuteQuery<SettingProfileModel>(query);
+        }
+
+        public IEnumerable<SettingContactModel> GetSettingContactData()
+        {
+            string query = "SELECT * FROM ContactMaster";
+            return ExecuteQuery<SettingContactModel>(query);
+        }
+
     }
 }
 
