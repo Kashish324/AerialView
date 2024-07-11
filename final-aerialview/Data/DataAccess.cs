@@ -220,12 +220,6 @@ namespace final_aerialview.Data
 
                     connection.Execute(sql, parameters);
                 }
-
-                var test = updatedData.Select(s => s.DashId).FirstOrDefault();
-
-                //<> = not equal to
-                var sql1 = $"update DashboardMaster set DashDefault = 'false' where DashId <> {test}";
-                connection.Execute(sql1);
             }
         }
 
