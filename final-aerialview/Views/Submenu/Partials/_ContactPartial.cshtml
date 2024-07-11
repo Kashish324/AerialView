@@ -1,4 +1,4 @@
-﻿<div class="table-responsive p-4">
+﻿@* <div class="table-responsive p-4">
     <table id="contactTable" class="table table-hover">
         <thead class="border-bottom">
             <tr>
@@ -9,20 +9,20 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var contact in Model)
+            @foreach (var contact in Model)
             {
-            <tr>
+                <tr>
                     <td class=" text-center">@contact.CId</td>
                     <td class="text-center">@contact.ContactName</td>
                     <td class="text-center">@contact.ContactEmailId</td>
-                <td class="text-center">
-                    <div class="form-check d-flex justify-content-center">
+                    <td class="text-center">
+                        <div class="form-check d-flex justify-content-center">
                             <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" @(contact.AutoMail ? "checked" : "")>
-                    </div>
-                </td>
-            </tr>
-                
-            
+                        </div>
+                    </td>
+                </tr>
+
+
             }
 
         </tbody>
@@ -31,9 +31,74 @@
 
 <div class="card-footer bg-transparent border-dark-subtle">
     <div class="d-flex align-items-center justify-content-end gap-1">
-        <button type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium mr-auto" id="btnAddContact"><i class="ri-add-line"></i> Add Contact</button>
+        <button type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium mr-auto" id="btnAddContact" onclick="insertRow()"><i class="ri-add-line"></i> Add Contact</button>
         <button type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium mr-2"><i class="ri-edit-line"></i> Edit</button>
         <button type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium mr-2"><i class="ri-save-line"></i> Save</button>
         <button type="button" class="btn bg-danger-subtle btn-sm border-danger-subtle shadow fw-medium"><i class="ri-close-line"></i> Cancel</button>
     </div>
 </div>
+
+<script>
+    function insertRow() {
+        var contactTable = document.getElementById('contactTable');
+        var tableLen = contactTable.rows.length;
+        var row = contactTable.insertRow(tableLen);
+
+        // for (var i = 0; i < contactTable.rows[0].cells.length - 1; i++) {
+        //     row.insertCell(i).innerHtml = "<input type=text>";
+
+        // }
+        console.log(contactTable)
+
+    }
+</script> *@
+
+<div class="table-responsive p-4">
+    <table id="contactTable" class="table table-hover">
+        <thead class="border-bottom">
+            <tr>
+                <th scope="col" class="border-0 text-center text-primary-emphasis">CId</th>
+                <th scope="col" class="border-0 text-center text-primary-emphasis">Contact Name</th>
+                <th scope="col" class="border-0 text-center text-primary-emphasis">Contact EmailId</th>
+                <th scope="col" class="border-0 text-center text-primary-emphasis">Auto Mail</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var contact in Model)
+            {
+                <tr id="inputRows">
+                    <td class="text-center">@contact.CId</td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm border-0 text-center  text-dark fw-bold text-capitalize" value="@contact.ContactName">
+                    </td>
+                    <td>
+                        <input type="text" class="form-control form-control-sm border-0 text-center  text-dark fw-bold" value="@contact.ContactEmailId">
+                    </td>
+                    <td class="text-center">
+                        <div class="form-check d-flex justify-content-center">
+                            <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault1" @(contact.AutoMail ? "checked" : "")>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="card-footer bg-transparent border-dark-subtle">
+    <div class="d-flex align-items-center justify-content-end gap-1">
+        <button type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium mr-auto" id="btnAddContact" onclick="insertRow()"><i class="ri-add-line"></i> Add Contact</button>
+        @* <button type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium mr-2" onclick="allowEdit()"><i class="ri-edit-line"></i> Edit</button> *@
+        <button type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium mr-2"><i class="ri-save-line"></i> Save</button>
+        <button type="button" class="btn bg-danger-subtle btn-sm border-danger-subtle shadow fw-medium"><i class="ri-delete-bin-7-line"></i> Cancel</button>
+    </div>
+</div>
+
+
+<script>
+    // var tableInputs = document.querySelectorAll('#contactTable #inputRows input');
+
+    // function allowEdit() {
+    // tableInputs.forEach(elem => elem.removeAttribute('disabled'))
+    // }
+</script>

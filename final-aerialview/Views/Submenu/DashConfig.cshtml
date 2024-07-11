@@ -287,28 +287,66 @@
     }
 
     // Function to send updated data to server
+    // function sendDataToServer() {
+    //     var updatedRows = collectUpdatedRows();
+
+    //     // Update toast message dynamically
+    //     var toastMessage = updatedRows.length > 0 ? 'Data updated successfully!' : 'Nothing to update.';
+    //     var toastBody = document.querySelector('.toast-body');
+    //     if (toastBody) {
+    //         toastBody.textContent = toastMessage;
+    //     }
+
+    //     // Show the toast
+    //     var toastLive = document.getElementById('liveToast');
+    //     var toast = new bootstrap.Toast(toastLive, {
+    //         autohide: true,
+    //         delay: 2000
+    //     });
+    //     toast.show();
+
+    //     if (updatedRows.length === 0) {
+    //         return; // Exit early if there are no rows to update
+    //     }
+
+
+    //     $.ajax({
+    //         url: '/Submenu/UpdateData',
+    //         type: 'POST',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(updatedRows),
+    //         success: function (response) {
+    //             // console.log('Data sent successfully');
+    //             // Clear updated-row class after successful update
+    //             var rows = document.querySelectorAll('.updated-row');
+    //             rows.forEach(function (row) {
+    //                 row.classList.remove('updated-row');
+    //             });
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.error('Error sending data:', error);
+    //             console.log('Response:', xhr.responseText); // Log the server's response for more details
+    //         }
+    //     });
+    // }
+
+    // Function to send updated data to server
     function sendDataToServer() {
         var updatedRows = collectUpdatedRows();
 
-        // Update toast message dynamically
-        var toastMessage = updatedRows.length > 0 ? 'Data updated successfully!' : 'Nothing to update.';
-        var toastBody = document.querySelector('.toast-body');
-        if (toastBody) {
-            toastBody.textContent = toastMessage;
-        }
-
-        // Show the toast
-        var toastLive = document.getElementById('liveToast');
-        var toast = new bootstrap.Toast(toastLive, {
-            autohide: true,
-            delay: 2000
-        });
-        toast.show();
-
         if (updatedRows.length === 0) {
+            var toastBody = document.querySelector('.toast-body');
+            if (toastBody) {
+                toastBody.textContent = 'Nothing to update.';
+            }
+            var toastLive = document.getElementById('liveToast');
+            var toast = new bootstrap.Toast(toastLive, {
+                autohide: true,
+                delay: 2000
+            });
+            toast.show();
             return; // Exit early if there are no rows to update
         }
-
 
         $.ajax({
             url: '/Submenu/UpdateData',
@@ -316,7 +354,20 @@
             contentType: 'application/json',
             data: JSON.stringify(updatedRows),
             success: function (response) {
-                // console.log('Data sent successfully');
+                // Update toast message dynamically
+                var toastBody = document.querySelector('.toast-body');
+                if (toastBody) {
+                    toastBody.textContent = 'Data updated successfully!';
+                }
+
+                // Show the toast
+                var toastLive = document.getElementById('liveToast');
+                var toast = new bootstrap.Toast(toastLive, {
+                    autohide: true,
+                    delay: 2000
+                });
+                toast.show();
+
                 // Clear updated-row class after successful update
                 var rows = document.querySelectorAll('.updated-row');
                 rows.forEach(function (row) {
@@ -325,10 +376,20 @@
             },
             error: function (xhr, status, error) {
                 console.error('Error sending data:', error);
-                console.log('Response:', xhr.responseText); // Log the server's response for more details
+                var toastBody = document.querySelector('.toast-body');
+                if (toastBody) {
+                    toastBody.textContent = 'Failed to update data.';
+                }
+                var toastLive = document.getElementById('liveToast');
+                var toast = new bootstrap.Toast(toastLive, {
+                    autohide: true,
+                    delay: 2000
+                });
+                toast.show();
             }
         });
     }
+
 
 
     //get saved dashboard list from /DashboardFolder/DashInfo
@@ -369,8 +430,6 @@
             }
         });
     }
-
-
 
 
 </script>

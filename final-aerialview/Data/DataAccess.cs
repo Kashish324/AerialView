@@ -1,12 +1,6 @@
 ﻿using Dapper;
-using DevExpress.XtraReports.Wizards;
 using final_aerialview.Models;
-using final_aerialview.ViewModels;
-using Microsoft.AspNetCore.Http.HttpResults;
-using Microsoft.AspNetCore.Mvc;
-using System;
 using System.Data;
-using System.Data.Common;
 using System.Data.SqlClient;
 
 namespace final_aerialview.Data
@@ -196,10 +190,12 @@ namespace final_aerialview.Data
             return whereClause;
         }
 
+
+
         //dashboard master table
         public IEnumerable<DashboardDataModel> GetDashboardMasterData()
         {
-            string query = "SELECT * FROM DashboardMaster order by DashId";
+            string query = "Select DashId,DashName,DashPath, (case when DashStatus ='' then 'False' else DashStatus end) as 'DashStatus',(case when DashDefault ='' then 'False' else DashDefault end) as 'DashDefault' from DashboardMaster";
             return ExecuteQuery<DashboardDataModel>(query);
         }
 
