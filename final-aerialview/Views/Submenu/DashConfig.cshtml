@@ -140,9 +140,245 @@
     var addBtn = document.getElementById('addBtn');
     var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
 
+    // Update dashboard active/inactive status
+    function updateDashboardStatus(dashId) {
+        var statusElement = document.getElementById('dashStatus-' + dashId);
+        if (statusElement.classList.contains('bg-success')) {
+            statusElement.classList.remove('bg-success');
+            statusElement.classList.add('bg-danger');
+            statusElement.textContent = 'Inactive';
+        } else {
+            statusElement.classList.remove('bg-danger');
+            statusElement.classList.add('bg-success');
+            statusElement.textContent = 'Active';
+        }
+        markRowAsUpdated(dashId); // Mark the row as updated
+    }
+
+    // Function to mark a row as updated
+    function markRowAsUpdated(dashId) {
+        var row = document.getElementById('dashRow-' + dashId);
+        if (row) {
+            row.classList.add('updated-row'); // Add a class to mark the row as updated
+        }
+    }
+
+    // Function to handle updating any field in a row
+    function updateField(dashId, fieldName, updatedValue) {
+        var inputField = document.getElementById(fieldName + '-' + dashId);
+        if (inputField) {
+            inputField.value = updatedValue;
+            markRowAsUpdated(dashId); // Mark the row as updated
+        } else {
+            console.error('Input field not found for:', fieldName);
+        }
+    }
+
+   
+    function dialogHandling(uniqueRowId) {
+        localStorage.setItem('selectedRowId', uniqueRowId);
+    }
+
+    // Function to add a new row
+    function addNewRow() {
+        var uniqueRowId = Math.floor(Math.random() * 41) + 60;
+        var newRow = dashConfigTable.insertRow();
+        newRow.id = 'dashRow-' + uniqueRowId;
+
+        newRow.innerHTML = `
+                        <td>
+                            <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" onchange="updateField('${uniqueRowId}', 'DashName', this.value)">
+                        </td>
+                        <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
+                        <td class="text-center align-middle p-0">
+                            <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
+                        </td>
+                        <td class="text-center align-middle p-0">
+                            <div class="form-check">
+                                    <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
+                            </div>
+                        </td>
+                                <td class="text-center align-middle p-0">
+                                        <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
+                                        <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
+                                        <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
+                                                        trigger="morph"
+                               state="morph-folder"
+
+                                                   colors="primary:#FFC107"
+                                                   style="width:16px;height:16px">
+                                        </lord-icon>
+                                    </a>
+                                </td>
+                                    <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-0 bg-white" style="cursor: pointer;">
+                    <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('${uniqueRowId}')">
+                    <lord-icon src="https://cdn.lordicon.com/skkahier.json"
+                               trigger="hover"
+                               colors="primary:#ee6d66"
+                               style="width:16px;height:16px">
+                    </lord-icon>
+                </button>
+
+            </td>
+
+                    `;
+        markRowAsUpdated(uniqueRowId); // Mark the new row as updated
+    }
+
+    // Event listener for adding a new row
+    addBtn.addEventListener('click', addNewRow);
+
+    // Function to handle radio button value updates
+    function updateRadioValue(uniqueRowId) {
+        var radioBtn = document.getElementById('flexRadioDefault-' + uniqueRowId);
+        if (radioBtn) {
+            markRowAsUpdated(uniqueRowId); // Mark the row as updated
+        }
+    }
+
+    // Function to collect all updated rows
+    function collectUpdatedRows() {
+        var updatedRows = [];
+        var rows = document.querySelectorAll('.updated-row');
+        rows.forEach(function (row) {
+            var rowData = {
+                DashId: row.id.replace('dashRow-', ''),
+                DashName: row.querySelector('.dash-name-field').value.trim(),
+                DashPath: row.querySelector('.dash-path-cell').textContent.trim(),
+                DashStatus: row.querySelector('.badge').classList.contains('bg-success'),
+                DashDefault: row.querySelector('input[type="radio"]').checked
+            };
+            // Convert DashStatus and DashDefault to boolean explicitly if needed
+            rowData.DashStatus = !!rowData.DashStatus; // Ensures boolean value
+            rowData.DashDefault = !!rowData.DashDefault; // Ensures boolean value
+            updatedRows.push(rowData);
+        });
+        return updatedRows;
+    }
+
+    // Function to send updated data to server
+    function sendDataToServer() {
+        var updatedRows = collectUpdatedRows();
+
+        // Filter out rows with empty DashPath
+        updatedRows = updatedRows.filter(row => row.DashPath.trim() !== '');
+
+        if (updatedRows.length === 0) {
+            var toastBody = document.querySelector('.toast-body');
+            if (toastBody) {
+                toastBody.textContent = 'No valid rows to update.';
+            }
+            var toastLive = document.getElementById('liveToast');
+            var toast = new bootstrap.Toast(toastLive, {
+                autohide: true,
+                delay: 2000
+            });
+            toast.show();
+            return; // Exit early if there are no valid rows to update
+        }
+
+        $.ajax({
+            url: '/Submenu/UpdateData',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(updatedRows),
+            success: function (response) {
+                // Update toast message dynamically
+                var toastBody = document.querySelector('.toast-body');
+                if (toastBody) {
+                    toastBody.textContent = 'Data updated successfully!';
+                }
+
+                // Show the toast
+                var toastLive = document.getElementById('liveToast');
+                var toast = new bootstrap.Toast(toastLive, {
+                    autohide: true,
+                    delay: 2000
+                });
+                toast.show();
+
+                // Clear updated-row class after successful update
+                var rows = document.querySelectorAll('.updated-row');
+                rows.forEach(function (row) {
+                    row.classList.remove('updated-row');
+                });
+            },
+            error: function (xhr, status, error) {
+                console.error('Error sending data:', error);
+                var toastBody = document.querySelector('.toast-body');
+                if (toastBody) {
+                    toastBody.textContent = 'Failed to update data.';
+                }
+                var toastLive = document.getElementById('liveToast');
+                var toast = new bootstrap.Toast(toastLive, {
+                    autohide: true,
+                    delay: 2000
+                });
+                toast.show();
+            }
+        });
+    }
 
 
 
+    //get saved dashboard list from /DashboardFolder/DashInfo
+    function showToast(message) {
+        var toastBody = document.querySelector('.toast-body');
+        if (toastBody) {
+            toastBody.innerHTML = message;
+        }
+        var toastLive = document.getElementById('liveToast');
+        var toast = new bootstrap.Toast(toastLive, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+    }
+
+
+    $('#getDashboardModal').on('show.bs.modal', function () {
+        $.ajax({
+            url: '/DashboardFolder/DashInfo',
+            success: function (data) {
+                $('#dashboard-content').html(data);
+            },
+            error: function () {
+                $('#dashboard-content').html('<p>Error loading dashboard information.</p>');
+            }
+        });
+    });
+
+    //set the value of hidden input in modal when the delete button is clicked
+    function setDeleteDashId(dashId) {
+        document.getElementById('deleteDashId').value = dashId;
+    }
+
+    //confirm delete
+    function confirmDelete() {
+        var dashId = document.getElementById('deleteDashId').value;
+        var deleteBtn = document.getElementById('deleteBtn');
+
+        $.ajax({
+            url: '/Submenu/DeleteDashboardByDashId',
+            type: 'POST',
+            data: { dashId: dashId },
+            success: function (response) {
+                // Add data-bs-dismiss attribute
+                $('#deleteBtn').attr('data-bs-dismiss', 'modal');
+                window.location.reload();
+                console.log(response);
+            },
+            error: function (request, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+
+</script>
+@* <script>
+    var addBtn = document.getElementById('addBtn');
+    var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
 
     // Update dashboard active/inactive status
     function updateDashboardStatus(dashId) {
@@ -179,30 +415,6 @@
     }
 
     // Function to handle opening file dialog
-    // function dialogHandling(uniqueRowId) {
-    //     var input = document.createElement('input');
-    //     input.type = 'file';
-    //     input.accept = '.xml';
-    //     input.onchange = function (event) {
-    //         var file = event.target.files[0];
-    //         if (file) {
-    //             var row = document.getElementById('dashRow-' + uniqueRowId);
-    //             if (!row) {
-    //                 console.error('Row not found.');
-    //                 return;
-    //             }
-    //             var dashPathCell = row.querySelector('.dash-path-cell');
-    //             if (!dashPathCell) {
-    //                 console.error('Dash path cell not found.');
-    //                 return;
-    //             }
-    //             dashPathCell.textContent = file.name;
-    //             dashPathCell.dataset.filename = file.name;
-    //             markRowAsUpdated(uniqueRowId);
-    //         }
-    //     };
-    //     input.click();
-    // }
     function dialogHandling(uniqueRowId) {
         localStorage.setItem('selectedRowId', uniqueRowId);
     }
@@ -285,51 +497,7 @@
         });
         return updatedRows;
     }
-
-    // Function to send updated data to server
-    // function sendDataToServer() {
-    //     var updatedRows = collectUpdatedRows();
-
-    //     // Update toast message dynamically
-    //     var toastMessage = updatedRows.length > 0 ? 'Data updated successfully!' : 'Nothing to update.';
-    //     var toastBody = document.querySelector('.toast-body');
-    //     if (toastBody) {
-    //         toastBody.textContent = toastMessage;
-    //     }
-
-    //     // Show the toast
-    //     var toastLive = document.getElementById('liveToast');
-    //     var toast = new bootstrap.Toast(toastLive, {
-    //         autohide: true,
-    //         delay: 2000
-    //     });
-    //     toast.show();
-
-    //     if (updatedRows.length === 0) {
-    //         return; // Exit early if there are no rows to update
-    //     }
-
-
-    //     $.ajax({
-    //         url: '/Submenu/UpdateData',
-    //         type: 'POST',
-    //         contentType: 'application/json',
-    //         data: JSON.stringify(updatedRows),
-    //         success: function (response) {
-    //             // console.log('Data sent successfully');
-    //             // Clear updated-row class after successful update
-    //             var rows = document.querySelectorAll('.updated-row');
-    //             rows.forEach(function (row) {
-    //                 row.classList.remove('updated-row');
-    //             });
-    //         },
-    //         error: function (xhr, status, error) {
-    //             console.error('Error sending data:', error);
-    //             console.log('Response:', xhr.responseText); // Log the server's response for more details
-    //         }
-    //     });
-    // }
-
+   
     // Function to send updated data to server
     function sendDataToServer() {
         var updatedRows = collectUpdatedRows();
@@ -432,4 +600,4 @@
     }
 
 
-</script>
+</script> *@

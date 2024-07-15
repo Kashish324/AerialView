@@ -1,4 +1,6 @@
 ﻿using Dapper;
+using DevExpress.DirectX.Common.Direct2D;
+using DevExpress.XtraCharts.Native;
 using final_aerialview.Models;
 using System.Data;
 using System.Data.SqlClient;
@@ -199,6 +201,54 @@ namespace final_aerialview.Data
             return ExecuteQuery<DashboardDataModel>(query);
         }
 
+        //public void UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
+        //{
+        //    using (var connection = CreateConnection())
+        //    {
+        //        connection.Open();
+        //        var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
+
+        //        foreach (var data in updatedData)
+        //        {
+        //            // Convert DashStatus and DashDefault to bool explicitly
+        //            var parameters = new
+        //            {
+        //                data.DashId,
+        //                data.DashName,
+        //                data.DashPath,
+        //                DashStatus = data.DashStatus ? true : false,
+        //                DashDefault = data.DashDefault ? true : false,
+        //            };
+
+        //            connection.Execute(sql, parameters);
+        //        }
+        //    }
+        //}
+
+        //public void InsertDashboardData(IEnumerable<DashboardDataModel> newData)
+        //{
+        //    using (var connection = CreateConnection())
+        //    {
+        //        connection.Open();
+        //        var sql = "INSERT INTO DashboardMaster (DashName, DashPath, DashStatus, DashDefault) VALUES (@DashName, @DashPath, CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END)";
+
+
+        //        foreach (var data in newData)
+        //        {
+        //            // Convert DashStatus and DashDefault to bool explicitly
+        //            var parameters = new
+        //            {
+        //                data.DashName,
+        //                data.DashPath,
+        //                DashStatus = data.DashStatus ? true : false, // Ensure it's a boolean value
+        //                DashDefault = data.DashDefault ? true : false, // Ensure it's a boolean value
+        //            };
+
+        //            connection.Execute(sql, parameters);
+        //        }
+        //    }
+        //}
+
         public void UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
         {
             using (var connection = CreateConnection())
@@ -219,7 +269,17 @@ namespace final_aerialview.Data
                     };
 
                     connection.Execute(sql, parameters);
+                    string c2 = $"UPDATE Menu_Child_New SET SubMenuName = @SubMenuName WHERE MainMenuCode = 5 AND DashId = @DashId";
+
+                    var c2Parameters = new
+                    {
+                        SubMenuName = data.DashName,
+                        DashId = data.DashId
+                    };
+
+                    connection.Execute(c2, c2Parameters);
                 }
+
             }
         }
 
@@ -244,15 +304,64 @@ namespace final_aerialview.Data
 
                     connection.Execute(sql, parameters);
                 }
+
+                SqlConnection con = new SqlConnection(connection.ConnectionString);
+
+
+                string s1 = "select Top (1) * from Menu_Child_New  where MainMenuCode=5 order by SubMenuCode desc"
+                                    + " Select Top (1) *from DashboardMaster order by DashId desc";
+                SqlDataAdapter Adpt = new SqlDataAdapter(s1, con);
+                DataSet ds1 = new DataSet();
+                Adpt.Fill(ds1);
+
+
+                int submenucode = 0;
+                int DashId = 0;
+                string DashName = null;
+
+
+                if (ds1.Tables[0].Rows.Count > 0)
+                {
+                    submenucode = (Convert.ToInt32(ds1.Tables[0].Rows[0][1].ToString()) + 1);
+                }
+
+                if (ds1.Tables[1].Rows.Count > 0)
+                {
+                    DashId = (Convert.ToInt32(ds1.Tables[1].Rows[0][0].ToString()));
+                    DashName = ds1.Tables[1].Rows[0]["DashName"].ToString();
+                }
+
+                var sql2 = $" insert into Menu_Child_New (MainMenuCode, SubMenuCode, SubMenuName, Status, Frm_Level, RptId, Link_FormName, DashId) VALUES (5, {submenucode}, '{DashName}', 0, 0, 0, 'xDashboardReport', {DashId} )";
+                connection.Execute(sql2);
             }
         }
+
 
         //to delete the dash config by id
         public void DeleteDashById(int dashId)
         {
-            string query = "DELETE from DashboardMaster where DashId = @DashId";
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                var transaction = connection.BeginTransaction();
 
-            CreateConnection().Execute(query, new { DashId = dashId });
+                try
+                {
+                    string query1 = "DELETE FROM DashboardMaster WHERE DashId = @DashId";
+                    connection.Execute(query1, new { DashId = dashId }, transaction);
+
+                    string query2 = "DELETE FROM Menu_Child_New WHERE DashId = @DashId";
+                    connection.Execute(query2, new { DashId = dashId }, transaction);
+
+                    transaction.Commit();
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"Error deleting dashboard with ID {dashId}: {ex.Message}");
+                    throw; // Optionally handle or log the exception as needed
+                }
+            }
         }
 
 
