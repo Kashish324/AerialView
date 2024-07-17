@@ -1,6 +1,4 @@
 ﻿using Dapper;
-using DevExpress.DirectX.Common.Direct2D;
-using DevExpress.XtraCharts.Native;
 using final_aerialview.Models;
 using System.Data;
 using System.Data.SqlClient;
@@ -123,7 +121,7 @@ namespace final_aerialview.Data
                 connection.Open();
 
                 string whereClause = GenerateWhereClause(option, selectedValue, fromDate, toDate);
-                string sqlQuery = $"SELECT * FROM {tableName} {whereClause}";
+                string sqlQuery = $"SELECT TOP 1000 * FROM {tableName} {whereClause} order by DateAndTime desc ";
 
                 return connection.Query<dynamic>(sqlQuery);
             }
@@ -143,7 +141,7 @@ namespace final_aerialview.Data
                     return $" WHERE DateAndTime >= '{fromDateTime:yyyy-MM-ddTHH:mm:ss}' AND DateAndTime <= '{toDateTime:yyyy-MM-ddTHH:mm:ss}'";
                 }
 
-                return null;
+                //return null;
             }
             else if (option == "Standard")
             {
@@ -178,15 +176,19 @@ namespace final_aerialview.Data
                             filterDate = currentDate.AddYears(-1);
                             break;
                         case "All":
-                            return "";
+                            //return "";
+                            whereClause = ""; 
+                            break;
+
+                            //top 1000 option where clause is going null so it is by default giving select * top 1000 from table
                         default:
                             return null;
                     }
-
+                    if(selectedValue != "All")
+                    {
                     whereClause = $"WHERE DateAndTime >= '{filterDate:yyyy-MM-ddTHH:mm:ss}'";
+                    }
                 }
-
-
             }
 
             return whereClause;
@@ -201,53 +203,7 @@ namespace final_aerialview.Data
             return ExecuteQuery<DashboardDataModel>(query);
         }
 
-        //public void UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
-        //{
-        //    using (var connection = CreateConnection())
-        //    {
-        //        connection.Open();
-        //        var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
-
-        //        foreach (var data in updatedData)
-        //        {
-        //            // Convert DashStatus and DashDefault to bool explicitly
-        //            var parameters = new
-        //            {
-        //                data.DashId,
-        //                data.DashName,
-        //                data.DashPath,
-        //                DashStatus = data.DashStatus ? true : false,
-        //                DashDefault = data.DashDefault ? true : false,
-        //            };
-
-        //            connection.Execute(sql, parameters);
-        //        }
-        //    }
-        //}
-
-        //public void InsertDashboardData(IEnumerable<DashboardDataModel> newData)
-        //{
-        //    using (var connection = CreateConnection())
-        //    {
-        //        connection.Open();
-        //        var sql = "INSERT INTO DashboardMaster (DashName, DashPath, DashStatus, DashDefault) VALUES (@DashName, @DashPath, CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END)";
-
-
-        //        foreach (var data in newData)
-        //        {
-        //            // Convert DashStatus and DashDefault to bool explicitly
-        //            var parameters = new
-        //            {
-        //                data.DashName,
-        //                data.DashPath,
-        //                DashStatus = data.DashStatus ? true : false, // Ensure it's a boolean value
-        //                DashDefault = data.DashDefault ? true : false, // Ensure it's a boolean value
-        //            };
-
-        //            connection.Execute(sql, parameters);
-        //        }
-        //    }
-        //}
+        
 
         public void UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
         {
@@ -269,6 +225,20 @@ namespace final_aerialview.Data
                     };
 
                     connection.Execute(sql, parameters);
+
+
+                    foreach(var item in updatedData)
+                    {
+                       if(item.DashDefault == true)
+                        {
+                            var test = updatedData.Select(s => s.DashId).FirstOrDefault();
+
+                            var sql1 = $"update DashboardMaster set DashDefault = 'false' where DashId <> {test}";
+                            connection.Execute(sql1);
+                        }
+                    }
+                    
+
                     string c2 = $"UPDATE Menu_Child_New SET SubMenuName = @SubMenuName WHERE MainMenuCode = 5 AND DashId = @DashId";
 
                     var c2Parameters = new

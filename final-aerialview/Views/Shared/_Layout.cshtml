@@ -2,10 +2,14 @@
     var menuParentData = ViewData["MenuParentData"] as IEnumerable<final_aerialview.Models.ListDataModel>;
     var subMenuData = ViewData["SubMenuData"] as IEnumerable<final_aerialview.Models.SubMenuModel>;
     var childMenuData = ViewData["ChildMenuData"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
-    var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
+    // var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
     var userMasterData = ViewBag.UserMasterData as IEnumerable<final_aerialview.Models.UserMasterModel>;
     var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
 }
+
+@using DevExpress.AspNetCore
+@using DevExpress.DashboardWeb
+@using DevExpress.DashboardAspNetCore
 
 <!DOCTYPE html>
 <html lang="en">
@@ -20,7 +24,6 @@
     <link rel="stylesheet" href="~/css/report.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/css/dashboard.css" asp-append-version="true" />
 
-
     @* dev extreme links *@
     <script src="~/js/site.js" asp-append-version="true"></script>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -34,8 +37,6 @@
     <script src="~/js/devextreme/dx.all.js"></script>
     <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
     <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
-
-
 
     @* export excel *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/babel-polyfill/7.12.1/polyfill.min.js" integrity="sha512-uzOpZ74myvXTYZ+mXUsPhDF+/iL/n32GDxdryI2SJronkEyKC8FBFRLiBQ7l7U/PTYebDbgTtbqTa6/vGtU23A==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
@@ -63,12 +64,14 @@
 }
 
 
+
 <body>
     @if (Context.Request.Path == "/Home/Index")
     {
         <div class="image-container vh-100 w-100">
             <img src="~/images/IMAGE-SmartIndustryIOT-e1523990569925-1.jpg" class="img-fluid h-100 w-100" width="" alt="Home Page">
         </div>
+       
     }
 
     @if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -81,7 +84,6 @@
                     <span class="logo_name text-nowrap fw-medium mx-3" style="cursor: none"> Hi-Mak Pvt. Ltd. </span>
                     <i id="sidebarPin" class="ri-pushpin-line" style="cursor: pointer; font-size: 14px;"></i>
                 </div>
-               
 
                 <ul class="nav-links">
                     @if (menuParentData != null && subMenuData != null && childMenuData != null)
@@ -272,72 +274,16 @@
                         }
                     }
 
-                    
-
-                    <li>
-                        <div class="profile-details d-flex align-items-center justify-content-between">
-                            <div class="software-version text-light fw-medium" style="font-size: 14px;">© Hi-Mak Pvt. Ltd.</div>
-                            <div class="d-flex align-items-center justify-content-center flex-row-reverse">
-
-                                <div class="profile-content">
-                                    <form class="logOut fs-6" method="post" action="/Account/Logout">
-                                        @Html.AntiForgeryToken()
-                                        <button class="nav-link btn btn-sm text-light border-0 " type="submit"> <i title="Logout" style="color: #F9B975;" class="ri-logout-circle-line fs-6"></i></button>
-                                    </form>
-                                </div>
-                                <div class="name-job">
-                                    <div class="profile_name fw-medium" style="font-size: 14px;">@User.Identity.Name</div>
-                                </div>
-
-                            </div>
-                        </div>
-                    </li>
+                    @* profile details *@
+                    <partial name="_ProfileDetails.cshtml" />
                 </ul>
             </div>
 
+            @* home section  *@
             <section class="home-section position-absolute top-0 end-0">
                 <div class="home-content">
-                    <div class="headerContent">
-                        <i class="ri-arrow-right-double-line bx bx-menu fs-5"></i>
-                        @if (ViewContext.RouteData.Values["controller"].ToString() != "ListData")
-                        {
-                            if (ViewData["MenuName"] != null)
-                            {
-                                <span class="text text-center" id="selected-submenu">@ViewData["MenuName"]</span>
-                            }
-                            else
-                            {
-                                @foreach (var item in projectData)
-                                {
-                                    <span class="text text-center text-capitalize" id="selected-submenu">@item.ProjectName</span>
-                                }
-                            }
-                        }
-                        else
-                        {
-                            if (ViewBag.TableName != null)
-                            {
-                                <span class="text text-center" id="selected-submenu">@ViewBag.TableName</span>
-                            }
-                            else
-                            {
-                                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
-                            }
-                        }
-
-                    </div>
-
-                    @* @if (Context.Request.Path == "/Home/Index")
-            {
-            <div class="tableContent d-flex align-items-center justify-content-center">
-            <h1 class='tableHeading'> Home Page </h1>
-            <div style="cursor: none">Please select an item </div>
-            <div class="image-container w-100 h-100">
-            <img src="~/images/IMAGE-SmartIndustryIOT-e1523990569925-1.jpg" class="img-fluid" width="" alt="...">
-            </div>
-            </div>
-            } *@
-
+                    <partial name="_HomeSection.cshtml" />
+                   
                     <main role="main">
                         @RenderBody()
                     </main>
@@ -365,13 +311,11 @@
         </main>
     }
 
-
-
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
-
+ 
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

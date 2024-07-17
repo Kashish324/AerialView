@@ -141,7 +141,7 @@
                 <Item1 Ref="75" ControlType="XRTableCell" Name="tableCell7" Weight="0.8229188163171138" KeepTogether="true" Multiline="true" Text="LEVEL" StyleName="xrControlStyle1" Font="Arial, 9.75pt, style=Bold" Borders="Left, Right, Bottom">
                   <StylePriority Ref="76" UseFont="false" UseBorders="false" />
                 </Item1>
-                <Item2 Ref="77" ControlType="XRTableCell" Name="tableCell8" Weight="0.677083575142922" KeepTogether="true" Multiline="true" Text="TEMP." StyleName="xrControlStyle1" Font="Arial, 9.75pt, style=Bold" Borders="Left, Right, Bottom">
+                <Item2 Ref="77" ControlType="XRTableCell" Name="tableCell8" Weight="0.677083575142922" KeepTogether="true" Multiline="true" Text="TEMP" StyleName="xrControlStyle1" Font="Arial, 9.75pt, style=Bold" Borders="Left, Right, Bottom">
                   <StylePriority Ref="78" UseFont="false" UseBorders="false" />
                 </Item2>
               </Cells>

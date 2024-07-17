@@ -7,10 +7,11 @@ namespace final_aerialview.Controllers
     public class ReportController(DataAccess dataAccess) : BaseController(dataAccess)
     {
         [HttpGet]
-        public IActionResult ReportDesigner(int datagridRptid)
+        public IActionResult ReportDesigner(int datagridRptid, string selectedReport)
         {
             UpdateModel.DatagridRptid = datagridRptid;
             ViewData["DatagridRptid"] = datagridRptid;
+            ViewData["selectedReport"]= selectedReport;
 
             string reportName = _dataAccess.GetReportFromDatabase();
             ViewData["ReportName"] = reportName ?? string.Empty;

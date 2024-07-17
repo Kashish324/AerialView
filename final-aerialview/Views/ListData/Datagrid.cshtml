@@ -13,8 +13,6 @@
         <div class="h-100 w-100 d-flex align-items-center justify-content-center">
             <p class="text-body-secondary fw-medium">No data to show</p>
         </div>
-
-
     }
     else
     {
@@ -33,6 +31,9 @@
                 )
                 .ColumnAutoWidth(true)
                 .AllowColumnReordering(true)
+                .AllowColumnResizing(true)
+                //confirmation 
+                .ColumnResizingMode(ColumnResizingMode.Widget)
                 .ShowColumnLines(true)
                 .ShowRowLines(true)
                 .ColumnChooser(c => c.Enabled(true))
@@ -91,7 +92,7 @@
             <div id="exportOrientation" class="ms-2">
                 <div class="input-group input-group-sm">
                     <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
-                    <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example">
+                    <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example" style="cursor: pointer !important;">
                         <option value="landscape" selected>Landscape</option>
                         <option value="portrait">Portrait</option>
                     </select>

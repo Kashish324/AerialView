@@ -109,7 +109,6 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
 
     // Add more actions as needed for each submenu view
-
     public IActionResult SubMenuConfiguration(string parentMenu, string submenu)
     {
         // Common logic or redirect to default view based on submenu

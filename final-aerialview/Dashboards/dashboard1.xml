@@ -292,6 +292,7 @@
       </Card>
     </Card>
     <Gauge ComponentName="gaugeDashboardItem1" Name="Gauges 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <InteractivityOptions MasterFilterMode="Single" />
       <DataItems>
         <Measure DataMember="C10" SummaryType="Average" DefaultId="DataItem0" />
         <Measure DataMember="C12" DefaultId="DataItem1" />
@@ -345,6 +346,67 @@
         <Dimension DefaultId="DataItem8" />
       </FilterDimensions>
     </ComboBox>
+    <TabContainer ComponentName="tabContainerDashboardItem1" Name="Tab Container 1">
+      <Pages>
+        <Page ComponentName="dashboardTabPage1" Name="Page 1" />
+        <Page ComponentName="dashboardTabPage2" Name="some map" />
+      </Pages>
+    </TabContainer>
+    <Pie ComponentName="pieDashboardItem1" Name="Pies 1" ParentContainer="dashboardTabPage1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C12" DefaultId="DataItem1" />
+        <Measure DataMember="C16" DefaultId="DataItem2" />
+        <Measure DataMember="C30" SummaryType="Count" DefaultId="DataItem3" />
+        <Measure DataMember="C27" SummaryType="Count" DefaultId="DataItem4" />
+        <Measure DataMember="C10" SummaryType="StdDevp" DefaultId="DataItem5" />
+      </DataItems>
+      <Values>
+        <Value DefaultId="DataItem0" />
+        <Value DefaultId="DataItem1" />
+        <Value DefaultId="DataItem2" />
+        <Value DefaultId="DataItem3" />
+        <Value DefaultId="DataItem4" />
+        <Value DefaultId="DataItem5" />
+      </Values>
+    </Pie>
+    <ChoroplethMap ComponentName="choroplethMapDashboardItem1" Name="Choropleth Map 1" ParentContainer="dashboardTabPage2" DataSource="sqlDataSource1" DataMember="T_KW" AttributeName="NAME">
+      <ViewArea TopLatitude="83.64513000000001" BottomLatitude="-55.61182999999996" LeftLongitude="-179.99999999999997" CenterPointLatitude="44.08908074480383" CenterPointLongitude="10.098071356993813" />
+      <MapLegend />
+      <WeightedLegend />
+    </ChoroplethMap>
+    <ChoroplethMap ComponentName="choroplethMapDashboardItem2" Name="Choropleth Map 1" ShowCaption="false" ParentContainer="dashboardTabPage2" DataSource="sqlDataSource1" DataMember="T_KW" ShapefileArea="SouthAmerica" LockNavigation="true" AttributeName="SOVEREIGNT" IncludeSummaryValueToShapeTitle="true">
+      <DataItems>
+        <Dimension DataMember="C13" TopNEnabled="true" TopNCount="9" TopNMeasure="DataItem3" DefaultId="DataItem0">
+          <NumericFormat FormatType="Percent" Precision="1" IncludeGroupSeparator="true" />
+        </Dimension>
+        <Measure DataMember="C13" DefaultId="DataItem1" />
+        <Measure DataMember="C14" DefaultId="DataItem2" />
+        <Measure DataMember="C11" DefaultId="DataItem3" />
+        <Measure DataMember="C16" DefaultId="DataItem4" />
+      </DataItems>
+      <ViewArea TopLatitude="12.43437499999996" BottomLatitude="-55.891699218750006" LeftLongitude="-109.434130859375" RightLongitude="-34.80546874999999" CenterPointLatitude="-26.578038071737843" CenterPointLongitude="-72.1197998046875" />
+      <MapLegend Visible="true" Position="TopRight" />
+      <WeightedLegend />
+      <TooltipMeasures>
+        <TooltipMeasure DefaultId="DataItem2" />
+      </TooltipMeasures>
+      <AttributeDimension DefaultId="DataItem0" />
+      <Maps>
+        <ValueMap>
+          <Value DefaultId="DataItem1" />
+          <UniformScale />
+        </ValueMap>
+        <ValueMap>
+          <Value DefaultId="DataItem3" />
+          <UniformScale />
+        </ValueMap>
+        <ValueMap>
+          <Value DefaultId="DataItem4" />
+          <UniformScale />
+        </ValueMap>
+      </Maps>
+    </ChoroplethMap>
   </Items>
   <LayoutTree>
     <LayoutGroup>
@@ -352,6 +414,15 @@
       <LayoutGroup Orientation="Vertical">
         <LayoutItem DashboardItem="comboBoxDashboardItem1" Weight="0.7073760580411125" />
         <LayoutItem DashboardItem="gridDashboardItem1" Weight="0.7073760580411125" />
+        <LayoutTabContainer DashboardItem="tabContainerDashboardItem1" Weight="1.2926239419588876">
+          <LayoutTabPage DashboardItem="dashboardTabPage2">
+            <LayoutItem DashboardItem="choroplethMapDashboardItem2" />
+            <LayoutItem DashboardItem="choroplethMapDashboardItem1" />
+          </LayoutTabPage>
+          <LayoutTabPage DashboardItem="dashboardTabPage1">
+            <LayoutItem DashboardItem="pieDashboardItem1" />
+          </LayoutTabPage>
+        </LayoutTabContainer>
         <LayoutItem DashboardItem="cardDashboardItem1" Weight="1.2926239419588876" />
         <LayoutItem DashboardItem="gaugeDashboardItem1" Weight="1.2926239419588876" />
       </LayoutGroup>

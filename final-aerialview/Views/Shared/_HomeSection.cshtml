@@ -1,0 +1,36 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@{
+    var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
+    }
+ <div class="headerContent">
+                        <i class="ri-arrow-right-double-line bx bx-menu fs-5"></i>
+
+                        @if (ViewContext.RouteData.Values["controller"].ToString() != "ListData")
+                        {
+                            if (ViewData["MenuName"] != null)
+                            {
+                                <span class="text text-center" id="selected-submenu">@ViewData["MenuName"]</span>
+                            }
+                            else
+                            {
+                                @foreach (var item in projectData)
+                                {
+                                    <span class="text text-center text-capitalize" id="selected-submenu">@item.ProjectName</span>
+                                }
+                            }
+                        }
+                        else
+                        {
+                            if (ViewBag.TableName != null)
+                            {
+                                <span class="text text-center" id="selected-submenu">@ViewBag.TableName</span>
+                            }
+                            else
+                            {
+                                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
+                            }
+                        }
+
+                    </div>

@@ -355,7 +355,7 @@ body, html {
 }
 
 .tableContent {
-    position: sticky;
+    /*position: sticky;*/
     height: 100%;
     height: calc(100vh - 100px);
     width: 100%;
@@ -364,7 +364,8 @@ body, html {
     align-items: center;
     justify-content: center;
     text-align: center;
-    background-color: #E4E9F7;
+    /*background-color: #E4E9F7;*/
+    /*background-color: mintcream;*/
     z-index: 9;
     margin-left: .5vw;
 }
@@ -437,6 +438,8 @@ body, html {
 /*.radioOption {
     width: 13% !important;
 }*/
+
+
 
 .radioOption .dx-radiogroup-horizontal .dx-collection {
     display: flex;

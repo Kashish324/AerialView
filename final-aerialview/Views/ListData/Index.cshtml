@@ -6,7 +6,7 @@
 
 @{
     var priorities = new[] { "Standard", "Date" };
-    var Items = new[] { "Previous Day", "1 Week", "1 Month", "3 Months", "6 Months", "1 Year", "All" };
+    var Items = new[] { "Previous Day", "1 Week", "1 Month", "3 Months", "6 Months", "1 Year", "Top 1000" };
 }
 
 <div class='dataGridView rounded'>
@@ -26,8 +26,8 @@
         }
     }
 
-    <div class='filterOptions position-relative d-flex flex-wrap align-items-center justify-content-start gap-2 shadow-lg py-1 px-3 text-light rounded'>
-        <div class=" fs-5 fw-medium"><i class="ri-equalizer-2-fill"></i> Filter :</div>
+    <div class='filterOptions position-relative d-flex flex-wrap align-items-center justify-content-start gap-2 shadow-lg py-1 px-3 text-light rounded' >
+        <div class="fs-5 fw-medium" style="cursor: none !important;"><i class="ri-equalizer-2-fill"></i> Filter :</div>
 
         @if (priorities != null)
         {
@@ -35,10 +35,10 @@
             {
                 var option = priorities[i];
                 var isChecked = i == 0 ? "checked" : "";
-                <div class="radioOption d-flex align-items-center ms-2">
-                    <div class="form-check mb-0">
-                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="@option" @isChecked onchange="selectedOption('@option')">
-                        <label class="form-check-label">
+                <div class="radioOption d-flex align-items-center ms-2" >
+                    <div class="form-check mb-0" >
+                        <input class="form-check-input" type="radio" name="flexRadioDefault" id="@option" @isChecked onchange="selectedOption('@option')" style="cursor: pointer !important;">
+                        <label class="form-check-label" for="@option" style="cursor: pointer !important;">
                             @option
                         </label>
                     </div>
@@ -46,10 +46,10 @@
             }
         }
 
-        <div class="radioGroupContainer">
+        <div class="radioGroupContainer" >
             <div id="standardFilterContainer" class="ms-2" style="display: block;">
-                <div class="input-group input-group-sm">
-                    <select id="standardFilter" class="form-select form-select-sm" onchange="selectBox_valueChanged(event)">
+                <div class="input-group input-group-sm" >
+                    <select id="standardFilter" class="form-select form-select-sm" onchange="selectBox_valueChanged(event)" style="cursor: pointer !important;">
                         <option value="" selected disabled>Choose...</option>
                         @foreach (var item in Items)
                         {
@@ -61,12 +61,12 @@
 
             <div id="datePickerContainer" class="ms-2" style="display: none;">
                 <div class="datePicker">
-                    <div class="fromDate w-50">
-                        <input type="datetime-local" id="fromDateInput" class="form-control form-control-sm" onchange="fromDate(event)">
+                    <div class="fromDate w-50" >
+                        <input title ="From Date" type="datetime-local" id="fromDateInput" class="form-control form-control-sm" onchange="fromDate(event)" style="cursor: pointer !important;">
                     </div>
 
-                    <div class="toDate w-50">
-                        <input type="datetime-local" id="toDateInput" class="form-control form-control-sm" onchange="toDate(event)">
+                    <div class="toDate w-50" >
+                        <input title="To Date" type="datetime-local" id="toDateInput" class="form-control form-control-sm" onchange="toDate(event)" style="cursor: pointer !important;">
                     </div>
                 </div>
             </div>

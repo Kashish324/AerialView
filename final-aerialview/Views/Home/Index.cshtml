@@ -1,3 +1,17 @@
 ﻿@{
     ViewData["Title"] = "Home Page";
+    // Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+@* to open new page on starting of the project  *@
+<script>
+    window.onload = function () {
+        var isNewTabOpened = '@ViewBag.IsNewTabOpened' === 'True';
+        if (!isNewTabOpened) {
+            var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
+            var newTab = window.open(newTabPageUrl, '_blank');
+            newTab.focus();
+        }
+    };
+</script>
+

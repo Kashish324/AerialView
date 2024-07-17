@@ -134,6 +134,8 @@ app.Use(async (context, next) =>
     }
 });
 
+
+
 //submenu routing 
 app.MapControllerRoute(
     name: "Submenu",
@@ -146,6 +148,13 @@ app.MapControllerRoute(
     pattern: "DashboardFolder",
     defaults: new { controller = "DashboardFolder", action = "DashInfo" }
 );
+
+app.MapControllerRoute(
+    name: "DefaultDashboard",
+    pattern: "DefaultDashboard/{page?}",
+    defaults: new { controller = "DefaultDashViewer", action = "DefaultDashboard" }
+);
+
 
 
 app.MapControllerRoute(

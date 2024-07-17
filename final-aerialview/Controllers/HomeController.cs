@@ -23,6 +23,12 @@ namespace final_aerialview.Controllers
             //ViewData["ChildMenuData"] = childMenuData;
             //ViewData["UserMasterData"] = userMasterData;
 
+            // Check if session flag is already set
+            bool isNewTabOpened = HttpContext.Session.GetString("IsNewTabOpened") == "True";
+
+            // Pass flag to view
+            ViewBag.IsNewTabOpened = isNewTabOpened;
+
             return View();
         }
 
