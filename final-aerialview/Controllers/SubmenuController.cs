@@ -31,8 +31,9 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         ViewBag.ParentMenu = parentMenu;
         ViewBag.Submenu = submenu;
         ViewData["MenuName"] = submenu;
+        var dashboardListData = _dataAccess.GetDashboardMasterData();
 
-        return View();
+        return View(dashboardListData);
     }
 
     public IActionResult DashConfig(string parentMenu, string submenu)

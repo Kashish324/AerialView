@@ -1,4 +1,6 @@
-﻿@{
+﻿@model List<DashboardDataModel>
+
+@{
     ViewData["Title"] = "Dash Designer";
     Layout = null;
 }
@@ -19,20 +21,61 @@
     <link href="~/css/dashboard.css" rel="stylesheet" />
 
 </head>
+
+
+@{
+    var hasdashDefault = Model.Any(i => i.DashDefault);
+}
+
 <body>
-    <div class="position-absolute top-0 end-0  mt-2 mx-1  " style="z-index:99999;">
-        <input type="button" id="switchButton" class="btn btn-sm fw-bold border-0" value="Switch to Viewer" onclick="switchMode()" />
-    </div>
+
+    @if (!hasdashDefault)
+    {
+        <div class="position-absolute top-0 end-0  mt-2 mx-1  " style="z-index:99999;">
+            <input type="button" id="switchButton" class="btn btn-sm fw-bold border-0" value="Switch to Viewer" onclick="switchMode()" />
+        </div>
 
 
-    <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
-        @(Html.DevExpress().Dashboard("clientDashboardControl")
-            .ControllerName("DefaultDashboard")
-            .Width("100%")
-            .Height("100%")
-            .WorkingMode(WorkingMode.Designer)
-        )
-    </div>
+        <div style="position: absolute; left:0;top:50px;right:0;bottom:0;">
+            @(Html.DevExpress().Dashboard("clientDashboardControl")
+                .ControllerName("DefaultDashboard")
+                .Width("100%")
+                .Height("100%")
+                .WorkingMode(WorkingMode.Designer)
+                )
+        </div>
+    }
+    else
+    {
+        
+    @foreach (var i in Model)
+    {
+        if (i.DashDefault == true)
+        {
+            if (i.DashPath != null)
+            {
+                // removing the extension for dashboard viewer syntax
+                string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
+
+                    <div class="position-absolute top-0 end-0  mt-2 mx-1  " style="z-index:99999;">
+                        <input type="button" id="switchButton" class="btn btn-sm fw-bold border-0" value="Switch to Viewer" onclick="switchMode()" />
+                    </div>
+
+                <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
+                    @(Html.DevExpress().Dashboard("clientDashboardControl")
+                        .ControllerName("DefaultDashboard")
+                        .Width("100%")
+                        .Height("100%")
+                        .WorkingMode(WorkingMode.Designer)
+                        .InitialDashboardId(FileNameOnly)
+                        )
+                </div>
+            }
+        }
+    }
+    }
+
+    
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
@@ -47,7 +90,7 @@
             }
         }
 
-        
+
 
     </script>
 </body>

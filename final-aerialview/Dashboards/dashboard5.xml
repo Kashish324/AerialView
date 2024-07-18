@@ -114,7 +114,6 @@
   <Items>
     <ComboBox ComponentName="comboBoxDashboardItem1" Name="Combo Box 1" DataSource="sqlDataSource1" DataMember="T1">
       <DataItems>
-        <Dimension DataMember="C10" DefaultId="DataItem0" />
         <Dimension DataMember="C11" DefaultId="DataItem1" />
         <Dimension DataMember="C12" DefaultId="DataItem2" />
         <Dimension DataMember="C13" DefaultId="DataItem3" />
@@ -129,7 +128,6 @@
         <Dimension DefaultId="DataItem7" />
       </HiddenDimensions>
       <FilterDimensions>
-        <Dimension DefaultId="DataItem0" />
         <Dimension DefaultId="DataItem1" />
         <Dimension DefaultId="DataItem2" />
         <Dimension DefaultId="DataItem3" />
@@ -214,15 +212,65 @@
         <Value DefaultId="DataItem4" />
       </Values>
     </Pie>
+    <ScatterChart ComponentName="scatterChartDashboardItem1" Name="Scatter Chart 1" DataSource="sqlDataSource1" DataMember="T1">
+      <DataItems>
+        <Measure DataMember="C14" DefaultId="DataItem0" />
+        <Measure DataMember="C12" DefaultId="DataItem1" />
+        <Measure DataMember="C16" DefaultId="DataItem2" />
+        <Dimension DataMember="C13" DefaultId="DataItem3" />
+        <Dimension DataMember="C15" DefaultId="DataItem4" />
+        <Dimension DataMember="C35" DefaultId="DataItem5" />
+        <Measure DataMember="C14" DefaultId="DataItem6" />
+      </DataItems>
+      <HiddenDimensions>
+        <Dimension DefaultId="DataItem3" />
+        <Dimension DefaultId="DataItem4" />
+        <Dimension DefaultId="DataItem5" />
+      </HiddenDimensions>
+      <HiddenMeasures>
+        <Measure DefaultId="DataItem6" />
+      </HiddenMeasures>
+      <MeasureX DefaultId="DataItem0" />
+      <MeasureY DefaultId="DataItem1" />
+      <MeasureWeight DefaultId="DataItem2" />
+    </ScatterChart>
+    <Gauge ComponentName="gaugeDashboardItem1" Name="Gauges 1" DataSource="sqlDataSource1" DataMember="T1">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C56" DefaultId="DataItem1" />
+        <Measure DataMember="C16" SummaryType="Average" DefaultId="DataItem2" />
+      </DataItems>
+      <HiddenMeasures>
+        <Measure DefaultId="DataItem2" />
+      </HiddenMeasures>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem0" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem1" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+    </Gauge>
   </Items>
   <LayoutTree>
     <LayoutGroup>
       <LayoutGroup Orientation="Vertical">
-        <LayoutItem DashboardItem="comboBoxDashboardItem1" />
         <LayoutGroup>
-          <LayoutItem DashboardItem="gridDashboardItem1" />
+          <LayoutItem DashboardItem="scatterChartDashboardItem1" />
           <LayoutGroup Orientation="Vertical">
-            <LayoutItem DashboardItem="chartDashboardItem1" />
+            <LayoutItem DashboardItem="comboBoxDashboardItem1" />
+            <LayoutItem DashboardItem="gaugeDashboardItem1" />
+          </LayoutGroup>
+        </LayoutGroup>
+        <LayoutGroup>
+          <LayoutItem DashboardItem="chartDashboardItem1" />
+          <LayoutGroup Orientation="Vertical">
+            <LayoutItem DashboardItem="gridDashboardItem1" />
             <LayoutItem DashboardItem="pieDashboardItem1" />
           </LayoutGroup>
         </LayoutGroup>

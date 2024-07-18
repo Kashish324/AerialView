@@ -31,6 +31,7 @@ builder.Services.AddScoped<DataAccess>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
+    //options.IdleTimeout = TimeSpan.FromMinutes(30);
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
 });
@@ -151,7 +152,7 @@ app.MapControllerRoute(
 
 app.MapControllerRoute(
     name: "DefaultDashboard",
-    pattern: "DefaultDashboard/{page?}",
+    pattern: "DefaultDashboardViewer/{page?}",
     defaults: new { controller = "DefaultDashViewer", action = "DefaultDashboard" }
 );
 

@@ -13,5 +13,28 @@
             newTab.focus();
         }
     };
+
+    // function dynamicallyCreateAnchorAndNavigate(url) {
+    //     let anchorElement = document.createElement('a');
+    //     anchorElement.href = url;
+    //     anchorElement.target = '_blank'; // Ensure it opens in a new tab
+    //     document.body.appendChild(anchorElement);
+    //     anchorElement.click();
+    //     document.body.removeChild(anchorElement);
+    // }
+
+    // function openInNewTab(url) {
+    //     dynamicallyCreateAnchorAndNavigate(url);
+    // }
+
+    // window.onload = function () {
+    //     var isNewTabOpened = '@ViewBag.IsNewTabOpened' === 'True';
+    //     if (!isNewTabOpened) {
+    //         setTimeout(function () {
+    //             var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
+    //             openInNewTab(newTabPageUrl);
+    //         }, 1000); // Delay to simulate user interaction
+    //     }
+    // };
 </script>
 

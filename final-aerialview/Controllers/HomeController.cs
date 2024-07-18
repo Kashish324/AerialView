@@ -13,21 +13,14 @@ namespace final_aerialview.Controllers
         [Authorize]
         public IActionResult Index()
         {
-            //var menuParentData = _dataAccess.GetMenuParentData();
-            //var subMenuData = _dataAccess.GetSubMenuData();
-            //var childMenuData = _dataAccess.GetChildMenuData();
-            ////var userMasterData = _dataAccess.GetUserMasterData();
-
-            //ViewData["MenuParentData"] = menuParentData;
-            //ViewData["SubMenuData"] = subMenuData;
-            //ViewData["ChildMenuData"] = childMenuData;
-            //ViewData["UserMasterData"] = userMasterData;
 
             // Check if session flag is already set
             bool isNewTabOpened = HttpContext.Session.GetString("IsNewTabOpened") == "True";
 
+
             // Pass flag to view
             ViewBag.IsNewTabOpened = isNewTabOpened;
+            
 
             return View();
         }

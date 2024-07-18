@@ -41,6 +41,8 @@
         {
             if (i.DashDefault == true)
             {
+                if(i.DashPath != null)
+                {
                 // removing the extension for dashboard viewer syntax
                 string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
 
@@ -53,6 +55,7 @@
                         .InitialDashboardId(FileNameOnly)
                         )
                 </div>
+                }
             }
         }
     }
