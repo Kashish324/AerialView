@@ -625,7 +625,7 @@ body, html {
 
 .sidebar.close .profile-details .software-version {
     display: none;
-    opacity: 0;
+    opacity: 0 !important;
 }
 
 
