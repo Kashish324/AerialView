@@ -7,6 +7,8 @@
     Layout = null;
 }
 
+
+
 <div id="dataTable" class="position-relative shadow-lg rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
@@ -17,7 +19,8 @@
     else
     {
         <div class="datagridWrapper bg-light bg-gradient rounded-top">
-            @(Html.DevExtreme().DataGrid()
+            @(
+                Html.DevExtreme().DataGrid()
                 .ID("dataGridContainer")
                 .DataSource(Model.TableData)
                 .FilterRow(filterRow => filterRow
@@ -32,7 +35,7 @@
                 .ColumnAutoWidth(true)
                 .AllowColumnReordering(true)
                 .AllowColumnResizing(true)
-                //confirmation 
+                //confirmation
                 .ColumnResizingMode(ColumnResizingMode.Widget)
                 .ShowColumnLines(true)
                 .ShowRowLines(true)
@@ -49,24 +52,35 @@
                 .Columns(c =>
                 {
 
-                    if (Model.TableData != null && Model.TableData.Any())
+                    if (Model.TableData != null && Model.TableData.Any() && Model.ConditionalTableData != null)
                     {
                         var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault();
                         if (firstItem != null)
                         {
-                            foreach (var property in firstItem.Keys)
+                            foreach (var i in Model.ConditionalTableData)
                             {
-                                if (property == "DateAndTime")
+                                foreach (var property in firstItem.Keys)
                                 {
-                                    c.Add().DataField(property).Caption(property).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss")
-                                    .CssClass("datagridCol");
-                                }
-                                else
-                                {
-                                    c.Add().DataField(property).Caption(property)
-                                    .CssClass("datagridCol");
+                                    if (property == i.ColumnName)
+                                    {
+                                        if (property == "DateAndTime")
+                                        {
+                                           
+                                            c.Add().DataField(property).Caption(i.DisplayName).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss")
+                                                            .CssClass("datagridCol");
+                                        }
+                                        else
+                                        {
+                                          
+                                            c.Add().DataField(property).Caption(i.DisplayName)
+                                            .CssClass("datagridCol");
+                                        }
+                                    }
+
+
                                 }
                             }
+
                         }
                     }
                 })
@@ -252,8 +266,8 @@
         });
     }
 
-function exportGridToPdf(e) {
-        
+    function exportGridToPdf(e) {
+
 
         var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
         var orientation = pdfOrientationSelect.value;
@@ -278,7 +292,7 @@ function exportGridToPdf(e) {
 
         // Set margins
         var margin = {
-            top: 25, 
+            top: 25,
             bottom: 20,
             left: 15,
             right: 15
@@ -288,15 +302,15 @@ function exportGridToPdf(e) {
         var addHeader = function () {
             doc.setFontSize(13);
             doc.setTextColor(0);
-            doc.text(tableName + ' ' + 'Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center'});
+            doc.text(tableName + ' ' + 'Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
 
             // Add logo, project name, client name
-            var item = clientData[0]; 
+            var item = clientData[0];
             var imgData = item.Logo;
             var projectName = item.ProjectName;
             var clientName = item.ClientName;
 
-            doc.addImage(imgData, 'JPEG', 15, 25, 25, 15); 
+            doc.addImage(imgData, 'JPEG', 15, 25, 25, 15);
 
             doc.setFontSize(11);
             doc.text('Project:' + ' ' + projectName, doc.internal.pageSize.getWidth() / 2, 31, { align: 'center' });

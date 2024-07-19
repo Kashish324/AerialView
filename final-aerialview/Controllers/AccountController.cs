@@ -62,7 +62,6 @@ namespace final_aerialview.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("IsLoggedIn");
             return RedirectToAction("Login", "Account");
-            //this is simple logout 
         }
     }
 }

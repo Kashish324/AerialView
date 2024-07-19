@@ -57,8 +57,8 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
             return BadRequest("No data to update.");
         }
 
-        var existingRows = data.Where(d => d.DashId <= 60).ToList();
-        var newRows = data.Where(d => d.DashId > 60 && d.DashId <= 100).ToList();
+        var existingRows = data.Where(d => d.DashId <= 70).ToList();
+        var newRows = data.Where(d => d.DashId > 70  && d.DashId <= 100).ToList();
         //var newRows = data.Where(d => d.DashId > 50 && d.DashId <= 100 && !string.IsNullOrEmpty(d.DashPath)).ToList();
 
 

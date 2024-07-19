@@ -11,6 +11,7 @@ namespace final_aerialview.ViewModels
         public int RptId { get; set; }
         //IEnumerable -- it is a list/container which holds some items and you can iterate over it but cannot modify anything in it 
         public IEnumerable<dynamic>? TableData { get; set; }
+        public IEnumerable<dynamic>? ConditionalTableData { get; set; }
         public IEnumerable<PdfImageModel>? PdfImageData { get; set; }
     }
 }

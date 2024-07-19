@@ -127,6 +127,13 @@ namespace final_aerialview.Data
             }
         }
 
+        //conditional table 
+        public IEnumerable<ConditionalTableModel> ConditionalTable(int rptId)
+        {
+            string query = $"SELECT * from Report_Config where RptId = '{rptId}' and Required = 'true'";
+            return ExecuteQuery<ConditionalTableModel>(query);
+        }
+
         //for generating where clause according to datagrid filter
         private string? GenerateWhereClause(string option, string selectedValue, string fromDate, string toDate)
         {
@@ -194,16 +201,12 @@ namespace final_aerialview.Data
             return whereClause;
         }
 
-
-
         //dashboard master table
         public IEnumerable<DashboardDataModel> GetDashboardMasterData()
         {
-            string query = "Select DashId,DashName,DashPath, (case when DashStatus ='' then 'False' else DashStatus end) as 'DashStatus',(case when DashDefault ='' then 'False' else DashDefault end) as 'DashDefault' from DashboardMaster";
+            string query = "Select DashId,DashName,DashPath, (case when DashStatus ='' then 'False' else DashStatus end) as 'DashStatus',(case when DashDefault ='' then 'False' else DashDefault end) as 'DashDefault' from DashboardMaster order by DashId asc";
             return ExecuteQuery<DashboardDataModel>(query);
         }
-
-        
 
         public void UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
         {
@@ -306,7 +309,6 @@ namespace final_aerialview.Data
             }
         }
 
-
         //to delete the dash config by id
         public void DeleteDashById(int dashId)
         {
@@ -333,7 +335,6 @@ namespace final_aerialview.Data
                 }
             }
         }
-
 
         public IEnumerable<SettingProfileModel> GetSettingProfileData()
         {

@@ -64,6 +64,8 @@ namespace final_aerialview.Controllers
         public IActionResult DataGrid(string option, string selectedValue, string fromDate, string toDate, string tableName, string connString, int rptId)
         {
             var dynamicData = _dataAccess.DynamicConnString(connString, tableName, option, selectedValue, fromDate, toDate);
+            var condtionalTable = _dataAccess.ConditionalTable(rptId);
+        
 
             IEnumerable<PdfImageModel> pdfImageData = _dataAccess.GetPdfImageData();
 
@@ -79,6 +81,7 @@ namespace final_aerialview.Controllers
             var viewModel = new ListDataViewModel
             {
                 TableData = dynamicData,
+                ConditionalTableData = condtionalTable,
                 RptId = rptId,
                 PdfImageData = pdfImageData,
             };
