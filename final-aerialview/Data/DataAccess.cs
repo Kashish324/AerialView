@@ -184,16 +184,16 @@ namespace final_aerialview.Data
                             break;
                         case "All":
                             //return "";
-                            whereClause = ""; 
+                            whereClause = "";
                             break;
 
-                            //top 1000 option where clause is going null so it is by default giving select * top 1000 from table
+                        //top 1000 option where clause is going null so it is by default giving select * top 1000 from table
                         default:
                             return null;
                     }
-                    if(selectedValue != "All")
+                    if (selectedValue != "All")
                     {
-                    whereClause = $"WHERE DateAndTime >= '{filterDate:yyyy-MM-ddTHH:mm:ss}'";
+                        whereClause = $"WHERE DateAndTime >= '{filterDate:yyyy-MM-ddTHH:mm:ss}'";
                     }
                 }
             }
@@ -230,9 +230,9 @@ namespace final_aerialview.Data
                     connection.Execute(sql, parameters);
 
 
-                    foreach(var item in updatedData)
+                    foreach (var item in updatedData)
                     {
-                       if(item.DashDefault == true)
+                        if (item.DashDefault == true)
                         {
                             var test = updatedData.Select(s => s.DashId).FirstOrDefault();
 
@@ -240,9 +240,10 @@ namespace final_aerialview.Data
                             connection.Execute(sql1);
                         }
                     }
-                    
+
 
                     string c2 = $"UPDATE Menu_Child_New SET SubMenuName = @SubMenuName WHERE MainMenuCode = 5 AND DashId = @DashId";
+                    string c3 = $" UPDATE UserControlMaster SET ControlName = @SubMenuName WHERE refId = @DashId";
 
                     var c2Parameters = new
                     {
@@ -250,7 +251,9 @@ namespace final_aerialview.Data
                         DashId = data.DashId
                     };
 
-                    connection.Execute(c2, c2Parameters);
+                    var appendedString = c2 + c3;
+
+                    connection.Execute(appendedString, c2Parameters);
                 }
 
             }
