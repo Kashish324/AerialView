@@ -132,7 +132,7 @@
                                                 bool subMenuAccessible = userMasterData != null && userMasterData.Any(uc => uc.ControlName == subItem.SubMenuName);
                                                 if (subMenuAccessible)
                                                 {
-                                                    var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode);
+                                                    var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode && childItem.MainMenuCode == subItem.MainMenuCode);
 
                                                     <li class="subMenu-link">
                                                         @if (hasChildmenu)

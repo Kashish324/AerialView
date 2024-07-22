@@ -10,5 +10,6 @@
         public string? DataTableName { get; set; }
         public string? stringName { get; set; }
         public string? ReportType { get; set; }
+        public int MainMenuCode {  get; set; }
     }
 }
