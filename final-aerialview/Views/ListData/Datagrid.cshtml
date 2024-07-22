@@ -54,7 +54,9 @@
 
                     if (Model.TableData != null && Model.TableData.Any() && Model.ConditionalTableData != null)
                     {
-                        var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault();
+                        @* var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault(); *@
+                        var firstItem = Model.TableData.FirstOrDefault() as IDictionary<string, object>;
+
                         if (firstItem != null)
                         {
                             foreach (var i in Model.ConditionalTableData)
@@ -65,13 +67,11 @@
                                     {
                                         if (property == "DateAndTime")
                                         {
-                                           
                                             c.Add().DataField(property).Caption(i.DisplayName).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss")
                                                             .CssClass("datagridCol");
                                         }
                                         else
                                         {
-                                          
                                             c.Add().DataField(property).Caption(i.DisplayName)
                                             .CssClass("datagridCol");
                                         }

@@ -5,7 +5,6 @@
     padding: 0;
     box-sizing: border-box;
     font-family: 'Poppins', Helvetica;
-    /*cursor: pointer !important;*/
 }
 
 body, html {
@@ -40,9 +39,6 @@ body, html {
         font-weight: 500;
     }
 
-        /*.close:not(:disabled):not(.disabled):hover {
-     opacity: 1 !important; 
-}*/
 
         .sidebar.close:hover {
             background: #11101d;
@@ -50,7 +46,6 @@ body, html {
         }
 
     .sidebar .logo-details {
-        /*height: 60px;*/
         width: 100%;
         display: flex;
         align-items: center;
@@ -72,7 +67,6 @@ body, html {
         .sidebar .logo-details .logo_name {
             font-size: 20px;
             color: #fff;
-            /*font-weight: 600;*/
             opacity: 1;
         }
 
@@ -101,7 +95,6 @@ body, html {
     .sidebar .nav-links li {
         position: relative;
         list-style: none;
-        /*transition: all 0.4s ease;*/
     }
 
         .sidebar .nav-links li:hover {
@@ -158,7 +151,6 @@ body, html {
     }
 
         .sidebar .nav-links li .listMenu .link_name {
-            /*font-size: 18px;*/
             font-weight: 400;
         }
 
@@ -292,7 +284,6 @@ body, html {
     background-color: #E4E9F7;
     z-index: 999;
     padding: 0 20px;
-    /*min-height: 100vh;*/
 }
 
 .sidebar.close ~ .home-section {
@@ -305,15 +296,12 @@ body, html {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    /*text-align: center;*/
 }
 
 .home-content .headerContent {
     position: sticky;
     top: 0;
-    /* height: 50px; */
     padding: 0vh 0 !important;
-    /*padding: 1vh 0;*/
     width: auto;
     display: flex;
     align-items: center;
@@ -342,7 +330,6 @@ body, html {
 .home-section .home-content .bx-menu {
     position: relative;
     text-align: start;
-    /*margin-right: 8px;*/
     cursor: pointer;
     opacity: .6;
     height: fit-content;
@@ -355,7 +342,6 @@ body, html {
 }
 
 .tableContent {
-    /*position: sticky;*/
     height: 100%;
     height: calc(100vh - 100px);
     width: 100%;
@@ -364,8 +350,6 @@ body, html {
     align-items: center;
     justify-content: center;
     text-align: center;
-    /*background-color: #E4E9F7;*/
-    /*background-color: mintcream;*/
     z-index: 9;
     margin-left: .5vw;
 }
@@ -422,7 +406,6 @@ body, html {
         width: fit-content;
         color: #fff;
         font-weight: 500;
-        /*font-size: 1.4em;*/
         font-size: 1.3em;
         letter-spacing: .1vw;
         white-space: nowrap
@@ -435,15 +418,8 @@ body, html {
 }
 
 /*radio option*/
-/*.radioOption {
-    width: 13% !important;
-}*/
-
-
-
 .radioOption .dx-radiogroup-horizontal .dx-collection {
     display: flex;
-    /* flex-wrap: wrap; */
     -moz-column-gap: 17px;
     column-gap: 10px;
 }
@@ -462,8 +438,6 @@ body, html {
 
 #standardFilter {
     width: 100% !important;
-    /*height: 36px !important;*/
-    /*height: 32px !important;*/
 }
 
 
@@ -473,7 +447,6 @@ body, html {
     align-items: center;
     justify-content: flex-start;
     gap: 1vh;
-    /*height: 32px;*/
 }
 
     .datePicker .dx-field {
@@ -498,7 +471,6 @@ body, html {
 
 .datagridWrapper {
     position: relative;
-    /*overflow: scroll;*/
     overflow: auto;
     height: 74vh;
     width: 100%;
@@ -594,7 +566,6 @@ body, html {
 .sidebar .profile-details .logOut {
     border-radius: 16px;
     margin: 0 10px 0 12px;
-    /*background: #1d1b31;*/
     transition: all 0.5s ease;
 }
 
@@ -634,6 +605,11 @@ body, html {
     font-size: 1.2em;
 }
 
+
+/*header filter for datagrid (position)*/
+div.dx-column-indicators {
+    float: right !important;
+}
 
 
 

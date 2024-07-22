@@ -124,7 +124,7 @@ app.UseSession();
 // Add middleware to check authentication
 app.Use(async (context, next) =>
 {
-    if (context.Request.Path != "/Account/Login" && !context.User.Identity.IsAuthenticated)
+    if (context.Request.Path != "/Account/Login" && !context.User.Identity?.IsAuthenticated == true)
     {
         context.Response.Redirect("/Account/Login");
     }

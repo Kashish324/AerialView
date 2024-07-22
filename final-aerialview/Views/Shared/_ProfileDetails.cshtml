@@ -11,7 +11,10 @@
                 </form>
             </div>
             <div class="name-job">
+                @if(User.Identity != null)
+                {
                 <div class="profile_name fw-medium " style="font-size: 13px;">@User.Identity.Name</div>
+                }
             </div>
 
         </div>

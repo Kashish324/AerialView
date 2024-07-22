@@ -28,6 +28,7 @@ namespace final_aerialview.Services
         {
             var rootDirectory = new DirectoryInfo(folder);
             var fileInfo = new FileInfo(Path.Combine(folder, url));
+
             return fileInfo.Directory.FullName.ToLower().StartsWith(rootDirectory.FullName.ToLower());
         }
 

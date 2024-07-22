@@ -98,7 +98,7 @@ namespace final_aerialview.Data
         }
 
         //to fetch the saved report from the database
-        public string GetReportFromDatabase()
+        public string? GetReportFromDatabase()
         {
             try
             {
@@ -301,7 +301,7 @@ namespace final_aerialview.Data
                 if (ds1.Tables[1].Rows.Count > 0)
                 {
                     DashId = (Convert.ToInt32(ds1.Tables[1].Rows[0][0].ToString()));
-                    DashName = ds1.Tables[1].Rows[0]["DashName"].ToString();
+                    DashName = ds1.Tables[1].Rows[0]["DashName"].ToString() ?? string.Empty;
                 }
 
                 var sql2 = $" insert into Menu_Child_New (MainMenuCode, SubMenuCode, SubMenuName, Status, Frm_Level, RptId, Link_FormName, DashId) VALUES (5, {submenucode}, '{DashName}', 0, 0, 0, 'xDashboardReport', {DashId} )";

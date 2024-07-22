@@ -183,9 +183,8 @@ subMenuToggleHandling();
 
 
 
-//reset state persistence of datagrid
+//reset state of datagrid
 function onStateResetClick() {
     const dataGrid = $("#dataGridContainer").dxDataGrid("instance");
     dataGrid.state(null);
-    console.log('reset')
 }
