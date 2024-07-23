@@ -30,9 +30,9 @@
 
     @if (!hasdashDefault)
     {
-        <div class="position-absolute top-0 end-0  mt-2 mx-1  " style="z-index:99999;">
+       @*  <div class="position-absolute top-0 end-0  mt-2 mx-1  " style="z-index:99999;">
             <input type="button" id="switchButton" class="btn btn-sm fw-bold border-0" value="Switch to Viewer" onclick="switchMode()" />
-        </div>
+        </div> *@
 
 
         <div style="position: absolute; left:0;top:50px;right:0;bottom:0;">
@@ -41,6 +41,7 @@
                 .Width("100%")
                 .Height("100%")
                 .WorkingMode(WorkingMode.Designer)
+                .OnBeforeRender("onBeforeRender")
                 )
         </div>
     }
@@ -56,10 +57,6 @@
                     // removing the extension for dashboard viewer syntax
                     string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
 
-                    <div class="position-absolute top-0 end-0  mt-2 mx-1  " style="z-index:99999;">
-                        <input type="button" id="switchButton" class="btn btn-sm fw-bold border-0" value="Switch to Viewer" onclick="switchMode()" />
-                    </div>
-
                     <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
                         @(Html.DevExpress().Dashboard("clientDashboardControl")
                             .ControllerName("DefaultDashboard")
@@ -67,6 +64,7 @@
                             .Height("100%")
                             .WorkingMode(WorkingMode.Designer)
                             .InitialDashboardId(FileNameOnly)
+                            .OnBeforeRender("onBeforeRender")
                             )
                     </div>
                 }
@@ -75,18 +73,31 @@
     }
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    <script>
-        function switchMode() {
-            var button = document.getElementById("switchButton");
-            if (clientDashboardControl.isDesignMode()) {
-                clientDashboardControl.switchToViewer();
-                button.value = "Switch to Designer";
-            } else {
-                clientDashboardControl.switchToDesigner();
-                button.value = "Switch to Viewer";
-            }
-        }
+   <script src="~/js/SaveAsExtension.js"></script>
 
+    <!-- Defines the "Save As" extension template. -->
+    @* <script type="text/html" id="dx-save-as-form">
+        <div>Dashboard Name:</div>
+        <div style="margin: 10px 0" data-bind="dxTextBox: { value: newName }"></div>
+        <div data-bind="dxButton: { text: 'Save', onClick: saveAs }"></div>
+    </script> *@
+
+    <script>
+        // function switchMode() {
+        //     var button = document.getElementById("switchButton");
+        //     if (clientDashboardControl.isDesignMode()) {
+        //         clientDashboardControl.switchToViewer();
+        //         button.value = "Designer";
+        //     } else {
+        //         clientDashboardControl.switchToDesigner();
+        //         button.value = "Viewer";
+        //     }
+        // }
+
+        function onBeforeRender(dashboardControl) {
+            dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
+            // dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
+        }
     </script>
 </body>
 </html>
