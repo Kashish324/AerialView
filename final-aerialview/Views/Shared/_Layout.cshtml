@@ -71,7 +71,7 @@
         <div class="image-container vh-100 w-100">
             <img src="~/images/IMAGE-SmartIndustryIOT-e1523990569925-1.jpg" class="img-fluid h-100 w-100" width="" alt="Home Page">
         </div>
-       
+
     }
 
     @if (User.Identity != null && User.Identity.IsAuthenticated)
@@ -137,6 +137,7 @@
                                                     <li class="subMenu-link">
                                                         @if (hasChildmenu)
                                                         {
+                                                            @* generating submenu where they have child sub menu *@
                                                             <div class="icon-link">
                                                                 <div class="listMenu">
                                                                     <i class="ri-box-3-line"></i>
@@ -145,6 +146,20 @@
                                                                 <i class="ri-arrow-right-s-line sub-menu-arrow fs-6"></i>
                                                             </div>
                                                         }
+                                                        
+                                                        else if(mainItem.MenuName == "Dashboards")
+                                                        {
+                                                            <a href="@Url.Action("ViewDashboard", "SubmenuDashViewer", new { dashId = subItem.DashId })" class="text-decoration-none">
+                                                                <div class="icon-link text-capitalize">
+                                                                    <div class="listMenu">
+                                                                        <i class="ri-box-3-line"></i>
+                                                                        <span>@subItem.SubMenuName</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        }
+
+
                                                         else
                                                         {
                                                             <a href="@Url.Action("SubMenuConfiguration", "Submenu", new { parentMenu  = mainItem.MenuName, submenu  = subItem.SubMenuName })" class="text-decoration-none">
@@ -153,10 +168,6 @@
                                                                         <i class="ri-box-3-line"></i>
                                                                         <span>@subItem.SubMenuName</span>
                                                                     </div>
-                                                                    @if (hasChildmenu)
-                                                                    {
-                                                                        <i class="ri-arrow-right-s-line sub-menu-arrow fs-6"></i>
-                                                                    }
                                                                 </div>
                                                             </a>
                                                         }
@@ -285,7 +296,7 @@
             <section class="home-section position-absolute top-0 end-0">
                 <div class="home-content">
                     <partial name="_HomeSection.cshtml" />
-                   
+
                     <main role="main">
                         @RenderBody()
                     </main>
@@ -295,7 +306,7 @@
         }
         else
         {
-            <main role="main"> 
+            <main role="main">
                 @RenderBody()
             </main>
         }
@@ -317,7 +328,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
- 
+
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

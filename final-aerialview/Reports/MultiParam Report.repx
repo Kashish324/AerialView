@@ -185,29 +185,29 @@
         </Item1>
       </Controls>
     </Item4>
-    <Item5 Ref="97" ControlType="ReportFooterBand" Name="ReportFooter1" HeightF="330.208" />
-    <Item6 Ref="98" ControlType="PageFooterBand" Name="PageFooter1" HeightF="319.776">
+    <Item5 Ref="97" ControlType="ReportFooterBand" Name="ReportFooter1" HeightF="330.208">
       <Controls>
-        <Item1 Ref="99" ControlType="XRChart" Name="chart1" DataSource="#Ref-0" SizeF="400,300" LocationFloat="309.092,0" BorderColor="Black" Borders="None">
-          <Chart Ref="100">
+        <Item1 Ref="98" ControlType="XRChart" Name="chart1" DataSource="#Ref-0" SizeF="400,300" LocationFloat="318.467,13.541333" BorderColor="Black" Borders="None">
+          <Chart Ref="99">
             <AutoSeriesCheckedInLegendStates>
-              <Item1 Ref="101" AutoSeriesName="Series 3" CheckState="true" />
-              <Item2 Ref="102" AutoSeriesName="Series 2" CheckState="true" />
-              <Item3 Ref="103" AutoSeriesName="Series 1" CheckState="true" />
+              <Item1 Ref="100" AutoSeriesName="Series 3" CheckState="true" />
+              <Item2 Ref="101" AutoSeriesName="Series 2" CheckState="true" />
+              <Item3 Ref="102" AutoSeriesName="Series 1" CheckState="true" />
             </AutoSeriesCheckedInLegendStates>
-            <DataContainer Ref="104" DataMember="Product_Transfer" SeriesDataMember="Transfer_Name" ValidateDataMembers="true">
-              <SeriesTemplate Ref="105" SeriesDataMember="Transfer_Name" />
+            <DataContainer Ref="103" DataMember="Product_Transfer" SeriesDataMember="Transfer_Name" ValidateDataMembers="true">
+              <SeriesTemplate Ref="104" SeriesDataMember="Transfer_Name" />
             </DataContainer>
-            <Diagram Ref="106" TypeNameSerializable="XYDiagram">
-              <AxisX Ref="107" VisibleInPanesSerializable="-1" />
-              <AxisY Ref="108" VisibleInPanesSerializable="-1" />
+            <Diagram Ref="105" TypeNameSerializable="XYDiagram">
+              <AxisX Ref="106" VisibleInPanesSerializable="-1" />
+              <AxisY Ref="107" VisibleInPanesSerializable="-1" />
             </Diagram>
-            <Legend Ref="109" LegendID="-1" />
-            <OptionsPrint Ref="110" ImageFormat="Metafile" />
+            <Legend Ref="108" LegendID="-1" />
+            <OptionsPrint Ref="109" ImageFormat="Metafile" />
           </Chart>
         </Item1>
       </Controls>
-    </Item6>
+    </Item5>
+    <Item6 Ref="110" ControlType="PageFooterBand" Name="PageFooter1" HeightF="319.776" />
     <Item7 Ref="111" ControlType="BottomMarginBand" Name="BottomMargin1" />
   </Bands>
   <ParameterPanelLayoutItems>

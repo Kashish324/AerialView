@@ -6,5 +6,6 @@
         public int SubMenuCode { get; set; }
         public int MainMenuCode { get; set; }
         public string? SubMenuName { get; set; }
+        public int DashId { get; set; }
     }
 }
