@@ -243,12 +243,15 @@ namespace final_aerialview.Data
 
 
                     string c2 = $"UPDATE Menu_Child_New SET SubMenuName = @SubMenuName WHERE MainMenuCode = 5 AND DashId = @DashId";
-                    string c3 = $" UPDATE UserControlMaster SET ControlName = @SubMenuName WHERE refId = @DashId";
+
+
+                    string c3 = $" UPDATE UserControlMaster SET ControlName = @SubMenuName, Status = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END  WHERE refId = @DashId";
 
                     var c2Parameters = new
                     {
                         SubMenuName = data.DashName,
-                        DashId = data.DashId
+                        DashId = data.DashId, 
+                        DashStatus = data.DashStatus
                     };
 
                     var appendedString = c2 + c3;

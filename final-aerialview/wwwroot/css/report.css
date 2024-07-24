@@ -59,22 +59,4 @@
 }
 
 
-.btn:hover {
-    cursor: pointer;
-    transform: translateY(1px);
-}
-
-
-.textShadow-hover {
-    line-height: 1.2em;
-    color: #0000;
-    text-shadow: 0 0 #000, 0 1.2em #30507c;
-    overflow: hidden;
-    transition: .4s ease;
-    cursor: pointer;
-}
-
-    .textShadow-hover:hover {
-        text-shadow: 0 -1.2em #000, 0 0 #30507c;
-    }
 
