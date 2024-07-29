@@ -58,13 +58,14 @@
                     string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
 
                     <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
-                        @(Html.DevExpress().Dashboard("clientDashboardControl")
-                            .ControllerName("DefaultDashboard")
-                            .Width("100%")
-                            .Height("100%")
-                            .WorkingMode(WorkingMode.Designer)
-                            .InitialDashboardId(FileNameOnly)
-                            .OnBeforeRender("onBeforeRender")
+                        @(
+            Html.DevExpress().Dashboard("clientDashboardControl")
+                                .ControllerName("DefaultDashboard")
+                                .Width("100%")
+                                .Height("100%")
+                                .WorkingMode(WorkingMode.Designer)
+                                .InitialDashboardId(FileNameOnly)
+                                .OnBeforeRender("onBeforeRender")
                             )
                     </div>
                 }

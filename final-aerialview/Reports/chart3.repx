@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="23.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v23.2, Version=23.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="TestReport" Margins="100, 100, 100, 203.125" PageWidth="850" PageHeight="1100" Version="24.1" DataMember="T_KW" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Bands>
+    <Item1 Ref="2" ControlType="TopMarginBand" Name="TopMargin" />
+    <Item2 Ref="3" ControlType="ReportHeaderBand" Name="ReportHeader" HeightF="200">
+      <Controls>
+        <Item1 Ref="4" ControlType="XRChart" Name="xrChart1" DataSource="#Ref-0" SizeF="650,200" LocationFloat="0,0" BorderColor="Black" Borders="None">
+          <Chart Ref="5">
+            <DataContainer Ref="6" DataMember="T_KW" ValidateDataMembers="true">
+              <SeriesSerializable>
+                <Item1 Ref="7" DataSource="#Ref-0" Name="Series 1" SeriesID="0" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C8" ValueDataMembersSerializable="C8" />
+                <Item2 Ref="8" DataSource="#Ref-0" Name="Series 2" SeriesID="1" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C9" ValueDataMembersSerializable="C9" />
+                <Item3 Ref="9" DataSource="#Ref-0" Name="Series 3" SeriesID="2" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C10" ValueDataMembersSerializable="C10" />
+                <Item4 Ref="10" DataSource="#Ref-0" Name="Series 4" SeriesID="3" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C11" ValueDataMembersSerializable="C11" />
+                <Item5 Ref="11" DataSource="#Ref-0" Name="Series 5" SeriesID="4" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C12" ValueDataMembersSerializable="C12" />
+              </SeriesSerializable>
+            </DataContainer>
+            <Diagram Ref="12" TypeNameSerializable="XYDiagram">
+              <AxisX Ref="13" VisibleInPanesSerializable="-1">
+                <DateTimeScaleOptions Ref="14" MeasureUnit="Year" GridAlignment="Year" AutoGrid="false">
+                  <IntervalOptions Ref="15" />
+                </DateTimeScaleOptions>
+              </AxisX>
+              <AxisY Ref="16" VisibleInPanesSerializable="-1" />
+              <DefaultPane Ref="17" EnableAxisXScrolling="False" EnableAxisYScrolling="False" EnableAxisXZooming="False" EnableAxisYZooming="False">
+                <StackedBarTotalLabel Ref="18">
+                  <ConnectorLineStyle Ref="19" />
+                </StackedBarTotalLabel>
+              </DefaultPane>
+            </Diagram>
+            <Legend Ref="20" LegendID="-1" />
+            <OptionsPrint Ref="21" ImageFormat="Metafile" />
+          </Chart>
+        </Item1>
+      </Controls>
+    </Item2>
+    <Item3 Ref="22" ControlType="DetailBand" Name="Detail" HeightF="71.00002">
+      <Controls>
+        <Item1 Ref="23" ControlType="XRLine" Name="xrLine1" SizeF="650,2" LocationFloat="0,69.00002" />
+        <Item2 Ref="24" ControlType="XRLabel" Name="xrLabel13" Multiline="true" Text="xrLabel13" SizeF="100,23" LocationFloat="0,46.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="25" EventName="BeforePrint" PropertyName="Text" Expression="[C13]" />
+          </ExpressionBindings>
+        </Item2>
+        <Item3 Ref="26" ControlType="XRLabel" Name="xrLabel12" Multiline="true" Text="xrLabel12" SizeF="100,23" LocationFloat="500,23.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="27" EventName="BeforePrint" PropertyName="Text" Expression="[C12]" />
+          </ExpressionBindings>
+        </Item3>
+        <Item4 Ref="28" ControlType="XRLabel" Name="xrLabel11" Multiline="true" Text="xrLabel11" SizeF="100,23" LocationFloat="400,23.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="29" EventName="BeforePrint" PropertyName="Text" Expression="[C11]" />
+          </ExpressionBindings>
+        </Item4>
+        <Item5 Ref="30" ControlType="XRLabel" Name="xrLabel10" Multiline="true" Text="xrLabel10" SizeF="100,23" LocationFloat="300,23.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="31" EventName="BeforePrint" PropertyName="Text" Expression="[C10]" />
+          </ExpressionBindings>
+        </Item5>
+        <Item6 Ref="32" ControlType="XRLabel" Name="xrLabel9" Multiline="true" Text="xrLabel9" SizeF="100,23" LocationFloat="200,23.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="33" EventName="BeforePrint" PropertyName="Text" Expression="[C9]" />
+          </ExpressionBindings>
+        </Item6>
+        <Item7 Ref="34" ControlType="XRLabel" Name="xrLabel8" Multiline="true" Text="xrLabel8" SizeF="100,23" LocationFloat="100,23.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="35" EventName="BeforePrint" PropertyName="Text" Expression="[C8]" />
+          </ExpressionBindings>
+        </Item7>
+        <Item8 Ref="36" ControlType="XRLabel" Name="xrLabel7" Multiline="true" Text="xrLabel7" SizeF="100,23" LocationFloat="0,23.00001" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="37" EventName="BeforePrint" PropertyName="Text" Expression="[C7]" />
+          </ExpressionBindings>
+        </Item8>
+        <Item9 Ref="38" ControlType="XRLabel" Name="xrLabel6" Multiline="true" Text="xrLabel6" SizeF="100,23" LocationFloat="500,0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="39" EventName="BeforePrint" PropertyName="Text" Expression="[C6]" />
+          </ExpressionBindings>
+        </Item9>
+        <Item10 Ref="40" ControlType="XRLabel" Name="xrLabel5" Multiline="true" Text="xrLabel5" SizeF="100,23" LocationFloat="400,0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="41" EventName="BeforePrint" PropertyName="Text" Expression="[C5]" />
+          </ExpressionBindings>
+        </Item10>
+        <Item11 Ref="42" ControlType="XRLabel" Name="xrLabel4" Multiline="true" Text="xrLabel4" SizeF="100,23" LocationFloat="300,0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="43" EventName="BeforePrint" PropertyName="Text" Expression="[C4]" />
+          </ExpressionBindings>
+        </Item11>
+        <Item12 Ref="44" ControlType="XRLabel" Name="xrLabel3" Multiline="true" Text="xrLabel3" SizeF="100,23" LocationFloat="200,0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="45" EventName="BeforePrint" PropertyName="Text" Expression="[C3]" />
+          </ExpressionBindings>
+        </Item12>
+        <Item13 Ref="46" ControlType="XRLabel" Name="xrLabel2" Multiline="true" Text="xrLabel2" SizeF="100,23" LocationFloat="100,0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="47" EventName="BeforePrint" PropertyName="Text" Expression="[C2]" />
+          </ExpressionBindings>
+        </Item13>
+        <Item14 Ref="48" ControlType="XRLabel" Name="xrLabel1" TextFormatString="{0:d}" Multiline="true" Text="xrLabel1" SizeF="100,23" LocationFloat="0,0" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="49" EventName="BeforePrint" PropertyName="Text" Expression="[DateAndTime]" />
+          </ExpressionBindings>
+        </Item14>
+      </Controls>
+    </Item3>
+    <Item4 Ref="50" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="203.125">
+      <Controls>
+        <Item1 Ref="51" ControlType="XRChart" Name="chart1" SizeF="650,200" LocationFloat="0,0" BorderColor="Black" Borders="None">
+          <Chart Ref="52">
+            <DataContainer Ref="53" DataMember="T_KW" ValidateDataMembers="true">
+              <SeriesSerializable>
+                <Item1 Ref="54" Name="Series 1" SeriesID="0" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C8" ValueDataMembersSerializable="C8" />
+                <Item2 Ref="55" Name="Series 2" SeriesID="1" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C9" ValueDataMembersSerializable="C9" />
+                <Item3 Ref="56" Name="Series 3" SeriesID="2" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C10" ValueDataMembersSerializable="C10" />
+                <Item4 Ref="57" Name="Series 4" SeriesID="3" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C11" ValueDataMembersSerializable="C11" />
+                <Item5 Ref="58" Name="Series 5" SeriesID="4" ArgumentDataMember="DateAndTime" ColorDataMember="T_KW.C12" ValueDataMembersSerializable="C12" />
+              </SeriesSerializable>
+            </DataContainer>
+            <Diagram Ref="59" TypeNameSerializable="XYDiagram">
+              <AxisX Ref="60" VisibleInPanesSerializable="-1">
+                <DateTimeScaleOptions Ref="61" MeasureUnit="Year" GridAlignment="Year" AutoGrid="false">
+                  <IntervalOptions Ref="62" />
+                </DateTimeScaleOptions>
+              </AxisX>
+              <AxisY Ref="63" VisibleInPanesSerializable="-1" />
+              <DefaultPane Ref="64" EnableAxisXScrolling="False" EnableAxisYScrolling="False" EnableAxisXZooming="False" EnableAxisYZooming="False">
+                <StackedBarTotalLabel Ref="65">
+                  <ConnectorLineStyle Ref="66" />
+                </StackedBarTotalLabel>
+              </DefaultPane>
+            </Diagram>
+            <Legend Ref="67" LegendID="-1" />
+            <OptionsPrint Ref="68" ImageFormat="Metafile" />
+          </Chart>
+        </Item1>
+      </Controls>
+    </Item4>
+  </Bands>
+  <ComponentStorage>
+    <Item1 Ref="69" ObjectType="DevExpress.DataAccess.ObjectBinding.ObjectDataSource,DevExpress.DataAccess.v23.2" Name="objectDataSource1" Base64="PE9iamVjdERhdGFTb3VyY2UgTmFtZT0ib2JqZWN0RGF0YVNvdXJjZTEiIC8+" />
+    <Item2 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v23.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkdvZGl2YV9QdW1wIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJTZWxlY3RRdWVyeSIgTmFtZT0iVF9LVyI+PFRhYmxlcz48VGFibGUgTmFtZT0iVF9LVyIgLz48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJEYXRlQW5kVGltZSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMiIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMyIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNiIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNyIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDOCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDOSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMTAiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzExIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMxMiIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMTMiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzE0IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMxNSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMTYiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzE3IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMxOCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMTkiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzIwIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMyMSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMjIiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzIzIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMyNCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMjUiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzI2IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMyNyIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMjgiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzI5IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMzMCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMzEiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzMyIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMzMyIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMzQiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzM1IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMzNiIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDMzciIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzM4IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkMzOSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNDAiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzQxIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM0MiIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNDMiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzQ0IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM0NSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNDYiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzQ3IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM0OCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNDkiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzUwIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM1MSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNTIiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzUzIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM1NCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNTUiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzU2IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM1NyIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNTgiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzU5IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM2MCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNjEiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzYyIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM2MyIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNjQiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzY1IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM2NiIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNjciIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzY4IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM2OSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNzAiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzcxIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM3MiIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNzMiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzc0IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM3NSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNzYiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzc3IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM3OCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDNzkiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzgwIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM4MSIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDODIiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzgzIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM4NCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDODUiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzg2IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM4NyIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDODgiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzg5IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM5MCIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDOTEiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzkyIiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM5MyIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDOTQiIC8+PENvbHVtbiBUYWJsZT0iVF9LVyIgTmFtZT0iQzk1IiAvPjxDb2x1bW4gVGFibGU9IlRfS1ciIE5hbWU9IkM5NiIgLz48Q29sdW1uIFRhYmxlPSJUX0tXIiBOYW1lPSJDOTciIC8+PC9Db2x1bW5zPjwvUXVlcnk+PFJlc3VsdFNjaGVtYT48RGF0YVNldCBOYW1lPSJzcWxEYXRhU291cmNlMSI+PFZpZXcgTmFtZT0iVF9LVyI+PEZpZWxkIE5hbWU9IkRhdGVBbmRUaW1lIiBUeXBlPSJEYXRlVGltZSIgLz48RmllbGQgTmFtZT0iQzIiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzQiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzYiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzciIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzgiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzkiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzEwIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkMxMSIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDMTIiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzEzIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkMxNCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDMTUiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzE2IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkMxNyIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDMTgiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzE5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkMyMCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDMjEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzIyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkMyMyIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDMjQiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzI1IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkMyNiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDMjciIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzI4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkMyOSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDMzAiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzMxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkMzMiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDMzMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzM0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkMzNSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDMzYiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzM3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkMzOCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDMzkiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzQwIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM0MSIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNDIiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzQzIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM0NCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNDUiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzQ2IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM0NyIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNDgiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzQ5IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM1MCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNTEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzUyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM1MyIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNTQiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzU1IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM1NiIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNTciIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzU4IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM1OSIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNjAiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzYxIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM2MiIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNjMiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzY0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM2NSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDNjYiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzY3IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM2OCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNjkiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzcwIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM3MSIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNzIiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzczIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM3NCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNzUiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzc2IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkM3NyIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDNzgiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzc5IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM4MCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDODEiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzgyIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM4MyIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJDODQiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQzg1IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM4NiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDODciIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzg4IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM4OSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDOTAiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzkxIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM5MiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDOTMiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzk0IiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IkM5NSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJDOTYiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQzk3IiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
+  </ComponentStorage>
+</XtraReportsLayoutSerializer>

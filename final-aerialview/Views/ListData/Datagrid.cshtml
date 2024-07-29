@@ -173,15 +173,25 @@
         });
         worksheet.addImage(imageId, "A1:A3");
 
-        // Assuming tableData is defined elsewhere in your code and contains the data
-        var excelHeaders = Object.keys(tableData[0]);
-        var headerLength = excelHeaders.length;
+        // Get visible columns only
+        var visibleColumns = dataGridInstance.getVisibleColumns();
 
         DevExpress.excelExporter.exportDataGrid({
             component: dataGridInstance,
             worksheet: worksheet,
             autoFilterEnabled: true,
-            topLeftCell: { row: 5, column: 1 }
+            topLeftCell: { row: 5, column: 1 },
+            customizeCell: function (options) {
+                var gridCell = options.gridCell;
+                var excelCell = options.excelCell;
+
+                if (gridCell.rowType === "header") {
+                    var column = visibleColumns[gridCell.columnIndex];
+                    if (column) {
+                        excelCell.value = column.caption;
+                    }
+                }
+            }
         }).then(function () {
             // Format column headers with bold text
             var headerRow = worksheet.getRow(5);
@@ -212,6 +222,7 @@
                 return columnName;
             }
 
+            var headerLength = visibleColumns.length;
             var last = getColumnLetter(headerLength);
 
             worksheet.mergeCells('B3:' + last + '3');
@@ -258,13 +269,13 @@
                 });
             });
 
-
             workbook.xlsx.writeBuffer().then(function (buffer) {
                 var fileName = childMenuName + '_' + formattedDate + '_' + formattedTime + '.xlsx';
                 saveAs(new Blob([buffer], { type: 'application/octet-stream' }), fileName);
             });
         });
     }
+
 
     function exportGridToPdf(e) {
 

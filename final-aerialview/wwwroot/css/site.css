@@ -412,10 +412,10 @@ body, html {
     }
 
 
-.dx-radiobutton .dx-item-content {
-    color: #fff;
+/*.dx-radiobutton .dx-item-content {
+    color: #333;
     font-size: 1.2em;
-}
+}*/
 
 /*radio option*/
 .radioOption .dx-radiogroup-horizontal .dx-collection {

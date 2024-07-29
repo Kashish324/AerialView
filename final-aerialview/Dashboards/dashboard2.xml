@@ -114,62 +114,33 @@
     </SqlDataSource>
   </DataSources>
   <Items>
-    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="T1">
+    <Treemap ComponentName="treemapDashboardItem1" Name="Treemap 1" DataSource="sqlDataSource1" DataMember="T1">
       <DataItems>
-        <Measure DataMember="C10" DefaultId="DataItem0" />
-        <Measure DataMember="C11" DefaultId="DataItem1" />
-        <Measure DataMember="C12" DefaultId="DataItem2" />
-        <Measure DataMember="C13" DefaultId="DataItem3" />
-        <Measure DataMember="C14" DefaultId="DataItem4" />
-        <Measure DataMember="C15" DefaultId="DataItem5" />
-        <Measure DataMember="C16" DefaultId="DataItem6" />
-        <Measure DataMember="C17" SummaryType="Count" DefaultId="DataItem7" />
-        <Measure DataMember="C18" SummaryType="Count" DefaultId="DataItem8" />
-        <Dimension DataMember="C10" DefaultId="DataItem9" />
-        <Dimension DataMember="C16" DefaultId="DataItem10" />
+        <Measure DataMember="C12" DefaultId="DataItem0" />
+        <Dimension DataMember="C6" GroupChildValues="true" DefaultId="DataItem1" />
+        <Dimension DataMember="C18" DefaultId="DataItem2" />
       </DataItems>
+      <Values>
+        <Value DefaultId="DataItem0" />
+      </Values>
       <Arguments>
-        <Argument DefaultId="DataItem9" />
-        <Argument DefaultId="DataItem10" />
+        <Argument DefaultId="DataItem1" />
+        <Argument DefaultId="DataItem2" />
       </Arguments>
-      <Panes>
-        <Pane Name="Pane 1">
-          <Series>
-            <Simple>
-              <Value DefaultId="DataItem0" />
-            </Simple>
-            <Simple>
-              <Value DefaultId="DataItem1" />
-            </Simple>
-            <Simple>
-              <Value DefaultId="DataItem2" />
-            </Simple>
-            <Simple>
-              <Value DefaultId="DataItem3" />
-            </Simple>
-            <Simple>
-              <Value DefaultId="DataItem4" />
-            </Simple>
-            <Simple>
-              <Value DefaultId="DataItem5" />
-            </Simple>
-            <Simple>
-              <Value DefaultId="DataItem6" />
-            </Simple>
-            <Simple>
-              <Value DefaultId="DataItem7" />
-            </Simple>
-            <Simple>
-              <Value DefaultId="DataItem8" />
-            </Simple>
-          </Series>
-        </Pane>
-      </Panes>
-    </Chart>
+    </Treemap>
+    <ListBox ComponentName="listBoxDashboardItem1" Name="List Box 1" DataSource="sqlDataSource1" DataMember="T1">
+      <DataItems>
+        <Dimension DataMember="C6" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </ListBox>
   </Items>
   <LayoutTree>
     <LayoutGroup>
-      <LayoutItem DashboardItem="chartDashboardItem1" />
+      <LayoutItem DashboardItem="listBoxDashboardItem1" Weight="0.23962368566685113" />
+      <LayoutItem DashboardItem="treemapDashboardItem1" Weight="1.7603763143331488" />
     </LayoutGroup>
   </LayoutTree>
 </Dashboard>

@@ -185,50 +185,68 @@
         </Item1>
       </Controls>
     </Item4>
-    <Item5 Ref="97" ControlType="ReportFooterBand" Name="ReportFooter1" HeightF="330.208">
+    <Item5 Ref="97" ControlType="ReportFooterBand" Name="ReportFooter1" HeightF="330.224">
       <Controls>
-        <Item1 Ref="98" ControlType="XRChart" Name="chart1" DataSource="#Ref-0" SizeF="400,300" LocationFloat="318.467,13.541333" BorderColor="Black" Borders="None">
+        <Item1 Ref="98" ControlType="XRChart" Name="chart2" SizeF="695.8333,315.83658" LocationFloat="604.1667,14.372083" BorderColor="Black" Borders="None">
           <Chart Ref="99">
-            <AutoSeriesCheckedInLegendStates>
-              <Item1 Ref="100" AutoSeriesName="Series 3" CheckState="true" />
-              <Item2 Ref="101" AutoSeriesName="Series 2" CheckState="true" />
-              <Item3 Ref="102" AutoSeriesName="Series 1" CheckState="true" />
-            </AutoSeriesCheckedInLegendStates>
-            <DataContainer Ref="103" DataMember="Product_Transfer" SeriesDataMember="Transfer_Name" ValidateDataMembers="true">
-              <SeriesTemplate Ref="104" SeriesDataMember="Transfer_Name" />
+            <DataContainer Ref="100" ValidateDataMembers="true">
+              <SeriesSerializable>
+                <Item1 Ref="101" Name="Series1" SeriesID="0" ArgumentDataMember="Product_Transfer.Transfer_Name" ColorDataMember="Product_Transfer.Quantity" ValueDataMembersSerializable="Product_Transfer.Quantity" LabelsVisibility="True">
+                  <View Ref="102" TypeNameSerializable="PieSeriesView" />
+                </Item1>
+              </SeriesSerializable>
             </DataContainer>
-            <Diagram Ref="105" TypeNameSerializable="XYDiagram">
-              <AxisX Ref="106" VisibleInPanesSerializable="-1" />
-              <AxisY Ref="107" VisibleInPanesSerializable="-1" />
-            </Diagram>
-            <Legend Ref="108" LegendID="-1" />
-            <OptionsPrint Ref="109" ImageFormat="Metafile" />
+            <Legend Ref="103" LegendID="-1" Visibility="False" />
+            <OptionsPrint Ref="104" ImageFormat="Metafile" />
           </Chart>
         </Item1>
+        <Item2 Ref="105" ControlType="XRChart" Name="chart1" DataSource="#Ref-0" SizeF="590.9017,330.208" LocationFloat="0,0" BorderColor="Black" Borders="None">
+          <Chart Ref="106">
+            <AutoSeriesCheckedInLegendStates>
+              <Item1 Ref="107" AutoSeriesName="Series 3" CheckState="true" />
+              <Item2 Ref="108" AutoSeriesName="Series 2" CheckState="true" />
+              <Item3 Ref="109" AutoSeriesName="Series 1" CheckState="true" />
+            </AutoSeriesCheckedInLegendStates>
+            <DataContainer Ref="110" DataMember="Product_Transfer" SeriesDataMember="Transfer_Name" ValidateDataMembers="true">
+              <SeriesSerializable>
+                <Item1 Ref="111" Name="Series1" SeriesID="0" ArgumentDataMember="ID" ColorDataMember="Quantity" ValueDataMembersSerializable="Quantity" LabelsVisibility="False" />
+                <Item2 Ref="112" Name="Series2" SeriesID="1" ArgumentDataMember="StartDate" ColorDataMember="Initial_Qty" ValueDataMembersSerializable="Initial_Qty" />
+                <Item3 Ref="113" Name="Series3" SeriesID="2" ArgumentDataMember="EndDate" ColorDataMember="Final_Qty" ValueDataMembersSerializable="Final_Qty" />
+              </SeriesSerializable>
+              <SeriesTemplate Ref="114" SeriesDataMember="Transfer_Name" />
+            </DataContainer>
+            <Diagram Ref="115" TypeNameSerializable="XYDiagram">
+              <AxisX Ref="116" VisibleInPanesSerializable="-1" />
+              <AxisY Ref="117" VisibleInPanesSerializable="-1" />
+            </Diagram>
+            <Legend Ref="118" LegendID="-1" Visibility="False" />
+            <OptionsPrint Ref="119" ImageFormat="Metafile" />
+          </Chart>
+        </Item2>
       </Controls>
     </Item5>
-    <Item6 Ref="110" ControlType="PageFooterBand" Name="PageFooter1" HeightF="319.776" />
-    <Item7 Ref="111" ControlType="BottomMarginBand" Name="BottomMargin1" />
+    <Item6 Ref="120" ControlType="PageFooterBand" Name="PageFooter1" HeightF="330.208" />
+    <Item7 Ref="121" ControlType="BottomMarginBand" Name="BottomMargin1" />
   </Bands>
   <ParameterPanelLayoutItems>
-    <Item1 Ref="112" LayoutItemType="Parameter" Parameter="#Ref-5" />
-    <Item2 Ref="113" LayoutItemType="Parameter" Parameter="#Ref-8" />
+    <Item1 Ref="122" LayoutItemType="Parameter" Parameter="#Ref-5" />
+    <Item2 Ref="123" LayoutItemType="Parameter" Parameter="#Ref-8" />
   </ParameterPanelLayoutItems>
   <ComponentStorage>
     <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v23.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IlZhcmFuYXNpX0JhbmFzIiBGcm9tQXBwQ29uZmlnPSJ0cnVlIiAvPjxRdWVyeSBUeXBlPSJTZWxlY3RRdWVyeSIgTmFtZT0iUHJvZHVjdF9UcmFuc2ZlciI+PFRhYmxlcz48VGFibGUgTmFtZT0iUHJvZHVjdF9UcmFuc2ZlciIgLz48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJJRCIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJTdGFydERhdGUiIC8+PENvbHVtbiBUYWJsZT0iUHJvZHVjdF9UcmFuc2ZlciIgTmFtZT0iRW5kRGF0ZSIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJUcmFuc2Zlcl9OYW1lIiAvPjxDb2x1bW4gVGFibGU9IlByb2R1Y3RfVHJhbnNmZXIiIE5hbWU9IlNvdXJjZSIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJEZXN0aW5hdGlvbiIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJCYXRjaF9JRCIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJRdWFudGl0eSIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJJbml0aWFsX1F0eSIgLz48Q29sdW1uIFRhYmxlPSJQcm9kdWN0X1RyYW5zZmVyIiBOYW1lPSJGaW5hbF9RdHkiIC8+PENvbHVtbiBUYWJsZT0iUHJvZHVjdF9UcmFuc2ZlciIgTmFtZT0iUmVhc29uIiAvPjwvQ29sdW1ucz48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlByb2R1Y3RfVHJhbnNmZXIiPjxGaWVsZCBOYW1lPSJJRCIgVHlwZT0iSW50MzIiIC8+PEZpZWxkIE5hbWU9IlN0YXJ0RGF0ZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkVuZERhdGUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJUcmFuc2Zlcl9OYW1lIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9IlNvdXJjZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJEZXN0aW5hdGlvbiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJCYXRjaF9JRCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJRdWFudGl0eSIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJJbml0aWFsX1F0eSIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJGaW5hbF9RdHkiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iUmVhc29uIiBUeXBlPSJTdHJpbmciIC8+PC9WaWV3PjwvRGF0YVNldD48L1Jlc3VsdFNjaGVtYT48Q29ubmVjdGlvbk9wdGlvbnMgQ2xvc2VDb25uZWN0aW9uPSJ0cnVlIiAvPjwvU3FsRGF0YVNvdXJjZT4=" />
   </ComponentStorage>
   <ObjectStorage>
-    <Item1 Ref="3" ObjectType="DevExpress.XtraReports.Parameters.RangeParametersSettings, DevExpress.Printing.v23.2.Core" StartParameter="#Ref-114" EndParameter="#Ref-115" />
+    <Item1 Ref="3" ObjectType="DevExpress.XtraReports.Parameters.RangeParametersSettings, DevExpress.Printing.v23.2.Core" StartParameter="#Ref-124" EndParameter="#Ref-125" />
     <Item2 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v23.2" Ref="4" Content="System.DateTime" Type="System.Type" />
     <Item3 Ref="6" ObjectType="DevExpress.XtraReports.Parameters.DynamicListLookUpSettings, DevExpress.Printing.v23.2.Core" DataSource="#Ref-0" DataMember="Product_Transfer" ValueMember="Source" DisplayMember="Source" SortOrder="Ascending" />
-    <Item4 Ref="114" ObjectType="DevExpress.XtraReports.Parameters.RangeStartParameter, DevExpress.Printing.v23.2.Core" ValueInfo="2024-06-20" Name="DateRange_Start">
+    <Item4 Ref="124" ObjectType="DevExpress.XtraReports.Parameters.RangeStartParameter, DevExpress.Printing.v23.2.Core" ValueInfo="2024-06-20" Name="DateRange_Start">
       <ExpressionBindings>
-        <Item1 Ref="116" PropertyName="Value" Expression="AddMonths(Today(),-1)" />
+        <Item1 Ref="126" PropertyName="Value" Expression="AddMonths(Today(),-1)" />
       </ExpressionBindings>
     </Item4>
-    <Item5 Ref="115" ObjectType="DevExpress.XtraReports.Parameters.RangeEndParameter, DevExpress.Printing.v23.2.Core" ValueInfo="2024-06-20" Name="DateRange_End">
+    <Item5 Ref="125" ObjectType="DevExpress.XtraReports.Parameters.RangeEndParameter, DevExpress.Printing.v23.2.Core" ValueInfo="2024-06-20" Name="DateRange_End">
       <ExpressionBindings>
-        <Item1 Ref="117" PropertyName="Value" Expression="Today()" />
+        <Item1 Ref="127" PropertyName="Value" Expression="Today()" />
       </ExpressionBindings>
     </Item5>
   </ObjectStorage>
