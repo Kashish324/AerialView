@@ -63,6 +63,7 @@ builder.Services.AddScoped<DashboardConfigurator>((IServiceProvider serviceProvi
     DashboardConfigurator configurator = new DashboardConfigurator();
     configurator.SetDashboardStorage(new DashboardFileStorage(dashboardFolderPath));
     configurator.SetConnectionStringsProvider(new DashboardConnectionStringsProvider(configuration));
+    DashboardConfigurator.PassCredentials = true;
     return configurator;
 });
 // Add this in ConfigureServices method
