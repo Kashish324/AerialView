@@ -15,7 +15,7 @@
         </Item1>
         <Item2 Ref="12" ControlType="XRLabel" Name="label6" KeepTogether="true" Multiline="true" Text="label5" SizeF="129.16667,25" LocationFloat="1170.8334,111.694336" Padding="2,2,0,0,100">
           <ExpressionBindings>
-            <Item1 Ref="13" EventName="BeforePrint" PropertyName="Text" Expression="?DateRange_End" />
+            <Item1 Ref="13" EventName="BeforePrint" PropertyName="Text" Expression="?DateRange_Start" />
           </ExpressionBindings>
         </Item2>
         <Item3 Ref="14" ControlType="XRLabel" Name="label5" KeepTogether="true" Multiline="true" Text="label5" SizeF="129.16667,25" LocationFloat="75,110.694336" Padding="2,2,0,0,100">

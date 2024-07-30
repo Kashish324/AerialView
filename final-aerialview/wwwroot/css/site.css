@@ -485,6 +485,10 @@ body, html {
     background-color: #fff;
 }
 
+#dataGridContainer {
+    max-height: 73.9vh !important;
+}
+
 .datagridWrapper::-webkit-scrollbar {
     display: none;
 }

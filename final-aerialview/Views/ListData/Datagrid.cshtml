@@ -8,7 +8,6 @@
 }
 
 
-
 <div id="dataTable" class="position-relative shadow-lg rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
@@ -22,6 +21,7 @@
             @(
                 Html.DevExtreme().DataGrid()
                 .ID("dataGridContainer")
+                .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
                 .DataSource(Model.TableData)
                 .FilterRow(filterRow => filterRow
                 .Visible(true)
@@ -35,7 +35,6 @@
                 .ColumnAutoWidth(true)
                 .AllowColumnReordering(true)
                 .AllowColumnResizing(true)
-                //confirmation
                 .ColumnResizingMode(ColumnResizingMode.Widget)
                 .ShowColumnLines(true)
                 .ShowRowLines(true)
@@ -51,10 +50,8 @@
                 .Grouping(g => g.AutoExpandAll(false))
                 .Columns(c =>
                 {
-
                     if (Model.TableData != null && Model.TableData.Any() && Model.ConditionalTableData != null)
                     {
-                        @* var firstItem = (IDictionary<string, object>)Model.TableData.FirstOrDefault(); *@
                         var firstItem = Model.TableData.FirstOrDefault() as IDictionary<string, object>;
 
                         if (firstItem != null)
@@ -76,8 +73,6 @@
                                             .CssClass("datagridCol");
                                         }
                                     }
-
-
                                 }
                             }
 
@@ -115,17 +110,19 @@
 
 
             <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
-                @* <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i> *@
-                <i class="ri-file-excel-2-line fs-3 shadow-sm text-success"></i>
+                <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i>
+                @* <i class="ri-file-excel-2-line fs-3 shadow-sm text-success"></i> *@
             </button>
             <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
-                @* <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i> *@
-                <i class="ri-file-pdf-2-line fs-3 shadow-sm text-danger"></i>
+                <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i>
+                @* <i class="ri-file-pdf-2-line fs-3 shadow-sm text-danger"></i> *@
             </button>
 
         </div>
     }
 </div>
+
+
 
 <script>
     var excelExportBtn = document.getElementById('excelExportButton');

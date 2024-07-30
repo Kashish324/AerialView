@@ -13,8 +13,8 @@ namespace final_aerialview.Controllers
             ViewData["DatagridRptid"] = datagridRptid;
             ViewData["selectedReport"]= selectedReport;
 
-            string reportName = _dataAccess.GetReportFromDatabase();
-            ViewData["ReportName"] = reportName ?? string.Empty;
+            string reportName = _dataAccess.GetReportFromDatabase() ?? string.Empty;
+            ViewData["ReportName"] = reportName;
 
             return View();
         }
@@ -25,7 +25,7 @@ namespace final_aerialview.Controllers
 
             ViewData["DatagridRptid"] = datagridRptid;
 
-            string reportName = _dataAccess.GetReportFromDatabase();
+            string reportName = _dataAccess.GetReportFromDatabase() ?? string.Empty;
             ViewData["ReportName"] = reportName;
 
             return View();
