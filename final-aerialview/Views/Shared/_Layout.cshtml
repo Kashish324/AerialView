@@ -99,7 +99,7 @@
                             bool isAdmin = User.IsInRole("admin");
 
                             //exclude "master" and "utility" for admin
-                            if (menuAccessible && !(isAdmin && mainItem.MenuName == "Master" || mainItem.MenuName == "Utility"))
+                            if (menuAccessible && !(isAdmin && mainItem.MenuName == "Master" || mainItem.MenuName == "Utility") && !(mainItem.MenuName == "Windows"))
                             {
 
                                 var hasSubmenu = subMenuData.Any(subItem => subItem.MainMenuCode == mainItem.MenuCode);
@@ -130,7 +130,7 @@
                                             @foreach (var subItem in subMenuData.Where(subItem => subItem.MainMenuCode == mainItem.MenuCode))
                                             {
                                                 bool subMenuAccessible = userMasterData != null && userMasterData.Any(uc => uc.ControlName == subItem.SubMenuName);
-                                                if (subMenuAccessible)
+                                                if (subMenuAccessible && !(subItem.SubMenuName == "Menu Setting" || subItem.SubMenuName == "Email Setting" || subItem.SubMenuName == "Project Setting"))
                                                 {
                                                     var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode && childItem.MainMenuCode == subItem.MainMenuCode);
 
