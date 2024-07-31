@@ -70,3 +70,10 @@
         width: 57vw;
     }
 }
+
+@media (min-width: 1920px) and (min-height: 1080px) {
+    .login-wrapper {
+        width: 50vw;
+        height: 44vh;
+    }
+}

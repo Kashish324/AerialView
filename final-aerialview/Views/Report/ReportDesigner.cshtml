@@ -19,21 +19,21 @@
 </div>
 <div id="reportDesignerContainer">
 
-@{
-    var designerRender = Html.DevExpress().ReportDesigner("reportDesigner")
+    @{
+        var designerRender = Html.DevExpress().ReportDesigner("reportDesigner")
         .Height("96.6vh");
 
-    if (!string.IsNullOrEmpty(reportName))
-    {
-        designerRender.Bind(reportName);
-    }
-    else
-    {
-        Console.WriteLine("Opening blank report designer");
-    }
+        if (!string.IsNullOrEmpty(reportName))
+        {
+            designerRender.Bind(reportName);
+        }
+        else
+        {
+            Console.WriteLine("Opening blank report designer");
+        }
 
-    @designerRender.RenderHtml()
-}
+        @designerRender.RenderHtml()
+    }
 </div>
 
 @section Scripts {
@@ -41,5 +41,5 @@
     @designerRender.RenderScripts()
 }
 
- 
+
 
