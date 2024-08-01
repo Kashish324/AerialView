@@ -275,36 +275,46 @@
 
 
     function exportGridToPdf(e) {
-
-
         var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
-        var orientation = pdfOrientationSelect.value;
+        var orientation = pdfOrientationSelect.value; //portrait or landscape
 
-        // datagrid instance
+        // DataGrid instance
         var dataGridElement = document.getElementById("dataGridContainer");
         var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
 
         var columnWidth = 22;
-        var columnWidths = [];
+        var rowHeight = 10; 
         var columnCount = dataGridInstance.columnCount();
-        for (var i = 0; i < columnCount; i++) {
-            columnWidths.push(columnWidth);
-        }
+        var rowCount = dataGridInstance.getDataSource().items().length;
 
-        var doc = new jsPDF({
-            orientation: orientation,
-            unit: 'mm', // Set units to millimeters for accurate margin control
-            format: 'a4'
-        });
-
-
-        // Set margins
         var margin = {
             top: 25,
             bottom: 20,
             left: 15,
             right: 15
         };
+
+        // Calculate required width and height
+        var totalWidth = columnCount * columnWidth + margin.left + margin.right;
+        var totalHeight = rowCount * rowHeight + margin.top + margin.bottom;
+        console.log(totalHeight);
+
+        // Define custom sizes for landscape orientation
+        var landscapeWidth = 500; 
+        var landscapeHeight = 297; // Standard A4 height for landscape
+
+        // Set page size based on orientation and content size
+        var pageFormat = (orientation === 'landscape')
+                ? [totalWidth + 15, landscapeHeight] // Landscape
+                : [290, 250]; // Portrait
+
+
+        // Initialize jsPDF with custom page size
+        var doc = new jsPDF({
+            orientation: orientation,
+            unit: 'mm', // Millimeters for accurate margins and dimensions
+            format: pageFormat
+        });
 
         // Function to add header content
         var addHeader = function () {
@@ -321,8 +331,8 @@
             doc.addImage(imgData, 'JPEG', 15, 25, 25, 15);
 
             doc.setFontSize(11);
-            doc.text('Project:' + ' ' + projectName, doc.internal.pageSize.getWidth() / 2, 31, { align: 'center' });
-            doc.text('Client:' + ' ' + clientName, doc.internal.pageSize.getWidth() / 2, 37, { align: 'center' });
+            doc.text('Project: ' + projectName, doc.internal.pageSize.getWidth() / 2, 31, { align: 'center' });
+            doc.text('Client: ' + clientName, doc.internal.pageSize.getWidth() / 2, 37, { align: 'center' });
             doc.setTextColor(0);
             doc.setFontSize(0);
         };
@@ -335,7 +345,7 @@
             jsPDFDocument: doc,
             component: dataGridInstance,
             topLeft: { x: 1, y: 30 }, // Adjust the x and y values to start the table lower
-            columnWidths: columnWidths,
+            columnWidths: Array(columnCount).fill(columnWidth),
             indent: 5,
         }).then(function () {
             // Calculate the number of pages
@@ -359,6 +369,5 @@
             doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
         };
     }
-
 
 </script>

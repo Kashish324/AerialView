@@ -4,30 +4,38 @@
 
 
 @* to open new page on starting of the project  *@
-@* <script>
-    window.onload = function () {
-        var isNewTabOpened = '@ViewBag.IsNewTabOpened' === 'True';
-        if (!isNewTabOpened) {
-            var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
-            var newTab = window.open(newTabPageUrl, '_blank');
-            newTab.focus();
-        }
-    };
-
-</script> *@
-
 <script>
-    window.onload = function () {
-        var isNewTabOpened = '@ViewBag.IsNewTabOpened' === 'True';
-        var localStorageFlag = localStorage.getItem('IsNewTabOpened');
+    // window.onload = function () {
+    //     var isNewTabOpened = '@ViewBag.IsNewTabOpened' === 'True';
+    //     var localStorageFlag = localStorage.getItem('IsNewTabOpened');
 
-        if (!isNewTabOpened && !localStorageFlag) {
+    //     if (!isNewTabOpened && !localStorageFlag) {
+    //         var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
+    //         var newTab = window.open(newTabPageUrl, '_blank');
+    //         newTab.focus();
+
+    //         // Set local storage flag to prevent reopening the tab
+    //         localStorage.setItem('IsNewTabOpened', 'True');
+    //     }
+    // };
+
+        window.onload = function () {
             var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
-            var newTab = window.open(newTabPageUrl, '_blank');
-            newTab.focus();
 
-            // Set local storage flag to prevent reopening the tab
-            localStorage.setItem('IsNewTabOpened', 'True');
-        }
-    };
+            // Open a new window with the generated URL
+            const openedWindow = window.open(
+                newTabPageUrl,
+                "DefaultDashboard",
+                "width=2000,height=1900,resizable,scrollbars"
+            );
+
+            // Optionally, focus on the new window
+            if (openedWindow) {
+                openedWindow.focus();
+            }
+        };
+
 </script>
+
+
+
