@@ -4,7 +4,7 @@
 
 
 @* to open new page on starting of the project  *@
-<script>
+@* <script>
     window.onload = function () {
         var isNewTabOpened = '@ViewBag.IsNewTabOpened' === 'True';
         if (!isNewTabOpened) {
@@ -14,5 +14,20 @@
         }
     };
 
-</script>
+</script> *@
 
+<script>
+    window.onload = function () {
+        var isNewTabOpened = '@ViewBag.IsNewTabOpened' === 'True';
+        var localStorageFlag = localStorage.getItem('IsNewTabOpened');
+
+        if (!isNewTabOpened && !localStorageFlag) {
+            var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
+            var newTab = window.open(newTabPageUrl, '_blank');
+            newTab.focus();
+
+            // Set local storage flag to prevent reopening the tab
+            localStorage.setItem('IsNewTabOpened', 'True');
+        }
+    };
+</script>

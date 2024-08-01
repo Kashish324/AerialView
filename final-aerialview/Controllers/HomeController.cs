@@ -14,14 +14,25 @@ namespace final_aerialview.Controllers
         public IActionResult Index()
         {
 
-            // Check if session flag is already set
-            bool isNewTabOpened = HttpContext.Session.GetString("IsNewTabOpened") == "True";
+            //// Check if session flag is already set
+            //bool isNewTabOpened = HttpContext.Session.GetString("IsNewTabOpened") == "True";
 
 
-            // Pass flag to view
-            ViewBag.IsNewTabOpened = isNewTabOpened;
-            
+            //// Pass flag to view
+            //ViewBag.IsNewTabOpened = isNewTabOpened;
 
+
+            //return View();
+
+            if (HttpContext.Session.GetString("IsNewTabOpened") == null)
+            {
+                HttpContext.Session.SetString("IsNewTabOpened", "True");
+                ViewBag.IsNewTabOpened = "False";
+            }
+            else
+            {
+                ViewBag.IsNewTabOpened = "True";
+            }
             return View();
         }
 
