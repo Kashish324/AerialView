@@ -472,21 +472,29 @@ body, html {
 .datagridWrapper {
     position: relative;
     overflow: auto;
-    height: 74vh;
+    /*height: 74vh;*/
     width: 100%;
-    background-color: #fff;
+    /*background-color: #fff;*/
 }
 
 #dataTable {
     position: relative;
     overflow: auto;
-    height: 79vh;
+    /*height: 79vh;*/
     width: 100%;
-    background-color: #fff;
+    /*background-color: #fff;*/
+}
+
+.empty-data {
+    height: 79vh;
+}
+
+.data-present {
+    height: auto;
 }
 
 #dataGridContainer {
-    max-height: 73.9vh !important;
+    max-height: 80vh !important;
 }
 
 .datagridWrapper::-webkit-scrollbar {
