@@ -311,7 +311,7 @@ body, html {
 }
 
     .home-content .headerContent .text {
-        font-size: 1.3em;
+        font-size: 1.2em;
         font-weight: 500;
         white-space: nowrap;
         letter-spacing: 1px;
@@ -474,27 +474,19 @@ body, html {
     overflow: auto;
     /*height: 74vh;*/
     width: 100%;
-    /*background-color: #fff;*/
 }
 
 #dataTable {
     position: relative;
     overflow: auto;
-    /*height: 79vh;*/
-    width: 100%;
-    /*background-color: #fff;*/
-}
-
-.empty-data {
     height: 79vh;
+    width: 100%;
+    background-color: #fff;
 }
 
-.data-present {
-    height: auto;
-}
 
 #dataGridContainer {
-    max-height: 80vh !important;
+    max-height: 74vh !important;
 }
 
 .datagridWrapper::-webkit-scrollbar {
