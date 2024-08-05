@@ -11,8 +11,23 @@
 <div id="dataTable" class="position-relative  rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
-        <div class="h-100 w-100 d-flex align-items-center justify-content-center">
+        @* <div id="loadingSpinner" class="h-100 w-100  d-flex align-items-center justify-content-center d-none">
+            <div class="spinner-grow text-primary-emphasis spinner-grow-sm" role="status">
+                <span class="visually-hidden">Loading...</span>
+            </div>
+        </div>
+
+        <div id="noDataMessage" class="h-100 w-100 d-flex align-items-center justify-content-center">
             <p class="text-body-secondary fw-medium">No data to show</p>
+        </div> *@
+        <div id="loadingSpinnerContainer" class="h-100 w-100 d-flex align-items-center justify-content-center">
+            <div id="loadingSpinner" class="d-none">
+                <div class="spinner-grow text-primary-emphasis" role="status">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <p id="noDataMessage" class="text-body-secondary fw-medium">No data to show</p>
+            <p id="errorMessage" class="text-danger fw-medium d-none">There was an issue accessing the database.</p>
         </div>
     }
     else
@@ -127,6 +142,39 @@
 
 
 <script>
+
+    // function showLoadingSpinner() {
+    //     $("#loadingSpinner").removeClass("d-none");
+    //     $("#noDataMessage").addClass("d-none");
+    // }
+
+    // function hideLoadingSpinner() {
+    //     $("#loadingSpinner").addClass("d-none");
+    //     $("#noDataMessage").removeClass("d-none");
+    // }
+
+    function showLoadingSpinner() {
+        $("#loadingSpinner").removeClass("d-none");
+        $("#noDataMessage").addClass("d-none");
+        $("#errorMessage").addClass("d-none");
+    }
+
+    function hideLoadingSpinner() {
+        $("#loadingSpinner").addClass("d-none");
+    }
+
+    function showNoDataMessage() {
+        $("#noDataMessage").removeClass("d-none");
+        $("#loadingSpinner").addClass("d-none");
+        $("#errorMessage").addClass("d-none");
+    }
+
+    function showErrorMessage() {
+        $("#errorMessage").removeClass("d-none");
+        $("#loadingSpinner").addClass("d-none");
+        $("#noDataMessage").addClass("d-none");
+    }
+
     var excelExportBtn = document.getElementById('excelExportButton');
     var pdfExportBtn = document.getElementById('pdfExportButton');
     var pdfOrientationSelect = document.getElementById('pdfOrientationSelect');

@@ -93,7 +93,7 @@
         </a>
     </div>
 
-    <partial name="~/Views/ListData/Datagrid.cshtml" />
+    <partial name="~/Views/ListData/Datagrid.cshtml"/>
 
 </div>
 <div id="toast" class="fw-normal"></div>
@@ -251,6 +251,9 @@
                 return;
             }
 
+            // Show loading spinner in the data table view
+            showLoadingSpinner();
+
             // Serialize the form data
             var formData = $(this).serialize();
 
@@ -261,30 +264,28 @@
                 success: function (response) {
                     // Update the specific portion of the page with the response data
                     $("#dataTable").html(response);
+
+                    // Check if data is returned and hide the spinner if data is present
+                    if ($("#dataTable").children().length > 0) {
+                        hideLoadingSpinner();
+                    } else {
+                        showNoDataMessage();
+                    }
                 },
                 error: function (xhr, status, error) {
                     // Handle errors, if any
                     console.error("Error:", error);
-                    alert('There was an issue accessing the database.')
+                    // alert('There was an issue accessing the database.')
+
+                    // hideLoadingSpinner();
+
+                    showErrorMessage();
+                },
+                complete: function () {
+                    // Hide loading spinner after the request is complete
+                    hideLoadingSpinner();
                 }
             });
-
-            // $.ajax({
-            //     type: "POST",
-            //     url: "/ListData/DataGrid", // URL to submit the form data to
-            //     data: formData,
-            //     success: function (response) {
-            //         // Ensure that you're appending to or replacing the correct class-based element
-            //         $("#dataTable").replaceWith(response);
-
-            //     },
-            //     error: function (xhr, status, error) {
-            //         // Handle errors, if any
-            //         console.error("Error:", error);
-            //         alert('There was an issue accessing the database.')
-            //     }
-            // });
-
         });
     });
 
