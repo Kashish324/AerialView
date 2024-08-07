@@ -101,7 +101,7 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
             case "dash configuration":
                 return RedirectToAction(nameof(DashConfig), new { parentMenu, submenu });
             default:
-                return View("DefaultView");
+                return RedirectToAction("Error", "Home");
         }
     }
 }
