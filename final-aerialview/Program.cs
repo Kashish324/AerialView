@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using DevExpress.DashboardAspNetCore;
 using DevExpress.DashboardWeb;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.CookiePolicy;
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -31,9 +32,11 @@ builder.Services.AddScoped<DataAccess>();
 builder.Services.AddDistributedMemoryCache();
 builder.Services.AddSession(options =>
 {
+    options.IdleTimeout = TimeSpan.FromMinutes(10); //session timeout
     options.Cookie.HttpOnly = true;
     options.Cookie.IsEssential = true;
     options.Cookie.SameSite = SameSiteMode.None;
+    options.Cookie.SecurePolicy = CookieSecurePolicy.Always;
 });
 
 builder.Services.AddDevExpressControls();

@@ -48,6 +48,10 @@
     <script>
         window.jsPDF = window.jspdf.jsPDF;
     </script>
+    @* <link rel="icon" href=@Url.Content("~/33477137_AerialView-Logo-5.ico")> *@
+    <link rel="icon" href="@Url.Content("~/33477137_AerialView-Logo-5.ico")">
+
+    
 </head>
 
 @{
@@ -105,7 +109,7 @@
                                 var hasSubmenu = subMenuData.Any(subItem => subItem.MainMenuCode == mainItem.MenuCode);
                                 var correspondingIcon = MenuIcons.FirstOrDefault(icon => icon.Item1 == mainItem.MenuCode);
 
-                                <li>
+                                <li data-menu-id="@mainItem.MenuCode">
                                     <div class="icon-link">
                                         <div class="listMenu" title="@mainItem.MenuName">
                                             @if (correspondingIcon != default)
@@ -134,7 +138,7 @@
                                                 {
                                                     var hasChildmenu = childMenuData.Any(childItem => childItem.SubMenuCode == subItem.SubMenuCode && childItem.MainMenuCode == subItem.MainMenuCode);
 
-                                                    <li class="subMenu-link">
+                                                    <li class="subMenu-link" data-submenu-id="@subItem.SubMenuCode">
                                                         @if (hasChildmenu)
                                                         {
                                                             @* generating submenu where they have child sub menu *@
@@ -209,7 +213,7 @@
                                                                             }
                                                                             else
                                                                             {
-                                                                                <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none">
+                                                                                <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName })" class="text-decoration-none menu-item">
                                                                                     <div class="icon-link">
                                                                                         <div class="listMenu">
                                                                                             <i class="ri-bard-line"></i>

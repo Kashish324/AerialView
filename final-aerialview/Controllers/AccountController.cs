@@ -6,14 +6,9 @@ using System.Security.Claims;
 
 namespace final_aerialview.Controllers
 {
-    public class AccountController : Controller
+    public class AccountController(DataAccess dataAccess) : Controller
     {
-        private readonly DataAccess _dataAccess;
-
-        public AccountController(DataAccess dataAccess)
-        {
-            _dataAccess = dataAccess;
-        }
+        private readonly DataAccess _dataAccess = dataAccess;
 
         [HttpGet]
         public IActionResult Login()
@@ -61,6 +56,8 @@ namespace final_aerialview.Controllers
         {
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("IsLoggedIn");
+            HttpContext.Session.Clear(); // Clear session
+           
             return RedirectToAction("Login", "Account");
         }
     }

@@ -119,6 +119,10 @@
         <Measure DataMember="C12" DefaultId="DataItem0" />
         <Dimension DataMember="C6" GroupChildValues="true" DefaultId="DataItem1" />
         <Dimension DataMember="C18" DefaultId="DataItem2" />
+        <Dimension DataMember="C12" DefaultId="DataItem3" />
+        <Dimension DataMember="C11" DefaultId="DataItem4" />
+        <Dimension DataMember="C10" DefaultId="DataItem5" />
+        <Dimension DataMember="C8" DefaultId="DataItem6" />
       </DataItems>
       <Values>
         <Value DefaultId="DataItem0" />
@@ -126,6 +130,10 @@
       <Arguments>
         <Argument DefaultId="DataItem1" />
         <Argument DefaultId="DataItem2" />
+        <Argument DefaultId="DataItem3" />
+        <Argument DefaultId="DataItem4" />
+        <Argument DefaultId="DataItem5" />
+        <Argument DefaultId="DataItem6" />
       </Arguments>
     </Treemap>
     <ListBox ComponentName="listBoxDashboardItem1" Name="List Box 1" DataSource="sqlDataSource1" DataMember="T1">

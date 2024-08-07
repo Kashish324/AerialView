@@ -4,6 +4,7 @@
     <Nullable>enable</Nullable>
     <ImplicitUsings>enable</ImplicitUsings>
     <RootNamespace>final_aerialview</RootNamespace>
+    <ApplicationIcon>33477137_AerialView-Logo-5.ico</ApplicationIcon>
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Data\Dashboards\**" />

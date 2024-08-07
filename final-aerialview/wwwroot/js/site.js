@@ -56,7 +56,7 @@ function sidebarHandlingOnHover() {
         })
     }
 
-   
+
     if (sidebar) {
         sidebar.addEventListener("mouseleave", function () {
             var isPinned = sidebar.classList.contains("pinned");
@@ -131,20 +131,25 @@ function menuToggleHandling() {
         parentLi.classList.toggle("showMenu");
     }
 
-
     menuItems.forEach(menuItem => {
         menuItem.addEventListener('click', function (e) {
             if (menuItem.querySelector('.sub-menu')) {
                 toggleMenu(menuItem);
             }
+
+            const menuId = menuItem.getAttribute('data-menu-id');
+            const isOpen = menuItem.classList.contains("showMenu") ? 'true' : 'false';
+
             localStorage.setItem('menuState', menuItem.classList.contains("showMenu") ? 'true' : 'false');
+
+            sessionStorage.setItem(`menuState_${menuId}`, isOpen);
+            
+           
         });
     });
 }
 
 function subMenuToggleHandling() {
-
-
     childMenuItems.forEach(item => {
         item.addEventListener('click', function (e) {
             //e.preventDefault(); 
@@ -165,11 +170,43 @@ function subMenuToggleHandling() {
                 if (subMenuItem.querySelector('.childSubMenu')) {
                     toggleSubMenu(subMenuItem);
                 }
+
+                const subMenuId = subMenuItem.getAttribute('data-submenu-id');
+                const isOpen = subMenuItem.classList.contains("showChildMenu") ? 'true' : 'false';
+                sessionStorage.setItem(`submenuState_${subMenuId}`, isOpen);
+
             });
         }
     });
 
 }
+
+function restoreMenuState() {
+    document.addEventListener('DOMContentLoaded', function () {
+        menuItems.forEach(menuItem => {
+            const menuId = menuItem.getAttribute('data-menu-id');
+            const isOpen = sessionStorage.getItem(`menuState_${menuId}`);
+
+            console.log(isOpen)
+            
+            if (isOpen === 'true') {
+                menuItem.classList.add('showMenu');
+            }
+        });
+
+        subMenuItems.forEach(subMenuItem => {
+            const subMenuId = subMenuItem.getAttribute('data-submenu-id');
+            const isOpen = sessionStorage.getItem(`submenuState_${subMenuId}`);
+            if (isOpen === 'true') {
+                subMenuItem.classList.add('showChildMenu');
+            }
+        });
+
+        
+    });
+
+}
+
 
 
 initializeSidebarState();
@@ -179,6 +216,7 @@ sidebarToggleHandling();
 sidebarHandlingOnHover();
 menuToggleHandling();
 subMenuToggleHandling();
+//restoreMenuState();
 
 
 
@@ -188,3 +226,4 @@ function onStateResetClick() {
     const dataGrid = $("#dataGridContainer").dxDataGrid("instance");
     dataGrid.state(null);
 }
+
