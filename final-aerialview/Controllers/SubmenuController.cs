@@ -88,27 +88,6 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         return Ok("Dashboard deleted successfully");
     }
 
-
-    public IActionResult EmailSetting(string parentMenu, string submenu)
-    {
-
-        var profileData = _dataAccess.GetSettingProfileData().FirstOrDefault();
-        var contactData = _dataAccess.GetSettingContactData().ToList();
-
-        var viewModel = new EmailSettingViewModel
-        {
-            Contacts = contactData ?? new List<SettingContactModel>(),
-            Profile = profileData ?? new SettingProfileModel()
-        };
-
-        ViewBag.ParentMenu = parentMenu;
-        ViewBag.Submenu = submenu;
-        ViewData["MenuName"] = submenu;
-
-        return View(viewModel);
-    }
-
-
     // Add more actions as needed for each submenu view
     public IActionResult SubMenuConfiguration(string parentMenu, string submenu)
     {
@@ -117,16 +96,10 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         {
             case "report configuration":
                 return RedirectToAction(nameof(ReportConfiguration), new { parentMenu, submenu });
-
             case "dash designer":
                 return RedirectToAction(nameof(DashDesigner), new { parentMenu, submenu });
-
             case "dash configuration":
                 return RedirectToAction(nameof(DashConfig), new { parentMenu, submenu });
-
-            case "email setting":
-                return RedirectToAction(nameof(EmailSetting), new { parentMenu, submenu });
-
             default:
                 return View("DefaultView");
         }

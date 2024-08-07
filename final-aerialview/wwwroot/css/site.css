@@ -9,6 +9,7 @@
 
 body, html {
     background-color: #E4E9F7;
+    
 }
 
 :root {
@@ -53,7 +54,7 @@ body, html {
         opacity: 1;
     }
 
-    
+
 
         .sidebar .logo-details i {
             font-size: 30px;
