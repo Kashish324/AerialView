@@ -76,8 +76,6 @@ namespace final_aerialview.Data
         {
             string query = "SELECT CONVERT(VARCHAR(MAX), Logo, 2) AS Logo, ClientName, ProjectName FROM ProjectSettings";
             return ExecuteQuery<PdfImageModel>(query);
-
-
         }
 
         //my reports table
@@ -120,7 +118,7 @@ namespace final_aerialview.Data
             {
                 connection.Open();
 
-                string whereClause = GenerateWhereClause(option, selectedValue, fromDate, toDate);
+                string? whereClause = GenerateWhereClause(option, selectedValue, fromDate, toDate);
                 string sqlQuery = $"SELECT TOP 1000 * FROM {tableName} {whereClause} order by DateAndTime desc ";
 
                 return connection.Query<dynamic>(sqlQuery);

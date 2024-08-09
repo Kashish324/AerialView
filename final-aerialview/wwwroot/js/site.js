@@ -1,5 +1,5 @@
 ﻿var sidebar = document.querySelector(".sidebar");
-var sidebarBtn = document.querySelector(".bx-menu");
+//var sidebarBtn = document.querySelector(".bx-menu");
 var sidebarPin = document.getElementById("sidebarPin");
 var menuItems = document.querySelectorAll('.nav-links > li');
 var subMenuItems = document.querySelectorAll('.sub-menu > .subMenu-link');
@@ -31,18 +31,18 @@ function sidebarPinHandling() {
 }
 
 // Function to handle sidebar toggle
-function sidebarToggleHandling() {
-    if (sidebarBtn) {
-        sidebarBtn.addEventListener("click", () => {
-            var isPinned = sidebar.classList.contains("pinned");
+//function sidebarToggleHandling() {
+//    if (sidebarBtn) {
+//        sidebarBtn.addEventListener("click", () => {
+//            var isPinned = sidebar.classList.contains("pinned");
 
-            if (!isPinned) {
-                var toggleState = sidebar.classList.toggle("close");
-                sidebarBtn.style.transform = toggleState ? "rotate(0deg) translateX(0px)" : "rotate(180deg) translateX(5px)";
-            }
-        });
-    }
-}
+//            if (!isPinned) {
+//                var toggleState = sidebar.classList.toggle("close");
+//                sidebarBtn.style.transform = toggleState ? "rotate(0deg) translateX(0px)" : "rotate(180deg) translateX(5px)";
+//            }
+//        });
+//    }
+//}
 
 
 
@@ -52,7 +52,7 @@ function sidebarHandlingOnHover() {
     if (sidebar) {
         sidebar.addEventListener("mouseenter", function () {
             sidebar.classList.remove("close");
-            sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
+            //sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
         })
     }
 
@@ -70,10 +70,10 @@ function sidebarHandlingOnHover() {
 
             if (!isPinned) {
                 sidebar.classList.add("close");
-                sidebarBtn.style.transform = "rotate(0deg) translateX(0px)";
+                //sidebarBtn.style.transform = "rotate(0deg) translateX(0px)";
             } else {
                 sidebar.classList.remove("close");
-                sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
+                //sidebarBtn.style.transform = "rotate(180deg) translateX(5px)";
             }
         })
 
@@ -106,9 +106,9 @@ function initializeSidebarState() {
         }
     }
 
-    if (sidebarBtn) {
-        sidebarBtn.style.transform = isPinned ? "rotate(180deg) translateX(5px)" : "rotate(0deg) translateX(0px)";
-    }
+    //if (sidebarBtn) {
+    //    sidebarBtn.style.transform = isPinned ? "rotate(180deg) translateX(5px)" : "rotate(0deg) translateX(0px)";
+    //}
 }
 
 
@@ -212,7 +212,7 @@ function restoreMenuState() {
 initializeSidebarState();
 initializeMenuState();
 sidebarPinHandling();
-sidebarToggleHandling();
+//sidebarToggleHandling();
 sidebarHandlingOnHover();
 menuToggleHandling();
 subMenuToggleHandling();

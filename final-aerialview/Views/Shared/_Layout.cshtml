@@ -2,7 +2,7 @@
     var menuParentData = ViewData["MenuParentData"] as IEnumerable<final_aerialview.Models.ListDataModel>;
     var subMenuData = ViewData["SubMenuData"] as IEnumerable<final_aerialview.Models.SubMenuModel>;
     var childMenuData = ViewData["ChildMenuData"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
-    // var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
+    var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
     var userMasterData = ViewBag.UserMasterData as IEnumerable<final_aerialview.Models.UserMasterModel>;
     var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
 }
@@ -10,6 +10,8 @@
 @using DevExpress.AspNetCore
 @using DevExpress.DashboardWeb
 @using DevExpress.DashboardAspNetCore
+
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -48,10 +50,9 @@
     <script>
         window.jsPDF = window.jspdf.jsPDF;
     </script>
-    @* <link rel="icon" href=@Url.Content("~/33477137_AerialView-Logo-5.ico")> *@
+    
     <link rel="icon" href="@Url.Content("~/33477137_AerialView-Logo-5.ico")">
 
-    
 </head>
 
 @{
@@ -87,7 +88,15 @@
             <div class="sidebar close" style="z-index: 9999;">
                 <div class="logo-details">
                     <img src="~/images/AerialView-Logo.png" alt="Alternate Text" class="img-fluid ml-4" style="max-width: 35px;">
-                    <span class="logo_name text-nowrap fw-medium mx-3" style="cursor: none"> Hi-Mak Pvt. Ltd. </span>
+
+                    @if (projectData != null)
+                    {
+                        @foreach (var item in projectData)
+                        {
+                            <span class="logo_name text-nowrap fw-medium mx-3 text-capitalize" style="cursor: none"> @item.ClientName </span>
+                        }
+                    }
+
                     <i id="sidebarPin" class="ri-pushpin-line" style="cursor: pointer; font-size: 14px;"></i>
                 </div>
 
@@ -150,8 +159,8 @@
                                                                 <i class="ri-arrow-right-s-line sub-menu-arrow fs-6"></i>
                                                             </div>
                                                         }
-                                                        
-                                                        else if(mainItem.MenuName == "Dashboards")
+
+                                                        else if (mainItem.MenuName == "Dashboards")
                                                         {
                                                             <a href="@Url.Action("ViewDashboard", "SubmenuDashViewer", new { dashId = subItem.DashId })" class="text-decoration-none">
                                                                 <div class="icon-link text-capitalize">
@@ -332,6 +341,7 @@
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.min.js" integrity="sha512-ykZ1QQr0Jy/4ZkvKuqWn4iF3lqPZyij9iRv6sGqLRdTPkY69YX6+7wvVGmsdBbiIfN/8OdsI7HABjvEok6ZopQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
 
     @await RenderSectionAsync("Scripts", required: false)
 </body>

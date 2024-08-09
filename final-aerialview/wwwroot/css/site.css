@@ -323,7 +323,7 @@ body, html {
         color: #fff;
     }
 
-.home-section .home-content .bx-menu {
+/*.home-section .home-content .bx-menu {
     font-size: 25px;
     color: #fff;
 }
@@ -340,7 +340,7 @@ body, html {
 .home-section .bx-menu:hover {
     opacity: 1;
     transform: translateX(5px);
-}
+}*/
 
 .tableContent {
     height: 100%;
@@ -480,14 +480,14 @@ body, html {
 #dataTable {
     position: relative;
     overflow: auto;
-    height: 79vh;
+    height: 81vh;
     width: 100%;
     background-color: #fff;
 }
 
 
 #dataGridContainer {
-    max-height: 74vh !important;
+    max-height: 76.2vh !important;
 }
 
 .datagridWrapper::-webkit-scrollbar {
@@ -533,6 +533,16 @@ body, html {
     vertical-align: middle !important;
 }
 
+.dx-header-row > td[role="columnheader"] > div.dx-datagrid-text-content {
+    font-size: 13px;
+    font-weight: bold;
+    color: #000;
+}
+
+.datagridCol {
+    color: #333;
+    font-size: 12px;
+}
 /*footer section*/
 .exportBtn {
     position: absolute;
@@ -687,5 +697,9 @@ div.dx-column-indicators {
 
     #dataTable {
         height: 80vh;
+    }
+
+    #dataGridContainer {
+        max-height: 74.2vh !important;
     }
 }
