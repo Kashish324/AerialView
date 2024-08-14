@@ -31,9 +31,9 @@ namespace final_aerialview.Controllers
 
 
 
-            if (user != null && user.Password == password)
-            //if (user != null && user.Password == password && projectSettings.Any(item => !string.IsNullOrEmpty(item.ModuleKey)))
-            {
+            //if (user != null && user.Password == password)
+                if (user != null && user.Password == password && projectSettings.Any(item => !string.IsNullOrEmpty(item.ModuleKey)))
+                {
                 // Determine the role based on the user ID
                 string role = user.UserId ?? string.Empty;
                 var username =  user.UserName ?? string.Empty;
