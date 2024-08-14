@@ -74,7 +74,7 @@ namespace final_aerialview.Data
         //project setting which includes pdf image, client name, project name, etc.
         public IEnumerable<PdfImageModel> GetPdfImageData()
         {
-            string query = "SELECT CONVERT(VARCHAR(MAX), Logo, 2) AS Logo, ClientName, ProjectName FROM ProjectSettings";
+            string query = "SELECT CONVERT(VARCHAR(MAX), Logo, 2) AS Logo, ClientName, ProjectName, ModuleKey FROM ProjectSettings";
             return ExecuteQuery<PdfImageModel>(query);
         }
 

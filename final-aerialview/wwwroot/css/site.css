@@ -1,4 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');
+/*@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap');*/
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-Regular.ttf') format('truetype');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-Light.ttf') format('truetype');
+    font-weight: 300;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-Medium.ttf') format('truetype');
+    font-weight: 500;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-SemiBold.ttf') format('truetype');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('/fonts/Poppins-Bold.ttf') format('truetype');
+    font-weight: 700;
+    font-style: normal;
+}
+
+
 
 * {
     margin: 0;
@@ -9,7 +46,6 @@
 
 body, html {
     background-color: #E4E9F7;
-    
 }
 
 :root {
@@ -522,11 +558,24 @@ body, html {
     border-radius: .3vw .3vw 0px 0px;
 }
 
+/*filter icon*/
 .dx-datagrid .dx-header-filter {
     position: relative;
     color: #757575;
-    font: 11px / 1 DXIcons !important;
+    font: 9px / 1 DXIcons !important;
 }
+
+/*sorting arrow icon*/
+.dx-datagrid .dx-sort-up {
+    font: 10px / 1 DXIcons !important;
+    margin-left: 5px;
+}
+
+.dx-datebox-datetime .dx-dropdowneditor-icon {
+    color: rgba(117, 117, 117, .5) !important;
+}
+
+
 
 .datagridCol {
     text-align: center !important;
@@ -536,12 +585,13 @@ body, html {
 .dx-header-row > td[role="columnheader"] > div.dx-datagrid-text-content {
     font-size: 13px;
     font-weight: bold;
-    color: #000;
+    color: #272525;
 }
 
 .datagridCol {
-    color: #333;
+    color: #3c3a3a;
     font-size: 12px;
+    font-weight: 500;
 }
 /*footer section*/
 .exportBtn {

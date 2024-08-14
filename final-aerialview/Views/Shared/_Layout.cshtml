@@ -47,12 +47,14 @@
 
     @* export pdf *@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js" integrity="sha512-qZvrmS2ekKPF2mSznTQsxqPgnpkI4DNTlrdUmTzrDgektczlKNRRhy5X5AAOnx5S09ydFYWWNSfcEqDTTHgtNA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
     <script>
         window.jsPDF = window.jspdf.jsPDF;
     </script>
-    
-    <link rel="icon" href="@Url.Content("~/33477137_AerialView-Logo-5.ico")">
 
+    <link rel="icon" href="@Url.Content("~/33477137_AerialView-Logo-5.ico")">
+    
 </head>
 
 @{
@@ -93,7 +95,7 @@
                     {
                         @foreach (var item in projectData)
                         {
-                            <span class="logo_name text-nowrap fw-medium mx-3 text-capitalize" style="cursor: none"> @item.ClientName </span>
+                            <span class="logo_name text-nowrap fw-medium mx-3 text-capitalize text-truncate" style="cursor: none; max-width:150px;" title="@item.ClientName">@item.ClientName</span>
                         }
                     }
 

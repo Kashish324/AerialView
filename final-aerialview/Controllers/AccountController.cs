@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
+using DevExpress.Pdf.Native;
+using final_aerialview.Utilities;
 
 namespace final_aerialview.Controllers
 {
@@ -25,7 +27,12 @@ namespace final_aerialview.Controllers
         public async Task<IActionResult> Login(string userId, string password)
         {
             var user = await _dataAccess.GetUserByUsernameAsync(userId);
+            var projectSettings = _dataAccess.GetPdfImageData();
+
+
+
             if (user != null && user.Password == password)
+            //if (user != null && user.Password == password && projectSettings.Any(item => !string.IsNullOrEmpty(item.ModuleKey)))
             {
                 // Determine the role based on the user ID
                 string role = user.UserId ?? string.Empty;
@@ -44,9 +51,16 @@ namespace final_aerialview.Controllers
 
                 return RedirectToAction("Index", "Home");
 
+            }else if(user != null && user.Password != password)
+            {
+            ViewBag.Message = "Invalid credentials";
+            }
+            else
+            {
+                ViewBag.Message = "Module Key is not configured. Please contact the admin.";
             }
 
-            ViewBag.Message = "Invalid credentials";
+
             return View();
         }
 
