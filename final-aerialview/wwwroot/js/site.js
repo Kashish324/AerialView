@@ -48,6 +48,7 @@ function sidebarPinHandling() {
 
 
 //sidebar toggle handling on hover 
+
 function sidebarHandlingOnHover() {
     if (sidebar) {
         sidebar.addEventListener("mouseenter", function () {
@@ -142,9 +143,9 @@ function menuToggleHandling() {
 
             localStorage.setItem('menuState', menuItem.classList.contains("showMenu") ? 'true' : 'false');
 
-            sessionStorage.setItem(`menuState_${menuId}`, isOpen);
-            
-           
+            //localStorage.setItem(`menuState_${menuId}`, isOpen);
+
+
         });
     });
 }
@@ -173,7 +174,7 @@ function subMenuToggleHandling() {
 
                 const subMenuId = subMenuItem.getAttribute('data-submenu-id');
                 const isOpen = subMenuItem.classList.contains("showChildMenu") ? 'true' : 'false';
-                sessionStorage.setItem(`submenuState_${subMenuId}`, isOpen);
+                //localStorage.setItem(`submenuState_${subMenuId}`, isOpen);
 
             });
         }
@@ -181,31 +182,52 @@ function subMenuToggleHandling() {
 
 }
 
-function restoreMenuState() {
-    document.addEventListener('DOMContentLoaded', function () {
-        menuItems.forEach(menuItem => {
-            const menuId = menuItem.getAttribute('data-menu-id');
-            const isOpen = sessionStorage.getItem(`menuState_${menuId}`);
+//function restoreMenuState() {
+//    document.addEventListener('DOMContentLoaded', function () {
+//        menuItems.forEach(menuItem => {
+//            const menuId = menuItem.getAttribute('data-menu-id');
+//            const isOpen = localStorage.getItem(`menuState_${menuId}`);
 
-            console.log(isOpen)
-            
-            if (isOpen === 'true') {
-                menuItem.classList.add('showMenu');
-            }
-        });
+//            console.log(isOpen)
 
-        subMenuItems.forEach(subMenuItem => {
-            const subMenuId = subMenuItem.getAttribute('data-submenu-id');
-            const isOpen = sessionStorage.getItem(`submenuState_${subMenuId}`);
-            if (isOpen === 'true') {
-                subMenuItem.classList.add('showChildMenu');
-            }
-        });
+//            if (isOpen === 'true') {
+//                menuItem.classList.add('showMenu');
+//            }
+//        });
 
-        
-    });
+//        subMenuItems.forEach(subMenuItem => {
+//            const subMenuId = subMenuItem.getAttribute('data-submenu-id');
+//            const isOpen = localStorage.getItem(`submenuState_${subMenuId}`);
+//            if (isOpen === 'true') {
+//                subMenuItem.classList.add('showChildMenu');
+//            }
+//        });
+
+
+//    });
+
+//}
+
+function activeMenu() {
+    var currentUrl = window.location.href;
+    var atags = document.querySelectorAll('.childSubMenu li a')
+
+    atags.forEach(item => {
+        if (currentUrl === item.href) {
+            var parentLi = item.closest('li');
+            parentLi.classList.add('activeLi');
+
+            var showChildMenuLi = parentLi.closest('ul').closest('li');
+            showChildMenuLi.classList.add('showChildMenu')
+
+            var showMainMenuLi = showChildMenuLi.closest('ul').closest('li');
+            showMainMenuLi.classList.add('showMenu')
+        }
+    }
+    )
 
 }
+
 
 
 
@@ -217,7 +239,7 @@ sidebarHandlingOnHover();
 menuToggleHandling();
 subMenuToggleHandling();
 //restoreMenuState();
-
+activeMenu();
 
 
 

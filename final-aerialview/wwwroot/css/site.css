@@ -311,6 +311,17 @@ body, html {
     }
 
 
+.activeLi {
+    background-color: #ffffff36;
+    border-radius: 50px;
+}
+
+.sidebar .nav-links li .sub-menu li.activeLi .listMenu {
+    color: #fff !important;
+    opacity: 1 !important;
+}
+
+
 
 /*Home Section*/
 .home-section {
