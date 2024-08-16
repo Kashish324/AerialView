@@ -182,37 +182,33 @@ function subMenuToggleHandling() {
 
 }
 
-//function restoreMenuState() {
-//    document.addEventListener('DOMContentLoaded', function () {
-//        menuItems.forEach(menuItem => {
-//            const menuId = menuItem.getAttribute('data-menu-id');
-//            const isOpen = localStorage.getItem(`menuState_${menuId}`);
-
-//            console.log(isOpen)
-
-//            if (isOpen === 'true') {
-//                menuItem.classList.add('showMenu');
-//            }
-//        });
-
-//        subMenuItems.forEach(subMenuItem => {
-//            const subMenuId = subMenuItem.getAttribute('data-submenu-id');
-//            const isOpen = localStorage.getItem(`submenuState_${subMenuId}`);
-//            if (isOpen === 'true') {
-//                subMenuItem.classList.add('showChildMenu');
-//            }
-//        });
 
 
-//    });
+function activeSubMenu() {
+    var currentUrl = new URL(window.location.href);
 
-//}
+    var currentSearcAttr = currentUrl.search;
 
-function activeMenu() {
+    var submenuLinks = document.querySelectorAll('.sub-menu li .subMenuLink');
+
+    submenuLinks.forEach(item => {
+        var itemUrl = new URL(item.href);
+        var itemSearcAttr = itemUrl.search;
+
+        if (currentSearcAttr === itemSearcAttr) {
+            var parentLi = item.closest('li');
+            parentLi.classList.add('activeLi');
+
+            var toactiveLi = parentLi.closest('ul').closest('li');
+            toactiveLi.classList.add('showMenu')
+        }
+    })
+}
+
+function activeChildMenu() {
     var currentUrl = window.location.href;
-    var atags = document.querySelectorAll('.childSubMenu li a')
-
-    atags.forEach(item => {
+    var childSubmenuLinks = document.querySelectorAll('.childSubMenu li a');
+    childSubmenuLinks.forEach(item => {
         if (currentUrl === item.href) {
             var parentLi = item.closest('li');
             parentLi.classList.add('activeLi');
@@ -238,8 +234,8 @@ sidebarPinHandling();
 sidebarHandlingOnHover();
 menuToggleHandling();
 subMenuToggleHandling();
-//restoreMenuState();
-activeMenu();
+activeSubMenu();
+activeChildMenu();
 
 
 
