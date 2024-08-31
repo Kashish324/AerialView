@@ -3,10 +3,10 @@
   "name": "asp.net",
   "private": true,
   "devDependencies": {
-    "@devexpress/analytics-core": "23.2.6",
+    "@devexpress/analytics-core": "23.2.5",
     "bootstrap": "4.6.2",
     "devexpress-dashboard": "23.2.5",
-    "devexpress-reporting": "23.2.6",
+    "devexpress-reporting": "23.2.5",
     "devextreme-dist": "23.2.5",
     "remixicon": "^4.3.0"
   },

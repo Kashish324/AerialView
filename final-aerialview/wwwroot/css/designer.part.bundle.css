@@ -1,7 +1,7 @@
 /**
 * DevExpress Analytics (dist\css\dx-analytics.common.css)
-* Version:  23.2.6
-* Build date: Apr 30, 2024
+* Version:  23.2.5
+* Build date: Mar 12, 2024
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * License: https://www.devexpress.com/Support/EULAs/universal.xml
 */
@@ -2520,6 +2520,9 @@
   width: 24px;
   min-width: 24px;
 }
+.dx-designer .dx-dropdowneditor .dx-dropdowneditor-button.dx-ellipsiseditor-button {
+  height: 24px;
+}
 .dx-designer .dx-dropdowneditor .dx-dropdowneditor-icon {
   width: 100%;
 }
@@ -3355,8 +3358,8 @@
 
 /**
 * DevExpress Analytics (dist\css\dx-analytics.light.css)
-* Version:  23.2.6
-* Build date: Apr 30, 2024
+* Version:  23.2.5
+* Build date: Mar 12, 2024
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * License: https://www.devexpress.com/Support/EULAs/universal.xml
 */
@@ -3614,8 +3617,8 @@
 
 /**
 * DevExpress HTML/JS Reporting (dist\css\dx-webdocumentviewer.css)
-* Version:  23.2.6
-* Build date: Apr 30, 2024
+* Version:  23.2.5
+* Build date: Mar 12, 2024
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * License: https://www.devexpress.com/Support/EULAs/universal.xml
 */
@@ -3957,35 +3960,38 @@
 .dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-group:not(.dxrd-parameters-horizontal) .dxrd-parameters-item-separator {
   position: absolute;
 }
-.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-fill-available {
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset {
+  display: flex;
+}
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-fill-available {
   width: -webkit-fill-available;
   width: -moz-available;
 }
-.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-display-content {
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-display-content {
   display: contents;
 }
-.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor {
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor {
   margin-left: 10px;
   margin-right: 10px;
   width: -webkit-fill-available;
   width: -moz-available;
 }
-.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor .dx-field {
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor .dx-field {
   padding-left: 0;
   padding-right: 0;
 }
-.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label {
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label {
   left: 0;
   right: 0;
   padding-right: 2px;
 }
-.dx-rtl.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label {
+.dx-rtl.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label {
   padding-left: 2px;
 }
-.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label:not(.dxd-back-secondary) {
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label:not(.dxd-back-secondary) {
   max-width: 40%;
 }
-.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor .dx-field.dxrd-vertical-label .dx-field-label {
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor .dx-field.dxrd-vertical-label .dx-field-label {
   max-width: fit-content;
 }
 .dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group:not(.dxrd-parameters-horizontal) .dxrd-parameters-item-separator {
@@ -3994,6 +4000,9 @@
   margin-right: 5px;
   width: -webkit-fill-available;
   width: -moz-available;
+}
+.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group:not(.dxrd-parameters-horizontal) .dxrd-parameters-fieldset {
+  display: block;
 }
 .dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group .dx-collectioneditor-items {
   margin-top: 7px;
@@ -7110,6 +7119,9 @@
   width:1.5rem;
   min-width:1.5rem;
 }
+.dx-designer .dx-report-viewer.dx-accessibility .dx-dropdowneditor .dx-dropdowneditor-button.dx-ellipsiseditor-button{
+  height:1.5rem;
+}
 .dx-designer .dx-report-viewer.dx-accessibility .dx-selectbox{
   height:1.625rem;
 }
@@ -7684,14 +7696,14 @@
   margin-left:0rem;
   margin-right:0rem;
 }
-.dx-report-viewer.dx-accessibility .dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor{
+.dx-report-viewer.dx-accessibility .dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor{
   margin-left:0.625rem;
   margin-right:0.625rem;
 }
-.dx-report-viewer.dx-accessibility .dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label{
+.dx-report-viewer.dx-accessibility .dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label{
   padding-right:0.125rem;
 }
-.dx-report-viewer.dx-accessibility .dx-rtl.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dx-fieldset.dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label{
+.dx-report-viewer.dx-accessibility .dx-rtl.dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group.dxrd-parameters-horizontal .dxrd-parameters-fieldset .dx-editor .dx-field .dx-field-label{
   padding-left:0.125rem;
 }
 .dx-report-viewer.dx-accessibility .dxrd-preview.dxrd-designer-wrapper .dxrd-preview-parameters-wrapper .dxrd-right-panel-content .dxrd-parameters-group:not(.dxrd-parameters-horizontal) .dxrd-parameters-item-separator{
@@ -8279,8 +8291,8 @@
 
 /**
 * DevExpress Analytics (dist\css\dx-querybuilder.css)
-* Version:  23.2.6
-* Build date: Apr 30, 2024
+* Version:  23.2.5
+* Build date: Mar 12, 2024
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * License: https://www.devexpress.com/Support/EULAs/universal.xml
 */
@@ -10405,8 +10417,8 @@
 
 /**
 * DevExpress HTML/JS Reporting (dist\css\dx-reportdesigner.css)
-* Version:  23.2.6
-* Build date: Apr 30, 2024
+* Version:  23.2.5
+* Build date: Mar 12, 2024
 * Copyright (c) 2012 - 2024 Developer Express Inc. ALL RIGHTS RESERVED
 * License: https://www.devexpress.com/Support/EULAs/universal.xml
 */
