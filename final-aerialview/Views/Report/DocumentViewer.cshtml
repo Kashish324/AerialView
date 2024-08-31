@@ -3,15 +3,20 @@
 @{
     ViewData["Title"] = "Report Viewer";
     var reportName = ViewData["ReportName"] as string;
+    var reportTitle = ViewData["ReportTitle"] as string;
     var datagridRptid = ViewData["DatagridRptid"] as int?;
 }
 
 <link rel="stylesheet" href="~/css/viewer.part.bundle.css" />
 <script src="~/js/viewer.part.bundle.js"></script>
 
+<div class="d-flex align-items-center justify-content-center p-1 border-bottom" style="background-color: #E6E6E6;">
+    <h6 class="fw-medium textShadow-hover text-dark mb-0">@reportTitle</h6>
+</div>
+
 @{
     var documentViewer = Html.DevExpress().WebDocumentViewer("DocumentViewer")
-        .Height("100vh")
+        .Height("96.9vh")
         .Bind(@reportName);
 }
 

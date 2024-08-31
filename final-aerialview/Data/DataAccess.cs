@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DevExpress.ReportServer.ServiceModel.DataContracts;
 using final_aerialview.Models;
 using System.Data;
 using System.Data.SqlClient;
@@ -96,13 +97,28 @@ namespace final_aerialview.Data
         }
 
         //to fetch the saved report from the database
-        public string? GetReportFromDatabase()
+        //public string? GetReportFromDatabase()
+        //{
+        //    try
+        //    {
+        //        var reportId = UpdateModel.DatagridRptid;
+        //        string query = "SELECT ReportName, WebReportPath FROM MyReports WHERE RptId = @ReportId";
+        //        return CreateConnection().QueryFirstOrDefault<string>(query, new { ReportId = reportId });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        Console.WriteLine($"Error retrieving report from the database: {ex.Message}");
+        //        return null;
+        //    }
+        //}
+
+        public ReportDataModel? GetReportFromDatabase()
         {
             try
             {
                 var reportId = UpdateModel.DatagridRptid;
-                string query = "SELECT WebReportPath FROM MyReports WHERE RptId = @ReportId";
-                return CreateConnection().QueryFirstOrDefault<string>(query, new { ReportId = reportId });
+                string query = "SELECT ReportName, WebReportPath FROM MyReports WHERE RptId = @ReportId";
+                return CreateConnection().QueryFirstOrDefault<ReportDataModel>(query, new { ReportId = reportId });
             }
             catch (Exception ex)
             {
@@ -110,6 +126,7 @@ namespace final_aerialview.Data
                 return null;
             }
         }
+
 
         //to connect with dynamic connection string 
         public IEnumerable<dynamic> DynamicConnString(string connectionString, string tableName, string option, string selectedValue, string fromDate, string toDate)
