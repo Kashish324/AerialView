@@ -1,0 +1,68 @@
+﻿/* Hide scrollbar for all browsers */
+/*body {
+    overflow: hidden;
+}
+
+
+h1, a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.section {
+    padding: 4rem 2rem;
+}
+
+    .section .error {
+        font-size: 150px;
+        color: #C73C3C;
+        text-shadow: 1px 1px 1px #9A2C2C, 2px 2px 1px #9A2C2C, 3px 3px 1px #9A2C2C, 4px 4px 1px #9A2C2C, 5px 5px 1px #9A2C2C, 6px 6px 1px #9A2C2C, 7px 7px 1px #9A2C2C, 8px 8px 1px #9A2C2C, 25px 25px 8px rgba(0, 0, 0, 0.4);
+    }
+
+.page {
+    margin: 2rem 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #444;
+}*/
+
+
+body {
+    overflow: hidden;
+    background-color: #f8f9fa; /* Light background to contrast the content */
+}
+
+/* General reset for margins and paddings */
+h1, a {
+    margin: 0;
+    padding: 0;
+    text-decoration: none;
+}
+
+.error {
+    font-size: 150px;
+    color: #C73C3C;
+    text-shadow: 1px 1px 1px #9A2C2C, 2px 2px 1px #9A2C2C, 3px 3px 1px #9A2C2C, 4px 4px 1px #9A2C2C, 5px 5px 1px #9A2C2C, 6px 6px 1px #9A2C2C, 7px 7px 1px #9A2C2C, 8px 8px 1px #9A2C2C, 25px 25px 8px rgba(0, 0, 0, 0.4);
+    animation: fadeInUp 1s ease-out;
+}
+
+.page {
+    margin: 1.5rem 0;
+    font-size: 20px;
+    font-weight: 600;
+    color: #444;
+}
+
+/* for the error number */
+@keyframes fadeInUp {
+    0% {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+
+    100% {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

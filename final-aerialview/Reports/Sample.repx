@@ -1,0 +1,66 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="23.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v23.2, Version=23.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report1" DisplayName="Sample" PageWidth="850" PageHeight="1100" Version="23.2" FilterString="[DateAndTime] &gt;= ?DateRange_Start And [DateAndTime] &lt;= ?DateRange_End" DataMember="ReadySyrup_R32T01" DataSource="#Ref-0" Font="Arial, 9pt">
+  <Parameters>
+    <Item1 Ref="3" Description="Order On After:" AllowNull="true" Name="OrdersOnAfter" Type="#Ref-2">
+      <ExpressionBindings>
+        <Item1 Ref="4" PropertyName="Value" Expression="AddMonths(Today(),-3 )" />
+      </ExpressionBindings>
+    </Item1>
+    <Item2 Ref="7" Description="Customer:" ValueSourceSettings="#Ref-5" AllowNull="true" Name="FilterCustomer" />
+    <Item3 Ref="9" Description="Date Range " ValueSourceSettings="#Ref-8" Name="DateRange" Type="#Ref-2" />
+  </Parameters>
+  <Bands>
+    <Item1 Ref="10" ControlType="TopMarginBand" Name="TopMargin1" />
+    <Item2 Ref="11" ControlType="ReportHeaderBand" Name="ReportHeader1">
+      <Controls>
+        <Item1 Ref="12" ControlType="XRLabel" Name="label1" Multiline="true" Text="Orders" SizeF="100,23" LocationFloat="27.604166,12.5" Padding="2,2,0,0,100" />
+      </Controls>
+    </Item2>
+    <Item3 Ref="13" ControlType="DetailBand" Name="Detail1">
+      <SortFields>
+        <Item1 Ref="14" FieldName="Source" />
+      </SortFields>
+      <Controls>
+        <Item1 Ref="15" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" SizeF="100,23" LocationFloat="269.27084,13.541666" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="16" EventName="BeforePrint" PropertyName="Text" Expression="[NoOfUnit]" />
+          </ExpressionBindings>
+        </Item1>
+        <Item2 Ref="17" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="100,23" LocationFloat="148.4375,13.541666" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="18" EventName="BeforePrint" PropertyName="Text" Expression="[Source]" />
+          </ExpressionBindings>
+        </Item2>
+        <Item3 Ref="19" ControlType="XRLabel" Name="label2" TextFormatString="{0:dd MM yyyy HH:mm:ss}" Multiline="true" Text="label2" SizeF="100,23" LocationFloat="25.520832,13.541666" Padding="2,2,0,0,100">
+          <ExpressionBindings>
+            <Item1 Ref="20" EventName="BeforePrint" PropertyName="Text" Expression="[DateAndTime]" />
+          </ExpressionBindings>
+        </Item3>
+      </Controls>
+    </Item3>
+    <Item4 Ref="21" ControlType="BottomMarginBand" Name="BottomMargin1" />
+  </Bands>
+  <ParameterPanelLayoutItems>
+    <Item1 Ref="22" LayoutItemType="Parameter" Parameter="#Ref-9" />
+    <Item2 Ref="23" LayoutItemType="Parameter" Parameter="#Ref-3" />
+    <Item3 Ref="24" LayoutItemType="Parameter" Parameter="#Ref-7" />
+  </ParameterPanelLayoutItems>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v23.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkhjY2JfS2h1ZHJhX0dlYSIgRnJvbUFwcENvbmZpZz0idHJ1ZSIgLz48UXVlcnkgVHlwZT0iU2VsZWN0UXVlcnkiIE5hbWU9IlJlYWR5U3lydXBfUjMyVDAxIj48VGFibGVzPjxUYWJsZSBOYW1lPSJSZWFkeVN5cnVwX1IzMlQwMSIgLz48L1RhYmxlcz48Q29sdW1ucz48Q29sdW1uIFRhYmxlPSJSZWFkeVN5cnVwX1IzMlQwMSIgTmFtZT0iSWQiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IkRhdGVBbmRUaW1lIiAvPjxDb2x1bW4gVGFibGU9IlJlYWR5U3lydXBfUjMyVDAxIiBOYW1lPSJFbmRUaW1lIiAvPjxDb2x1bW4gVGFibGU9IlJlYWR5U3lydXBfUjMyVDAxIiBOYW1lPSJCYXRjaFJ1blRpbWUiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IkJhdGNoTm8iIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IkZsYXZvdXIiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IlJlYWR5U3lydXBUYW5rIiAvPjxDb2x1bW4gVGFibGU9IlJlYWR5U3lydXBfUjMyVDAxIiBOYW1lPSJOb09mVW5pdCIgLz48Q29sdW1uIFRhYmxlPSJSZWFkeVN5cnVwX1IzMlQwMSIgTmFtZT0iUHJvZHVjdEJyaXgiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IlN1Z2FyUXR5IiAvPjxDb2x1bW4gVGFibGU9IlJlYWR5U3lydXBfUjMyVDAxIiBOYW1lPSJXZWlnaHQiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IkRlbnNpdHkiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IlN5cnVwQnJpeCIgLz48Q29sdW1uIFRhYmxlPSJSZWFkeVN5cnVwX1IzMlQwMSIgTmFtZT0iU2ltcGxlU3lydXAiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IkZpbmFsQmV2ZXJhZ2VWb2x1bWUiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IkZpbmFsQmV2ZXJhZ2VCcml4IiAvPjxDb2x1bW4gVGFibGU9IlJlYWR5U3lydXBfUjMyVDAxIiBOYW1lPSJTb3VyY2UiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IlN0YXJ0VG90YWxpemVyIiAvPjxDb2x1bW4gVGFibGU9IlJlYWR5U3lydXBfUjMyVDAxIiBOYW1lPSJTdG9wVG90YWxpemVyIiAvPjxDb2x1bW4gVGFibGU9IlJlYWR5U3lydXBfUjMyVDAxIiBOYW1lPSJUcmFuc2ZlclRvdGFsaXplciIgLz48Q29sdW1uIFRhYmxlPSJSZWFkeVN5cnVwX1IzMlQwMSIgTmFtZT0iVGFua1RlbXAiIC8+PENvbHVtbiBUYWJsZT0iUmVhZHlTeXJ1cF9SMzJUMDEiIE5hbWU9IlRhbmtJZCIgLz48Q29sdW1uIFRhYmxlPSJSZWFkeVN5cnVwX1IzMlQwMSIgTmFtZT0iVGFua0xldmVsIiAvPjxDb2x1bW4gVGFibGU9IlJlYWR5U3lydXBfUjMyVDAxIiBOYW1lPSJUYW5rQnJpeCIgLz48Q29sdW1uIFRhYmxlPSJSZWFkeVN5cnVwX1IzMlQwMSIgTmFtZT0iUkpNU3RhdHVzIiAvPjwvQ29sdW1ucz48L1F1ZXJ5PjxSZXN1bHRTY2hlbWE+PERhdGFTZXQgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxWaWV3IE5hbWU9IlJlYWR5U3lydXBfUjMyVDAxIj48RmllbGQgTmFtZT0iSWQiIFR5cGU9IkludDY0IiAvPjxGaWVsZCBOYW1lPSJEYXRlQW5kVGltZSIgVHlwZT0iRGF0ZVRpbWUiIC8+PEZpZWxkIE5hbWU9IkVuZFRpbWUiIFR5cGU9IkRhdGVUaW1lIiAvPjxGaWVsZCBOYW1lPSJCYXRjaFJ1blRpbWUiIFR5cGU9IlN0cmluZyIgLz48RmllbGQgTmFtZT0iQmF0Y2hObyIgVHlwZT0iRGVjaW1hbCIgLz48RmllbGQgTmFtZT0iRmxhdm91ciIgVHlwZT0iSW50NjQiIC8+PEZpZWxkIE5hbWU9IlJlYWR5U3lydXBUYW5rIiBUeXBlPSJTdHJpbmciIC8+PEZpZWxkIE5hbWU9Ik5vT2ZVbml0IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IlByb2R1Y3RCcml4IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IlN1Z2FyUXR5IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IldlaWdodCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJEZW5zaXR5IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IlN5cnVwQnJpeCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJTaW1wbGVTeXJ1cCIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJGaW5hbEJldmVyYWdlVm9sdW1lIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkZpbmFsQmV2ZXJhZ2VCcml4IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IlNvdXJjZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJTdGFydFRvdGFsaXplciIgVHlwZT0iU2luZ2xlIiAvPjxGaWVsZCBOYW1lPSJTdG9wVG90YWxpemVyIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IlRyYW5zZmVyVG90YWxpemVyIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IlRhbmtUZW1wIiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IlRhbmtJZCIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJUYW5rTGV2ZWwiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iVGFua0JyaXgiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iUkpNU3RhdHVzIiBUeXBlPSJJbnQzMiIgLz48L1ZpZXc+PC9EYXRhU2V0PjwvUmVzdWx0U2NoZW1hPjxDb25uZWN0aW9uT3B0aW9ucyBDbG9zZUNvbm5lY3Rpb249InRydWUiIC8+PC9TcWxEYXRhU291cmNlPg==" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v23.2" Ref="2" Content="System.DateTime" Type="System.Type" />
+    <Item2 Ref="5" ObjectType="DevExpress.XtraReports.Parameters.DynamicListLookUpSettings, DevExpress.Printing.v23.2.Core" DataSource="#Ref-0" DataMember="ReadySyrup_R32T01" ValueMember="Source" SortMember="Source" />
+    <Item3 Ref="8" ObjectType="DevExpress.XtraReports.Parameters.RangeParametersSettings, DevExpress.Printing.v23.2.Core" StartParameter="#Ref-25" EndParameter="#Ref-26" />
+    <Item4 Ref="25" ObjectType="DevExpress.XtraReports.Parameters.RangeStartParameter, DevExpress.Printing.v23.2.Core" ValueInfo="2024-06-14" Name="DateRange_Start">
+      <ExpressionBindings>
+        <Item1 Ref="27" PropertyName="Value" Expression="AddMonths(Today(),-3 )" />
+      </ExpressionBindings>
+    </Item4>
+    <Item5 Ref="26" ObjectType="DevExpress.XtraReports.Parameters.RangeEndParameter, DevExpress.Printing.v23.2.Core" ValueInfo="2024-06-14" Name="DateRange_End">
+      <ExpressionBindings>
+        <Item1 Ref="28" PropertyName="Value" Expression="Today()" />
+      </ExpressionBindings>
+    </Item5>
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

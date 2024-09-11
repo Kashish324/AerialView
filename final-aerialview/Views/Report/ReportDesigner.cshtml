@@ -1,0 +1,44 @@
+﻿@using final_aerialview.Reports
+
+@{
+    ViewData["Title"] = "Report Designer";
+    var reportName = ViewData["ReportName"] as string;
+    var datagridRptid = ViewData["DatagridRptid"] as int?;
+    var selectedReport = ViewData["selectedReport"] as string;
+}
+
+<link rel="stylesheet" href="~/css/designer.part.bundle.css" />
+<link rel="stylesheet" href="~/css/ace/ace.bundle.css" />
+<script src="~/js/reporting.designer.part.bundle.js"></script>
+
+
+<div class="d-flex align-items-center justify-content-between pt-1 px-4  border-bottom" style="background-color: #E6E6E6;">
+    <a title="Back" href="javascript:history.back()" class="text-decoration-none" style="color: #606060;"><i class="ri-arrow-left-s-line"></i></a>
+    <h6 class="fw-medium text-dark mb-0">@selectedReport</h6>
+    <a href="/Home/Index" class="text-decoration-none" style="color: #606060;" title="Home"><i class="ri-home-2-line"></i></a>
+</div>
+<div id="reportDesignerContainer">
+
+    @{
+        var designerRender = Html.DevExpress().ReportDesigner("reportDesigner")
+        .Height("96.6vh");
+
+        if (!string.IsNullOrEmpty(reportName))
+        {
+            designerRender.Bind(reportName);
+        }
+        else
+        {
+            Console.WriteLine("Opening blank report designer");
+        }
+
+        @designerRender.RenderHtml()
+    }
+</div>
+
+@section Scripts {
+    <link href="~/css/dx-reporting-skeleton-screen.css" rel="stylesheet" />
+    @designerRender.RenderScripts()
+}
+
+

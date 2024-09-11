@@ -1,0 +1,22 @@
+﻿
+<li>
+    <div class="profile-details d-flex align-items-center justify-content-between">
+        <div class="software-version text-light fw-medium text-nowrap" style="font-size: 13px;">© Hi-Mak Pvt. Ltd.</div>
+        <div class="d-flex align-items-center justify-content-center flex-row-reverse">
+
+            <div class="profile-content">
+                <form class="logOut fs-6" method="post" action="/Account/Logout">
+                    @Html.AntiForgeryToken()
+                    <button class="nav-link btn btn-sm text-light border-0 " type="submit"> <i title="Logout" style="color: #F9B975;" class="ri-logout-circle-line fs-6"></i></button>
+                </form>
+            </div>
+            <div class="name-job">
+                @if(User.Identity != null)
+                {
+                <div class="profile_name fw-medium " style="font-size: 13px;">@User.Identity.Name</div>
+                }
+            </div>
+
+        </div>
+    </div>
+</li>

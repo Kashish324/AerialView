@@ -1,0 +1,26 @@
+﻿@model ErrorViewModel
+@{
+    ViewData["Title"] = "Error";
+}
+
+<link href="/css/errorPage.css" rel="stylesheet" />
+
+@* <div class="d-flex justify-content-center align-items-center vh-100">
+<div class="section">
+    <div class="text-center">
+        <h1 class="error">404</h1>
+            <div class="display-6  text-muted fw-medium mb-4 ms-4">Page Not Found</div>
+            <div class="page ">Sorry, the page you’re looking for doesn’t exist or has been moved.</div>
+            <button type="button" class="btn btn-dark btn-sm text-uppercase shadow fw-medium ms-4" onclick="history.back()"><i class="ri-arrow-left-s-line"></i> Go Back</button>
+            <a class="btn btn-outline-dark btn-sm text-uppercase shadow fw-medium ms-2" href="/Home/Index"> Back to home</a>
+    </div>
+</div>
+</div>
+ *@
+
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="alert alert-warning container text-center shadow" role="alert">
+        <h4 class="alert-heading"> <i class="ri-error-warning-line"></i> Page Not Found</h4>
+        <p class="mb-0">Sorry, the page you’re looking for doesn’t exist or has been moved.</p>
+    </div>
+</div>

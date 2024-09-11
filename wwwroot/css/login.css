@@ -1,0 +1,32 @@
+﻿/*login form*/
+/*.login-font {
+    font-size: 1.8vw;
+}*/
+
+.login-wrapper {
+    width: 50vw;
+    height: 50vh;
+}
+
+.copyright-text{
+    font-size: .65vw;
+}
+
+.login-page {
+    height: 100vh;
+    /*background-image: linear-gradient( 89.5deg,  rgba(131,204,255,1) 0.4%, rgba(66,144,251,1) 100.3% ) !important;*/
+    /*background-color: #11101D;*/
+    background-image: linear-gradient(45deg, rgba(66,144,251,1) 0.4%, #11101D 100.3%);
+}
+
+/* Style for the button when it is enabled */
+.btn-enabled {
+    background-color: #1c75c7;
+    cursor: pointer;
+}
+
+/* Style for the button when it is disabled */
+.btn-disabled {
+    background-color: #cccccc; /* or any color to indicate disabled state */
+    cursor: not-allowed;
+}

@@ -1,0 +1,448 @@
+﻿@model ListDataViewModel
+@using Newtonsoft.Json
+@using System.Web
+
+
+@{
+    ViewData["Title"] = @Model.ChildMenuName;
+    Layout = null;
+}
+
+
+<div id="dataTable" class="position-relative shadow rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName">
+    @if (Model.TableData == null || !Model.TableData.Any())
+    {
+        <div id="loadingSpinnerContainer" class="h-100 w-100 d-flex align-items-center justify-content-center">
+            <div id="loadingSpinner" class="d-none">
+                <div class="spinner-grow text-primary-emphasis" role="status" style="width: 1.5rem; height: 1.5rem; animation-duration: 1s;">
+                    <span class="visually-hidden">Loading...</span>
+                </div>
+            </div>
+            <p id="noDataMessage" class="text-body-secondary fw-medium">No data to show</p>
+            <p id="errorMessage" class="text-danger fw-medium d-none">There was an issue accessing the database.</p>
+        </div>
+    }
+    else
+    {
+        <div class="datagridWrapper bg-light bg-gradient rounded-top">
+            @(
+                Html.DevExtreme().DataGrid()
+                .ID("dataGridContainer")
+                .ShowBorders(true)
+                .ColumnMinWidth(60)
+                .Scrolling(scrolling => scrolling.ColumnRenderingMode(GridColumnRenderingMode.Standard))
+                .DataSource(Model.TableData)
+                .FilterRow(filterRow => filterRow
+                .Visible(true)
+                .ApplyFilter(GridApplyFilterMode.Auto)
+                )
+                .StateStoring(s => s
+                .Enabled(true)
+                .Type(StateStoringType.LocalStorage)
+                .StorageKey("storage")
+                )
+                .ColumnAutoWidth(true)
+                .AllowColumnReordering(true)
+                .AllowColumnResizing(true)
+                .ColumnResizingMode(ColumnResizingMode.Widget)
+                .ShowColumnLines(true)
+                .ShowRowLines(true)
+                .ColumnChooser(c => c.Enabled(true))
+                .ColumnFixing(c => c.Enabled(true))
+                .WordWrapEnabled(true)
+                .HoverStateEnabled(true)
+                .HeaderFilter(hf => hf
+                .Visible(true)
+                .Search(hfs => hfs.Enabled(true))
+                )
+                .GroupPanel(g => g.Visible(true))
+                .Grouping(g => g.AutoExpandAll(false))
+                .Columns(c =>
+                {
+                    if (Model.TableData != null && Model.TableData.Any() && Model.ConditionalTableData != null)
+                    {
+                        var firstItem = Model.TableData.FirstOrDefault() as IDictionary<string, object>;
+
+                        if (firstItem != null)
+                        {
+                            foreach (var i in Model.ConditionalTableData)
+                            {
+                                foreach (var property in firstItem.Keys)
+                                {
+                                    if (property == i.ColumnName)
+                                    {
+                                        if (property == "DateAndTime")
+                                        {
+                                            c.Add().DataField(property).Caption(i.DisplayName).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss")
+                                            .CssClass("datagridCol")
+                                            .AllowHiding(false);
+                                        }
+                                        else
+                                        {
+                                            c.Add().DataField(property).Caption(i.DisplayName)
+                                            .CssClass("datagridCol");
+                                        }
+                                    }
+                                }
+                            }
+
+                        }
+                    }
+                })
+                .ShowColumnHeaders(true)
+                .Pager(pager =>
+                {
+                    pager.Visible(true);
+                    pager.DisplayMode(GridPagerDisplayMode.Compact);
+                    pager.ShowPageSizeSelector(true);
+                    pager.AllowedPageSizes(new JS("[5, 10, 'all']"));
+                    pager.ShowInfo(true);
+                    pager.ShowNavigationButtons(true);
+                })
+
+                .Paging(paging =>
+                {
+                    paging.Enabled(true);
+                    paging.PageSize(10);
+                })
+                )
+        </div>
+
+        <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-2 border-top">
+            <div id="exportOrientation" class="ms-2">
+                <div class="input-group input-group-sm">
+                    <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
+                    <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example" style="cursor: pointer !important;">
+                        <option value="landscape" selected>Landscape</option>
+                        <option value="portrait">Portrait</option>
+                    </select>
+                </div>
+            </div>
+
+
+            <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
+                <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i>
+                @* <i class="ri-file-excel-2-line fs-3 shadow-sm text-success"></i> *@
+            </button>
+            <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
+                <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i>
+                @* <i class="ri-file-pdf-2-line fs-3 shadow-sm text-danger"></i> *@
+            </button>
+
+        </div>
+    }
+</div>
+
+
+
+<script>
+    function showLoadingSpinner() {
+        $("#loadingSpinner").removeClass("d-none");
+        $("#noDataMessage").addClass("d-none");
+        $("#errorMessage").addClass("d-none");
+    }
+
+    function hideLoadingSpinner() {
+        $("#loadingSpinner").addClass("d-none");
+    }
+
+    function showNoDataMessage() {
+        $("#noDataMessage").removeClass("d-none");
+        $("#loadingSpinner").addClass("d-none");
+        $("#errorMessage").addClass("d-none");
+    }
+
+    function showErrorMessage() {
+        $("#errorMessage").removeClass("d-none");
+        $("#loadingSpinner").addClass("d-none");
+        $("#noDataMessage").addClass("d-none");
+    }
+
+    var excelExportBtn = document.getElementById('excelExportButton');
+    var pdfExportBtn = document.getElementById('pdfExportButton');
+    var pdfOrientationSelect = document.getElementById('pdfOrientationSelect');
+
+
+    if (excelExportBtn) {
+        excelExportBtn.addEventListener('click', function (event) {
+            exportGridToExcel(event);
+        });
+    }
+
+    if (pdfExportBtn) {
+        pdfExportBtn.addEventListener('click', function (event) {
+            exportGridToPdf(event);
+        });
+    }
+
+    var tableData = @Html.Raw(Json.Serialize(Model.TableData));
+    var clientData = @Html.Raw(Json.Serialize(Model.PdfImageData));
+
+    // Get the current date and time
+    var date = new Date();
+    var formattedDate = date.getDate() + '-' + date.getMonth() + '-' + date.getFullYear();
+    var formattedTime = date.getHours() + '' + date.getMinutes() + '' + date.getSeconds();
+
+    // Export grid data to Excel
+    function exportGridToExcel(e) {
+        var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
+        var childMenuName = document.getElementById('dataTable').getAttribute('data-child-menu-name');
+
+        // DataGrid instance
+        var dataGridElement = document.getElementById("dataGridContainer");
+        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+
+        var workbook = new ExcelJS.Workbook();
+        var worksheet = workbook.addWorksheet(tableName);
+
+        // Merge cells and add image to the workbook
+        worksheet.mergeCells("A1:A4");
+        const imageId = workbook.addImage({
+            base64: clientData[0].Logo,
+            extension: 'jpeg',
+        });
+
+        //fixed dimensions for the image
+        const imageWidth = 150;
+        const imageHeight = 80;
+
+        worksheet.addImage(imageId, {
+            tl: { col: 0, row: 0 },
+            ext: { width: imageWidth, height: imageHeight }
+        });
+
+        // Get visible columns only
+        var visibleColumns = dataGridInstance.getVisibleColumns();
+
+        DevExpress.excelExporter.exportDataGrid({
+            component: dataGridInstance,
+            worksheet: worksheet,
+            autoFilterEnabled: true,
+            topLeftCell: { row: 5, column: 1 },
+            customizeCell: function (options) {
+                var gridCell = options.gridCell;
+                var excelCell = options.excelCell;
+
+                if (gridCell.rowType === "header") {
+                    var column = visibleColumns[gridCell.columnIndex];
+                    if (column) {
+                        excelCell.value = column.caption;
+                    }
+                }
+            }
+        }).then(function () {
+            // Format column headers with bold text
+            var headerRow = worksheet.getRow(5);
+            headerRow.font = { bold: true };
+
+            headerRow.eachCell(function (cell, colNumber) {
+                cell.fill = {
+                    type: 'pattern',
+                    pattern: 'solid',
+                    fgColor: { argb: 'ffffffcc' }
+                };
+
+                cell.border = {
+                    top: { style: 'thin' },
+                    left: { style: 'thin' },
+                    bottom: { style: 'thin' },
+                    right: { style: 'thin' }
+                };
+            });
+
+            function getColumnLetter(columnIndex) {
+                var columnName = '';
+                while (columnIndex > 0) {
+                    var remainder = (columnIndex - 1) % 26;
+                    columnName = String.fromCharCode(65 + remainder) + columnName;
+                    columnIndex = Math.floor((columnIndex - 1) / 26);
+                }
+                return columnName;
+            }
+
+            var headerLength = visibleColumns.length;
+            var last = getColumnLetter(headerLength);
+
+            worksheet.mergeCells('B3:' + last + '3');
+            worksheet.getCell('B3').value = tableName;
+            worksheet.getCell('B3').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B3').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B3').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' }
+            };
+
+            // Set ProjectName in cell B2
+            worksheet.mergeCells('B2:' + last + '2');
+            worksheet.getCell('B2').value = clientData[0].ProjectName;
+            worksheet.getCell('B2').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B2').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B2').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFFFFFFF' }
+            };
+
+            // Set ClientName in cell B1
+            worksheet.mergeCells('B1:' + last + '1');
+            worksheet.getCell('B1').value = clientData[0].ClientName;
+            worksheet.getCell('B1').alignment = { horizontal: 'center', vertical: 'middle' };
+            worksheet.getCell('B1').font = { bold: true, name: 'Arial' };
+            worksheet.getCell('B1').fill = {
+                type: 'pattern',
+                pattern: 'solid',
+                fgColor: { argb: 'FFDDDDDD' }
+            };
+
+            // Loop through all cells and add borders
+            worksheet.eachRow({ includeEmpty: true }, function (row, rowNumber) {
+                row.eachCell({ includeEmpty: true }, function (cell, colNumber) {
+                    cell.border = {
+                        top: { style: 'thin' },
+                        left: { style: 'thin' },
+                        bottom: { style: 'thin' },
+                        right: { style: 'thin' }
+                    };
+                });
+            });
+
+            workbook.xlsx.writeBuffer().then(function (buffer) {
+                var fileName = childMenuName + '_' + formattedDate + '_' + formattedTime + '.xlsx';
+                saveAs(new Blob([buffer], { type: 'application/octet-stream' }), fileName);
+            });
+        });
+    }
+
+
+
+    
+
+    // Export grid data to PDF
+    function exportGridToPdf(e) {
+        var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
+        var orientation = pdfOrientationSelect.value; //portrait or landscape
+
+        // DataGrid instance
+        var dataGridElement = document.getElementById("dataGridContainer");
+        var dataGridInstance = DevExpress.ui.dxDataGrid.getInstance(dataGridElement);
+
+
+
+        var rowHeight = 10;
+        var columnCount = dataGridInstance.columnCount();
+        console.log("columnCount", columnCount)
+        var rowCount = dataGridInstance.getDataSource().items().length;
+
+        var columnWidth;
+
+        if (columnCount >= 15) {
+            columnWidth = 14.5;
+        } else {
+            columnWidth = 19;
+        }
+
+
+
+
+        var margin = {
+            top: 25,
+            bottom: 20,
+            left: 15,
+            right: 15
+        };
+
+        // Calculate required width and height
+        var totalWidth = columnCount * columnWidth + margin.left + margin.right;
+        var totalHeight = rowCount * rowHeight + margin.top + margin.bottom;
+
+
+        // Define custom sizes for landscape orientation
+        var landscapeWidth = 500;
+        var landscapeHeight = 297; // Standard A4 height for landscape
+
+        // Set page size based on orientation and content size
+        var pageFormat = (orientation === 'landscape')
+            ? [totalWidth + 15, landscapeHeight] // Landscape
+            : [210, 297]; // Portrait
+        // : [290, 250]; // Portrait
+
+
+        // Initialize jsPDF with custom page size
+        var doc = new jsPDF({
+            orientation: orientation,
+            unit: 'mm', // Millimeters for accurate margins and dimensions
+            // format: pageFormat
+            format: 'a4'
+        });
+
+        // Function to add header content
+        var addHeader = function () {
+            doc.setFontSize(13);
+            doc.setTextColor(0);
+            doc.text(tableName + ' ' + 'Table', doc.internal.pageSize.getWidth() / 2, 15, { align: 'center' });
+
+            // Add logo, project name, client name
+            var item = clientData[0];
+            var imgData = item.Logo;
+            var projectName = item.ProjectName;
+            var clientName = item.ClientName;
+
+            doc.addImage(imgData, 'JPEG', 15, 25, 25, 15);
+
+            doc.setFontSize(11);
+            doc.text('Project: ' + projectName, doc.internal.pageSize.getWidth() / 2, 31, { align: 'center' });
+            doc.text('Client: ' + clientName, doc.internal.pageSize.getWidth() / 2, 37, { align: 'center' });
+            doc.setTextColor(0);
+            doc.setFontSize(0);
+        };
+
+        // Call addHeader for the first page
+        addHeader();
+
+        // Export data grid to PDF
+        DevExpress.pdfExporter.exportDataGrid({
+            jsPDFDocument: doc,
+            component: dataGridInstance,
+            topLeft: { x: 1, y: 30 }, // Adjust the x and y values to start the table lower
+            columnWidths: Array(columnCount).fill(columnWidth),
+            // indent: 5,
+            customizeCell: function (options) {
+                const { gridCell, pdfCell } = options;
+
+                if (gridCell.rowType === 'data') { //for table content other than headers
+                    pdfCell.font = { size: 6 };
+
+                } else if (gridCell.rowType === 'header') { //for table headers
+                    pdfCell.font = { size: 8, style: 'bold' };
+                    pdfCell.backgroundColor = '#D3D3D3'; //Light grey background
+                    pdfCell.textColor = '#000000';
+                    pdfCell.fontStyle = 'bold';
+                } else if (gridCell.rowType === 'group') {
+                    pdfCell.backgroundColor = '#DCDCDC';
+                }
+            }
+        }).then(function () {
+            // Calculate the number of pages
+            var pageCount = doc.internal.getNumberOfPages();
+
+            // Add footer to each page
+            for (var i = 1; i <= pageCount; i++) {
+                doc.setPage(i);
+                addFooter(i, pageCount); // Add footer with page number
+            }
+
+            var fileName = tableName + '_' + formattedDate + '_' + formattedTime;
+            // Save the PDF document
+            doc.save(fileName);
+        });
+
+        // Function to add footer with paging
+        var addFooter = function (pageNumber, pageCount) {
+            doc.setFontSize(9);
+            doc.setTextColor('#cccccc');
+            doc.text('Page ' + pageNumber + ' of ' + pageCount, doc.internal.pageSize.getWidth() / 2, doc.internal.pageSize.getHeight() - 10, { align: 'center' });
+        };
+    }
+
+</script>

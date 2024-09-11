@@ -1,0 +1,517 @@
+﻿@model List<DashboardDataModel>
+@using System;
+
+@{
+    ViewData["Title"] = "Dashboard Configuration";
+}
+
+<div class="table-responsive pt-4">
+    <table id="dashConfigTable" class="table table-hover table-bordered border-light shadow-sm table-sm">
+        <thead>
+            <tr>
+                @foreach (var prop in typeof(DashboardDataModel).GetProperties())
+                {
+                    if (prop.Name != nameof(DashboardDataModel.DashId))
+                    {
+                        <th scope="col" class="text-center align-middle text-primary-emphasis">@prop.Name</th>
+                    }
+                }
+                <th scope="col" class="text-center align-middle text-primary-emphasis">Select Path</th>
+                <th scope="col" class="text-center align-middle text-danger"></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr id="dashRow-@item.DashId">
+                    @* <td>
+                <input type="text" id="DashName-@item.DashId" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="@item.DashName" onchange="updateField('@item.DashId', 'DashName', this.value)">
+                </td> *@
+                    <td class="d-flex align-items-center gap-1">
+                        <input type="text" id="DashName-@item.DashId" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="@item.DashName" onchange="updateField('@item.DashId', 'DashName', this.value)">
+                        <span id="error-message-@item.DashId" class="btn text-danger fw-bold p-0 btn-sm border-0 fw-medium" style="display:none; cursor:pointer;">!</span>
+                    </td>
+
+                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;">
+                        @item.DashPath
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill " onclick="updateDashboardStatus('@item.DashId')" style="cursor: pointer;">@((item.DashStatus) ? "Active" : "Inactive")</span>
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <div class="form-check">
+                            <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-@item.DashId" @(item.DashDefault ? "checked" : "") style="cursor: pointer;" onchange="updateRadioValue('@item.DashId')">
+                        </div>
+                    </td>
+                    <td class="text-center align-middle p-0">
+                        <input type="file" name="dialog" id="dialog-@item.DashId" hidden />
+                        <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('@item.DashId')">
+                            @* <i class="ri-folder-open-fill text-warning "></i> *@
+                            <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
+                                       trigger="morph"
+                                       state="morph-folder"
+                                       colors="primary:#FFC107"
+                                       style="width:16px;height:16px">
+
+                            </lord-icon>
+                        </a>
+                    </td>
+                    <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-0 bg-white" style="cursor: pointer;">
+                        <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('@item.DashId')">
+                            @* <i class="ri-delete-bin-line text-danger"></i> *@
+                            <lord-icon src="https://cdn.lordicon.com/skkahier.json"
+                                       trigger="hover"
+                                       colors="primary:#ee6d66"
+                                       style="width:16px;height:16px">
+                            </lord-icon>
+                        </button>
+
+                    </td>
+
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<div class="d-flex align-items-center justify-content-end gap-2">
+    <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium" id="addBtn"><i class="ri-menu-add-line"></i> Add</button>
+    <button title="Update database" type="button" class="btn bg-success-subtle btn-sm border-success-subtle shadow fw-medium" id="updateBtn" onclick="sendDataToServer()">
+        <i class="bi bi-database-add"></i> Update
+    </button>
+
+    <!-- Modal 1 -->
+    <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="getDashboardModal" tabindex="-1" aria-labelledby="getDashboardModalLabel" aria-hidden="true">
+        <div class="modal-dialog  modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-6" id="getDashboardModalLabel">Saved Dashboards</h1>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="dashboard-content">
+                    <div class="d-flex justify-content-center">
+                        <div class="spinner-grow text-secondary" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn bg-secondary-subtle btn-sm" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- Modal 2 -->
+    <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="deleteDashboardModal" tabindex="-1" aria-labelledby="deleteDashboardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-6 text-dark" id="deleteDashboardModalLabel">AerialView</h1>
+                    <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" id="dashboard-content">
+                    <p class="fw-bold m-0 text-black"> Are you sure you want to delete this ? </p>
+                    <span class="text-muted" style="font-size: 14px;"> This action is permanent and cannot be undone. </span>
+                    <input type="hidden" id="deleteDashId" />
+                </div>
+                <div class="modal-footer">
+                    <button id="deleteBtn" type="button" class="btn bg-danger btn-sm text-white shadow-sm" onclick="confirmDelete()" data-bs-dismiss="modal">Yes</button>
+                    <button type="button" class="btn bg-secondary-subtle btn-sm shadow-sm" data-bs-dismiss="modal">No</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+</div>
+
+<!--update toaster-->
+<div class="toast-container position-fixed top-50 start-50 translate-middle p-3">
+    <div id="liveToast" class="toast" role="alert" aria-live="assertive" aria-atomic="true" data-bs-autohide="false">
+        <div class="toast-header">
+            <strong class="me-auto text-muted">AerialView</strong>
+            <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+        <div class="toast-body text-dark">
+            <!-- Message content will be updated dynamically -->
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.lordicon.com/lordicon.js"></script>
+
+<script>
+    function handleDuplicateError() {
+        alert("Dashname ugh")
+    }
+
+    var addBtn = document.getElementById('addBtn');
+    var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
+
+    // Update dashboard active/inactive status
+    function updateDashboardStatus(dashId) {
+        var statusElement = document.getElementById('dashStatus-' + dashId);
+        if (statusElement.classList.contains('bg-success')) {
+            statusElement.classList.remove('bg-success');
+            statusElement.classList.add('bg-danger');
+            statusElement.textContent = 'Inactive';
+        } else {
+            statusElement.classList.remove('bg-danger');
+            statusElement.classList.add('bg-success');
+            statusElement.textContent = 'Active';
+        }
+        markRowAsUpdated(dashId); // Mark the row as updated
+    }
+
+    // Function to mark a row as updated
+    function markRowAsUpdated(dashId) {
+        var row = document.getElementById('dashRow-' + dashId);
+        if (row) {
+            row.classList.add('updated-row'); // Add a class to mark the row as updated
+        }
+    }
+
+
+
+    // Function to handle updating any field in a row
+    // function updateField(dashId, fieldName, updatedValue) {
+
+    //     console.log(updatedValue)
+    //      var originalDashName = dashNames[dashId];
+    //     console.log('Original DashName:', originalDashName);
+
+    //     var inputField = document.getElementById(fieldName + '-' + dashId);
+
+    //     if (inputField) {
+    //         inputField.value = updatedValue;
+    //         markRowAsUpdated(dashId); // Mark the row as updated
+    //     } else {
+    //         console.error('Input field not found for:', fieldName);
+    //     }
+    // }
+
+
+
+    // Initialize dashNames with values from the table
+    var dashNames = {};
+
+    document.addEventListener('DOMContentLoaded', function () {
+        document.querySelectorAll('.dash-name-field').forEach(function (input) {
+            var dashId = input.id.split('-')[1];
+            dashNames[dashId] = input.value.trim().toLowerCase();
+        });
+    });
+
+    function updateField(dashId, fieldName, updatedValue) {
+        var inputField = document.getElementById(fieldName + '-' + dashId);
+        var errorMessage = document.getElementById('error-message-' + dashId);
+
+        // Remove existing error messages
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+
+        // Update the dashNames object
+        dashNames[dashId] = updatedValue.trim().toLowerCase();
+
+        // Collect all DashNames from the dashNames object
+        var allDashNames = Object.values(dashNames);
+
+        // Check for duplicates
+        if (allDashNames.filter(name => name === updatedValue.trim().toLowerCase()).length > 1) {
+            if (errorMessage) {
+                // Show an alert for duplicates
+                var duplicateDashName = updatedValue.trim()
+                errorMessage.style.display = 'block';
+                errorMessage.title = `DashName "${duplicateDashName}" already exists!`;
+                setTimeout(() => {
+                    window.reload()
+                }, 2000)
+            }
+        } else {
+            // Hide the error message if no duplicate
+            if (errorMessage) {
+                errorMessage.style.display = 'none';
+            }
+        }
+
+        // Update the input field value
+        if (inputField) {
+            inputField.value = updatedValue;
+            markRowAsUpdated(dashId); // Mark the row as updated
+        } else {
+            console.error('Input field not found for:', fieldName);
+        }
+    }
+
+
+
+
+
+    function dialogHandling(uniqueRowId) {
+        localStorage.setItem('selectedRowId', uniqueRowId);
+    }
+
+    // Function to add a new row
+    function addNewRow() {
+        var uniqueRowId = Math.floor(Math.random() * 31) + 70;
+        var newRow = dashConfigTable.insertRow();
+        newRow.id = 'dashRow-' + uniqueRowId;
+
+        newRow.innerHTML = `
+                                    <td class="d-flex align-items-center gap-1">
+                                <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" onchange="updateField('${uniqueRowId}', 'DashName', this.value)">
+                                                <span id="error-message-${uniqueRowId}" class="btn text-danger fw-bold p-0 btn-sm border-0 fw-medium" style="display:none; cursor:pointer;">!</span>
+                            </td>
+                            <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
+                            <td class="text-center align-middle p-0">
+                                <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
+                            </td>
+                            <td class="text-center align-middle p-0">
+                                <div class="form-check">
+                                        <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
+                                </div>
+                            </td>
+                                    <td class="text-center align-middle p-0">
+                                            <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
+                                            <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
+                                            <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
+                                                            trigger="morph"
+                                   state="morph-folder"
+
+                                                       colors="primary:#FFC107"
+                                                       style="width:16px;height:16px">
+                                            </lord-icon>
+                                        </a>
+                                    </td>
+                                        <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-0 bg-white" style="cursor: pointer;">
+                        <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('${uniqueRowId}')">
+                        <lord-icon src="https://cdn.lordicon.com/skkahier.json"
+                                   trigger="hover"
+                                   colors="primary:#ee6d66"
+                                   style="width:16px;height:16px">
+                        </lord-icon>
+                    </button>
+
+                </td>
+
+                        `;
+        markRowAsUpdated(uniqueRowId); // Mark the new row as updated
+    }
+
+    // Event listener for adding a new row
+    addBtn.addEventListener('click', addNewRow);
+
+    // Function to handle radio button value updates
+    function updateRadioValue(uniqueRowId) {
+        var radioBtn = document.getElementById('flexRadioDefault-' + uniqueRowId);
+        if (radioBtn) {
+            markRowAsUpdated(uniqueRowId); // Mark the row as updated
+        }
+    }
+
+    function hasDuplicateDashNames(updatedRows) {
+        const dashNames = updatedRows.map(row => row.DashName.toLowerCase());
+        return new Set(dashNames).size !== dashNames.length;
+    }
+
+
+    // Function to collect all updated rows
+    function collectUpdatedRows() {
+        var updatedRows = [];
+        var rows = document.querySelectorAll('.updated-row');
+        rows.forEach(function (row) {
+            var rowData = {
+                DashId: row.id.replace('dashRow-', ''),
+                DashName: row.querySelector('.dash-name-field').value.trim(),
+                DashPath: row.querySelector('.dash-path-cell').textContent.trim(),
+                DashStatus: row.querySelector('.badge').classList.contains('bg-success'),
+                DashDefault: row.querySelector('input[type="radio"]').checked
+            };
+            // Convert DashStatus and DashDefault to boolean explicitly if needed
+            rowData.DashStatus = !!rowData.DashStatus; // Ensures boolean value
+            rowData.DashDefault = !!rowData.DashDefault; // Ensures boolean value
+            updatedRows.push(rowData);
+        });
+        return updatedRows;
+    }
+
+    // Function to send updated data to server
+    // function sendDataToServer() {
+    //     var updatedRows = collectUpdatedRows();
+    //     // Filter out rows with empty DashPath
+    //     updatedRows = updatedRows.filter(row => row.DashPath.trim() !== '');
+
+    //     if (updatedRows.length === 0) {
+    //         var toastBody = document.querySelector('.toast-body');
+    //         if (toastBody) {
+    //             toastBody.textContent = 'No valid rows to update.';
+    //         }
+    //         var toastLive = document.getElementById('liveToast');
+    //         var toast = new bootstrap.Toast(toastLive, {
+    //             autohide: true,
+    //             delay: 2000
+    //         });
+    //         toast.show();
+    //         return; // Exit early if there are no valid rows to update
+    //     }
+
+    //     $.ajax({
+    //         url: '/Submenu/UpdateData',
+    //         type: 'POST',
+    //         contentType: 'application/json',
+    //         data: JSON.stringify(updatedRows),
+    //         success: function (response) {
+    //             // Update toast message dynamically
+    //             var toastBody = document.querySelector('.toast-body');
+    //             if (toastBody) {
+    //                 toastBody.textContent = 'Data updated successfully!';
+    //             }
+
+    //             // Show the toast
+    //             var toastLive = document.getElementById('liveToast');
+    //             var toast = new bootstrap.Toast(toastLive, {
+    //                 autohide: true,
+    //                 delay: 2000
+    //             });
+    //             toast.show();
+
+    //             // Clear updated-row class after successful update
+    //             var rows = document.querySelectorAll('.updated-row');
+    //             rows.forEach(function (row) {
+    //                 row.classList.remove('updated-row');
+    //             });
+
+    //             setTimeout(function () {
+    //                 location.reload();
+    //             }, 2000)
+    //         },
+    //         error: function (xhr, status, error) {
+    //             console.error('Error sending data:', error);
+    //             var toastBody = document.querySelector('.toast-body');
+    //             if (toastBody) {
+    //                 toastBody.textContent = 'Failed to update data.';
+    //             }
+    //             var toastLive = document.getElementById('liveToast');
+    //             var toast = new bootstrap.Toast(toastLive, {
+    //                 autohide: true,
+    //                 delay: 2000
+    //             });
+    //             toast.show();
+    //         }
+    //     });
+    // }
+
+    function sendDataToServer() {
+        var updatedRows = collectUpdatedRows();
+
+        // Filter out rows with empty DashPath
+        updatedRows = updatedRows.filter(row => row.DashPath.trim() !== '');
+
+        if (updatedRows.length === 0) {
+            showToast('No valid rows to update.');
+            return;
+        }
+
+        $.ajax({
+            url: '/Submenu/UpdateData',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(updatedRows),
+            success: function (response) {
+                if (response.errors) {
+                    // If there are errors, show them in the toast
+                    var errorMessage = response.errors.join('\n');
+                    showToast(`Data not updated: ${errorMessage}`);
+                } else {
+                    showToast('Data updated successfully!');
+                    var rows = document.querySelectorAll('.updated-row');
+                    rows.forEach(function (row) {
+                        row.classList.remove('updated-row');
+                    });
+
+                    setTimeout(function () {
+                        location.reload();
+                    }, 2000);
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error sending data:', error);
+                showToast('Failed to update data.');
+
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
+            }
+        });
+    }
+
+    function showToast(message) {
+        var toastBody = document.querySelector('.toast-body');
+        if (toastBody) {
+            toastBody.innerHTML = message;
+        }
+        var toastLive = document.getElementById('liveToast');
+        var toast = new bootstrap.Toast(toastLive, {
+            autohide: true,
+            delay: 2000
+        });
+        toast.show();
+    }
+
+
+    // get saved dashboard list from /DashboardFolder/DashInfo
+    // function showToast(message) {
+    //     var toastBody = document.querySelector('.toast-body');
+    //     if (toastBody) {
+    //         toastBody.innerHTML = message;
+    //     }
+    //     var toastLive = document.getElementById('liveToast');
+    //     var toast = new bootstrap.Toast(toastLive, {
+    //         autohide: true,
+    //         delay: 2000
+    //     });
+    //     toast.show();
+    // }
+
+
+    $('#getDashboardModal').on('show.bs.modal', function () {
+        $.ajax({
+            url: '/DashboardFolder/DashInfo',
+            success: function (data) {
+                $('#dashboard-content').html(data);
+            },
+            error: function () {
+                $('#dashboard-content').html('<p>Error loading dashboard information.</p>');
+            }
+        });
+    });
+
+    //set the value of hidden input in modal when the delete button is clicked
+    function setDeleteDashId(dashId) {
+        document.getElementById('deleteDashId').value = dashId;
+    }
+
+    //confirm delete
+    function confirmDelete() {
+        var dashId = document.getElementById('deleteDashId').value;
+        var deleteBtn = document.getElementById('deleteBtn');
+
+        $.ajax({
+            url: '/Submenu/DeleteDashboardByDashId',
+            type: 'POST',
+            data: { dashId: dashId },
+            success: function (response) {
+                // Add data-bs-dismiss attribute
+                $('#deleteBtn').attr('data-bs-dismiss', 'modal');
+                window.location.reload();
+                console.log(response);
+            },
+            error: function (request, status, error) {
+                console.log(error);
+            }
+        });
+    }
+
+
+</script>

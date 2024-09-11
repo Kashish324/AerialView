@@ -1,0 +1,42 @@
+﻿@{
+    var projectData = ViewData["PdfImageData"] as IEnumerable<final_aerialview.Models.PdfImageModel>;
+    var controllerValueForListData = ViewContext.RouteData.Values["controller"];
+}
+<div class="headerContent">
+    @* <i class="ri-arrow-right-double-line bx bx-menu fs-5"></i> *@
+
+    @if (controllerValueForListData != null && controllerValueForListData.ToString() != "ListData")
+    {
+        if (ViewData["MenuName"] != null)
+        {
+            <span class="text text-center" id="selected-submenu">@ViewData["MenuName"]</span>
+        }
+        else
+        {
+            if (projectData != null)
+            {
+                @foreach (var item in projectData)
+                {
+                    <span class="text text-center text-capitalize" id="selected-submenu">@item.ProjectName</span>
+                }
+
+            }
+            else
+            {
+                <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
+            }
+        }
+    }
+    else
+    {
+        if (ViewBag.TableName != null)
+        {
+            <span class="text text-center" id="selected-submenu">@ViewBag.TableName</span>
+        }
+        else
+        {
+            <span class="text text-center" id="selected-submenu">AerialView Reporting Software</span>
+        }
+    }
+
+</div>

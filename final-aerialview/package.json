@@ -1,0 +1,18 @@
+{
+  "version": "1.0.0",
+  "name": "asp.net",
+  "private": true,
+  "devDependencies": {
+    "@devexpress/analytics-core": "23.2.5",
+    "bootstrap": "4.6.2",
+    "devexpress-dashboard": "23.2.5",
+    "devexpress-reporting": "23.2.5",
+    "devextreme-dist": "23.2.5",
+    "remixicon": "^4.3.0"
+  },
+  "dependencies": {
+    "exceljs": "^4.4.0",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.8.2"
+  }
+}

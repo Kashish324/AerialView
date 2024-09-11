@@ -1,0 +1,79 @@
+﻿/*login form*/
+/*.login-font {
+    font-size: 1.8vw;
+}*/
+
+.login-wrapper {
+    width: 50vw;
+    height: 50vh;
+}
+
+.copyright-text {
+    font-size: .65vw;
+}
+
+.login-page {
+    height: 100vh;
+    /*background-image: linear-gradient( 89.5deg,  rgba(131,204,255,1) 0.4%, rgba(66,144,251,1) 100.3% ) !important;*/
+    /*background-color: #11101D;*/
+    background-image: linear-gradient(45deg, rgba(66,144,251,1) 0.4%, #11101D 100.3%);
+}
+
+/* Style for the button when it is enabled */
+.btn-enabled {
+    background-color: #1c75c7;
+    cursor: pointer;
+}
+
+/* Style for the button when it is disabled */
+.btn-disabled {
+    background-color: #cccccc; /* or any color to indicate disabled state */
+    cursor: not-allowed;
+}
+
+.carousel-item {
+    transition: opacity 1.5s ease-in-out !important;
+}
+
+.carousel-fade .carousel-item {
+    opacity: 0;
+    transition-property: opacity, transform;
+    animation: bounce ease-in-out 3.2s infinite;
+}
+
+    .carousel-fade .carousel-item.active,
+    .carousel-fade .carousel-item-next.carousel-item-start,
+    .carousel-fade .carousel-item-prev.carousel-item-end {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+.carousel-fade .active.carousel-item-start,
+.carousel-fade .active.carousel-item-end {
+    opacity: 0;
+    transform: translateY(0);
+}
+
+@keyframes bounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-5px);
+    }
+}
+
+/* laptop view */
+@media (min-width: 769px) and (max-width: 1440px) {
+    .login-wrapper {
+        width: 57vw;
+    }
+}
+
+@media (min-width: 1920px) and (min-height: 1080px) {
+    .login-wrapper {
+        width: 50vw;
+        height: 44vh;
+    }
+}

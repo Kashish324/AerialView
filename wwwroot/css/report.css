@@ -1,0 +1,65 @@
+﻿.reportConfig-nav {
+    background-color: #E4E9F7;
+    position: sticky;
+    top: 3.9%;
+    z-index: 9;
+    cursor: pointer;
+}
+
+
+
+.reportConfig-nav .badge {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .3);
+}
+
+
+
+.reportList {
+    height: 100%;
+    width: fit-content;
+    background-color: #11101D;
+    padding: 2vh 2vw;
+    /*box-shadow: 0 0 5px #808080;*/
+    /*margin-top: 2vh;*/
+}
+
+    .reportList ul {
+        padding: 0;
+        text-align: left;
+    }
+
+        .reportList ul li {
+            padding-bottom: .5vh;
+            color: #fff;
+        }
+
+            .reportList ul li a {
+                color: #fff;
+            }
+
+.reportInstance {
+    position: relative;
+    padding: 0vh 0vw;
+}
+
+
+
+.form-control:focus {
+    box-shadow: none !important;
+    outline: none !important;
+}
+
+.reportConfig-nav .input-group {
+    box-shadow: 5px 5px 10px rgba(0, 0, 0, .2);
+}
+
+.searchBox input{
+    cursor:pointer;
+
+}
+
+
+.btn:hover {
+    cursor: pointer;
+    transform: translateY(1px);
+}
