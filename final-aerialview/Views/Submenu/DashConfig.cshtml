@@ -433,6 +433,9 @@
             error: function (xhr, status, error) {
                 console.error('Error sending data:', error);
                 showToast('Failed to update data.');
+                setTimeout(function () {
+                    location.reload();
+                }, 2000);
             }
         });
     }
