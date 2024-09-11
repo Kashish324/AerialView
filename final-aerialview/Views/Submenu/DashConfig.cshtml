@@ -25,8 +25,9 @@
             @foreach (var item in Model)
             {
                 <tr id="dashRow-@item.DashId">
-                    <td>
+                    <td class="d-flex align-items-center gap-1">
                         <input type="text" id="DashName-@item.DashId" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="@item.DashName" onchange="updateField('@item.DashId', 'DashName', this.value)">
+                        <span class="text-danger">!</span>
                     </td>
                     <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;">
                         @item.DashPath
