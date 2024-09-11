@@ -223,15 +223,28 @@ namespace final_aerialview.Data
             return ExecuteQuery<DashboardDataModel>(query);
         }
 
-        public void UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
+        //update the existing rows of dashboard config table
+        public List<string> UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
         {
+
+            var errorMessages = new List<string>();
+
             using (var connection = CreateConnection())
             {
                 connection.Open();
+                var checkExistsSql = "Select count(*) from DashboardMaster WHERE DashName = @DashName";
                 var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
 
                 foreach (var data in updatedData)
                 {
+                    var exists = connection.ExecuteScalar<int>(checkExistsSql, new { data.DashName });
+
+                    if (exists > 0)
+                    {
+                        errorMessages.Add($"DashName '{data.DashName}' already exists.");
+                        continue;
+                    }
+
                     // Convert DashStatus and DashDefault to bool explicitly
                     var parameters = new
                     {
@@ -275,18 +288,33 @@ namespace final_aerialview.Data
                 }
 
             }
+            return errorMessages;
         }
 
-        public void InsertDashboardData(IEnumerable<DashboardDataModel> newData)
+        //add new rows in dashboard config table
+        public List<string> InsertDashboardData(IEnumerable<DashboardDataModel> newData)
         {
+
+            var errorMessages = new List<string>();
+
             using (var connection = CreateConnection())
             {
                 connection.Open();
-                var sql = "INSERT INTO DashboardMaster (DashName, DashPath, DashStatus, DashDefault) VALUES (@DashName, @DashPath, CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END)";
 
+                var checkExistsSql = "Select count(*) from DashboardMaster WHERE DashName = @DashName";
+                var sql = "INSERT INTO DashboardMaster (DashName, DashPath, DashStatus, DashDefault) VALUES (@DashName, @DashPath, CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END)";
 
                 foreach (var data in newData)
                 {
+
+                    var exists = connection.ExecuteScalar<int>(checkExistsSql, new { data.DashName });
+
+                    if (exists > 0)
+                    {
+                        errorMessages.Add($"DashName '{data.DashName}' already exists.");
+                        continue;
+                    }
+
                     // Convert DashStatus and DashDefault to bool explicitly
                     var parameters = new
                     {
@@ -299,11 +327,12 @@ namespace final_aerialview.Data
                     connection.Execute(sql, parameters);
                 }
 
+
                 SqlConnection con = new SqlConnection(connection.ConnectionString);
 
 
                 string s1 = "select Top (1) * from Menu_Child_New  where MainMenuCode=5 order by SubMenuCode desc"
-                                    + " Select Top (1) *from DashboardMaster order by DashId desc";
+                                    + " Select Top (1) * from DashboardMaster order by DashId desc";
                 SqlDataAdapter Adpt = new SqlDataAdapter(s1, con);
                 DataSet ds1 = new DataSet();
                 Adpt.Fill(ds1);
@@ -328,6 +357,7 @@ namespace final_aerialview.Data
                 var sql2 = $" insert into Menu_Child_New (MainMenuCode, SubMenuCode, SubMenuName, Status, Frm_Level, RptId, Link_FormName, DashId) VALUES (5, {submenucode}, '{DashName}', 0, 0, 0, 'xDashboardReport', {DashId} )";
                 connection.Execute(sql2);
             }
+            return errorMessages;
         }
 
         //to delete the dash config by id

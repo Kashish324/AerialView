@@ -61,16 +61,23 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         var newRows = data.Where(d => d.DashId > 70  && d.DashId <= 100).ToList();
         //var newRows = data.Where(d => d.DashId > 50 && d.DashId <= 100 && !string.IsNullOrEmpty(d.DashPath)).ToList();
 
+        var errorMessages = new List<string>();
 
         if (existingRows.Any())
         {
-            _dataAccess.UpdateDashboardData(existingRows);
+            errorMessages.AddRange(_dataAccess.UpdateDashboardData(existingRows));
+            //_dataAccess.UpdateDashboardData(existingRows);
         }
 
         if (newRows.Any())
         {
-            _dataAccess.InsertDashboardData(newRows);
-            
+            //_dataAccess.InsertDashboardData(newRows);
+            errorMessages.AddRange(_dataAccess.InsertDashboardData(newRows));
+        }
+
+        if (errorMessages.Any())
+        {
+            return Conflict(new { message = "Data not updated.", errors = errorMessages });
         }
 
         return Ok("Data updated successfully.");
