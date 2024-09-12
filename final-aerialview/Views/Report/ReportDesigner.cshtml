@@ -12,6 +12,26 @@
 <script src="~/js/reporting.designer.part.bundle.js"></script>
 
 
+<script type="text/javascript">
+    //setting the preview zoom to "page width"
+    function onCustomizeElements(s, e) {
+        var previewModel = s.GetPreviewModel();
+
+        if (previewModel && previewModel.reportPreview) {
+            var reportPreview = previewModel.reportPreview;
+
+            if (typeof reportPreview.zoom === 'number') {
+
+                reportPreview.zoom = -1;
+                // console.log("Zoom level set to Page Width");
+            } else {
+                throw Error("reportPreview model not available");
+            }
+        }
+    }
+</script>
+
+
 <div class="d-flex align-items-center justify-content-between pt-1 px-4  border-bottom" style="background-color: #E6E6E6;">
     <a title="Back" href="javascript:history.back()" class="text-decoration-none text-dark"><i class="ri-arrow-left-s-line"></i></a>
     <h6 class="fw-medium textShadow-hover text-dark mb-0">@selectedReport</h6>
@@ -21,6 +41,7 @@
 
     @{
         var designerRender = Html.DevExpress().ReportDesigner("reportDesigner")
+        .ClientSideEvents(configure => { configure.BeforeRender("onCustomizeElements"); })
         .Height("96.6vh");
 
         if (!string.IsNullOrEmpty(reportName))
