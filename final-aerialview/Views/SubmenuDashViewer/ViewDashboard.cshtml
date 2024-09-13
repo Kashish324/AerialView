@@ -23,7 +23,7 @@
     <link rel="icon" href="@Url.Content("~/33477137_AerialView-Logo-5.ico")">
 </head>
 <body>
- 
+
     @if (Model != null && Model.DashPath != null)
     {
         <div class="d-flex align-items-start justify-content-between pt-1 px-4 text-primary-emphasis" style="background-color: #E6E6E6;">
@@ -31,7 +31,7 @@
             <h6 class="fw-bold textShadow-hover">@Model.DashName</h6>
             <a href="/Home/Index" class="text-decoration-none text-primary-emphasis" title="Home"><i class="ri-home-2-line"></i></a>
         </div>
-        
+
         string dashPath = Model.DashPath.Substring(0, Model.DashPath.LastIndexOf("."));
 
         <div style="position: absolute; left:0;top:26px;right:0;bottom:0;" class="border-top">
@@ -41,6 +41,7 @@
                 .Height("100%")
                 .WorkingMode(WorkingMode.Viewer)
                 .InitialDashboardId(dashPath)
+                .OnBeforeRender("onBeforeRender")
                 )
         </div>
 
@@ -48,6 +49,21 @@
 
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        var dashboardControl; // Declare globally
 
+        function onBeforeRender() {
+            // Initialize or capture the dashboard control
+            dashboardControl = clientDashboardControl;
+
+            // Set an interval to refresh the dashboard every 5 seconds (for example)
+            setInterval(() => {
+                if (dashboardControl) {
+                    dashboardControl.reloadData();
+                    console.log("Dashboard refreshed");
+                }
+            }, 5000); // You can adjust the refresh interval as needed
+        }
+    </script>
 </body>
 </html>

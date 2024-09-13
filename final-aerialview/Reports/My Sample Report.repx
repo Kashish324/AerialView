@@ -131,9 +131,9 @@
         </Item4>
       </Controls>
     </Item5>
-    <Item6 Ref="66" ControlType="PageFooterBand" Name="PageFooter1" HeightF="64.583336">
+    <Item6 Ref="66" ControlType="PageFooterBand" Name="PageFooter1" HeightF="23.958336">
       <Controls>
-        <Item1 Ref="67" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="Page {0} of {1}" TextAlignment="TopRight" SizeF="325,23" LocationFloat="329.16666,39.666664" StyleName="PageInfo" />
+        <Item1 Ref="67" ControlType="XRPageInfo" Name="pageInfo2" TextFormatString="Page {0} of {1}" TextAlignment="TopRight" SizeF="325,23" LocationFloat="329.16666,0" StyleName="PageInfo" />
       </Controls>
     </Item6>
     <Item7 Ref="68" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="19.879536" />

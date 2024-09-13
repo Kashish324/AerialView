@@ -224,25 +224,34 @@ namespace final_aerialview.Data
         }
 
         //update the existing rows of dashboard config table
+
         public List<string> UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
         {
-
             var errorMessages = new List<string>();
 
             using (var connection = CreateConnection())
             {
                 connection.Open();
-                var checkExistsSql = "Select count(*) from DashboardMaster WHERE DashName = @DashName";
+
+                var checkExistsSql = "SELECT COUNT(*) FROM DashboardMaster WHERE DashName = @DashName AND DashId <> @DashId";
                 var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
 
                 foreach (var data in updatedData)
                 {
-                    var exists = connection.ExecuteScalar<int>(checkExistsSql, new { data.DashName });
+                    // Check if DashName has changed
+                    var currentDashNameSql = "SELECT DashName FROM DashboardMaster WHERE DashId = @DashId";
+                    var currentDashName = connection.ExecuteScalar<string>(currentDashNameSql, new { data.DashId });
 
-                    if (exists > 0)
+                    if (currentDashName != data.DashName)
                     {
-                        errorMessages.Add($"DashName '{data.DashName}' already exists.");
-                        continue;
+                        // If DashName has changed, check for duplicates
+                        var exists = connection.ExecuteScalar<int>(checkExistsSql, new { data.DashName, data.DashId });
+
+                        if (exists > 0)
+                        {
+                            errorMessages.Add($"DashName '{data.DashName}' already exists.");
+                            continue;
+                        }
                     }
 
                     // Convert DashStatus and DashDefault to bool explicitly
@@ -257,39 +266,102 @@ namespace final_aerialview.Data
 
                     connection.Execute(sql, parameters);
 
-
+                    // Updating related tables like Menu_Child_New and UserControlMaster if needed
                     foreach (var item in updatedData)
                     {
                         if (item.DashDefault == true)
                         {
                             var test = updatedData.Select(s => s.DashId).FirstOrDefault();
-
-                            var sql1 = $"update DashboardMaster set DashDefault = 'false' where DashId <> {test}";
+                            var sql1 = $"UPDATE DashboardMaster SET DashDefault = 'false' WHERE DashId <> {test}";
                             connection.Execute(sql1);
                         }
                     }
 
-
                     string c2 = $"UPDATE Menu_Child_New SET SubMenuName = @SubMenuName WHERE MainMenuCode = 5 AND DashId = @DashId";
-
-
-                    string c3 = $" UPDATE UserControlMaster SET ControlName = @SubMenuName, Status = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END  WHERE refId = @DashId";
+                    string c3 = $"  UPDATE UserControlMaster SET ControlName = @SubMenuName, Status = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END WHERE refId = @DashId";
 
                     var c2Parameters = new
                     {
                         SubMenuName = data.DashName,
-                        DashId = data.DashId, 
+                        DashId = data.DashId,
                         DashStatus = data.DashStatus
                     };
 
                     var appendedString = c2 + c3;
-
                     connection.Execute(appendedString, c2Parameters);
                 }
-
             }
             return errorMessages;
         }
+
+
+
+        //public List<string> UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
+        //{
+
+        //    var errorMessages = new List<string>();
+
+        //    using (var connection = CreateConnection())
+        //    {
+        //        connection.Open();
+        //        var checkExistsSql = "Select count(*) from DashboardMaster WHERE DashName = @DashName";
+        //        var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
+
+        //        foreach (var data in updatedData)
+        //        {
+        //            var exists = connection.ExecuteScalar<int>(checkExistsSql, new { data.DashName });
+
+        //            if (exists > 0)
+        //            {
+        //                errorMessages.Add($"DashName '{data.DashName}' already exists.");
+        //                continue;
+        //            }
+
+        //            // Convert DashStatus and DashDefault to bool explicitly
+        //            var parameters = new
+        //            {
+        //                data.DashId,
+        //                data.DashName,
+        //                data.DashPath,
+        //                DashStatus = data.DashStatus ? true : false,
+        //                DashDefault = data.DashDefault ? true : false,
+        //            };
+
+        //            connection.Execute(sql, parameters);
+
+
+        //            foreach (var item in updatedData)
+        //            {
+        //                if (item.DashDefault == true)
+        //                {
+        //                    var test = updatedData.Select(s => s.DashId).FirstOrDefault();
+
+        //                    var sql1 = $"update DashboardMaster set DashDefault = 'false' where DashId <> {test}";
+        //                    connection.Execute(sql1);
+        //                }
+        //            }
+
+
+        //            string c2 = $"UPDATE Menu_Child_New SET SubMenuName = @SubMenuName WHERE MainMenuCode = 5 AND DashId = @DashId";
+
+
+        //            string c3 = $" UPDATE UserControlMaster SET ControlName = @SubMenuName, Status = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END  WHERE refId = @DashId";
+
+        //            var c2Parameters = new
+        //            {
+        //                SubMenuName = data.DashName,
+        //                DashId = data.DashId, 
+        //                DashStatus = data.DashStatus
+        //            };
+
+        //            var appendedString = c2 + c3;
+
+        //            connection.Execute(appendedString, c2Parameters);
+        //        }
+
+        //    }
+        //    return errorMessages;
+        //}
 
         //add new rows in dashboard config table
         public List<string> InsertDashboardData(IEnumerable<DashboardDataModel> newData)

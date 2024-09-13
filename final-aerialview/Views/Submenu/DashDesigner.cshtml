@@ -63,7 +63,6 @@
                             .WorkingMode(WorkingMode.Designer)
                             .InitialDashboardId(FileNameOnly)
                             .OnBeforeRender("onBeforeRender")
-
                             )
                     </div>
                 }
@@ -82,21 +81,31 @@
     </script> *@
 
     <script>
-        // function switchMode() {
-        //     var button = document.getElementById("switchButton");
-        //     if (clientDashboardControl.isDesignMode()) {
-        //         clientDashboardControl.switchToViewer();
-        //         button.value = "Designer";
-        //     } else {
-        //         clientDashboardControl.switchToDesigner();
-        //         button.value = "Viewer";
-        //     }
-        // }
+        var dashboardControl; // Declare globally
 
         function onBeforeRender(dashboardControl) {
+
+            //added the switch button in dashboard left panel
             dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
             // dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
+
+
+            //to refresh the data 
+
+            // Initialize or capture the dashboard control
+            // dashboardControl = clientDashboardControl;
+
+            // // Set an interval to refresh the dashboard every 5 seconds (for example)
+            // setInterval(() => {
+            //     if (dashboardControl) {
+            //         dashboardControl.reloadData();
+            //         console.log("Dashboard refreshed");
+            //     }
+            // }, 5000); // You can adjust the refresh interval as needed
         }
+
+
+       
     </script>
 </body>
 </html>
