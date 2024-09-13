@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Test 2" />
+  <DataSources>
+    <SqlDataSource Name="Test_Procedure" ComponentName="sqlDataSource1">
+      <Connection Name="Varanasi_Banas" FromAppConfig="true" />
+      <Query Type="StoredProcQuery" Name="Test_Procedure">
+        <ProcName>Test_Procedure</ProcName>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" DataSource="sqlDataSource1" DataMember="Test_Procedure">
+      <DataItems>
+        <Dimension DataMember="category" DefaultId="DataItem0" />
+        <Measure DataMember="ID" DefaultId="DataItem1" />
+        <Dimension DataMember="product" DefaultId="DataItem2" />
+        <Dimension DataMember="value" DefaultId="DataItem3" />
+      </DataItems>
+      <GridColumns>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem1" />
+        </GridMeasureColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem2" />
+        </GridDimensionColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem3" />
+        </GridDimensionColumn>
+      </GridColumns>
+      <GridOptions />
+      <ColumnFilterOptions />
+    </Grid>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="gridDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

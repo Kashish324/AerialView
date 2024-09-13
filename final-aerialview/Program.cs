@@ -86,7 +86,15 @@ builder.Services.ConfigureReportingServices(configurator =>
         designerConfigurator.RegisterDataSourceWizardConfigFileConnectionStringsProvider();
         designerConfigurator.EnableCustomSql();
 
+        // Access DataSourceWizardSettings and configure UseMergedConnectionTypePage
+        //designerConfigurator.ConfigureDesigner(designer =>
+        //{
+        //    var wizardSettings = designer.DataSourceWizardSettings;
+        //    wizardSettings.UseMergedConnectionTypePage = true; // Enable merged connection type page
+        //});
+
     });
+
     configurator.ConfigureWebDocumentViewer(viewerConfigurator =>
     {
         // Use cache for document generation and export.

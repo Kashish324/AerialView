@@ -54,6 +54,7 @@
                             .Height("100%")
                             .WorkingMode(WorkingMode.Viewer)
                             .InitialDashboardId(FileNameOnly)
+                            .OnBeforeRender("onBeforeRender")
                             )
                     </div>
                 }
@@ -62,12 +63,23 @@
     }
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    @* <script>
-    function onBeforeRender(sender) {
-    var toolboxExtension = dashboardControl.findExtension("toolbox");
-    toolboxExtension.removeMenuItem("create-dashboard");
-    }
-    </script> *@
+    <script>
+        var dashboardControl; // Declare globally
+
+        function onBeforeRender() {
+            // Initialize or capture the dashboard control
+            dashboardControl = clientDashboardControl;
+
+
+            setInterval(() => {
+                if (dashboardControl) {
+                    dashboardControl.reloadData();
+                    // dashboardControl.refresh();
+                    console.log("Dashboard refreshed");
+                }
+            }, 5000);
+        }
+    </script>
    
 </body>
 </html>

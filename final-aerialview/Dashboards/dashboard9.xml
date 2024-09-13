@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="test" />
+  <DataSources>
+    <SqlDataSource Name="product_list" ComponentName="sqlDataSource1">
+      <Connection Name="Varanasi_Banas" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="product_list">
+        <Tables>
+          <Table Name="product_list" />
+        </Tables>
+        <Columns>
+          <Column Table="product_list" Name="ID" />
+          <Column Table="product_list" Name="category" />
+          <Column Table="product_list" Name="product" />
+          <Column Table="product_list" Name="value" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" DataSource="sqlDataSource1" DataMember="product_list">
+      <DataItems>
+        <Dimension DataMember="category" DefaultId="DataItem0" />
+        <Measure DataMember="ID" DefaultId="DataItem1" />
+        <Dimension DataMember="product" DefaultId="DataItem2" />
+        <Dimension DataMember="value" DefaultId="DataItem3" />
+      </DataItems>
+      <GridColumns>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem0" />
+        </GridDimensionColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem1" />
+        </GridMeasureColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem2" />
+        </GridDimensionColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem3" />
+        </GridDimensionColumn>
+      </GridColumns>
+      <GridOptions />
+      <ColumnFilterOptions />
+    </Grid>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="gridDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

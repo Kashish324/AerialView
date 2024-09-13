@@ -56,13 +56,14 @@
             // Initialize or capture the dashboard control
             dashboardControl = clientDashboardControl;
 
-            // Set an interval to refresh the dashboard every 5 seconds (for example)
+            
             setInterval(() => {
                 if (dashboardControl) {
                     dashboardControl.reloadData();
+                    // dashboardControl.refresh();
                     console.log("Dashboard refreshed");
                 }
-            }, 5000); // You can adjust the refresh interval as needed
+            }, 5000); 
         }
     </script>
 </body>

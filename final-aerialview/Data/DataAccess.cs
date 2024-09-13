@@ -1,5 +1,4 @@
 ﻿using Dapper;
-using DevExpress.ReportServer.ServiceModel.DataContracts;
 using final_aerialview.Models;
 using System.Data;
 using System.Data.SqlClient;
@@ -86,7 +85,6 @@ namespace final_aerialview.Data
             return ExecuteQuery<LocalReportModel>(query);
         }
 
-
         //to update the saved report path in database
         public void UpdateReportPath(string url)
         {
@@ -111,7 +109,6 @@ namespace final_aerialview.Data
         //        return null;
         //    }
         //}
-
         public ReportDataModel? GetReportFromDatabase()
         {
             try
@@ -224,7 +221,6 @@ namespace final_aerialview.Data
         }
 
         //update the existing rows of dashboard config table
-
         public List<string> UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
         {
             var errorMessages = new List<string>();
@@ -294,76 +290,6 @@ namespace final_aerialview.Data
             return errorMessages;
         }
 
-
-
-        //public List<string> UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
-        //{
-
-        //    var errorMessages = new List<string>();
-
-        //    using (var connection = CreateConnection())
-        //    {
-        //        connection.Open();
-        //        var checkExistsSql = "Select count(*) from DashboardMaster WHERE DashName = @DashName";
-        //        var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
-
-        //        foreach (var data in updatedData)
-        //        {
-        //            var exists = connection.ExecuteScalar<int>(checkExistsSql, new { data.DashName });
-
-        //            if (exists > 0)
-        //            {
-        //                errorMessages.Add($"DashName '{data.DashName}' already exists.");
-        //                continue;
-        //            }
-
-        //            // Convert DashStatus and DashDefault to bool explicitly
-        //            var parameters = new
-        //            {
-        //                data.DashId,
-        //                data.DashName,
-        //                data.DashPath,
-        //                DashStatus = data.DashStatus ? true : false,
-        //                DashDefault = data.DashDefault ? true : false,
-        //            };
-
-        //            connection.Execute(sql, parameters);
-
-
-        //            foreach (var item in updatedData)
-        //            {
-        //                if (item.DashDefault == true)
-        //                {
-        //                    var test = updatedData.Select(s => s.DashId).FirstOrDefault();
-
-        //                    var sql1 = $"update DashboardMaster set DashDefault = 'false' where DashId <> {test}";
-        //                    connection.Execute(sql1);
-        //                }
-        //            }
-
-
-        //            string c2 = $"UPDATE Menu_Child_New SET SubMenuName = @SubMenuName WHERE MainMenuCode = 5 AND DashId = @DashId";
-
-
-        //            string c3 = $" UPDATE UserControlMaster SET ControlName = @SubMenuName, Status = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END  WHERE refId = @DashId";
-
-        //            var c2Parameters = new
-        //            {
-        //                SubMenuName = data.DashName,
-        //                DashId = data.DashId, 
-        //                DashStatus = data.DashStatus
-        //            };
-
-        //            var appendedString = c2 + c3;
-
-        //            connection.Execute(appendedString, c2Parameters);
-        //        }
-
-        //    }
-        //    return errorMessages;
-        //}
-
-        //add new rows in dashboard config table
         public List<string> InsertDashboardData(IEnumerable<DashboardDataModel> newData)
         {
 
@@ -459,16 +385,11 @@ namespace final_aerialview.Data
             }
         }
 
-        public IEnumerable<SettingProfileModel> GetSettingProfileData()
-        {
-            string query = "SELECT * FROM EmailSettings";
-            return ExecuteQuery<SettingProfileModel>(query);
-        }
 
-        public IEnumerable<SettingContactModel> GetSettingContactData()
+        public IEnumerable<ReportConnectionModel> GetReportConnectionData()
         {
-            string query = "SELECT * FROM ContactMaster";
-            return ExecuteQuery<SettingContactModel>(query);
+            string query = "SELECT * FROM Report_Connection";
+            return ExecuteQuery<ReportConnectionModel>(query);
         }
 
     }
