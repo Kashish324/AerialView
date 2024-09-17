@@ -5,6 +5,7 @@
     ViewData["Title"] = "Dashboard Configuration";
 }
 
+
 <div class="table-responsive pt-4">
     <table id="dashConfigTable" class="table table-hover table-bordered border-light shadow-sm table-sm">
         <thead>
@@ -138,9 +139,21 @@
     </div>
 </div>
 
+@* <input type="text" id="myInput" placeholder="Type something..." /> *@
+
+
 <script src="https://cdn.lordicon.com/lordicon.js"></script>
 
 <script>
+
+    // const inputField = document.getElementById('myInput');
+
+    
+    // inputField.addEventListener('input', (event) => {
+    //     console.log(event.target.value);
+    // });
+   
+
     var addBtn = document.getElementById('addBtn');
     var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
 
@@ -225,17 +238,13 @@
                 inputField.value = dashNames[dashId];
             }
         } else {
+            // Update the input field value
+            inputField.value = updatedValue;
+            markRowAsUpdated(dashId);
             // Hide the error message if no duplicate
             if (errorMessage) {
                 errorMessage.style.display = 'none';
             }
-        }
-
-        // Update the input field value
-        if (inputField) {
-            inputField.value = updatedValue;
-        } else {
-            console.error('Input field not found for:', fieldName);
         }
     }
 
@@ -250,43 +259,43 @@
         newRow.id = 'dashRow-' + uniqueRowId;
 
         newRow.innerHTML = `
-                                <td class="d-flex align-items-center gap-1">
-                                <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" onchange="updateField('${uniqueRowId}', 'DashName', this.value)">
-                                        <span id="error-message-${uniqueRowId}" class=" text-danger fw-bold" style="display:none; cursor:pointer;">!</span>
-                            </td>
-                            <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
-                            <td class="text-center align-middle p-0">
-                                <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
-                            </td>
-                            <td class="text-center align-middle p-0">
-                                <div class="form-check">
-                                        <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
-                                </div>
-                            </td>
-                                    <td class="text-center align-middle p-0">
-                                            <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
-                                            <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
-                                            <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
-                                                            trigger="morph"
-                                   state="morph-folder"
+                                    <td class="d-flex align-items-center gap-1">
+                                    <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" onchange="updateField('${uniqueRowId}', 'DashName', this.value)">
+                                            <span id="error-message-${uniqueRowId}" class=" text-danger fw-bold" style="display:none; cursor:pointer;">!</span>
+                                </td>
+                                <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
+                                <td class="text-center align-middle p-0">
+                                    <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
+                                </td>
+                                <td class="text-center align-middle p-0">
+                                    <div class="form-check">
+                                            <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
+                                    </div>
+                                </td>
+                                        <td class="text-center align-middle p-0">
+                                                <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
+                                                <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
+                                                <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
+                                                                trigger="morph"
+                                       state="morph-folder"
 
-                                                       colors="primary:#FFC107"
-                                                       style="width:16px;height:16px">
-                                            </lord-icon>
-                                        </a>
-                                    </td>
-                                        <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-0 bg-white" style="cursor: pointer;">
-                        <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('${uniqueRowId}')">
-                        <lord-icon src="https://cdn.lordicon.com/skkahier.json"
-                                   trigger="hover"
-                                   colors="primary:#ee6d66"
-                                   style="width:16px;height:16px">
-                        </lord-icon>
-                    </button>
+                                                           colors="primary:#FFC107"
+                                                           style="width:16px;height:16px">
+                                                </lord-icon>
+                                            </a>
+                                        </td>
+                                            <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-0 bg-white" style="cursor: pointer;">
+                            <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('${uniqueRowId}')">
+                            <lord-icon src="https://cdn.lordicon.com/skkahier.json"
+                                       trigger="hover"
+                                       colors="primary:#ee6d66"
+                                       style="width:16px;height:16px">
+                            </lord-icon>
+                        </button>
 
-                </td>
+                    </td>
 
-                        `;
+                            `;
         markRowAsUpdated(uniqueRowId); // Mark the new row as updated
     }
 

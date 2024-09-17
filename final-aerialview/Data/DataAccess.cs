@@ -386,10 +386,34 @@ namespace final_aerialview.Data
         }
 
 
+        //public IEnumerable<ReportConnectionModel> GetReportConnectionData()
+        //{
+        //    string query = "SELECT * FROM Report_Connection";
+        //    return ExecuteQuery<ReportConnectionModel>(query);
+        //}
+
+        // to get the connection string for report/dashboard designer and addind xpoProvider 
         public IEnumerable<ReportConnectionModel> GetReportConnectionData()
         {
             string query = "SELECT * FROM Report_Connection";
-            return ExecuteQuery<ReportConnectionModel>(query);
+            var connections = ExecuteQuery<ReportConnectionModel>(query);
+
+            foreach(var connection in connections)
+            {
+                //checking the connection type and adding the xpo provider as needed
+                if(connection.ConType == "Sql Server")
+                {
+                    connection.stringName = $"XpoProvider=MSSqlServer;{connection.stringName};TrustServerCertificate=true";
+                }
+                else if (connection.ConType == "Windows")
+                {
+                    // Use Integrated Security for Windows authentication
+                    connection.stringName = $"XpoProvider=MSSqlServer;{connection.stringName}Persist Security Info=true;TrustServerCertificate=true";
+                }
+                //Add other data types as needed
+            }
+
+            return connections;
         }
 
     }

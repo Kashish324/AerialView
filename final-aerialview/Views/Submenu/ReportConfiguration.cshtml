@@ -17,6 +17,8 @@
 }
 
 
+
+
 <div class="reportConfig-nav mb-1 p-1 d-flex flex-wrap align-items-center justify-content-between h-50" style="top: 31px;">
     <div>
         <span class="badge active rounded-pill bg-dark text-light fw-normal mr-1" onclick="filterReports('All')" style="font-size: 14.5px;"><i class="ri-file-chart-2-line"></i> All</span>
@@ -63,15 +65,18 @@
                         </div>
                     </a>
                 </li>
-
-               
             }
         }
     </ul>
 </div>
 
 
+
 <script>
+
+   
+
+
     function filterReports(type) {
         var reports = document.querySelectorAll('.report-item');
         reports.forEach(function (report) {

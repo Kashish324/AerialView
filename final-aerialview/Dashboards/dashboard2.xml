@@ -112,6 +112,18 @@
       </Query>
       <ConnectionOptions CloseConnection="true" />
     </SqlDataSource>
+    <SqlDataSource Name="T_FLOW_DAY" ComponentName="sqlDataSource2">
+      <Connection Name="Con2" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="T_FLOW_DAY">
+        <Tables>
+          <Table Name="T_FLOW_DAY" />
+        </Tables>
+        <Columns>
+          <AllColumns Table="T_FLOW_DAY" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
   </DataSources>
   <Items>
     <Treemap ComponentName="treemapDashboardItem1" Name="Treemap 1" DataSource="sqlDataSource1" DataMember="T1">

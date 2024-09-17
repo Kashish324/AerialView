@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using DevExpress.DashboardAspNetCore;
 using DevExpress.DashboardWeb;
 using Microsoft.Extensions.FileProviders;
-using Microsoft.AspNetCore.CookiePolicy;
+
 
 
 var builder = WebApplication.CreateBuilder(args);
@@ -15,6 +15,21 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 builder.Services.AddControllersWithViews().AddJsonOptions(options => options.JsonSerializerOptions.PropertyNamingPolicy = null);
 builder.Services.AddRazorPages();
+
+//method to add the connection strings dynamically in appsettings.json
+// Add the necessary services like DataAccess
+builder.Services.AddScoped<DataAccess>();
+
+// Fetch connection data
+var dataAccess = builder.Services.BuildServiceProvider().GetRequiredService<DataAccess>();
+var connections = dataAccess.GetReportConnectionData();
+
+// Add connection strings dynamically to configuration
+foreach (var connection in connections)
+{
+    //configuration is similar to runtime but occur at runtime
+    builder.Configuration[$"ConnectionStrings:{connection.ConName}"] = connection.stringName;
+}
 
 
 // Add authentication and authorization
@@ -26,7 +41,8 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LogoutPath = "/Account/Logout";
     });
 
-builder.Services.AddScoped<DataAccess>();
+//old
+//builder.Services.AddScoped<DataAccess>();
 
 // Add session services
 builder.Services.AddDistributedMemoryCache();
@@ -63,8 +79,12 @@ if (!Directory.Exists(dashboardFolderPath))
 builder.Services.AddScoped<DashboardConfigurator>((IServiceProvider serviceProvider) =>
 {
     DashboardConfigurator configurator = new DashboardConfigurator();
+
+    var connectionStringsProvider = new DashboardConnectionStringsProvider(builder.Configuration);
+
     configurator.SetDashboardStorage(new DashboardFileStorage(dashboardFolderPath));
-    configurator.SetConnectionStringsProvider(new DashboardConnectionStringsProvider(configuration));
+    //configurator.SetConnectionStringsProvider(new DashboardConnectionStringsProvider(configuration));
+    configurator.SetConnectionStringsProvider(connectionStringsProvider);
     DashboardConfigurator.PassCredentials = true;
     return configurator;
 });
@@ -80,20 +100,21 @@ builder.Services.ConfigureReportingServices(configurator =>
     {
         configurator.UseDevelopmentMode();
     }
+
+    //Asynchronous Mode
+    configurator.UseAsyncEngine();
+
     configurator.ConfigureReportDesigner(designerConfigurator =>
     {
         //designerConfigurator.RegisterDataSourceWizardConnectionStringsProvider<MyDataSourceWizardConnectionStringsProvider>();
+        // Register the SQL data source
+        //designerConfigurator.RegisterDataSource(sqlDataSource);
+
         designerConfigurator.RegisterDataSourceWizardConfigFileConnectionStringsProvider();
+
         designerConfigurator.EnableCustomSql();
-
-        // Access DataSourceWizardSettings and configure UseMergedConnectionTypePage
-        //designerConfigurator.ConfigureDesigner(designer =>
-        //{
-        //    var wizardSettings = designer.DataSourceWizardSettings;
-        //    wizardSettings.UseMergedConnectionTypePage = true; // Enable merged connection type page
-        //});
-
     });
+
 
     configurator.ConfigureWebDocumentViewer(viewerConfigurator =>
     {
@@ -108,6 +129,8 @@ builder.Services.AddMvc();
 var app = builder.Build();
 
 app.UseDevExpressControls();
+
+
 System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
 app.MapDashboardRoute("api/dashboard", "DefaultDashboard");
 
@@ -174,3 +197,4 @@ app.MapControllerRoute(
     pattern: "{controller=Account}/{action=Login}/{id?}");
 
 app.Run();
+
