@@ -29,7 +29,7 @@
                 <input type="text" id="DashName-@item.DashId" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="@item.DashName" onchange="updateField('@item.DashId', 'DashName', this.value)">
                 </td> *@
                     <td class="d-flex align-items-center gap-1">
-                        <input type="text" id="DashName-@item.DashId" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="@item.DashName" onchange="updateField('@item.DashId', 'DashName', this.value)">
+                        <input type="text" id="DashName-@item.DashId" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="@item.DashName" oninput="updateField('@item.DashId', 'DashName', this.value)">
                         <span id="error-message-@item.DashId" class=" text-danger fw-bold" style="display:none; cursor:pointer;">!</span>
                     </td>
 
@@ -146,14 +146,6 @@
 
 <script>
 
-    // const inputField = document.getElementById('myInput');
-
-    
-    // inputField.addEventListener('input', (event) => {
-    //     console.log(event.target.value);
-    // });
-   
-
     var addBtn = document.getElementById('addBtn');
     var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
 
@@ -260,7 +252,7 @@
 
         newRow.innerHTML = `
                                     <td class="d-flex align-items-center gap-1">
-                                    <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" onchange="updateField('${uniqueRowId}', 'DashName', this.value)">
+                                        <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" oninput="updateField('${uniqueRowId}', 'DashName', this.value)">
                                             <span id="error-message-${uniqueRowId}" class=" text-danger fw-bold" style="display:none; cursor:pointer;">!</span>
                                 </td>
                                 <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
