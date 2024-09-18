@@ -59,7 +59,6 @@
                                 <div class="fw-bold reportName fs-6 text-wrap">
                                     @reportItem.ReportName
                                 </div>
-                                @* <p class="mb-1 text-muted connName" style="font-size: 12px; margin-bottom: 0;">@reportItem.ConnName</p> *@
                             </div>
                             <span class="badge rounded-pill text-muted" style="font-size: 12px;">@reportItem.ReportType</span>
                         </div>
@@ -99,9 +98,8 @@
 
         reports.forEach(function (report) {
             var reportName = report.querySelector('.reportName').textContent.trim().toLowerCase();
-            var connName = report.querySelector('.connName').textContent.trim().toLowerCase();
 
-            if (reportName.includes(searchValue) || connName.includes(searchValue)) {
+            if (reportName.includes(searchValue)) {
                 report.style.display = '';
             } else {
                 report.style.display = 'none';

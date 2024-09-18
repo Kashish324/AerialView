@@ -21,15 +21,15 @@ builder.Services.AddRazorPages();
 builder.Services.AddScoped<DataAccess>();
 
 // Fetch connection data
-var dataAccess = builder.Services.BuildServiceProvider().GetRequiredService<DataAccess>();
-var connections = dataAccess.GetReportConnectionData();
+//var dataAccess = builder.Services.BuildServiceProvider().GetRequiredService<DataAccess>();
+//var connections = dataAccess.GetReportConnectionData();
 
-// Add connection strings dynamically to configuration
-foreach (var connection in connections)
-{
-    //configuration is similar to runtime but occur at runtime
-    builder.Configuration[$"ConnectionStrings:{connection.ConName}"] = connection.stringName;
-}
+//// Add connection strings dynamically to configuration
+//foreach (var connection in connections)
+//{
+//    //configuration is similar to runtime but occur at runtime
+//    builder.Configuration[$"ConnectionStrings:{connection.ConName}"] = connection.stringName;
+//}
 
 
 // Add authentication and authorization
@@ -133,6 +133,21 @@ app.UseDevExpressControls();
 
 System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
 app.MapDashboardRoute("api/dashboard", "DefaultDashboard");
+
+//adding connection strings from dataaccess
+using (var scope = app.Services.CreateScope())
+{
+    var dataAccess = scope.ServiceProvider.GetRequiredService<DataAccess>();
+    var connections = dataAccess.GetReportConnectionData();
+
+    // Add connection strings dynamically to configuration
+    foreach (var connection in connections)
+    {
+        app.Configuration[$"ConnectionStrings:{connection.ConName}"] = connection.stringName;
+    }
+}
+
+
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
