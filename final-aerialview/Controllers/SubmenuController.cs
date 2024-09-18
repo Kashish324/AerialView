@@ -2,9 +2,7 @@
 using final_aerialview.Controllers;
 using final_aerialview.Data;
 using final_aerialview.Models;
-using final_aerialview.ViewModels;
 using Microsoft.AspNetCore.Mvc;
-using System.IO;
 
 public class SubmenuController(DataAccess dataAccess) : BaseController(dataAccess)
 {
@@ -57,9 +55,8 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
             return BadRequest("No data to update.");
         }
 
-        var existingRows = data.Where(d => d.DashId <= 70).ToList();
-        var newRows = data.Where(d => d.DashId > 70  && d.DashId <= 100).ToList();
-        //var newRows = data.Where(d => d.DashId > 50 && d.DashId <= 100 && !string.IsNullOrEmpty(d.DashPath)).ToList();
+        var existingRows = data.Where(d => d.DashId <= 80).ToList();
+        var newRows = data.Where(d => d.DashId > 80  && d.DashId <= 100).ToList();
 
         var errorMessages = new List<string>();
 

@@ -374,6 +374,9 @@ namespace final_aerialview.Data
                     string query2 = "DELETE FROM Menu_Child_New WHERE DashId = @DashId";
                     connection.Execute(query2, new { DashId = dashId }, transaction);
 
+                    string query3 = "DELETE FROM UserControlMaster WHERE refId = @DashId";
+                    connection.Execute(query3, new { DashId = dashId }, transaction);
+
                     transaction.Commit();
                 }
                 catch (Exception ex)
