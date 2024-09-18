@@ -67,7 +67,9 @@
 /* laptop view */
 @media (min-width: 769px) and (max-width: 1440px) {
     .login-wrapper {
-        width: 57vw;
+/*        width: 57vw;*/
+        width: 66vw;
+        height: 57vh;
     }
 }
 
