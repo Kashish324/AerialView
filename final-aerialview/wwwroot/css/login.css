@@ -1,7 +1,4 @@
 ﻿/*login form*/
-/*.login-font {
-    font-size: 1.8vw;
-}*/
 
 .login-wrapper {
     width: 50vw;
@@ -26,10 +23,10 @@
 }
 
 /* Style for the button when it is disabled */
-.btn-disabled {
-    background-color: #cccccc; /* or any color to indicate disabled state */
-    cursor: not-allowed;
-}
+/*.btn-disabled {
+    background-color: #cccccc;*/ /* or any color to indicate disabled state */
+/*cursor: not-allowed;
+}*/
 
 .carousel-item {
     transition: opacity 1.5s ease-in-out !important;
@@ -54,6 +51,10 @@
     transform: translateY(0);
 }
 
+.bottom-10 {
+    bottom: 17px !important;
+}
+
 @keyframes bounce {
     0%, 100% {
         transform: translateY(0);
@@ -67,15 +68,45 @@
 /* laptop view */
 @media (min-width: 769px) and (max-width: 1440px) {
     .login-wrapper {
-/*        width: 57vw;*/
+        /*        width: 57vw;*/
         width: 66vw;
         height: 57vh;
     }
+
+    .bottom-10 {
+        bottom: 6px !important;
+    }
+
+    .login-form > section {
+        margin-top: 0 !important;
+    }
+
+    /*        .login-form > section > form > .login-break {
+          display: none !important;
+        }*/
+
+    .form-control {
+        font-size: 13px !important;
+    }
 }
+
+/*laptop at 125%*/
+@media only screen and (min-device-width: 900px) and (max-device-width: 1600px) {
+    .login-form > section > form > .login-break {
+        display: none !important;
+    }
+}
+
+
+
 
 @media (min-width: 1920px) and (min-height: 1080px) {
     .login-wrapper {
         width: 50vw;
         height: 44vh;
+    }
+
+    .bottom-10 {
+        bottom: 0 !important;
     }
 }

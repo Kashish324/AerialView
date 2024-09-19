@@ -134,7 +134,7 @@ app.UseDevExpressControls();
 System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
 app.MapDashboardRoute("api/dashboard", "DefaultDashboard");
 
-//adding connection strings from dataaccess
+//adding connection strings to runtime configuration file from dataaccess
 using (var scope = app.Services.CreateScope())
 {
     var dataAccess = scope.ServiceProvider.GetRequiredService<DataAccess>();

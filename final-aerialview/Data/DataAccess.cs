@@ -388,14 +388,7 @@ namespace final_aerialview.Data
             }
         }
 
-
-        //public IEnumerable<ReportConnectionModel> GetReportConnectionData()
-        //{
-        //    string query = "SELECT * FROM Report_Connection";
-        //    return ExecuteQuery<ReportConnectionModel>(query);
-        //}
-
-        // to get the connection string for report/dashboard designer and addind xpoProvider 
+        // to get the connection string for report/dashboard designer and adding xpoProvider 
         public IEnumerable<ReportConnectionModel> GetReportConnectionData()
         {
             string query = "SELECT * FROM Report_Connection";
