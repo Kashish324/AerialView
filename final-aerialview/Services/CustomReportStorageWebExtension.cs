@@ -21,7 +21,6 @@ namespace final_aerialview.Services
             {
                 Directory.CreateDirectory(_reportDirectory);
             }
-
         }
 
         private bool IsWithinReportsFolder(string url, string folder)

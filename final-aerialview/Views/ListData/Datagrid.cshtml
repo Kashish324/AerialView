@@ -9,7 +9,7 @@
 }
 
 
-<div id="dataTable" class="position-relative shadow rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName">
+<div id="dataTable" class="position-relative shadow rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName" data-conn-string="@Model.ConnectionString">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
         <div id="loadingSpinnerContainer" class="h-100 w-100 d-flex align-items-center justify-content-center">
@@ -43,6 +43,11 @@
                 .Type(StateStoringType.LocalStorage)
                 .StorageKey("storage")
                 )
+                .Editing(editing =>
+                {
+                    editing.Mode(GridEditMode.Batch);
+                    editing.AllowUpdating(true);
+                })
                 .ColumnAutoWidth(true)
                 .AllowColumnReordering(true)
                 .AllowColumnResizing(true)
@@ -59,6 +64,40 @@
                 )
                 .GroupPanel(g => g.Visible(true))
                 .Grouping(g => g.AutoExpandAll(false))
+                @* .Columns(c =>
+        {
+        if (Model.TableData != null && Model.TableData.Any() && Model.ConditionalTableData != null)
+        {
+        var firstItem = Model.TableData.FirstOrDefault() as IDictionary<string, object>;
+
+        if (firstItem != null)
+        {
+        foreach (var i in Model.ConditionalTableData)
+        {
+        foreach (var property in firstItem.Keys)
+        {
+        if (property == i.ColumnName)
+        {
+
+        if (property == "DateAndTime")
+        {
+        c.Add().DataField(property).Caption(i.DisplayName).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss")
+        .CssClass("datagridCol")
+        .AllowHiding(false);
+        }
+        else
+        {
+        c.Add().DataField(property).Caption(i.DisplayName)
+        .CssClass("datagridCol");
+        }
+        }
+        }
+        }
+
+        }
+        }
+        }) *@
+
                 .Columns(c =>
                 {
                     if (Model.TableData != null && Model.TableData.Any() && Model.ConditionalTableData != null)
@@ -67,30 +106,43 @@
 
                         if (firstItem != null)
                         {
+                            @* var str = ""; *@
                             foreach (var i in Model.ConditionalTableData)
                             {
                                 foreach (var property in firstItem.Keys)
                                 {
                                     if (property == i.ColumnName)
                                     {
-                                        if (property == "DateAndTime")
+                                        var column = c.Add().DataField(property).Caption(i.DisplayName)
+                                        .CssClass("datagridCol");
+                                        // Set the editing ability based on the EditableColumn property
+                                        if (i.EditableColumn)
                                         {
-                                            c.Add().DataField(property).Caption(i.DisplayName).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss")
-                                            .CssClass("datagridCol")
-                                            .AllowHiding(false);
+                                            column.AllowEditing(true);
                                         }
                                         else
                                         {
-                                            c.Add().DataField(property).Caption(i.DisplayName)
-                                            .CssClass("datagridCol");
+                                            column.AllowEditing(false);
+                                        }
+
+                                        // Specific handling for DateAndTime
+                                        if (property == "DateAndTime")
+                                        {
+                                            column.DataType(GridColumnDataType.DateTime)
+                                            .Format("dd-MM-yyyy HH:mm:ss")
+                                            .AllowEditing(false)
+                                            .AllowHiding(false);
                                         }
                                     }
                                 }
+
                             }
 
                         }
                     }
                 })
+
+
                 .ShowColumnHeaders(true)
                 .Pager(pager =>
                 {
@@ -107,6 +159,7 @@
                     paging.Enabled(true);
                     paging.PageSize(10);
                 })
+                .OnSaving("onSaving")
                 )
         </div>
 
@@ -138,6 +191,135 @@
 
 
 <script>
+   
+    function formatDateToSQL(date) {
+        const yyyy = date.getFullYear();
+        const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based
+        const dd = String(date.getDate()).padStart(2, '0');
+        const hh = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+        const ss = String(date.getSeconds()).padStart(2, '0');
+
+        // Return in 'YYYY-MM-DD HH:mm:ss' format
+        return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
+    }
+
+    function onSaving(e) {
+        var changes = e.changes;
+
+        // Fetch table name and connection string from the data attributes
+        var tableName = $('#dataTable').data('table-name');
+        var connString = $('#dataTable').data('conn-string');
+
+        if (changes.length > 0) {
+            var updatedData = changes.map(change => {
+                const convertedData = { ...change.data };
+
+                // Convert date fields in change.data
+                for (const key in convertedData) {
+                    if (convertedData[key] instanceof Date) {
+                        convertedData[key] = formatDateToSQL(convertedData[key]);
+                    }
+                }
+
+                // Explicitly convert DateAndTime if it is a Date object
+                if (convertedData.DateAndTime instanceof Date) {
+                    convertedData.DateAndTime = formatDateToSQL(convertedData.DateAndTime);
+                }
+
+                return {
+                    ...change.key,
+                    ...convertedData
+                };
+            });
+
+            console.log(updatedData)
+
+            $.ajax({
+                url: '@Url.Action("UpdateDataGrid", "ListData")',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify({
+                    tableName: tableName,
+                    changes: updatedData,
+                    connString: connString
+                }),
+                success: function (response) {
+                    if (response.success) {
+                        DevExpress.ui.notify('Changes saved successfully', 'success', 2000);
+                    } else {
+                        DevExpress.ui.notify('Error saving changes', 'error', 2000);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error('Error updating data:', xhr.responseText || error);
+                    DevExpress.ui.notify('Error updating data to the backend', 'error', 2000);
+                }
+            });
+        }
+    }
+
+
+
+
+
+    // function onSaving(e) {
+    //     var changes = e.changes;
+
+    //     if (changes.length > 0) {
+    //         // var updatedData = changes.map(change => {
+    //         //     return {
+    //         //         // type: change.type,
+    //         //         // key: change.key,
+    //         //         // data: change.data
+    //         //         ...change.key,
+    //         //         ...change.data,
+    //         //         key: change.key.DateAndTime
+
+    //         //     }
+    //         // });
+
+    //         var updatedData = changes.map(change => {
+    //             return {
+    //                 ...change.key,
+    //                 ...change.data,
+    //                 // key: change.key.DateAndTime ? new Date(change.key.DateAndTime).toISOString() : null // Convert to ISO string
+    //                     key: change.key.DateAndTime ? new Date(change.key.DateAndTime).toISOString() : null // Convert to ISO string
+    //             }
+    //         });
+
+
+    //         var tableName = $('#dataTable').data('table-name');
+    //         var connString = $('#dataTable').data('conn-string');
+
+    //         console.log(updatedData)
+
+
+    //         $.ajax({
+    //             url: '@Url.Action("UpdateDataGrid", "ListData")',
+    //             type: 'POST',
+    //             contentType: 'application/json',
+    //             data: JSON.stringify({
+    //                 tableName: tableName,
+    //                 changes: updatedData,
+    //                 connString: connString
+    //             }),
+
+    //             success: function (response) {
+    //                 if (response.success) {
+    //                     DevExpress.ui.notify('Changes saved successfully', 'success', 2000);
+    //                 } else {
+    //                     DevExpress.ui.notify('Error saving changes', 'error', 2000);
+    //                 }
+    //             },
+
+    //             error: function () {
+    //                 DevExpress.ui.notify('Error updating data to the backend', 'error', 2000);
+    //             }
+    //         })
+    //     }
+    // }
+
     function showLoadingSpinner() {
         $("#loadingSpinner").removeClass("d-none");
         $("#noDataMessage").addClass("d-none");
@@ -317,9 +499,6 @@
     }
 
 
-
-    
-
     // Export grid data to PDF
     function exportGridToPdf(e) {
         var tableName = document.getElementById('dataTable').getAttribute('data-table-name');
@@ -343,8 +522,6 @@
         } else {
             columnWidth = 19;
         }
-
-
 
 
         var margin = {

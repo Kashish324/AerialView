@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 public class SubmenuController(DataAccess dataAccess) : BaseController(dataAccess)
 {
-    public IActionResult ReportConfiguration(string parentMenu, string submenu)
+    public IActionResult ReportDesigner(string parentMenu, string submenu)
     {
         var reportData = _dataAccess.GetReportData();
         var uniqueReportTypes = reportData
@@ -34,6 +34,7 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         return View(dashboardListData);
     }
 
+    //Dash config actions start
     public IActionResult DashConfig(string parentMenu, string submenu)
     {
 
@@ -91,6 +92,12 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
         return Ok("Dashboard deleted successfully");
     }
+    //Dash config actions end
+
+    //public IActionResult ReportConfiguration(string parentMenu, string submenu)
+    //{
+    //    return View();
+    //}
 
     // Add more actions as needed for each submenu view
     public IActionResult SubMenuConfiguration(string parentMenu, string submenu)
@@ -99,7 +106,9 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         switch (submenu.ToLower())
         {
             case "report configuration":
-                return RedirectToAction(nameof(ReportConfiguration), new { parentMenu, submenu });
+                return RedirectToAction("Index", "ReportConfiguration", new { parentMenu, submenu });
+            case "report designer":
+                return RedirectToAction(nameof(ReportDesigner), new { parentMenu, submenu });
             case "dash designer":
                 return RedirectToAction(nameof(DashDesigner), new { parentMenu, submenu });
             case "dash configuration":

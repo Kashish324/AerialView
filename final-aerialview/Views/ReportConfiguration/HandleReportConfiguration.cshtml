@@ -1,0 +1,67 @@
+﻿@model IEnumerable<final_aerialview.Models.ReportConfigModel>
+
+@{
+    ViewData["Title"] = @ViewBag.Submenu;
+    var sortedConfigTable = ViewData["SortedConfigTable"] as IEnumerable<final_aerialview.Models.ReportConfigModel>;
+}
+
+<div class="reportConfig-nav my-3 p-1 d-flex flex-wrap align-items-center justify-content-between h-50" style="top: 31px;">
+    <h4 class="mb-0 fw-semibold">Available Reports</h4>
+     <form class="d-flex searchBox" role="search" style="font-size: 14px;">
+         <div class="input-group rounded" style="height: 30px;">
+             <span class="input-group-text border border-secondary-subtle bg-white p-1" id="search-icon" style="height: 100%;">
+                 <i class="ri-search-2-line"></i>
+             </span>
+             <input class="form-control border-start-0 border border-secondary-subtle p-1" type="search" placeholder="Search..." aria-label="Search" style="height: 100%; font-size: 14px;">
+         </div>
+     </form>
+ </div>
+
+
+
+<div class="reportConfig d-flex justify-content-center mb-3 mt-2">
+    <ul class="list-group w-100">
+        @if (sortedConfigTable != null)
+        {
+            @foreach (var configTable in sortedConfigTable)
+            {
+                <li class="list-group-item list-group-item-action d-flex justify-content-between align-items-start bg-transparent border-0 p-0 overflow-hidden shadow rounded">
+                    <a href="@Url.Action("SelectedConfigTable", "ReportConfiguration", new { datagridRptid = configTable.RptId, selectedReport = configTable.ReportName })" class="text-decoration-none text-dark report-item w-100 bg-white border rounded px-1" data-type="@configTable.TableName" style="padding: 1px 0;">
+                        <div class=" d-flex flex-wrap justify-content-between align-items-center">
+                            <div class="ms-2 me-auto py-2" style="margin-right: 10px;">
+                                <div class="fw-bold reportName fs-6 text-wrap">
+                                @configTable.ReportName
+                                </div>
+                            </div>
+                            <span class="badge rounded-pill text-muted" style="font-size: 12px; cursor: pointer;" title="RptId">@configTable.RptId</span>
+                        </div>
+                    </a>
+                </li>
+            }
+        }
+    </ul>
+</div>
+
+<script>
+    // Function to filter reports based on search input
+    function filterReportsBySearch() {
+        var searchInput = document.querySelector('.searchBox input[type="search"]');
+        var searchValue = searchInput.value.trim().toLowerCase();
+        var reports = document.querySelectorAll('.report-item');
+        var listItem = document.querySelectorAll('.list-group-item');
+
+        console.log(reports);
+
+        reports.forEach(function (report) {
+            var reportName = report.querySelector('.reportName').textContent.trim().toLowerCase();
+
+            if (reportName.includes(searchValue)) {
+                report.style.display = '';
+            } else {
+                report.style.display = 'none';
+            }
+        });
+    }
+
+    document.querySelector('.searchBox input[type="search"]').addEventListener('input', filterReportsBySearch);
+</script>

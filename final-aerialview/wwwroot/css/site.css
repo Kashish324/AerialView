@@ -61,7 +61,7 @@ body, html {
     width: var(--sidebar-width);
     max-width: fit-content;
     background: #11101d;
-    z-index: 100;
+    /*z-index: 100;*/
     transition: all 0.5s ease;
     overflow: hidden;
 }
@@ -539,6 +539,10 @@ body, html {
     max-height: 76.2vh !important;
 }
 
+#reportConfigContainer {
+    max-height: 90vh !important;
+}
+
 .datagridWrapper::-webkit-scrollbar {
     display: none;
 }
@@ -569,6 +573,14 @@ body, html {
     background-color: #fff;
     padding: 1vh .5vw .3vh;
     border-radius: .3vw .3vw 0px 0px;
+}
+
+.reportConfig-table .dx-datagrid-header-panel {
+    padding: 1vh 1vh 0vh;
+}
+
+.reportConfig-table .dx-datagrid-pager {
+    padding-left: 1vh;
 }
 
 /*filter icon*/

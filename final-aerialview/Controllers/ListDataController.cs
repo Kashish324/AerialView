@@ -3,6 +3,8 @@ using final_aerialview.Data;
 using final_aerialview.Models;
 using final_aerialview.ViewModels;
 using final_aerialview.Utilities;
+using System.Text.Json;
+using Dapper;
 
 namespace final_aerialview.Controllers
 {
@@ -33,7 +35,7 @@ namespace final_aerialview.Controllers
                     var connectionString = selectedChildData.stringName;
 
                     ViewBag.TableName = tableName;
-                   
+
                     int rptId = selectedChildData.RptId;
 
                     var viewModel = new ListDataViewModel
@@ -65,7 +67,7 @@ namespace final_aerialview.Controllers
         {
             var dynamicData = _dataAccess.DynamicConnString(connString, tableName, option, selectedValue, fromDate, toDate);
             var condtionalTable = _dataAccess.ConditionalTable(rptId);
-        
+
 
             IEnumerable<PdfImageModel> pdfImageData = _dataAccess.GetPdfImageData();
 
@@ -84,8 +86,50 @@ namespace final_aerialview.Controllers
                 ConditionalTableData = condtionalTable,
                 RptId = rptId,
                 PdfImageData = pdfImageData,
+                ConnectionString = connString
             };
             return View(viewModel);
+        }
+
+
+        [HttpPost]
+        public IActionResult UpdateDataGrid([FromBody] UpdateDataRequestModel request)
+        {
+            if (request == null || request.TableName == null || request.ConnString == null || request.Changes == null)
+            {
+                return BadRequest(new { success = false, message = "No changes provided" });
+            }
+
+            try
+            {
+                // Convert Changes to a more suitable format if necessary
+                foreach (var change in request.Changes)
+                {
+                    if (change.ContainsKey("DateAndTime") && change["DateAndTime"] is JsonElement dateElement)
+                    {
+                        // Convert JsonElement to string and then parse to DateTime
+                        string dateString = dateElement.GetRawText().Trim('"');
+                        if (DateTime.TryParse(dateString, out DateTime parsedDate))
+                        {
+                            change["DateAndTime"] = parsedDate; // Replace JsonElement with parsed DateTime
+                        }
+                        else
+                        {
+                            // Handle parsing failure if necessary
+                            throw new InvalidOperationException("Invalid DateAndTime format");
+                        }
+                    }
+                }
+
+                // Call your data access layer for the batch update with dynamic parameters
+                _dataAccess.UpdatedDataGrid(request.Changes, request.TableName, request.ConnString);
+
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
         }
 
     }

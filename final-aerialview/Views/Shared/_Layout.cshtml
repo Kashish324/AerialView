@@ -159,11 +159,24 @@
                                                                 </div>
                                                                 <i class="ri-arrow-right-s-line sub-menu-arrow fs-6"></i>
                                                             </div>
+
+
                                                         }
 
                                                         else if (mainItem.MenuName == "Dashboards")
                                                         {
                                                             <a href="@Url.Action("ViewDashboard", "SubmenuDashViewer", new { dashId = subItem.DashId })" class="text-decoration-none subMenuLink">
+                                                                <div class="icon-link text-capitalize">
+                                                                    <div class="listMenu">
+                                                                        <i class="ri-box-3-line"></i>
+                                                                        <span>@subItem.SubMenuName</span>
+                                                                    </div>
+                                                                </div>
+                                                            </a>
+                                                        }
+                                                        else if (subItem.SubMenuName == "Report Configuration")
+                                                        {
+                                                            <a href="@Url.Action("HandleReportConfiguration", "ReportConfiguration", new { parentMenu = mainItem.MenuName, submenu = subItem.SubMenuName })" class="text-decoration-none subMenuLink">
                                                                 <div class="icon-link text-capitalize">
                                                                     <div class="listMenu">
                                                                         <i class="ri-box-3-line"></i>

@@ -1,7 +1,11 @@
 ﻿using Dapper;
+using DevExpress.CodeParser;
 using final_aerialview.Models;
 using System.Data;
 using System.Data.SqlClient;
+using System.Text.Json;
+using System.Threading.Channels;
+using System.Transactions;
 
 namespace final_aerialview.Data
 {
@@ -394,10 +398,10 @@ namespace final_aerialview.Data
             string query = "SELECT * FROM Report_Connection";
             var connections = ExecuteQuery<ReportConnectionModel>(query);
 
-            foreach(var connection in connections)
+            foreach (var connection in connections)
             {
                 //checking the connection type and adding the xpo provider as needed
-                if(connection.ConType == "Sql Server")
+                if (connection.ConType == "Sql Server")
                 {
                     connection.stringName = $"XpoProvider=MSSqlServer;{connection.stringName};TrustServerCertificate=true";
                 }
@@ -410,6 +414,159 @@ namespace final_aerialview.Data
             }
 
             return connections;
+        }
+
+
+
+        //report config whole table
+        public IEnumerable<ReportConfigModel> ReportConfigData()
+        {
+            string query = "SELECT * FROM Report_Config";
+            return ExecuteQuery<ReportConfigModel>(query);
+        }
+
+        //report config selected table according to rptid
+        public IEnumerable<ReportConfigModel> SelectedReportConfigData(int datagridRptid)
+        {
+            string query = $"SELECT * FROM Report_Config where RptId = {datagridRptid}";
+            return ExecuteQuery<ReportConfigModel>(query);
+        }
+
+        public void BatchUpdateReportConfig(IEnumerable<ReportConfigModel> changes)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // Prepare the SQL command for updating
+                        string updateQuery = @"
+                    UPDATE Report_Config
+                    SET 
+                        Required = CASE WHEN @Required = 1 THEN 'True' ELSE 'False' END,
+                        DisplayName = @DisplayName,
+                        EditableColumn = CASE WHEN @EditableColumn = 1 THEN 'True' ELSE 'False' END,
+                        CalculatedField =CASE WHEN @CalculatedField = 1 THEN 'True' ELSE 'False' END 
+                    WHERE Rid = @Rid";
+                        foreach (var change in changes)
+                        {
+                            connection.Execute(updateQuery, change, transaction);
+                        }
+
+                        transaction.Commit();
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw; // rethrow the exception to handle it in the controller
+                    }
+                }
+            }
+        }
+
+
+        public void UpdatedDataGrid(List<Dictionary<string, object>> updates, string tableName, string connString)
+        {
+            using (var connection = new SqlConnection(connString))
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        foreach (var data in updates)
+                        {
+                            var setClause = new List<string>();
+                            string dateAndTime = null;
+
+                            // Build the SET clause and get DateAndTime separately
+                            foreach (var kvp in data)
+                            {
+                                if (kvp.Key == "DateAndTime")
+                                {
+                                    // Ensure proper handling of DateAndTime
+                                    dateAndTime = formatDateToSQL((DateTime)kvp.Value); // Ensure kvp.Value is a DateTime
+                                }
+                                else
+                                {
+                                    // Check if value is a JsonElement
+                                    if (kvp.Value is JsonElement jsonElement)
+                                    {
+                                        if (jsonElement.ValueKind == JsonValueKind.String)
+                                        {
+                                            setClause.Add($"{kvp.Key} = @p{kvp.Key}");
+                                        }
+                                        else if (jsonElement.ValueKind == JsonValueKind.Number)
+                                        {
+                                            setClause.Add($"{kvp.Key} = @p{kvp.Key}");
+                                        }
+                                    }
+                                    else
+                                    {
+                                        setClause.Add($"{kvp.Key} = @p{kvp.Key}");
+                                    }
+                                }
+                            }
+
+                            if (setClause.Count > 0 && dateAndTime != null)
+                            {
+                                // Create the SQL update command
+                                var sqlCommand = $"UPDATE {tableName} SET {string.Join(", ", setClause)} WHERE DateAndTime = @DateAndTime";
+
+                                using (var command = new SqlCommand(sqlCommand, connection, transaction)) // Declare command here
+                                {
+                                    // Add parameters for each column
+                                    foreach (var kvp in data)
+                                    {
+                                        if (kvp.Key != "DateAndTime")
+                                        {
+                                            if (kvp.Value is JsonElement jsonElement)
+                                            {
+                                                if (jsonElement.ValueKind == JsonValueKind.String)
+                                                {
+                                                    command.Parameters.AddWithValue($"@p{kvp.Key}", jsonElement.GetString());
+                                                }
+                                                else if (jsonElement.ValueKind == JsonValueKind.Number)
+                                                {
+                                                    command.Parameters.AddWithValue($"@p{kvp.Key}", jsonElement.GetDouble());
+                                                }
+                                                // Handle other types as necessary
+                                            }
+                                            else
+                                            {
+                                                command.Parameters.AddWithValue($"@p{kvp.Key}", kvp.Value);
+                                            }
+                                        }
+                                    }
+                                    command.Parameters.AddWithValue("@DateAndTime", dateAndTime); // Add formatted date
+
+                                    // Execute the update command
+                                    command.ExecuteNonQuery();
+                                }
+                            }
+                        }
+
+                        // Commit the transaction if all updates are successful
+                        transaction.Commit();
+                    }
+                    catch (Exception ex)
+                    {
+                        // Rollback the transaction if any update fails
+                        transaction.Rollback();
+                        throw; // Optionally rethrow the exception for further handling
+                    }
+                }
+            }
+        }
+
+        // Place this inside the same class as UpdatedDataGrid
+        private string formatDateToSQL(DateTime date)
+        {
+            const string format = "yyyy-MM-dd HH:mm:ss"; // SQL format
+            return date.ToString(format);
         }
 
     }

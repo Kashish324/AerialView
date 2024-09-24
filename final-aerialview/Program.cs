@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using DevExpress.DashboardAspNetCore;
 using DevExpress.DashboardWeb;
 using Microsoft.Extensions.FileProviders;
+using Microsoft.AspNetCore.Builder;
 
 
 
@@ -193,12 +194,16 @@ app.MapControllerRoute(
     defaults: new { controller = "Submenu", action = "HandleSubmenu" }
 );
 
+
+
+
 app.MapControllerRoute(
     name: "DashboardFolder",
     pattern: "DashboardFolder",
     defaults: new { controller = "DashboardFolder", action = "DashInfo" }
 );
 
+//Default Dashboard
 app.MapControllerRoute(
     name: "DefaultDashboard",
     pattern: "DefaultDashboardViewer/{page?}",
