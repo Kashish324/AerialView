@@ -81,69 +81,58 @@
                 data: JSON.stringify(updateData), // Sending the merged data
                 success: function (response) {
                     if (response.success) {
-                        DevExpress.ui.notify('Changes saved successfully', 'success', 2000);
+                        // DevExpress.ui.notify('Changes saved successfully', 'success', 2000);
+                        DevExpress.ui.notify({
+                            message: "Changes saved successfully",
+                            width: 300,
+                            type: "success",
+                            displayTime: 3500,
+                            shading: true,
+                            animation: {
+                                show: { type: "fade", duration: 400, from: 0, to: 1 },
+                                hide: { type: "fade", duration: 40, to: 0 }
+                            }
+                        }, {
+                            position: "bottom center",
+                            direction: "up-push"
+                        });
                     } else {
-                        DevExpress.ui.notify('Error saving changes', 'error', 2000);
+                        // DevExpress.ui.notify('Error saving changes', 'error', 2000);
+                        DevExpress.ui.notify({
+                            message: "Error saving changes",
+                            width: 300,
+                            type: "error",
+                            displayTime: 3500,
+                            shading: true,
+                            animation: {
+                                show: { type: "fade", duration: 400, from: 0, to: 1 },
+                                hide: { type: "fade", duration: 40, to: 0 }
+                            }
+                        }, {
+                            position: "bottom center",
+                            direction: "up-push"
+                        });
                     }
                 },
 
                 error: function () {
-                    DevExpress.ui.notify('Error updating data to the backend', 'error', 2000);
+                    // DevExpress.ui.notify('Error updating data to the backend', 'error', 2000);
+                    DevExpress.ui.notify({
+                        message: "Error updating data to the backend",
+                        width: 300,
+                        type: "error",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
                 }
             });
         }
     }
 </script>
-
-
-
-
-@* 
-<script>
-    function onSaving(e){
-        var changes = e.changes;
-        // console.log(changes)
-
-        if (changes.length > 0) {
-            // Prepare the data to send
-            var updateData = changes.map(change => {
-                // Get the original row data using the Rid (the key)
-                var originalRow = e.component.getDataSource().store().byKey(change.key.Rid);
-
-                // Merge original row data with updated data
-                var mergedData = {
-                    ...originalRow,   // Original data for the row
-                    ...change.data    // Overwrite with updated data
-                };
-
-                return {
-                    Rid: change.key.Rid,  // Include the Rid
-                    ...mergedData         // Send the merged data
-                };
-            });
-            // console.log(updateData[0].key.Rid)
-            // console.log(updateData[0].data)
-            // console.log(updateData[0])
-            console.log(updateData)
-
-            $.ajax({
-                url: '@Url.Action("UpdateReportConfig", "ReportConfiguration")',
-                method: 'POST',
-                contentType: 'application/json',
-                data: JSON.stringify(updateData),
-                success: function (response) {
-                    if (response.success) {
-                        DevExpress.ui.notify('Changes saved successfully', 'success', 2000);
-                    } else {
-                        DevExpress.ui.notify('Error saving changes', 'error', 2000);
-                    }
-                },
-
-                error: function () {
-                    DevExpress.ui.notify('Error updating data to the backend', 'error', 2000);
-                }
-            });
-        }
-    }
-</script>
- *@

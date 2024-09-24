@@ -7,5 +7,4 @@
         public List<Dictionary<string, object>>? Changes { get; set; }
     }
 
-
 }

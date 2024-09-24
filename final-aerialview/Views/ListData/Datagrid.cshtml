@@ -246,14 +246,57 @@
                 }),
                 success: function (response) {
                     if (response.success) {
-                        DevExpress.ui.notify('Changes saved successfully', 'success', 2000);
+                        // DevExpress.ui.notify('Changes saved successfully', 'success', { position: "center", direction: "up-push" }, 2000);
+                        DevExpress.ui.notify({
+                            message: "Changes saved successfully",
+                            width: 300,
+                            type: "success",
+                            displayTime: 3500,
+                            shading: true,
+                            animation: {
+                                show: { type: "fade", duration: 400, from: 0, to: 1 },
+                                hide: { type: "fade", duration: 40, to: 0 }
+                            }
+                        }, {
+                            position: "bottom center",
+                            direction: "up-push"
+                        });
+
                     } else {
-                        DevExpress.ui.notify('Error saving changes', 'error', 2000);
+                        // DevExpress.ui.notify('Error saving changes', 'error', { position: "center", direction: "up-push" }, 2000);
+                        DevExpress.ui.notify({
+                            message: "Error saving changes",
+                            width: 300,
+                            type: "error",
+                            displayTime: 3500,
+                            shading: true,
+                            animation: {
+                                show: { type: "fade", duration: 400, from: 0, to: 1 },
+                                hide: { type: "fade", duration: 40, to: 0 }
+                            }
+                        }, {
+                            position: "bottom center",
+                            direction: "up-push"
+                        });
                     }
                 },
                 error: function (xhr, status, error) {
                     console.error('Error updating data:', xhr.responseText || error);
-                    DevExpress.ui.notify('Error updating data to the backend', 'error', 2000);
+                    // DevExpress.ui.notify('Error updating data to the backend', 'error', { position: "center", direction: "up-push" }, 2000);
+                    DevExpress.ui.notify({
+                        message: "Error updating data to the backend",
+                        width: 300,
+                        type: "error",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
                 }
             });
         }

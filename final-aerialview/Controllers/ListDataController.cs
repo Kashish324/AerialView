@@ -111,7 +111,7 @@ namespace final_aerialview.Controllers
                         string dateString = dateElement.GetRawText().Trim('"');
                         if (DateTime.TryParse(dateString, out DateTime parsedDate))
                         {
-                            change["DateAndTime"] = parsedDate; // Replace JsonElement with parsed DateTime
+                            change["DateAndTime"] = parsedDate; 
                         }
                         else
                         {
