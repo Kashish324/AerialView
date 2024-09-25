@@ -6,6 +6,7 @@ namespace final_aerialview.Controllers
 {
     public class ReportController(DataAccess dataAccess) : BaseController(dataAccess)
     {
+        #region shows the report designer according to the selected item
         [HttpGet]
         public IActionResult ReportDesigner(int datagridRptid, string selectedReport)
         {
@@ -23,7 +24,10 @@ namespace final_aerialview.Controllers
 
             return View();
         }
+        #endregion
 
+
+        #region shows the document viewer according to the selected item
         public IActionResult DocumentViewer(int datagridRptid)
         {
             UpdateModel.DatagridRptid = datagridRptid;
@@ -41,6 +45,6 @@ namespace final_aerialview.Controllers
 
             return View();
         }
-
+        #endregion
     }
 }

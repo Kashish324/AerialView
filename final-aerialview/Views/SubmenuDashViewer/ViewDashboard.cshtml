@@ -54,10 +54,10 @@
     <script>
         var dashboardControl; 
 
+        //refresh dashboard every 5 sec 
         function onBeforeRender() {
             // Initialize or capture the dashboard control
             dashboardControl = clientDashboardControl;
-
             
             setInterval(() => {
                 if (dashboardControl) {

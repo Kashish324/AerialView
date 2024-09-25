@@ -64,39 +64,7 @@
                 )
                 .GroupPanel(g => g.Visible(true))
                 .Grouping(g => g.AutoExpandAll(false))
-                @* .Columns(c =>
-        {
-        if (Model.TableData != null && Model.TableData.Any() && Model.ConditionalTableData != null)
-        {
-        var firstItem = Model.TableData.FirstOrDefault() as IDictionary<string, object>;
-
-        if (firstItem != null)
-        {
-        foreach (var i in Model.ConditionalTableData)
-        {
-        foreach (var property in firstItem.Keys)
-        {
-        if (property == i.ColumnName)
-        {
-
-        if (property == "DateAndTime")
-        {
-        c.Add().DataField(property).Caption(i.DisplayName).DataType(GridColumnDataType.DateTime).Format("dd-MM-yyyy HH:mm:ss")
-        .CssClass("datagridCol")
-        .AllowHiding(false);
-        }
-        else
-        {
-        c.Add().DataField(property).Caption(i.DisplayName)
-        .CssClass("datagridCol");
-        }
-        }
-        }
-        }
-
-        }
-        }
-        }) *@
+                
 
                 .Columns(c =>
                 {
@@ -164,6 +132,8 @@
         </div>
 
         <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-2 border-top">
+            @* <a href=@Url.Action("ManualDataGrid", "ListData")>Edit Grid</a> *@
+
             <div id="exportOrientation" class="ms-2">
                 <div class="input-group input-group-sm">
                     <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
@@ -191,7 +161,8 @@
 
 
 <script>
-   
+
+    //converting date and time data from object to string and returning it in sql format
     function formatDateToSQL(date) {
         const yyyy = date.getFullYear();
         const mm = String(date.getMonth() + 1).padStart(2, '0'); // Months are zero-based

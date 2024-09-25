@@ -1,11 +1,9 @@
 ﻿using Dapper;
-using DevExpress.CodeParser;
 using final_aerialview.Models;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text.Json;
-using System.Threading.Channels;
-using System.Transactions;
+
 
 namespace final_aerialview.Data
 {
@@ -18,12 +16,15 @@ namespace final_aerialview.Data
             _configuration = configuration;
         }
 
+        #region creating connection with the default connection string saved in appsetting.json 
         private IDbConnection CreateConnection()
         {
             string connectionString = _configuration.GetConnectionString("DefaultConnection") ?? "Connection String not found";
             return new SqlConnection(connectionString);
         }
+        #endregion
 
+        #region opening the default connection
         public IEnumerable<T> ExecuteQuery<T>(string query)
         {
             using (var connection = CreateConnection())
@@ -32,8 +33,9 @@ namespace final_aerialview.Data
                 return connection.Query<T>(query);
             }
         }
+        #endregion
 
-        //for login
+        #region for login
         public async Task<UserModel> GetUserByUsernameAsync(string userId)
         {
             using (var connection = CreateConnection())
@@ -42,9 +44,9 @@ namespace final_aerialview.Data
                 return await connection.QuerySingleOrDefaultAsync<UserModel>(query, new { UserId = userId });
             }
         }
+        #endregion
 
-
-        //Segregate the sidebar navigation based on whether a user or an admin is logged in 
+        #region Segregate the sidebar navigation based on whether a user or an admin is logged in 
         public async Task<IEnumerable<UserMasterModel>> GetAccessibleControlsForUserAsync(string role)
         {
             using (var connection = CreateConnection())
@@ -53,43 +55,49 @@ namespace final_aerialview.Data
                 return await connection.QueryAsync<UserMasterModel>(query, new { UserName = role });
             }
         }
+        #endregion
 
-        //main parent data
+        #region main maenu parent data
         public IEnumerable<ListDataModel> GetMenuParentData()
         {
             string query = "SELECT * FROM Menu_Parent";
             return ExecuteQuery<ListDataModel>(query);
         }
+        #endregion
 
-        //sub menu data
+        #region sub menu data
         public IEnumerable<SubMenuModel> GetSubMenuData()
         {
             string query = "SELECT * FROM Menu_Child_New";
             return ExecuteQuery<SubMenuModel>(query);
         }
+        #endregion
 
-        //child menu data
+        #region child menu data
         public IEnumerable<ChildMenuModel> GetChildMenuData()
         {
             string query = "SELECT * FROM ReportDATA_View";
             return ExecuteQuery<ChildMenuModel>(query);
         }
+        #endregion
 
-        //project setting which includes pdf image, client name, project name, etc.
+        #region project setting table which includes pdf image, client name, project name, module key etc.
         public IEnumerable<PdfImageModel> GetPdfImageData()
         {
             string query = "SELECT CONVERT(VARCHAR(MAX), Logo, 2) AS Logo, ClientName, ProjectName, ModuleKey FROM ProjectSettings";
             return ExecuteQuery<PdfImageModel>(query);
         }
+        #endregion
 
-        //my reports table
+        #region my reports table
         public IEnumerable<LocalReportModel> GetReportData()
         {
             string query = "SELECT * FROM MyReports";
             return ExecuteQuery<LocalReportModel>(query);
         }
+        #endregion
 
-        //to update the saved report path in database
+        #region to update the saved report path in database
         public void UpdateReportPath(string url)
         {
             var rptid = UpdateModel.DatagridRptid;
@@ -97,22 +105,9 @@ namespace final_aerialview.Data
 
             CreateConnection().Execute(query, new { reportName = url, DatagridRptid = rptid });
         }
+        #endregion
 
-        //to fetch the saved report from the database
-        //public string? GetReportFromDatabase()
-        //{
-        //    try
-        //    {
-        //        var reportId = UpdateModel.DatagridRptid;
-        //        string query = "SELECT ReportName, WebReportPath FROM MyReports WHERE RptId = @ReportId";
-        //        return CreateConnection().QueryFirstOrDefault<string>(query, new { ReportId = reportId });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        Console.WriteLine($"Error retrieving report from the database: {ex.Message}");
-        //        return null;
-        //    }
-        //}
+        #region to fetch the saved report from the database
         public ReportDataModel? GetReportFromDatabase()
         {
             try
@@ -127,8 +122,19 @@ namespace final_aerialview.Data
                 return null;
             }
         }
+        #endregion
 
-
+        #region creating dynamic connection string for reports table connection string according to user selection 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="connectionString"></param>
+        /// <param name="tableName"></param>
+        /// <param name="option"></param>
+        /// <param name="selectedValue"></param>
+        /// <param name="fromDate"></param>
+        /// <param name="toDate"></param>
+        /// <returns></returns>
         //to connect with dynamic connection string 
         public IEnumerable<dynamic> DynamicConnString(string connectionString, string tableName, string option, string selectedValue, string fromDate, string toDate)
         {
@@ -142,15 +148,17 @@ namespace final_aerialview.Data
                 return connection.Query<dynamic>(sqlQuery);
             }
         }
+        #endregion
 
-        //conditional table 
+        #region conditional table for the datagrid to show only those columns for which the required is true in report config according to rptid
         public IEnumerable<ConditionalTableModel> ConditionalTable(int rptId)
         {
             string query = $"SELECT * from Report_Config where RptId = '{rptId}' and Required = 'true'";
             return ExecuteQuery<ConditionalTableModel>(query);
         }
+        #endregion
 
-        //for generating where clause according to datagrid filter
+        #region generating where clause according to datagrid filter
         private string? GenerateWhereClause(string option, string selectedValue, string fromDate, string toDate)
         {
             string whereClause = "";
@@ -216,15 +224,17 @@ namespace final_aerialview.Data
 
             return whereClause;
         }
+        #endregion
 
-        //dashboard master table
+        #region dashboard master (dash config) table
         public IEnumerable<DashboardDataModel> GetDashboardMasterData()
         {
             string query = "Select DashId,DashName,DashPath, (case when DashStatus ='' then 'False' else DashStatus end) as 'DashStatus',(case when DashDefault ='' then 'False' else DashDefault end) as 'DashDefault' from DashboardMaster order by DashId asc";
             return ExecuteQuery<DashboardDataModel>(query);
         }
+        #endregion
 
-        //update the existing rows of dashboard config table
+        #region update the existing rows of dashboard config table
         public List<string> UpdateDashboardData(IEnumerable<DashboardDataModel> updatedData)
         {
             var errorMessages = new List<string>();
@@ -293,7 +303,9 @@ namespace final_aerialview.Data
             }
             return errorMessages;
         }
+        #endregion
 
+        #region insert new rows in dash config table 
         public List<string> InsertDashboardData(IEnumerable<DashboardDataModel> newData)
         {
 
@@ -361,8 +373,9 @@ namespace final_aerialview.Data
             }
             return errorMessages;
         }
+        #endregion
 
-        //to delete the dash config by id
+        #region to delete the dash config by id
         public void DeleteDashById(int dashId)
         {
             using (var connection = CreateConnection())
@@ -391,8 +404,9 @@ namespace final_aerialview.Data
                 }
             }
         }
+        #endregion
 
-        // to get the connection string for report/dashboard designer and adding xpoProvider 
+        #region to get the connection string for report/dashboard designer and adding xpoProvider 
         public IEnumerable<ReportConnectionModel> GetReportConnectionData()
         {
             string query = "SELECT * FROM Report_Connection";
@@ -415,23 +429,25 @@ namespace final_aerialview.Data
 
             return connections;
         }
+        #endregion
 
-
-
-        //report config whole table
+        #region report config whole table
         public IEnumerable<ReportConfigModel> ReportConfigData()
         {
             string query = "SELECT * FROM Report_Config";
             return ExecuteQuery<ReportConfigModel>(query);
         }
+        #endregion
 
-        //report config selected table according to rptid
+        #region report config selected table according to rptid
         public IEnumerable<ReportConfigModel> SelectedReportConfigData(int datagridRptid)
         {
             string query = $"SELECT * FROM Report_Config where RptId = {datagridRptid}";
             return ExecuteQuery<ReportConfigModel>(query);
         }
+        #endregion
 
+        #region update report config table in the database
         public void BatchUpdateReportConfig(IEnumerable<ReportConfigModel> changes)
         {
             using (var connection = CreateConnection())
@@ -449,7 +465,6 @@ namespace final_aerialview.Data
                         Required = CASE WHEN @Required = 1 THEN 'True' ELSE 'False' END,
                         DisplayName = @DisplayName,
                         EditableColumn = CASE WHEN @EditableColumn = 1 THEN 'True' ELSE 'False' END,
-                        CalculatedField =CASE WHEN @CalculatedField = 1 THEN 'True' ELSE 'False' END 
                     WHERE Rid = @Rid";
                         foreach (var change in changes)
                         {
@@ -466,8 +481,10 @@ namespace final_aerialview.Data
                 }
             }
         }
+        #endregion
 
 
+        #region update the main reports datagrid in the database 
         public void UpdatedDataGrid(List<Dictionary<string, object>> updates, string tableName, string connString)
         {
             using (var connection = new SqlConnection(connString))
@@ -561,13 +578,15 @@ namespace final_aerialview.Data
                 }
             }
         }
+        #endregion
 
-        // Place this inside the same class as UpdatedDataGrid
+        #region converting date and time value into string to maintain consistency for UpdateDataGrid
         private string formatDateToSQL(DateTime date)
         {
             const string format = "yyyy-MM-dd HH:mm:ss"; // SQL format
             return date.ToString(format);
         }
+        #endregion
 
     }
 }

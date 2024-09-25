@@ -12,6 +12,7 @@ namespace final_aerialview.Controllers
     {
         private readonly DataAccess _dataAccess = dataAccess;
 
+        #region login action, to clear session and remove isloggedin key
         [HttpGet]
         public IActionResult Login()
         {
@@ -22,7 +23,10 @@ namespace final_aerialview.Controllers
 
             return View();
         }
+        #endregion
 
+
+        #region login action, to validate id and password
         [HttpPost]
         public async Task<IActionResult> Login(string userId, string password)
         {
@@ -63,8 +67,9 @@ namespace final_aerialview.Controllers
 
             return View();
         }
+        #endregion
 
-
+        #region logout action
         [HttpPost]
         public async Task<IActionResult> Logout()
         {
@@ -74,5 +79,6 @@ namespace final_aerialview.Controllers
            
             return RedirectToAction("Login", "Account");
         }
+        #endregion
     }
 }

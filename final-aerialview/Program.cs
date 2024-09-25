@@ -172,7 +172,7 @@ app.UseAuthorization();
 // Use session middleware
 app.UseSession();
 
-// Add middleware to check authentication
+#region Add middleware to check authentication
 app.Use(async (context, next) =>
 {
     if (context.Request.Path != "/Account/Login" && !context.User.Identity?.IsAuthenticated == true)
@@ -184,16 +184,16 @@ app.Use(async (context, next) =>
         await next();
     }
 });
+#endregion
 
 
-
-//submenu routing 
+#region submenu routing 
 app.MapControllerRoute(
     name: "Submenu",
     pattern: "{parentMenu}/{submenu}",
     defaults: new { controller = "Submenu", action = "HandleSubmenu" }
 );
-
+#endregion
 
 
 

@@ -9,18 +9,21 @@ namespace final_aerialview.Controllers
         private readonly IFileProvider _fileProvider;
         private readonly string _dashboardFolderPath;
 
+        #region contains all the dashboard files which got saved in the dashboards folder of the project
         public DashboardFolderController(DataAccess dataAccess, IFileProvider fileProvider) : base(dataAccess)
         {
             _fileProvider = fileProvider;
             _dashboardFolderPath = "Dashboards";
         }
+        #endregion
 
-        //taking all the files in dashboards folder to set in dash configuration
+        #region taking all the files from dashboards folder to set in dash configuration
         public IActionResult DashInfo()
         {
             var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
             ViewBag.Contents = contents;
             return View(contents);
         }
+        #endregion
     }
 }

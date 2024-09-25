@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 
 public class SubmenuController(DataAccess dataAccess) : BaseController(dataAccess)
 {
+    #region shows us the list of table names for user to select to redirect to report designer
     public IActionResult ReportDesigner(string parentMenu, string submenu)
     {
         var reportData = _dataAccess.GetReportData();
@@ -23,7 +24,9 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
         return View();
     }
+    #endregion
 
+    #region shows dashboard designer
     public IActionResult DashDesigner(string parentMenu, string submenu)
     {
         ViewBag.ParentMenu = parentMenu;
@@ -33,8 +36,11 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
         return View(dashboardListData);
     }
+    #endregion
 
-    //Dash config actions start
+    #region Dashboard configuration table actions start
+
+    #region dashboard configuration table
     public IActionResult DashConfig(string parentMenu, string submenu)
     {
 
@@ -46,8 +52,9 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
         return View(dashboardListData);
     }
+    #endregion
 
-
+    #region update new or existing row in dashboard configuration table 
     [HttpPost]
     public IActionResult UpdateData([FromBody] List<DashboardDataModel> data)
     {
@@ -57,7 +64,7 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         }
 
         var existingRows = data.Where(d => d.DashId <= 80).ToList();
-        var newRows = data.Where(d => d.DashId > 80  && d.DashId <= 100).ToList();
+        var newRows = data.Where(d => d.DashId > 80 && d.DashId <= 100).ToList();
 
         var errorMessages = new List<string>();
 
@@ -80,26 +87,25 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
         return Ok("Data updated successfully.");
     }
+    #endregion
 
-
+    #region delete dashboard item according to dashId
     [HttpPost]
     public IActionResult DeleteDashboardByDashId(int dashId)
     {
-     
+
         Console.WriteLine($"Received dashId: {dashId}");
 
         _dataAccess.DeleteDashById(dashId);
 
         return Ok("Dashboard deleted successfully");
     }
-    //Dash config actions end
+    #endregion
 
-    //public IActionResult ReportConfiguration(string parentMenu, string submenu)
-    //{
-    //    return View();
-    //}
+    #endregion Dash config actions end
 
-    // Add more actions as needed for each submenu view
+
+    #region actions as needed for each submenu view
     public IActionResult SubMenuConfiguration(string parentMenu, string submenu)
     {
         // Common logic or redirect to default view based on submenu
@@ -117,4 +123,6 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
                 return RedirectToAction("Error", "Home");
         }
     }
+    #endregion
 }
+

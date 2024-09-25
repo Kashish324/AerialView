@@ -54,7 +54,7 @@
     </script>
 
     <link rel="icon" href="@Url.Content("~/33477137_AerialView-Logo-5.ico")">
-    
+
 </head>
 
 @{
@@ -71,14 +71,16 @@
 }
 
 
-
 <body>
+    <!-- #region Background image for home page only -->
     @if (Context.Request.Path == "/Home/Index")
     {
         <div class="image-container vh-100 w-100">
             <img src="~/images/IMAGE-SmartIndustryIOT-e1523990569925-1.jpg" class="object-fit-cover h-100 w-100" width="" alt="Home Page">
         </div>
     }
+    <!-- #endregion -->
+
 
     @if (User.Identity != null && User.Identity.IsAuthenticated)
     {
@@ -159,8 +161,6 @@
                                                                 </div>
                                                                 <i class="ri-arrow-right-s-line sub-menu-arrow fs-6"></i>
                                                             </div>
-
-
                                                         }
 
                                                         else if (mainItem.MenuName == "Dashboards")
@@ -226,11 +226,22 @@
                                                                                         <div class="icon-link">
                                                                                             <div class="listMenu">
                                                                                                 <i class="ri-bard-line"></i>
-                                                                                                <span>@childItem.SubChildName </span>
+                                                                                                <span>@childItem.SubChildName</span>
                                                                                             </div>
                                                                                         </div>
                                                                                     </a>
                                                                                 }
+                                                                            }
+                                                                            else if (viewType == "ManualGrid")
+                                                                            {
+                                                                                <a href="@Url.Action("Index", "ListData", new { subMenuId = childItem.SubMenuId, subMenuName = childItem.SubChildName, viewType = childItem.ReportType })" class="text-decoration-none menu-item">
+                                                                                    <div class="icon-link">
+                                                                                        <div class="listMenu">
+                                                                                            <i class="ri-bard-line"></i>
+                                                                                            <span>@childItem.SubChildName</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                </a>
                                                                             }
                                                                             else
                                                                             {

@@ -4,6 +4,7 @@ using System.ServiceModel;
 
 namespace final_aerialview.Services
 {
+    #region extension from devexpres, to store report in the project
     public class CustomReportStorageWebExtension : DevExpress.XtraReports.Web.Extensions.ReportStorageWebExtension
     {
         private readonly string _reportDirectory;
@@ -11,7 +12,7 @@ namespace final_aerialview.Services
 
         const string FileExtension = ".repx";
 
-
+        #region if "reports" folder doesn't exist create a new reports folder 
         public CustomReportStorageWebExtension(string reportDirectory, DataAccess dataAccess)
         {
             _reportDirectory = reportDirectory;
@@ -22,6 +23,7 @@ namespace final_aerialview.Services
                 Directory.CreateDirectory(_reportDirectory);
             }
         }
+        #endregion
 
         private bool IsWithinReportsFolder(string url, string folder)
         {
@@ -118,4 +120,5 @@ namespace final_aerialview.Services
         }
 
     }
+    #endregion
 }

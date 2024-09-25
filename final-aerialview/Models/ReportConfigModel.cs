@@ -12,6 +12,5 @@
         public string? DisplayName { get; set; }
         public int RptId { get; set; }
         public bool? EditableColumn { get; set; }
-        public bool? CalculatedField { get; set; }
     }
 }

@@ -1,5 +1,6 @@
 ﻿namespace final_aerialview.Utilities
 {
+    #region converting projectsettings logo
     public class ImageConverter
     {
         public static string ConvertHexToBase64(string hexString)
@@ -11,4 +12,5 @@
             return Convert.ToBase64String(bytes);
         }
     }
+    #endregion
 }

@@ -12,6 +12,7 @@ namespace final_aerialview.Controllers
             _dataAccess = dataAccess;
         }
 
+        #region show us the default dashboard on application startup
         public IActionResult DefaultDashboard()
         {
             // Set session flag to indicate new tab is opened
@@ -21,5 +22,6 @@ namespace final_aerialview.Controllers
 
             return View(dashboardListData);
         }
+        #endregion
     }
 }

@@ -14,19 +14,22 @@
     {
         @foreach (var item in Model.PdfImageData)
         {
-            <div class="d-flex align-items-center gap-2 mt-3 mt-md-1 w-100 text-center">
+            <div class="d-flex align-items-center justify-content-between  mt-3 mt-md-1 w-100 text-center">
                 <div class="overflow-hidden shadow rounded" style="width: auto; height:57px;">
                     <img class="d-inline object-fit-contain h-100 w-100" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
                 </div>
-                <div class="d-flex flex-column gap-1 w-100 text-center text-capitalize mr-5 pr-5 ml-2">
+                @* <div class="d-flex flex-column gap-1 w-100 text-center text-capitalize mr-5 pr-5 ml-2"> *@
+                <div class="d-flex flex-column gap-1  text-center text-capitalize ml-5">
                     <h6 class="mb-0 lh-sm fw-bold text-primary-emphasis">@item.ProjectName</h6>
                     <h6 class="mb-0 lh-sm fw-bold text-primary-emphasis">@item.ClientName</h6>
                 </div>
+                <button id="enableEditBtn" type="button" class="w-auto btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium text-primary-emphasis" onclick="enableEditing()"> <i class="ri-edit-line"></i> Enable Editing</button>
             </div>
         }
     }
 
-    <div class='filterOptions position-relative d-flex flex-wrap align-items-center justify-content-start gap-2 shadow-lg py-1 px-3 text-light rounded' >
+
+    <div class='filterOptions position-relative d-flex flex-wrap align-items-center justify-content-start gap-2 shadow-lg py-1 px-3 text-light rounded'>
         <div class="fs-5 fw-medium" style="cursor: none !important;"><i class="ri-equalizer-2-fill"></i> Filter :</div>
 
         @if (priorities != null)
@@ -35,8 +38,8 @@
             {
                 var option = priorities[i];
                 var isChecked = i == 0 ? "checked" : "";
-                <div class="radioOption d-flex align-items-center ms-2" >
-                    <div class="form-check mb-0" >
+                <div class="radioOption d-flex align-items-center ms-2">
+                    <div class="form-check mb-0">
                         <input class="form-check-input" type="radio" name="flexRadioDefault" id="@option" @isChecked onchange="selectedOption('@option')" style="cursor: pointer !important;">
                         <label class="form-check-label" for="@option" style="cursor: pointer !important;">
                             @option
@@ -46,9 +49,9 @@
             }
         }
 
-        <div class="radioGroupContainer" >
+        <div class="radioGroupContainer">
             <div id="standardFilterContainer" class="ms-2" style="display: block;">
-                <div class="input-group input-group-sm" >
+                <div class="input-group input-group-sm">
                     <select id="standardFilter" class="form-select form-select-sm" onchange="selectBox_valueChanged(event)" style="cursor: pointer !important;">
                         <option value="" selected disabled>Choose...</option>
                         @foreach (var item in Items)
@@ -61,11 +64,11 @@
 
             <div id="datePickerContainer" class="ms-2" style="display: none;">
                 <div class="datePicker">
-                    <div class="fromDate w-50" >
-                        <input title ="From Date" type="datetime-local" id="fromDateInput" class="form-control form-control-sm" onchange="fromDate(event)" style="cursor: pointer !important;">
+                    <div class="fromDate w-50">
+                        <input title="From Date" type="datetime-local" id="fromDateInput" class="form-control form-control-sm" onchange="fromDate(event)" style="cursor: pointer !important;">
                     </div>
 
-                    <div class="toDate w-50" >
+                    <div class="toDate w-50">
                         <input title="To Date" type="datetime-local" id="toDateInput" class="form-control form-control-sm" onchange="toDate(event)" style="cursor: pointer !important;">
                     </div>
                 </div>
@@ -84,21 +87,45 @@
             <input type="hidden" name="rptId" value="@Model.RptId" />
 
             <div class="previewBtn">
-                <button title="Apply Filter" type="button" class="btn text-dark bg-white btn-sm border-0 fw-medium"><i class="ri-telegram-2-fill"></i> Apply</button>
+                <button title="Apply Filter" type="submit" class="btn text-dark bg-white btn-sm border-0 fw-medium"><i class="ri-telegram-2-fill"></i> Apply</button>
             </div>
         </form>
+
 
         <a class="btn text-light text-decoration-none cursor-pointer position-absolute end-0 pr-3 bottom-0 " title="Reset" onclick="onStateResetClick()">
             <i class="ri-refresh-line text-warning"></i>
         </a>
+
     </div>
 
-    <partial name="~/Views/ListData/Datagrid.cshtml"/>
+    <partial name="~/Views/ListData/Datagrid.cshtml" />
 
 </div>
 <div id="toast" class="fw-normal"></div>
 
 <script>
+
+    //enable or disable editing in datagrid button
+    let isEditingEnabled = false;
+
+    if (localStorage.getItem('isEditingEnabled') === null) {
+        localStorage.setItem('isEditingEnabled', 'false');
+    }
+
+    function enableEditing() {
+        const enableEditBtn = document.getElementById('enableEditBtn');
+
+        // Toggle the editing state
+        if (isEditingEnabled) {
+            enableEditBtn.innerHTML = '<i class="ri-edit-line"></i> Enable Editing';
+            isEditingEnabled = false;
+            localStorage.setItem("isEditingEnabled", false)
+        } else {
+            enableEditBtn.innerHTML = '<i class="ri-edit-line"></i> Disable Editing';
+            isEditingEnabled = true;
+            localStorage.setItem("isEditingEnabled", true)
+        }
+    }
 
     //setting default values for date fields and hidden form date fields
     var now = new Date();
@@ -276,8 +303,6 @@
                     // Handle errors, if any
                     console.error("Error:", error);
                     // alert('There was an issue accessing the database.')
-
-                    // hideLoadingSpinner();
 
                     showErrorMessage();
                 },

@@ -14,6 +14,8 @@ namespace final_aerialview.Controllers
         {
             _dataAccess = dataAccess;
         }
+
+        #region base controller action so that whatever page we redirect to it shows the all the menu items in the sidebar as long as thier controller is extended from the base controller
         public override void OnActionExecuting(ActionExecutingContext context)
         {
             ViewData["MenuParentData"] = _dataAccess.GetMenuParentData();
@@ -22,7 +24,7 @@ namespace final_aerialview.Controllers
             ViewData["PdfImageData"] = _dataAccess.GetPdfImageData();
             ViewData["ReportData"] = _dataAccess.GetReportData();
             //ViewData["UserMasterData"] = _dataAccess.GetAccessibleControlsForUserAsync();
-       
+
 
             // to get the navigation menu according to user logged in
             var roleClaim = User.FindFirst(ClaimTypes.Role);
@@ -32,5 +34,6 @@ namespace final_aerialview.Controllers
 
             base.OnActionExecuting(context);
         }
+        #endregion
     }
 }

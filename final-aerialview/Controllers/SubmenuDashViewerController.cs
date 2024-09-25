@@ -12,6 +12,7 @@ namespace final_aerialview.Controllers
             _dataAccess = dataAccess;
         }
 
+        #region shows us the saved dashboard from the menu under menu parent "Dashboards"
         public IActionResult ViewDashboard(int dashId)
         {
             var dashboardListData = _dataAccess.GetDashboardMasterData();
@@ -25,5 +26,6 @@ namespace final_aerialview.Controllers
 
             return View(dashboard);
         }
+        #endregion
     }
 }

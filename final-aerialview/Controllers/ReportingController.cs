@@ -7,6 +7,7 @@ using DevExpress.AspNetCore.Reporting.WebDocumentViewer;
 
 namespace final_aerialview.Controllers
 {
+    #region devexpress code for report designer 
     public class CustomWebDocumentViewerController : WebDocumentViewerController
     {
         public CustomWebDocumentViewerController(IWebDocumentViewerMvcControllerService controllerService)
@@ -24,4 +25,5 @@ namespace final_aerialview.Controllers
         public CustomQueryBuilderController(IQueryBuilderMvcControllerService controllerService)
             : base(controllerService) { }
     }
+    #endregion
 }

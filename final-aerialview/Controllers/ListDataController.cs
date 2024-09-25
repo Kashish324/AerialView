@@ -10,6 +10,7 @@ namespace final_aerialview.Controllers
 {
     public class ListDataController(DataAccess dataAccess) : BaseController(dataAccess)
     {
+        #region collects table name, connection string etc according to user selection from the menu
         public IActionResult Index(int? subMenuId, string? subMenuName)
         {
             if (subMenuId != null)
@@ -61,7 +62,9 @@ namespace final_aerialview.Controllers
             }
 
         }
+        #endregion
 
+        #region shows datagrid according to the filter selected by the user 
         [HttpPost]
         public IActionResult DataGrid(string option, string selectedValue, string fromDate, string toDate, string tableName, string connString, int rptId)
         {
@@ -90,8 +93,9 @@ namespace final_aerialview.Controllers
             };
             return View(viewModel);
         }
-
-
+        #endregion
+   
+        #region helps to update the datagrid after manual editing
         [HttpPost]
         public IActionResult UpdateDataGrid([FromBody] UpdateDataRequestModel request)
         {
@@ -131,7 +135,7 @@ namespace final_aerialview.Controllers
                 return Json(new { success = false, message = ex.Message });
             }
         }
-
+        #endregion
     }
 }
 
