@@ -46,7 +46,8 @@
                 .Editing(editing =>
                 {
                     editing.Mode(GridEditMode.Batch);
-                    editing.AllowUpdating(true);
+                    @* editing.AllowUpdating(true); *@
+                    editing.AllowUpdating(new JS("localStorage.getItem('isEditingEnabled') === 'true'"));
                 })
                 .ColumnAutoWidth(true)
                 .AllowColumnReordering(true)
@@ -161,6 +162,20 @@
 
 
 <script>
+
+    // Function to dynamically update the editing state of the DataGrid
+    window.updateDataGridEditing = function (isEditingEnabled) {
+        const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
+        if (dataGrid) {
+            dataGrid.option('editing.allowUpdating', isEditingEnabled);
+        }
+    };
+
+    // Initialize DataGrid editing state on page load
+    document.addEventListener('DOMContentLoaded', () => {
+        const isEditingEnabled = localStorage.getItem('isEditingEnabled') === 'true';
+        window.updateDataGridEditing(isEditingEnabled);
+    });
 
     //converting date and time data from object to string and returning it in sql format
     function formatDateToSQL(date) {

@@ -15,15 +15,18 @@
         @foreach (var item in Model.PdfImageData)
         {
             <div class="d-flex align-items-center justify-content-between  mt-3 mt-md-1 w-100 text-center">
+
                 <div class="overflow-hidden shadow rounded" style="width: auto; height:57px;">
                     <img class="d-inline object-fit-contain h-100 w-100" src="data:image/jpeg;base64,@item.Logo" alt="Logo" />
                 </div>
+
                 @* <div class="d-flex flex-column gap-1 w-100 text-center text-capitalize mr-5 pr-5 ml-2"> *@
                 <div class="d-flex flex-column gap-1  text-center text-capitalize ml-5">
                     <h6 class="mb-0 lh-sm fw-bold text-primary-emphasis">@item.ProjectName</h6>
                     <h6 class="mb-0 lh-sm fw-bold text-primary-emphasis">@item.ClientName</h6>
                 </div>
-                <button id="enableEditBtn" type="button" class="w-auto btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium text-primary-emphasis" onclick="enableEditing()"> <i class="ri-edit-line"></i> Enable Editing</button>
+
+                <button id="enableEditBtn" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle shadow fw-medium text-primary-emphasis" style="font-size: .8rem; width: 130px;" onclick="enableEditing()"> <i class="ri-edit-line"></i></button>
             </div>
         }
     }
@@ -106,10 +109,16 @@
 <script>
 
     //enable or disable editing in datagrid button
-    let isEditingEnabled = false;
-
-    if (localStorage.getItem('isEditingEnabled') === null) {
+    // Check if 'isEditingEnabled' exists in localStorage. If not, set it to false initially.
+    let isEditingEnabled = localStorage.getItem('isEditingEnabled');
+    if (isEditingEnabled === null) {
+        // Set to 'false' if not present in localStorage
         localStorage.setItem('isEditingEnabled', 'false');
+        isEditingEnabled = false;
+    } else {
+        // Convert the string to boolean 
+        //comparison only gives 2 values, true or false, making iseditingenabled boolean
+        isEditingEnabled = isEditingEnabled === 'true';
     }
 
     function enableEditing() {
@@ -119,13 +128,32 @@
         if (isEditingEnabled) {
             enableEditBtn.innerHTML = '<i class="ri-edit-line"></i> Enable Editing';
             isEditingEnabled = false;
-            localStorage.setItem("isEditingEnabled", false)
         } else {
-            enableEditBtn.innerHTML = '<i class="ri-edit-line"></i> Disable Editing';
+            enableEditBtn.innerHTML = '<i class="ri-article-line"></i> Disable Editing';
             isEditingEnabled = true;
-            localStorage.setItem("isEditingEnabled", true)
+        }
+
+        // Store the updated state in localStorage
+        localStorage.setItem('isEditingEnabled', isEditingEnabled);
+
+        // Notify the DataGrid about the change in editing state
+        if (window.updateDataGridEditing) {
+            window.updateDataGridEditing(isEditingEnabled);
         }
     }
+
+    // Function to update the button text on page load based on localStorage
+    document.addEventListener('DOMContentLoaded', () => {
+        const enableEditBtn = document.getElementById('enableEditBtn');
+        isEditingEnabled = localStorage.getItem('isEditingEnabled') === 'true';
+
+        if (isEditingEnabled) {
+            enableEditBtn.innerHTML = '<i class="ri-article-line"></i> Disable Editing';
+        } else {
+            enableEditBtn.innerHTML = '<i class="ri-edit-line"></i> Enable Editing';
+        }
+    });
+
 
     //setting default values for date fields and hidden form date fields
     var now = new Date();
