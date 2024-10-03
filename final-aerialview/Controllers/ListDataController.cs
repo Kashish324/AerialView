@@ -5,6 +5,7 @@ using final_aerialview.ViewModels;
 using final_aerialview.Utilities;
 using System.Text.Json;
 using Dapper;
+using DevExpress.XtraRichEdit.Fields;
 
 namespace final_aerialview.Controllers
 {
@@ -70,6 +71,7 @@ namespace final_aerialview.Controllers
         {
             var dynamicData = _dataAccess.DynamicConnString(connString, tableName, option, selectedValue, fromDate, toDate);
             var condtionalTable = _dataAccess.ConditionalTable(rptId);
+            var calculatedFields = _dataAccess.GetCalculatedFieldData(rptId);
 
 
             IEnumerable<PdfImageModel> pdfImageData = _dataAccess.GetPdfImageData();
@@ -89,12 +91,13 @@ namespace final_aerialview.Controllers
                 ConditionalTableData = condtionalTable,
                 RptId = rptId,
                 PdfImageData = pdfImageData,
-                ConnectionString = connString
+                ConnectionString = connString,
+                CalculatedFields = calculatedFields
             };
             return View(viewModel);
         }
         #endregion
-   
+
         #region helps to update the datagrid after manual editing
         [HttpPost]
         public IActionResult UpdateDataGrid([FromBody] UpdateDataRequestModel request)
@@ -115,7 +118,7 @@ namespace final_aerialview.Controllers
                         string dateString = dateElement.GetRawText().Trim('"');
                         if (DateTime.TryParse(dateString, out DateTime parsedDate))
                         {
-                            change["DateAndTime"] = parsedDate; 
+                            change["DateAndTime"] = parsedDate;
                         }
                         else
                         {
@@ -134,6 +137,39 @@ namespace final_aerialview.Controllers
             {
                 return Json(new { success = false, message = ex.Message });
             }
+        }
+        #endregion
+
+        //#region calculated field table
+        //public IActionResult CalculatedFieldMaster()
+        //{
+        //    var calculatedFieldTable = _dataAccess.GetCalculatedFieldData();
+        //    return Json(calculatedFieldTable);
+        //}
+        //#endregion
+
+        #region inserts calculated field column in datagrid
+        [HttpPost]
+        public IActionResult InsertCalculatedField([FromBody] CalculatedFieldModel model)
+        {
+            if (model == null || string.IsNullOrEmpty(model.ColumnName) || string.IsNullOrEmpty(model.Formula))
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            try
+            {
+                // Use a default value if model.Id is null
+                int id = model.Id ?? -1; // Assuming -1 indicates a new record
+                //_dataAccess.InsertCalculatedFieldData(model.ColumnName, model.Formula, model.RptId, model.Id);
+                _dataAccess.UpdateOrInsertCalculatedFieldData(model.ColumnName, model.Formula, model.RptId, id);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+
         }
         #endregion
     }

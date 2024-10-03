@@ -124,7 +124,7 @@ namespace final_aerialview.Data
         }
         #endregion
 
-        #region creating dynamic connection string for reports table connection string according to user selection 
+        #region creating dynamic sql query for reports table with dynamic connection string according to user selection 
         /// <summary>
         /// 
         /// </summary>
@@ -464,7 +464,7 @@ namespace final_aerialview.Data
                     SET 
                         Required = CASE WHEN @Required = 1 THEN 'True' ELSE 'False' END,
                         DisplayName = @DisplayName,
-                        EditableColumn = CASE WHEN @EditableColumn = 1 THEN 'True' ELSE 'False' END,
+                        EditableColumn = CASE WHEN @EditableColumn = 1 THEN 'True' ELSE 'False' END
                     WHERE Rid = @Rid";
                         foreach (var change in changes)
                         {
@@ -484,7 +484,7 @@ namespace final_aerialview.Data
         #endregion
 
 
-        #region update the main reports datagrid in the database 
+        #region update the main reports datagrid in the database after editing 
         public void UpdatedDataGrid(List<Dictionary<string, object>> updates, string tableName, string connString)
         {
             using (var connection = new SqlConnection(connString))
@@ -588,6 +588,45 @@ namespace final_aerialview.Data
         }
         #endregion
 
+
+        #region Calculated Field Master
+        public IEnumerable<CalculatedFieldModel> GetCalculatedFieldData(int rptId)
+        {
+            string query = $"SELECT * FROM CalculatedFieldMaster where RptId = {rptId}";
+            return ExecuteQuery<CalculatedFieldModel>(query);
+        }
+        #endregion
+
+        #region Insert into Calculated Field Master
+        //public IEnumerable<CalculatedFieldModel> InsertCalculatedFieldData(string columnName, string formula, int rptId)
+        //{
+        //    string query = $"Insert into CalculatedFieldMaster (RptId, ColumnName, Formula) values ({rptId} , '{columnName}' , '{formula}') ";
+        //    return ExecuteQuery<CalculatedFieldModel>(query);
+        //}
+        #endregion
+
+        #region Delete from Calculated Field Master
+        public IEnumerable<CalculatedFieldModel> DeleteCalculatedFieldData()
+        {
+            string query = "DELETE FROM CalculatedFieldMaster WHERE Id = 3";
+            return ExecuteQuery<CalculatedFieldModel>(query);
+        }
+        #endregion
+
+        #region Insert/Update of Calculated field - update the calculated field master if the id already exists or insert if it does not 
+        public IEnumerable<CalculatedFieldModel> UpdateOrInsertCalculatedFieldData(string columnName, string formula, int rptId, int? Id)
+        {
+            string query = $"if exists (select * from CalculatedFieldMaster where Id = {Id})\r\n" +
+                $"Begin \r\n" +
+                $"update CalculatedFieldMaster set ColumnName = '{columnName}', Formula = '{formula}' where Id = {Id} \r\n" +
+                $"End\r\n" +
+                $"else\r\n" +
+                $"begin \r\n" +
+                $"insert into  CalculatedFieldMaster  (RptId, ColumnName, Formula) values ({rptId} , '{columnName}' , '{formula}') \r\n" +
+                $"end";
+            return ExecuteQuery<CalculatedFieldModel>(query);
+        }
+        #endregion
     }
 }
 

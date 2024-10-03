@@ -196,25 +196,27 @@ app.MapControllerRoute(
 #endregion
 
 
-
+#region Dashboard folder, where all the saved dashboards are contained
 app.MapControllerRoute(
     name: "DashboardFolder",
     pattern: "DashboardFolder",
     defaults: new { controller = "DashboardFolder", action = "DashInfo" }
 );
+#endregion
 
-//Default Dashboard
+#region Default Dashboard - open in a new window at application startup
 app.MapControllerRoute(
     name: "DefaultDashboard",
     pattern: "DefaultDashboardViewer/{page?}",
     defaults: new { controller = "DefaultDashViewer", action = "DefaultDashboard" }
 );
+#endregion
 
-
-
+#region Default Route
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Account}/{action=Login}/{id?}");
+#endregion
 
 app.Run();
 

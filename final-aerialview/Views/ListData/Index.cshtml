@@ -90,7 +90,7 @@
             <input type="hidden" name="rptId" value="@Model.RptId" />
 
             <div class="previewBtn">
-                <button title="Apply Filter" type="submit" class="btn text-dark bg-white btn-sm border-0 fw-medium"><i class="ri-telegram-2-fill"></i> Apply</button>
+                <button title="Apply Filter" type="submit" class="btn text-dark bg-white btn-sm border-0 fw-medium"><i class="ri-telegram-2-fill"></i> Preview</button>
             </div>
         </form>
 
@@ -116,7 +116,7 @@
         localStorage.setItem('isEditingEnabled', 'false');
         isEditingEnabled = false;
     } else {
-        // Convert the string to boolean 
+        // Convert the string to boolean
         //comparison only gives 2 values, true or false, making iseditingenabled boolean
         isEditingEnabled = isEditingEnabled === 'true';
     }

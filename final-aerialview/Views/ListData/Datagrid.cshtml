@@ -9,6 +9,8 @@
 }
 
 
+
+
 <div id="dataTable" class="position-relative shadow rounded" data-table-name="@Model.TableName" data-child-menu-name="@Model.ChildMenuName" data-conn-string="@Model.ConnectionString">
     @if (Model.TableData == null || !Model.TableData.Any())
     {
@@ -65,7 +67,7 @@
                 )
                 .GroupPanel(g => g.Visible(true))
                 .Grouping(g => g.AutoExpandAll(false))
-                
+
 
                 .Columns(c =>
                 {
@@ -84,7 +86,7 @@
                                     {
                                         var column = c.Add().DataField(property).Caption(i.DisplayName)
                                         .CssClass("datagridCol");
-                                        // Set the editing ability based on the EditableColumn property
+                                        @* Set the editing ability based on the EditableColumn property *@
                                         if (i.EditableColumn)
                                         {
                                             column.AllowEditing(true);
@@ -94,7 +96,7 @@
                                             column.AllowEditing(false);
                                         }
 
-                                        // Specific handling for DateAndTime
+                                        @* Specific handling for DateAndTime *@
                                         if (property == "DateAndTime")
                                         {
                                             column.DataType(GridColumnDataType.DateTime)
@@ -109,9 +111,36 @@
 
                         }
                     }
+
+                    @* Calculated Field *@
+                    if (Model.CalculatedFields != null && Model.CalculatedFields.Any())
+                    {
+                        foreach (var calcField in Model.CalculatedFields)
+                        {
+                            c.Add()
+                    .DataField(calcField.ColumnName)
+                    .Caption(calcField.ColumnName)
+                    .CssClass("datagridCol")
+
+                    .CalculateCellValue(@<text>
+            function CalculateProductTotal(e) {
+            @* Get the formula directly from the C# variable *@
+            var formula = "@Html.Raw(calcField.Formula)";
+
+            @* Replace column names with their corresponding values from 'e' *@
+            var evaluatedFormula = formula.replace(/([A-Za-z_]\w*)|\d+/g, function(match) {
+            return e[match] !== undefined ? e[match] : 0; // Use value from e, or 0 if undefined
+            });
+
+            @* Use eval to calculate the final result, but ensure it's safe to evaluate *@
+            return eval(evaluatedFormula); @* Ensure the evaluated formula is a valid expression *@
+            }
+        </text>)
+        .Format(f => f.Type(Format.FixedPoint).Precision(2))
+        .AllowEditing(false);  @* Adjust based on your logic for editing *@
+                        }
+                    }
                 })
-
-
                 .ShowColumnHeaders(true)
                 .Pager(pager =>
                 {
@@ -132,36 +161,398 @@
                 )
         </div>
 
-        <div class="exportBtn position-sticky bg-white d-flex justify-content-end align-items-center gap-2 border-top">
-            @* <a href=@Url.Action("ManualDataGrid", "ListData")>Edit Grid</a> *@
+        <div class="exportBtn position-sticky bg-white d-flex justify-content-between align-items-center gap-2 border-top ps-2">
 
-            <div id="exportOrientation" class="ms-2">
-                <div class="input-group input-group-sm">
-                    <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
-                    <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example" style="cursor: pointer !important;">
-                        <option value="landscape" selected>Landscape</option>
-                        <option value="portrait">Portrait</option>
-                    </select>
+            <button type="button" class="btn  btn-sm border-white shadow fw-medium" data-bs-toggle="modal" data-bs-target="#calculatedFieldModal">
+                <p class="fw-semibold  mb-0" style="color: #1D6F42;"><i class="ri-add-line"></i> Calculated field</p>
+            </button>
+
+
+            <div class=" d-flex align-items-center gap-2">
+
+                <div id="exportOrientation" class="ms-2">
+                    <div class="input-group input-group-sm">
+                        <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
+                        <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example" style="cursor: pointer !important;">
+                            <option value="landscape" selected>Landscape</option>
+                            <option value="portrait">Portrait</option>
+                        </select>
+                    </div>
                 </div>
+
+
+                <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
+                    <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i>
+                    @* <i class="ri-file-excel-2-line fs-3 shadow-sm text-success"></i> *@
+                </button>
+                <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
+                    <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i>
+                    @* <i class="ri-file-pdf-2-line fs-3 shadow-sm text-danger"></i> *@
+                </button>
             </div>
-
-
-            <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
-                <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i>
-                @* <i class="ri-file-excel-2-line fs-3 shadow-sm text-success"></i> *@
-            </button>
-            <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
-                <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i>
-                @* <i class="ri-file-pdf-2-line fs-3 shadow-sm text-danger"></i> *@
-            </button>
 
         </div>
     }
 </div>
 
+@* Modal for users to input their formulas for calculated fields *@
+<div class="modal fade bg-secondary bg-gradient bg-opacity-25 " id="calculatedFieldModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header p-2 ">
+                <h6 class="modal-title text-primary-emphasis fw-bold mx-auto" id="formulaModalLabel" style="word-spacing: 0.1rem">Create Custom Formula Field</h6>
+                @* <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button> *@
+            </div>
+            <div class="modal-body">
+                <form id="formulaForm">
+
+                    @if (Model.CalculatedFields != null && Model.CalculatedFields.Any())
+                    {
+                        <div class="mb-3">
+                            <label for="existingFieldsDropdown" class="form-label fs-6 fw-semibold" style="font-size: .9rem !important;">Select Existing Field</label>
+                            <select id="existingFieldsDropdown" class="form-select fw-medium" style="font-size: .8rem !important;" onchange="handleFieldSelection(this)">
+                                <option value="" selected disabled>Select a field to update</option>
+                                @foreach (var calcField in Model.CalculatedFields)
+                                {
+                                    <option class="fw-medium" value="@calcField.Id" data-formula="@calcField.Formula"
+                                            data-column-name="@calcField.ColumnName">@calcField.ColumnName</option>
+                                }
+                            </select>
+                        </div>
+                    }
+
+                    @* Input for custom field name  *@
+                    <div class="mb-3">
+                        <label for="columnNameInput" class="form-label fs-6 fw-semibold" style="font-size: .9rem !important;">Custom Column Name</label>
+                        <input type="text" class="form-control fw-medium" id="columnNameInput" style="font-size: .8rem !important;" placeholder="Enter a name for your calculated field" oninput="handleColumnNameVal(this.value)" required>
+                        <span id="duplicateName-message" class=" text-danger" style="display:none; font-size: 14px;">!</span>
+                    </div>
+                    @* Input for formula *@
+                    <div class="mb-3">
+                        <label for="formulaInput" class="form-label fs-6 fw-semibold" style="font-size: .9rem !important;">Calculation Formula</label>
+                        <input type="text" class="form-control fw-medium" id="formulaInput" style="font-size: .8rem !important;" placeholder="e.g., Column1 + Column2" autocomplete="off" oninput="handleFormulaInput(this.value)" required>
+                        <span id="error-message" class=" text-danger" style="display:none; font-size: 14px;">!</span>
+                    </div>
+
+                    <input type="hidden" name="rptId" value="@Model.RptId" />
+                    <input type="hidden" name="calcFieldId" id="calculatedFieldId" />
+
+                    @* Output section to show formula result  *@
+                    <div class="mb-3">
+                        <label for="formulaResult" class="form-label fs-6 fw-semibold" style="font-size: .9rem !important;">Preview Result</label>
+                        <input id="formulaResult" type="text" class="form-control fw-medium" style="font-size: .8rem !important;" value="" disabled placeholder="Result will display here">
+                    </div>
+
+                </form>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-sm bg-transparent" data-bs-dismiss="modal">Cancel</button>
+                @* Submit button to send form data to the controller  *@
+                <button type="button" class="btn btn-sm bg-primary-subtle text-primary-emphasis fw-semibold" style="font-size: .8rem !important;" id="submitFormulaButton" onclick="submitFormula()" data-bs-dismiss="modal">Save Calculation</button>
+            </div>
+        </div>
+    </div>
+</div>
 
 
 <script>
+    var columnName;
+    var formulaVal;
+    var calcFieldInput = document.getElementById('calculatedFieldId');
+    var resultInput = document.getElementById('formulaResult');
+
+    //dropdown selection and fill the input values to with the selected option corresponding column name and formula
+    function handleFieldSelection(selectedElement) {
+        //selected option
+        const selectedOption = selectedElement.options[selectedElement.selectedIndex];
+        calcFieldInput.value = selectedOption.value; //setting calculated field hidden input field value to the selected dropdown value 
+        const existingFormulaVal = selectedOption.getAttribute('data-formula')
+        const existingColumnNameVal = selectedOption.getAttribute('data-column-name')
+
+        const colNameInput = document.getElementById('columnNameInput');
+        const formulaInput = document.getElementById('formulaInput');
+
+
+        colNameInput.value = existingColumnNameVal;
+        formulaInput.value = existingFormulaVal;
+        handleColumnNameVal(existingColumnNameVal)
+        handleFormulaInput(existingFormulaVal);
+    }
+
+    //get the column name from user input
+    function handleColumnNameVal(value) {
+        columnName = value;
+    }
+
+    //get the formula input by the user and show its result in the result preview text field
+    function handleFormulaInput(value) {
+        formulaVal = value;
+        validateFormula(value);
+
+        const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
+        const firstRow = dataGrid.getVisibleRows()[0]?.data; // get the first visible row of datagrid
+        const saveButton = document.getElementById('submitFormulaButton'); // Save button element
+
+        // Regex to check if the formula ends with an operator
+        const endsWithOperator = /[+\-*/]$/;
+
+        // Disable the save button if formula ends with an operator
+        if (endsWithOperator.test(value.trim())) {
+            saveButton.disabled = true; // Disable the button
+            resultInput.value = 'Incomplete formula'; // Display an incomplete formula message
+            resultInput.classList.add('bg-danger-subtle');
+            return;
+        }
+
+
+        if (!firstRow) {
+            console.error('No rows available to calculate the formula.');
+            resultInput.value = 'Invalid formula'; // Display error message in case of no data
+            resultInput.classList.add("bg-danger-subtle");
+            saveButton.disabled = true; // Disable the button
+            return;
+        }
+
+        let result = 0;
+        let isValid = true;  // Flag to track if the formula is valid
+
+        try {
+            // regex to parse column names and allow numbers directly
+            let formula = formulaVal.replace(/([A-Za-z_]\w*)|\d+/g, function (match) {
+                const trimmedMatch = match.trim();  // Trim spaces around column names
+                // Check if the trimmed column name exists in the first row (case-sensitive)
+                if (firstRow.hasOwnProperty(trimmedMatch)) {
+                    return firstRow[trimmedMatch] !== undefined ? firstRow[trimmedMatch] : 0; // Use value if exists, otherwise use 0
+                } else {
+                    // Check if the match is a valid number (not a column)
+                    const numValue = parseFloat(trimmedMatch);
+                    if (!isNaN(numValue)) {
+                        return numValue; // Return the number directly if it's valid
+                    } else {
+                        isValid = false;  // If the column doesn't exist and it's not a number, mark the formula as invalid
+                        console.error(`Column "${trimmedMatch}" does not exist.`);
+                        return 0;  // Return 0 to avoid breaking the formula
+                    }
+                }
+            });
+
+            // Evaluate the formula using Function constructor to avoid security issues with eval
+            if (isValid) {
+                const evaluateFormula = new Function('return ' + formula);
+                result = evaluateFormula();
+                // Round the result to 2 decimal places
+                result = parseFloat(result.toFixed(2));
+            } else {
+                result = 'Invalid formula';  // Set result to "Invalid formula" if any column was missing
+            }
+        } catch (error) {
+            console.error("Error in formula: ", error);
+            result = 'Invalid formula';  // In case of any other errors
+        }
+        resultInput.value = result || 'Invalid formula'; // Set the result or display 'Invalid formula'
+        // Remove any previous background color classes
+        resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
+
+        // Change background color based on the result
+        if (isNaN(result)) {
+            resultInput.classList.add('bg-danger-subtle'); // Invalid formula
+        } else {
+            resultInput.classList.add('bg-success-subtle'); // Valid formula
+        }
+
+        // Toggle the disabled state of the button based on formula validation
+        const submitButton = document.getElementById('submitFormulaButton');
+        submitButton.disabled = !isValid;
+
+    }
+
+
+    // Validate the formula to check if all referenced columns exist
+    function validateFormula(formula) {
+        const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
+        const columns = dataGrid.option('columns').map(col => col.dataField.trim()); // Trim spaces from column names
+
+        var errorMessage = document.getElementById('error-message'); // Error message element for formula validation
+
+        // Remove existing error messages
+        if (errorMessage) {
+            errorMessage.style.display = 'none';
+        }
+
+        // Regex to extract potential column names or numbers, ignoring spaces
+        const columnRegex = /([A-Za-z_]\w*)|\d+/g;
+        let match;
+        let invalidColumns = [];
+
+        // Check each part in the formula
+        while ((match = columnRegex.exec(formula)) !== null) {
+            const trimmedMatch = match[0].trim(); // Trim the matched part
+
+            // Check if the match is a valid column name
+            if (isNaN(trimmedMatch) && !columns.includes(trimmedMatch)) {
+                // Only check against column names if it's not a number
+                invalidColumns.push(trimmedMatch); // Collect invalid column names
+            }
+        }
+
+        if (invalidColumns.length > 0) {
+            if (invalidColumns.length === 1) {
+                errorMessage.innerHTML = `Column "${invalidColumns[0]}" currently does not exist in the table!`; // Singular
+            } else {
+                errorMessage.innerHTML = `Columns "${invalidColumns.join(', ')}" currently do not exist in the table!`; // Plural
+            }
+            errorMessage.style.display = 'block'; // Show error message
+        } else {
+            // All columns are valid, hide error message
+            errorMessage.style.display = 'none';
+        }
+    }
+
+    //submit the formula to the backend and add its column in the grid at the same time
+    function submitFormula() {
+        var calculatedColName = columnName;
+        var formula = formulaVal; // Get the formula input
+        var rptId = parseInt(document.querySelector('input[name="rptId"]').value); // Convert rptId to integer
+        var calculatedFieldId = calcFieldInput.value; // Convert Id to integer
+
+        // Set Id to null if it's an empty string
+        calculatedFieldId = calculatedFieldId === '' ? null : parseInt(calculatedFieldId);
+
+        // Prepare the data to be sent
+        var formData = {
+            ColumnName: calculatedColName,
+            Formula: formula,
+            RptId: rptId,
+            Id: calculatedFieldId
+        };
+
+        $.ajax({
+            url: '/ListData/InsertCalculatedField',
+            type: 'POST',
+            data: JSON.stringify(formData),
+            contentType: 'application/json',
+            success: function (response) {
+                if (response.success) {
+                    // DevExpress.ui.notify('Changes saved successfully', 'success', { position: "center", direction: "up-push" }, 2000);
+                    DevExpress.ui.notify({
+                        message: "Formula submitted successfully",
+                        width: 300,
+                        type: "success",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
+                    addCalculatedColumn();
+                    document.getElementById('formulaForm').reset();
+                    resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
+                    document.getElementById('error-message').style.display = 'none';
+                } else {
+                    // DevExpress.ui.notify('Error saving changes', 'error', { position: "center", direction: "up-push" }, 2000);
+                    DevExpress.ui.notify({
+                        message: "Error saving changes",
+                        width: 300,
+                        type: "error",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
+                }
+            },
+            error: function (xhr, status, error) {
+                console.error('Error updating data:', xhr.responseText || error);
+                // DevExpress.ui.notify('Error updating data to the backend', 'error', { position: "center", direction: "up-push" }, 2000);
+                DevExpress.ui.notify({
+                    message: "An error occured. Please try again.",
+                    width: 300,
+                    type: "error",
+                    displayTime: 3500,
+                    shading: true,
+                    animation: {
+                        show: { type: "fade", duration: 400, from: 0, to: 1 },
+                        hide: { type: "fade", duration: 40, to: 0 }
+                    }
+                }, {
+                    position: "bottom center",
+                    direction: "up-push"
+                });
+            }
+        });
+
+    }
+
+    //add calculated column to the datagrid at the button click while also saving the grid previous state
+    function addCalculatedColumn() {
+        const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
+        if (dataGrid) {
+            // Save the current state
+            const gridState = localStorage.getItem('storage');
+            const columns = dataGrid.option('columns');
+
+            // Adding new column
+            columns.push({
+                dataField: columnName,
+                caption: columnName,
+                calculateCellValue: function (e) {
+                    try {
+                        // Construct the formula by replacing column names with e.<column_name>
+                        let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
+                            return `e.${match}`; // Replace valid column names
+                        });
+
+                        // Evaluate the constructed formula
+                        // Use Function constructor to avoid eval's security issues and syntax errors
+                        const evaluateFormula = new Function('e', `return ${formula};`);
+                        return evaluateFormula(e);
+                    } catch (error) {
+                        console.error("Error in formula: ", error);
+                        return null; // Return null if formula cannot be calculated
+                    }
+                },
+                dataType: 'number',
+                cssClass: "datagridCol",
+                format: {
+                    type: 'fixedPoint',
+                    precision: 2 
+                }
+            });
+
+            // Update the grid with the new columns array
+            dataGrid.option('columns', columns);
+
+            // Restore the state
+            if (gridState) {
+                dataGrid.state(JSON.parse(gridState));
+            }
+
+            // Notify the user
+            DevExpress.ui.notify({
+                message: ` '${columnName}' column added successfully`,
+                width: 300,
+                type: "success",
+                displayTime: 3500,
+                shading: true,
+                animation: {
+                    show: { type: "fade", duration: 400, from: 0, to: 1 },
+                    hide: { type: "fade", duration: 40, to: 0 }
+                }
+            }, {
+                position: "bottom center",
+                direction: "up-push"
+            });
+        }
+    }
 
     // Function to dynamically update the editing state of the DataGrid
     window.updateDataGridEditing = function (isEditingEnabled) {
@@ -171,7 +562,7 @@
         }
     };
 
-    // Initialize DataGrid editing state on page load
+    // checking editing state is enabled or not  on page load
     document.addEventListener('DOMContentLoaded', () => {
         const isEditingEnabled = localStorage.getItem('isEditingEnabled') === 'true';
         window.updateDataGridEditing(isEditingEnabled);
@@ -190,6 +581,7 @@
         return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
     }
 
+    //update the table after editing
     function onSaving(e) {
         var changes = e.changes;
 
@@ -288,83 +680,26 @@
         }
     }
 
-
-
-
-
-    // function onSaving(e) {
-    //     var changes = e.changes;
-
-    //     if (changes.length > 0) {
-    //         // var updatedData = changes.map(change => {
-    //         //     return {
-    //         //         // type: change.type,
-    //         //         // key: change.key,
-    //         //         // data: change.data
-    //         //         ...change.key,
-    //         //         ...change.data,
-    //         //         key: change.key.DateAndTime
-
-    //         //     }
-    //         // });
-
-    //         var updatedData = changes.map(change => {
-    //             return {
-    //                 ...change.key,
-    //                 ...change.data,
-    //                 // key: change.key.DateAndTime ? new Date(change.key.DateAndTime).toISOString() : null // Convert to ISO string
-    //                     key: change.key.DateAndTime ? new Date(change.key.DateAndTime).toISOString() : null // Convert to ISO string
-    //             }
-    //         });
-
-
-    //         var tableName = $('#dataTable').data('table-name');
-    //         var connString = $('#dataTable').data('conn-string');
-
-    //         console.log(updatedData)
-
-
-    //         $.ajax({
-    //             url: '@Url.Action("UpdateDataGrid", "ListData")',
-    //             type: 'POST',
-    //             contentType: 'application/json',
-    //             data: JSON.stringify({
-    //                 tableName: tableName,
-    //                 changes: updatedData,
-    //                 connString: connString
-    //             }),
-
-    //             success: function (response) {
-    //                 if (response.success) {
-    //                     DevExpress.ui.notify('Changes saved successfully', 'success', 2000);
-    //                 } else {
-    //                     DevExpress.ui.notify('Error saving changes', 'error', 2000);
-    //                 }
-    //             },
-
-    //             error: function () {
-    //                 DevExpress.ui.notify('Error updating data to the backend', 'error', 2000);
-    //             }
-    //         })
-    //     }
-    // }
-
+    //show loading spinner before datagrid load 
     function showLoadingSpinner() {
         $("#loadingSpinner").removeClass("d-none");
         $("#noDataMessage").addClass("d-none");
         $("#errorMessage").addClass("d-none");
     }
 
+    //hide loading spinner on data load
     function hideLoadingSpinner() {
         $("#loadingSpinner").addClass("d-none");
     }
 
+    //show no data error message
     function showNoDataMessage() {
         $("#noDataMessage").removeClass("d-none");
         $("#loadingSpinner").addClass("d-none");
         $("#errorMessage").addClass("d-none");
     }
 
+    //error message 
     function showErrorMessage() {
         $("#errorMessage").removeClass("d-none");
         $("#loadingSpinner").addClass("d-none");
