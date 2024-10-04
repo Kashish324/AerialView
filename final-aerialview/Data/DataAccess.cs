@@ -606,9 +606,9 @@ namespace final_aerialview.Data
         #endregion
 
         #region Delete from Calculated Field Master
-        public IEnumerable<CalculatedFieldModel> DeleteCalculatedFieldData()
+        public IEnumerable<CalculatedFieldModel> DeleteCalculatedFieldData(int? id)
         {
-            string query = "DELETE FROM CalculatedFieldMaster WHERE Id = 3";
+            string query = $"DELETE FROM CalculatedFieldMaster WHERE Id = {id}";
             return ExecuteQuery<CalculatedFieldModel>(query);
         }
         #endregion

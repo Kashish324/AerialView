@@ -148,7 +148,7 @@ namespace final_aerialview.Controllers
         //}
         //#endregion
 
-        #region inserts calculated field column in datagrid
+        #region update or inserts calculated field column in datagrid
         [HttpPost]
         public IActionResult InsertCalculatedField([FromBody] CalculatedFieldModel model)
         {
@@ -163,6 +163,30 @@ namespace final_aerialview.Controllers
                 int id = model.Id ?? -1; // Assuming -1 indicates a new record
                 //_dataAccess.InsertCalculatedFieldData(model.ColumnName, model.Formula, model.RptId, model.Id);
                 _dataAccess.UpdateOrInsertCalculatedFieldData(model.ColumnName, model.Formula, model.RptId, id);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+
+        }
+        #endregion
+
+        #region Delete existing calculated field by Id
+        [HttpPost]
+        public IActionResult DeleteCalculatedField(int Id)
+        {
+            if (Id == 0)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            try
+            {
+                // Use a default value if model.Id is null
+                /*int id = model.Id ?? -1;*/ // Assuming -1 indicates a new record
+                _dataAccess.DeleteCalculatedFieldData(Id);
                 return Json(new { success = true });
             }
             catch (Exception ex)

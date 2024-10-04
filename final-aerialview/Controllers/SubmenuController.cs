@@ -104,7 +104,6 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
 
     #endregion Dash config actions end
 
-
     #region actions as needed for each submenu view
     public IActionResult SubMenuConfiguration(string parentMenu, string submenu)
     {
