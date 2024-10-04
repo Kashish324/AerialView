@@ -122,18 +122,37 @@
 
                     .CalculateCellValue(@<text>
             function CalculateProductTotal(e) {
-            @* Get the formula directly from the C# variable *@
-            var formula = "@Html.Raw(calcField.Formula)";
+            var formula = "@Html.Raw(calcField.Formula)"; // Retrieve the formula
 
-            @* Replace column names with their corresponding values from 'e' *@
-            var evaluatedFormula = formula.replace(/([A-Za-z_]\w*)|\d+/g, function(match) {
-            return e[match] !== undefined ? e[match] : 0; // Use value from e, or 0 if undefined
+            // Log the current row values for debugging
+            console.log("Calculating for:", e);
+
+            // Replace column names with their values or default to 0
+            var evaluatedFormula = formula.replace(/([A-Za-z_]\w*)/g, function(match) {
+            const value = e[match] !== undefined && e[match] !== null ? e[match] : 0; // Default to 0
+            console.log(`Substituting ${match} with ${value}`); // Log substitutions
+            return value;
             });
 
-            @* Use eval to calculate the final result, but ensure it's safe to evaluate *@
-            return eval(evaluatedFormula); @* Ensure the evaluated formula is a valid expression *@
+            try {
+            // Evaluate the formula
+            var result = eval(evaluatedFormula);
+
+            // Check for Infinity or NaN
+            if (result === Infinity || result === -Infinity || isNaN(result)) {
+            console.error("Calculation resulted in Infinity or NaN", evaluatedFormula);
+            return 0; // Return 0 if result is invalid
             }
+
+            return result; // Return the valid result
+            } catch (error) {
+            console.error("Error evaluating formula:", error); // Log errors
+            return 0; // Return 0 in case of error
+            }
+            }
+
         </text>)
+
         .Format(f => f.Type(Format.FixedPoint).Precision(2))
         .AllowEditing(false);  @* Adjust based on your logic for editing *@
                         }
@@ -257,7 +276,7 @@
 <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
-            <div class="modal-header">
+            <div class="modal-header p-2 px-3">
                 <h1 class="modal-title fs-6 text-dark" id="deleteConfirmationModalLabel">AerialView</h1>
                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
@@ -266,9 +285,9 @@
                 <span class="text-muted" style="font-size: 14px;"> This action is permanent and cannot be undone. </span>
                 <input type="hidden" id="deleteCalcFieldId" />
             </div>
-            <div class="modal-footer">
-                <button id="deleteBtn" type="button" class="btn bg-danger btn-sm text-white shadow-sm" onclick="handleDeleteCalcField()" data-bs-dismiss="modal">Yes</button>
-                <button type="button" class="btn bg-secondary-subtle btn-sm shadow-sm" data-bs-target="#calculatedFieldModal" data-bs-toggle="modal">No</button>
+            <div class="modal-footer p-1">
+                <button id="deleteBtn" type="button" class="btn btn-sm bg-danger btn-sm text-white shadow-sm" onclick="handleDeleteCalcField()" data-bs-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-sm bg-secondary-subtle btn-sm shadow-sm" data-bs-target="#calculatedFieldModal" data-bs-toggle="modal">No</button>
                 @* <button class="btn btn-primary" data-bs-target="#calculatedFieldModal" data-bs-toggle="modal">Open first modal</button> *@
             </div>
         </div>
@@ -279,17 +298,22 @@
 <script>
     var columnName;
     var formulaVal;
+
+    var saveButton = document.getElementById('submitFormulaButton'); // Save button element
+
     var calcFieldInput = document.getElementById('calculatedFieldId');
     var deleteCalcField = document.getElementById('deleteCalcFieldId');
     var calcFieldDeleteButton = document.getElementById('deleteFormulaButton');
     var resultInput = document.getElementById('formulaResult');
+
+
 
     //dropdown selection and fill the input values to with the selected option corresponding column name and formula
     function handleFieldSelection(selectedElement) {
         //selected option
         const selectedOption = selectedElement.options[selectedElement.selectedIndex];
         calcFieldInput.value = selectedOption.value; //setting calculated field hidden input field ID value to the selected dropdown value
-        deleteCalcField.value = selectedOption.value; 
+        deleteCalcField.value = selectedOption.value;
         const existingFormulaVal = selectedOption.getAttribute('data-formula')
         const existingColumnNameVal = selectedOption.getAttribute('data-column-name')
 
@@ -302,7 +326,7 @@
         handleColumnNameVal(existingColumnNameVal)
         handleFormulaInput(existingFormulaVal);
 
-        //showing delete button only if the one of the valid option is selected from dropdown 
+        //showing delete button only if the one of the valid option is selected from dropdown
         if (selectedElement.value !== "") {
             // Show the delete button if a valid option is selected
             calcFieldDeleteButton.style.display = 'inline-block';
@@ -312,6 +336,7 @@
         }
     }
 
+    //delete calculated field
     function handleDeleteCalcField() {
         $.ajax({
             url: '/ListData/DeleteCalculatedField',
@@ -321,7 +346,7 @@
                 if (response.success) {
                     DevExpress.ui.notify({
                         message: "Calculated Field deleted successfully",
-                        width: 300,
+                        width: 400,
                         type: "success",
                         displayTime: 3500,
                         shading: true,
@@ -336,7 +361,7 @@
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
-                        width: 300,
+                        width: 400,
                         type: "error",
                         displayTime: 3500,
                         shading: true,
@@ -359,7 +384,7 @@
                 console.log(error);
                 DevExpress.ui.notify({
                     message: "Something went wrong. Please try again.",
-                    width: 300,
+                    width: 400,
                     type: "error",
                     displayTime: 3500,
                     shading: true,
@@ -386,20 +411,20 @@
         validateFormula(value);
 
         const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
-        const firstRow = dataGrid.getVisibleRows()[0]?.data; // get the first visible row of datagrid
+        const firstRow = dataGrid.getVisibleRows()[0]?.data; // Safely get the first visible row of data
+
         const saveButton = document.getElementById('submitFormulaButton'); // Save button element
 
         // Regex to check if the formula ends with an operator
         const endsWithOperator = /[+\-*/]$/;
 
         // Disable the save button if formula ends with an operator
-        if (endsWithOperator.test(value.trim())) {
-            saveButton.disabled = true; // Disable the button
-            resultInput.value = 'Incomplete formula'; // Display an incomplete formula message
-            resultInput.classList.add('bg-danger-subtle');
-            return;
-        }
-
+            if (endsWithOperator.test(value.trim())) {
+                saveButton.disabled = true; // Disable the button
+                resultInput.value = 'Incomplete formula'; // Display an incomplete formula message
+                resultInput.classList.add('bg-danger-subtle');
+                return;
+            }
 
         if (!firstRow) {
             console.error('No rows available to calculate the formula.');
@@ -413,7 +438,8 @@
         let isValid = true;  // Flag to track if the formula is valid
 
         try {
-            // regex to parse column names and allow numbers directly
+            // Modify regex to correctly parse column names and allow numbers directly
+            // let formula = formulaVal.replace(/([A-Za-z0-9_]+)/g, function (match) { /* <-- This was Razor syntax */
             let formula = formulaVal.replace(/([A-Za-z_]\w*)|\d+/g, function (match) {
                 const trimmedMatch = match.trim();  // Trim spaces around column names
                 // Check if the trimmed column name exists in the first row (case-sensitive)
@@ -426,7 +452,7 @@
                         return numValue; // Return the number directly if it's valid
                     } else {
                         isValid = false;  // If the column doesn't exist and it's not a number, mark the formula as invalid
-                        console.error(`Column "${trimmedMatch}" does not exist.`);
+                        console.error(`Column "${trimmedMatch}" does not exist.`); 
                         return 0;  // Return 0 to avoid breaking the formula
                     }
                 }
@@ -436,7 +462,7 @@
             if (isValid) {
                 const evaluateFormula = new Function('return ' + formula);
                 result = evaluateFormula();
-                // Round the result to 2 decimal places
+                // Round the result to 12 decimal places
                 result = parseFloat(result.toFixed(2));
             } else {
                 result = 'Invalid formula';  // Set result to "Invalid formula" if any column was missing
@@ -445,21 +471,26 @@
             console.error("Error in formula: ", error);
             result = 'Invalid formula';  // In case of any other errors
         }
-        resultInput.value = result || 'Invalid formula'; // Set the result or display 'Invalid formula'
+
+        console.log(result);
+        // resultInput.value = result || 'Invalid formula'; // Set the result or display 'Invalid formula'
+        // Set the result or show a specific message for zero
+        resultInput.value = result; // Directly set the result
+
+
         // Remove any previous background color classes
         resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
 
         // Change background color based on the result
-        if (isNaN(result)) {
-            resultInput.classList.add('bg-danger-subtle'); // Invalid formula
-        } else {
-            resultInput.classList.add('bg-success-subtle'); // Valid formula
-        }
+            if (isNaN(result)) {
+                resultInput.classList.add('bg-danger-subtle'); // Invalid formula
+            } else {
+                resultInput.classList.add('bg-success-subtle'); // Valid formula
+            }
 
         // Toggle the disabled state of the button based on formula validation
         const submitButton = document.getElementById('submitFormulaButton');
         submitButton.disabled = !isValid;
-
     }
 
 
@@ -620,7 +651,7 @@
                 cssClass: "datagridCol",
                 format: {
                     type: 'fixedPoint',
-                    precision: 2 
+                    precision: 2
                 }
             });
 
@@ -649,6 +680,15 @@
             });
         }
     }
+
+
+
+
+
+
+
+
+
 
     // Function to dynamically update the editing state of the DataGrid
     window.updateDataGridEditing = function (isEditingEnabled) {
@@ -706,8 +746,6 @@
                     ...convertedData
                 };
             });
-
-            console.log(updatedData)
 
             $.ajax({
                 url: '@Url.Action("UpdateDataGrid", "ListData")',
@@ -776,7 +814,7 @@
         }
     }
 
-    //show loading spinner before datagrid load 
+    //show loading spinner before datagrid load
     function showLoadingSpinner() {
         $("#loadingSpinner").removeClass("d-none");
         $("#noDataMessage").addClass("d-none");
@@ -795,7 +833,7 @@
         $("#errorMessage").addClass("d-none");
     }
 
-    //error message 
+    //error message
     function showErrorMessage() {
         $("#errorMessage").removeClass("d-none");
         $("#loadingSpinner").addClass("d-none");
