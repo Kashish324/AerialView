@@ -597,14 +597,7 @@ namespace final_aerialview.Data
         }
         #endregion
 
-        #region Insert into Calculated Field Master
-        //public IEnumerable<CalculatedFieldModel> InsertCalculatedFieldData(string columnName, string formula, int rptId)
-        //{
-        //    string query = $"Insert into CalculatedFieldMaster (RptId, ColumnName, Formula) values ({rptId} , '{columnName}' , '{formula}') ";
-        //    return ExecuteQuery<CalculatedFieldModel>(query);
-        //}
-        #endregion
-
+     
         #region Delete from Calculated Field Master
         public IEnumerable<CalculatedFieldModel> DeleteCalculatedFieldData(int? id)
         {

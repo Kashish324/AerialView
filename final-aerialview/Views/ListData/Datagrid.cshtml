@@ -125,12 +125,12 @@
             var formula = "@Html.Raw(calcField.Formula)"; // Retrieve the formula
 
             // Log the current row values for debugging
-            console.log("Calculating for:", e);
+            @* console.log("Calculating for:", e); *@
 
             // Replace column names with their values or default to 0
             var evaluatedFormula = formula.replace(/([A-Za-z_]\w*)/g, function(match) {
             const value = e[match] !== undefined && e[match] !== null ? e[match] : 0; // Default to 0
-            console.log(`Substituting ${match} with ${value}`); // Log substitutions
+            @* console.log(`Substituting ${match} with ${value}`); *@ // Log substitutions
             return value;
             });
 
@@ -243,7 +243,9 @@
                         <label for="columnNameInput" class="form-label fs-6 fw-semibold" style="font-size: .9rem !important;">Custom Column Name</label>
                         <input type="text" class="form-control fw-medium" id="columnNameInput" style="font-size: .8rem !important;" placeholder="Enter a name for your calculated field" oninput="handleColumnNameVal(this.value)" required>
                         <span id="duplicateName-message" class=" text-danger" style="display:none; font-size: 14px;">!</span>
+                        <div class="invalid-feedback text-danger">Example invalid feedback text</div>
                     </div>
+                 
                     @* Input for formula *@
                     <div class="mb-3">
                         <label for="formulaInput" class="form-label fs-6 fw-semibold" style="font-size: .9rem !important;">Calculation Formula</label>
@@ -263,10 +265,13 @@
                 </form>
             </div>
             <div class="modal-footer">
+                <button class ="btn text-light text-decoration-none cursor-pointer position-absolute start-0 pr-3" title="Reset Form" onclick="handlingFormReset()">
+                    <i class="ri-refresh-line text-warning"></i>
+                </button>
                 @* Delete Button to remove the opened calculated field  *@
                 <button type="button" class="btn btn-sm bg-danger-subtle border-0 fw-semibold text-danger-emphasis focus-ring focus-ring-danger" style="display:none; font-size: .8rem !important;" id="deleteFormulaButton" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">Delete</button>
                 @* Submit button to send form data to the controller  *@
-                <button type="button" class="btn btn-sm bg-primary-subtle border-0 shadow-none text-primary-emphasis fw-semibold  focus-ring focus-ring-primary" style="font-size: .8rem !important;" id="submitFormulaButton" onclick="submitFormula()" data-bs-dismiss="modal">Save Calculation</button>
+                <button type="submit" class="btn btn-sm bg-primary-subtle border-0 shadow-none text-primary-emphasis fw-semibold  focus-ring focus-ring-primary" style="font-size: .8rem !important;" id="submitFormulaButton" onclick="submitFormula()">Save Calculation</button>
             </div>
         </div>
     </div>
@@ -298,14 +303,34 @@
 <script>
     var columnName;
     var formulaVal;
-
     var saveButton = document.getElementById('submitFormulaButton'); // Save button element
-
     var calcFieldInput = document.getElementById('calculatedFieldId');
     var deleteCalcField = document.getElementById('deleteCalcFieldId');
     var calcFieldDeleteButton = document.getElementById('deleteFormulaButton');
     var resultInput = document.getElementById('formulaResult');
 
+    // //form validation 
+    // (() => {
+    //     const form = document.getElementById('formulaForm');
+    //     console.log(form)
+    //     //prevent submission
+    //     form.addEventListener('submit', event=> {
+    //         if (!form.checkValidity()) {
+    //             event.preventDefault()
+    //             event.stopPropagation()
+    //         }
+             
+    //         form.classList.add('was-validated')
+    //     }, false )
+    // })()
+
+    //handling form reset 
+    function handlingFormReset(){
+        document.getElementById('formulaForm').reset();
+        resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
+        document.getElementById('error-message').style.display = 'none';
+        calcFieldDeleteButton.style.display = 'none';
+    }
 
 
     //dropdown selection and fill the input values to with the selected option corresponding column name and formula
@@ -358,6 +383,10 @@
                         position: "bottom center",
                         direction: "up-push"
                     });
+                    document.getElementById('formulaForm').reset();
+                    resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
+                    document.getElementById('error-message').style.display = 'none';
+                    calcFieldDeleteButton.style.display = 'none';
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
@@ -377,8 +406,6 @@
 
                 // Add data-bs-dismiss attribute
                 $('#deleteBtn').attr('data-bs-dismiss', 'modal');
-                console.log(response);
-                // window.location.reload();
             },
             error: function (request, status, error) {
                 console.log(error);
@@ -419,12 +446,12 @@
         const endsWithOperator = /[+\-*/]$/;
 
         // Disable the save button if formula ends with an operator
-            if (endsWithOperator.test(value.trim())) {
-                saveButton.disabled = true; // Disable the button
-                resultInput.value = 'Incomplete formula'; // Display an incomplete formula message
-                resultInput.classList.add('bg-danger-subtle');
-                return;
-            }
+        if (endsWithOperator.test(value.trim())) {
+            saveButton.disabled = true; // Disable the button
+            resultInput.value = 'Incomplete formula'; // Display an incomplete formula message
+            resultInput.classList.add('bg-danger-subtle');
+            return;
+        }
 
         if (!firstRow) {
             console.error('No rows available to calculate the formula.');
@@ -452,7 +479,7 @@
                         return numValue; // Return the number directly if it's valid
                     } else {
                         isValid = false;  // If the column doesn't exist and it's not a number, mark the formula as invalid
-                        console.error(`Column "${trimmedMatch}" does not exist.`); 
+                        console.error(`Column "${trimmedMatch}" does not exist.`);
                         return 0;  // Return 0 to avoid breaking the formula
                     }
                 }
@@ -472,7 +499,6 @@
             result = 'Invalid formula';  // In case of any other errors
         }
 
-        console.log(result);
         // resultInput.value = result || 'Invalid formula'; // Set the result or display 'Invalid formula'
         // Set the result or show a specific message for zero
         resultInput.value = result; // Directly set the result
@@ -482,11 +508,11 @@
         resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
 
         // Change background color based on the result
-            if (isNaN(result)) {
-                resultInput.classList.add('bg-danger-subtle'); // Invalid formula
-            } else {
-                resultInput.classList.add('bg-success-subtle'); // Valid formula
-            }
+        if (isNaN(result)) {
+            resultInput.classList.add('bg-danger-subtle'); // Invalid formula
+        } else {
+            resultInput.classList.add('bg-success-subtle'); // Valid formula
+        }
 
         // Toggle the disabled state of the button based on formula validation
         const submitButton = document.getElementById('submitFormulaButton');
@@ -560,7 +586,6 @@
             contentType: 'application/json',
             success: function (response) {
                 if (response.success) {
-                    // DevExpress.ui.notify('Changes saved successfully', 'success', { position: "center", direction: "up-push" }, 2000);
                     DevExpress.ui.notify({
                         message: "Formula submitted successfully",
                         width: 300,
@@ -579,8 +604,8 @@
                     document.getElementById('formulaForm').reset();
                     resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
                     document.getElementById('error-message').style.display = 'none';
+                    calcFieldDeleteButton.style.display = 'none';
                 } else {
-                    // DevExpress.ui.notify('Error saving changes', 'error', { position: "center", direction: "up-push" }, 2000);
                     DevExpress.ui.notify({
                         message: "Error saving changes",
                         width: 300,
@@ -680,13 +705,6 @@
             });
         }
     }
-
-
-
-
-
-
-
 
 
 
