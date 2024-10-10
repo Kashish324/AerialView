@@ -180,7 +180,7 @@
 
         <div class="exportBtn position-sticky bg-white d-flex justify-content-between align-items-center gap-2 border-top ps-2">
 
-            <button type="button" class="btn  btn-sm border-white shadow fw-medium" data-bs-toggle="modal" data-bs-target="#calculatedFieldModal">
+            <button type="button" class="btn  btn-sm border-white shadow fw-medium" data-bs-toggle="modal" data-bs-target="#calculatedFieldModal" onclick="checkInput()">
                 <p class="fw-semibold  mb-0" style="color: #1D6F42;"><i class="ri-add-line"></i> Calculated field</p>
             </button>
 
@@ -212,7 +212,7 @@
     }
 </div>
 
-@* Modal for users to input their formulas for calculated fields *@
+@*  Modal for users to input their formulas for calculated fields  *@
 <div class="modal fade bg-secondary bg-gradient bg-opacity-25 " id="calculatedFieldModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
@@ -221,7 +221,7 @@
                 <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="formulaForm">
+                <form id="formulaForm" method="post">
 
                     @if (Model.CalculatedFields != null && Model.CalculatedFields.Any())
                     {
@@ -242,15 +242,14 @@
                     <div class="mb-3">
                         <label for="columnNameInput" class="form-label fs-6 fw-semibold" style="font-size: .9rem !important;">Custom Column Name</label>
                         <input type="text" class="form-control fw-medium" id="columnNameInput" style="font-size: .8rem !important;" placeholder="Enter a name for your calculated field" oninput="handleColumnNameVal(this.value)" required>
-                        <span id="duplicateName-message" class=" text-danger" style="display:none; font-size: 14px;">!</span>
-                        <div class="invalid-feedback text-danger">Example invalid feedback text</div>
+                        <span id="duplicateName-message" class="text-danger" style="display:none; font-size: 12px;">Column name already exists!</span>
                     </div>
-                 
+
                     @* Input for formula *@
                     <div class="mb-3">
                         <label for="formulaInput" class="form-label fs-6 fw-semibold" style="font-size: .9rem !important;">Calculation Formula</label>
                         <input type="text" class="form-control fw-medium" id="formulaInput" style="font-size: .8rem !important;" placeholder="e.g., Column1 + Column2" autocomplete="off" oninput="handleFormulaInput(this.value)" required>
-                        <span id="error-message" class=" text-danger" style="display:none; font-size: 14px;">!</span>
+                        <span id="error-message" class=" text-danger" style="display:none; font-size: 12px;">!</span>
                     </div>
 
                     <input type="hidden" name="rptId" value="@Model.RptId" />
@@ -265,17 +264,19 @@
                 </form>
             </div>
             <div class="modal-footer">
-                <button class ="btn text-light text-decoration-none cursor-pointer position-absolute start-0 pr-3" title="Reset Form" onclick="handlingFormReset()">
-                    <i class="ri-refresh-line text-warning"></i>
+                <button id="formReset" class="btn text-light text-decoration-none cursor-pointer position-absolute start-0 pr-3" title="Reset Form" onclick="handlingFormReset()">
+                    <i class="ri-refresh-line text-primary-emphasis"></i>
                 </button>
                 @* Delete Button to remove the opened calculated field  *@
                 <button type="button" class="btn btn-sm bg-danger-subtle border-0 fw-semibold text-danger-emphasis focus-ring focus-ring-danger" style="display:none; font-size: .8rem !important;" id="deleteFormulaButton" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">Delete</button>
                 @* Submit button to send form data to the controller  *@
-                <button type="submit" class="btn btn-sm bg-primary-subtle border-0 shadow-none text-primary-emphasis fw-semibold  focus-ring focus-ring-primary" style="font-size: .8rem !important;" id="submitFormulaButton" onclick="submitFormula()">Save Calculation</button>
+                <button type="submit" class="btn btn-sm bg-primary-subtle border-0 shadow-none text-primary-emphasis fw-semibold  focus-ring focus-ring-primary" style="font-size: .8rem !important;" id="submitFormulaButton" onclick="submitFormula()" data-bs-toggle="modal">Save Calculation</button>
             </div>
         </div>
     </div>
 </div>
+
+
 
 <!-- Modal for delete confirmation -->
 <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
@@ -293,7 +294,6 @@
             <div class="modal-footer p-1">
                 <button id="deleteBtn" type="button" class="btn btn-sm bg-danger btn-sm text-white shadow-sm" onclick="handleDeleteCalcField()" data-bs-dismiss="modal">Yes</button>
                 <button type="button" class="btn btn-sm bg-secondary-subtle btn-sm shadow-sm" data-bs-target="#calculatedFieldModal" data-bs-toggle="modal">No</button>
-                @* <button class="btn btn-primary" data-bs-target="#calculatedFieldModal" data-bs-toggle="modal">Open first modal</button> *@
             </div>
         </div>
     </div>
@@ -301,15 +301,7 @@
 
 
 <script>
-    var columnName;
-    var formulaVal;
-    var saveButton = document.getElementById('submitFormulaButton'); // Save button element
-    var calcFieldInput = document.getElementById('calculatedFieldId');
-    var deleteCalcField = document.getElementById('deleteCalcFieldId');
-    var calcFieldDeleteButton = document.getElementById('deleteFormulaButton');
-    var resultInput = document.getElementById('formulaResult');
-
-    // //form validation 
+    // //form validation
     // (() => {
     //     const form = document.getElementById('formulaForm');
     //     console.log(form)
@@ -319,17 +311,48 @@
     //             event.preventDefault()
     //             event.stopPropagation()
     //         }
-             
+
     //         form.classList.add('was-validated')
     //     }, false )
     // })()
 
-    //handling form reset 
-    function handlingFormReset(){
+
+    var columnName;
+    var formulaVal;
+    var dropDownVal;
+    var saveButton = document.getElementById('submitFormulaButton'); // Save button element
+    var calcFieldInput = document.getElementById('calculatedFieldId');
+    var deleteCalcField = document.getElementById('deleteCalcFieldId');
+    var calcFieldDeleteButton = document.getElementById('deleteFormulaButton');
+    var resultInput = document.getElementById('formulaResult');
+    var duplicateMessage = document.getElementById('duplicateName-message');
+  
+
+    // Pass the column names from the server-side Model to a JavaScript variable
+    existingColumnNames = @Json.Serialize(Model?.CalculatedFields?.Select(c => c.ColumnName ?? string.Empty).ToList() ?? new List<string>());
+    // console.log(existingColumnNames)
+
+    //keeping the save calculation button disabled by default
+    function checkInput() {
+        if (columnName === undefined && formulaVal === undefined) {
+            saveButton.disabled = true;
+        } else {
+            saveButton.disabled = false;
+        }
+    }
+    // checkInput()
+
+    //handling form reset
+    function handlingFormReset() {
         document.getElementById('formulaForm').reset();
         resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
         document.getElementById('error-message').style.display = 'none';
         calcFieldDeleteButton.style.display = 'none';
+        duplicateMessage.style.display = 'none';
+        handleColumnNameVal('')
+        // console.log(columnName)
+        checkInput();
+        saveButton.disabled = true;
     }
 
 
@@ -345,20 +368,13 @@
         const colNameInput = document.getElementById('columnNameInput');
         const formulaInput = document.getElementById('formulaInput');
 
-
         colNameInput.value = existingColumnNameVal;
         formulaInput.value = existingFormulaVal;
         handleColumnNameVal(existingColumnNameVal)
         handleFormulaInput(existingFormulaVal);
 
         //showing delete button only if the one of the valid option is selected from dropdown
-        if (selectedElement.value !== "") {
-            // Show the delete button if a valid option is selected
-            calcFieldDeleteButton.style.display = 'inline-block';
-        } else {
-            // Hide the delete button if no option is selected
-            calcFieldDeleteButton.style.display = 'none';
-        }
+        calcFieldDeleteButton.style.display = selectedElement.value ? 'inline-block' : 'none';
     }
 
     //delete calculated field
@@ -387,6 +403,8 @@
                     resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
                     document.getElementById('error-message').style.display = 'none';
                     calcFieldDeleteButton.style.display = 'none';
+                    checkInput();
+                    // handlingFormReset();
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
@@ -429,8 +447,44 @@
 
     //get the column name from user input
     function handleColumnNameVal(value) {
-        columnName = value;
+        // console.log(existingColumnNames)
+        //dropdown
+        var dropDownValue = document.getElementById('existingFieldsDropdown').value;
+        // columnName = value;
+        columnName = value.trim().toLowerCase();
+
+        // Check if the input matches any of the existing column names (case-insensitive comparison)
+        var isDuplicate = existingColumnNames.some(name => name.toLowerCase() === columnName);
+
+        //check if something is selected from dropdown or not
+        if (dropDownValue === null || dropDownValue === '') {
+
+            //when nothing is selected from the dropdown
+            // Show or hide the error message based on the duplicate check
+            if (isDuplicate) {
+                duplicateMessage.style.display = 'block'; // Show error message
+            } else {
+                duplicateMessage.style.display = 'none'; // Hide error message
+            }
+        } else {
+            //when something is selected from dropdown
+            duplicateMessage.style.display = 'none';
+        }
     }
+
+    //to validate column name, when the dropdown value is selected 
+    document.getElementById('columnNameInput').addEventListener('input', function (e) {
+        var dup = existingColumnNames.some(name => name.toLowerCase() === e.target.value);
+        var dropDownValue = document.getElementById('existingFieldsDropdown');
+        console.log(dropDownValue)
+      
+        if (dup) {
+            duplicateMessage.style.display = 'block';
+        } else {
+            duplicateMessage.style.display = 'none';
+        }
+    })
+
 
     //get the formula input by the user and show its result in the result preview text field
     function handleFormulaInput(value) {
@@ -605,6 +659,7 @@
                     resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
                     document.getElementById('error-message').style.display = 'none';
                     calcFieldDeleteButton.style.display = 'none';
+                    checkInput();
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
@@ -706,8 +761,6 @@
         }
     }
 
-
-
     // Function to dynamically update the editing state of the DataGrid
     window.updateDataGridEditing = function (isEditingEnabled) {
         const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
@@ -776,7 +829,6 @@
                 }),
                 success: function (response) {
                     if (response.success) {
-                        // DevExpress.ui.notify('Changes saved successfully', 'success', { position: "center", direction: "up-push" }, 2000);
                         DevExpress.ui.notify({
                             message: "Changes saved successfully",
                             width: 300,
@@ -793,7 +845,6 @@
                         });
 
                     } else {
-                        // DevExpress.ui.notify('Error saving changes', 'error', { position: "center", direction: "up-push" }, 2000);
                         DevExpress.ui.notify({
                             message: "Error saving changes",
                             width: 300,
@@ -862,13 +913,14 @@
     var pdfExportBtn = document.getElementById('pdfExportButton');
     var pdfOrientationSelect = document.getElementById('pdfOrientationSelect');
 
-
+    //excel export button
     if (excelExportBtn) {
         excelExportBtn.addEventListener('click', function (event) {
             exportGridToExcel(event);
         });
     }
 
+    //pdf export button
     if (pdfExportBtn) {
         pdfExportBtn.addEventListener('click', function (event) {
             exportGridToPdf(event);
@@ -1028,7 +1080,7 @@
 
         var rowHeight = 10;
         var columnCount = dataGridInstance.columnCount();
-        console.log("columnCount", columnCount)
+        // console.log("columnCount", columnCount)
         var rowCount = dataGridInstance.getDataSource().items().length;
 
         var columnWidth;
