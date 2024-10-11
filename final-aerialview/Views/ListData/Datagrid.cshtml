@@ -124,8 +124,6 @@
             function CalculateProductTotal(e) {
             var formula = "@Html.Raw(calcField.Formula)"; // Retrieve the formula
 
-            // Log the current row values for debugging
-            @* console.log("Calculating for:", e); *@
 
             // Replace column names with their values or default to 0
             var evaluatedFormula = formula.replace(/([A-Za-z_]\w*)/g, function(match) {
@@ -326,7 +324,6 @@
     var calcFieldDeleteButton = document.getElementById('deleteFormulaButton');
     var resultInput = document.getElementById('formulaResult');
     var duplicateMessage = document.getElementById('duplicateName-message');
-  
 
     // Pass the column names from the server-side Model to a JavaScript variable
     existingColumnNames = @Json.Serialize(Model?.CalculatedFields?.Select(c => c.ColumnName ?? string.Empty).ToList() ?? new List<string>());
@@ -340,7 +337,6 @@
             saveButton.disabled = false;
         }
     }
-    // checkInput()
 
     //handling form reset
     function handlingFormReset() {
@@ -360,8 +356,10 @@
     function handleFieldSelection(selectedElement) {
         //selected option
         const selectedOption = selectedElement.options[selectedElement.selectedIndex];
+
         calcFieldInput.value = selectedOption.value; //setting calculated field hidden input field ID value to the selected dropdown value
         deleteCalcField.value = selectedOption.value;
+        deleteCalcField.setAttribute("data-col-name", selectedOption.getAttribute('data-column-name'))
         const existingFormulaVal = selectedOption.getAttribute('data-formula')
         const existingColumnNameVal = selectedOption.getAttribute('data-column-name')
 
@@ -377,8 +375,10 @@
         calcFieldDeleteButton.style.display = selectedElement.value ? 'inline-block' : 'none';
     }
 
+
     //delete calculated field
     function handleDeleteCalcField() {
+
         $.ajax({
             url: '/ListData/DeleteCalculatedField',
             type: 'POST',
@@ -405,6 +405,8 @@
                     calcFieldDeleteButton.style.display = 'none';
                     checkInput();
                     // handlingFormReset();
+                    deleteColumn();
+
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
@@ -422,8 +424,8 @@
                     });
                 }
 
-                // Add data-bs-dismiss attribute
-                $('#deleteBtn').attr('data-bs-dismiss', 'modal');
+                // Close the modal
+                document.getElementById('deleteBtn').setAttribute('data-bs-dismiss', 'modal');
             },
             error: function (request, status, error) {
                 console.log(error);
@@ -442,8 +444,41 @@
                     direction: "up-push"
                 });
             }
+
+
         });
+
+
     }
+
+    //Update the existingColumnNames and the localStorage by removing the deleted field name
+    function deleteColumn() {
+        var storage = localStorage.getItem("storage");
+        // Parse the JSON string into an object
+        const parsedData = JSON.parse(storage);
+
+        // Access the 'columns' property
+        const columns = parsedData.columns;
+
+        var columnName = deleteCalcField.getAttribute('data-col-name');
+
+        // Filter out the column where col.dataField matches columnName
+        const updatedColumns = columns.filter((col) => col.dataField !== columnName);
+
+        // Update the 'columns' property in parsedData
+        parsedData.columns = updatedColumns;
+
+        // Store the updated object back into localStorage
+        localStorage.setItem('storage', JSON.stringify(parsedData));
+
+        // console.log('Updated columns saved to localStorage:', updatedColumns);
+
+        const deletedColumnName = existingColumnNames.find(name => name === columnName)
+        if (deletedColumnName) {
+            existingColumnNames = existingColumnNames.filter(col => col !== deletedColumnName);
+        }
+    }
+
 
     //get the column name from user input
     function handleColumnNameVal(value) {
@@ -472,15 +507,23 @@
         }
     }
 
-    //to validate column name, when the dropdown value is selected 
+    //to validate column name, when the dropdown value is selected, so the user won't enter the same name as before
     document.getElementById('columnNameInput').addEventListener('input', function (e) {
         var dup = existingColumnNames.some(name => name.toLowerCase() === e.target.value);
         var dropDownValue = document.getElementById('existingFieldsDropdown');
-        console.log(dropDownValue)
-      
+        //selected option
+        const selectedOption = dropDownValue.options[dropDownValue.selectedIndex];
+        const existingColumnNameVal = selectedOption.getAttribute('data-column-name')
+        console.log(dup)
+
         if (dup) {
             duplicateMessage.style.display = 'block';
         } else {
+            duplicateMessage.style.display = 'none';
+        }
+
+        //if the user input the same name as before(i.e, selected column name) then the error won't show up
+        if (existingColumnNameVal === e.target.value) {
             duplicateMessage.style.display = 'none';
         }
     })
@@ -640,20 +683,20 @@
             contentType: 'application/json',
             success: function (response) {
                 if (response.success) {
-                    DevExpress.ui.notify({
-                        message: "Formula submitted successfully",
-                        width: 300,
-                        type: "success",
-                        displayTime: 3500,
-                        shading: true,
-                        animation: {
-                            show: { type: "fade", duration: 400, from: 0, to: 1 },
-                            hide: { type: "fade", duration: 40, to: 0 }
-                        }
-                    }, {
-                        position: "bottom center",
-                        direction: "up-push"
-                    });
+                    // DevExpress.ui.notify({
+                    //     message: "Formula submitted successfully",
+                    //     width: 300,
+                    //     type: "success",
+                    //     displayTime: 3500,
+                    //     shading: true,
+                    //     animation: {
+                    //         show: { type: "fade", duration: 400, from: 0, to: 1 },
+                    //         hide: { type: "fade", duration: 40, to: 0 }
+                    //     }
+                    // }, {
+                    //     position: "bottom center",
+                    //     direction: "up-push"
+                    // });
                     addCalculatedColumn();
                     document.getElementById('formulaForm').reset();
                     resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
@@ -743,6 +786,12 @@
                 dataGrid.state(JSON.parse(gridState));
             }
 
+            // Add the new column name to the existingColumnNames array
+            existingColumnNames.push(columnName);
+
+            // Update the dropdown
+            updateCalculatedFieldsDropdown(columnName);
+
             // Notify the user
             DevExpress.ui.notify({
                 message: ` '${columnName}' column added successfully`,
@@ -760,6 +809,26 @@
             });
         }
     }
+
+    //update the dropdown list of calculated column modal, without refreshing
+    function updateCalculatedFieldsDropdown(newColumnName) {
+        const dropdown = document.getElementById('existingFieldsDropdown');
+
+        if (dropdown) {
+            // Create a new option element
+            const option = document.createElement('option');
+            option.value = newColumnName;
+            option.text = newColumnName;
+
+            //to show in a drop down that a new column is added 
+            option.classList.add('fw-medium', 'bg-success-subtle');
+
+            // Append the new option to the dropdown
+            dropdown.appendChild(option);
+
+        }
+    }
+    
 
     // Function to dynamically update the editing state of the DataGrid
     window.updateDataGridEditing = function (isEditingEnabled) {

@@ -597,7 +597,7 @@ namespace final_aerialview.Data
         }
         #endregion
 
-     
+
         #region Delete from Calculated Field Master
         public IEnumerable<CalculatedFieldModel> DeleteCalculatedFieldData(int? id)
         {
