@@ -152,7 +152,7 @@
         </text>)
 
         .Format(f => f.Type(Format.FixedPoint).Precision(2))
-        .AllowEditing(false);  @* Adjust based on your logic for editing *@
+        .AllowEditing(false); 
                         }
                     }
                 })
@@ -776,6 +776,7 @@
                     type: 'fixedPoint',
                     precision: 2
                 }
+
             });
 
             // Update the grid with the new columns array
@@ -790,7 +791,8 @@
             existingColumnNames.push(columnName);
 
             // Update the dropdown
-            updateCalculatedFieldsDropdown(columnName);
+            // updateCalculatedFieldsDropdown(columnName);
+            console.log('datagrid options',dataGrid.options)
 
             // Notify the user
             DevExpress.ui.notify({
@@ -811,23 +813,31 @@
     }
 
     //update the dropdown list of calculated column modal, without refreshing
-    function updateCalculatedFieldsDropdown(newColumnName) {
-        const dropdown = document.getElementById('existingFieldsDropdown');
+    // function updateCalculatedFieldsDropdown(newColumnName) {
+    //     const dropdown = document.getElementById('existingFieldsDropdown');
 
-        if (dropdown) {
-            // Create a new option element
-            const option = document.createElement('option');
-            option.value = newColumnName;
-            option.text = newColumnName;
+       
+    //     if (dropdown) {
+    //         // Create a new option element
+    //         const option = document.createElement('option');
+    //         option.value = newColumnName;
+    //         // option.text = newColumnName;
 
-            //to show in a drop down that a new column is added 
-            option.classList.add('fw-medium', 'bg-success-subtle');
+    //         //to show in a drop down that a new column is added 
+    //         option.classList.add('fw-medium', 'bg-success-subtle');
 
-            // Append the new option to the dropdown
-            dropdown.appendChild(option);
+    //         //adding column name and formula 
+    //         option.setAttribute("data-column-name", option.value);
+    //         option.setAttribute("value", option.value);
+    //         option.setAttribute("data-formula", formulaVal);
 
-        }
-    }
+    //         console.log(option.text)
+
+    //         // Append the new option to the dropdown
+    //         dropdown.appendChild(option);
+    //         console.log(option)
+    //     }
+    // }
     
 
     // Function to dynamically update the editing state of the DataGrid
