@@ -33,8 +33,6 @@ namespace final_aerialview.Controllers
             var user = await _dataAccess.GetUserByUsernameAsync(userId);
             var projectSettings = _dataAccess.GetPdfImageData();
 
-
-
             //if (user != null && user.Password == password)
                 if (user != null && user.Password == password && projectSettings.Any(item => !string.IsNullOrEmpty(item.ModuleKey)))
                 {

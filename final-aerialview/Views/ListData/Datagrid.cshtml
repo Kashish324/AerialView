@@ -178,16 +178,17 @@
 
         <div class="exportBtn position-sticky bg-white d-flex justify-content-between align-items-center gap-2 border-top ps-2">
 
-            <button type="button" class="btn  btn-sm border-white shadow fw-medium" data-bs-toggle="modal" data-bs-target="#calculatedFieldModal" onclick="checkInput()">
-                <p class="fw-semibold  mb-0" style="color: #1D6F42;"><i class="ri-add-line"></i> Calculated field</p>
+            <button type="button" class="btn  btn-sm border-white shadow fw-medium" data-bs-toggle="modal" data-bs-target="#calculatedFieldModal" onclick="checkInput()" style="background-color:#1866B0 !important; ">
+                @* <p class="fw-semibold  mb-0" style="color: #1D6F42;"><i class="ri-add-line"></i> Calculated field</p> *@
+                <p class="fw-semibold text-white  mb-0" ><i class="ri-add-line"></i> Calculated field</p>
             </button>
 
 
             <div class=" d-flex align-items-center gap-2">
 
                 <div id="exportOrientation" class="ms-2">
-                    <div class="input-group input-group-sm">
-                        <label class="input-group-text" for="pdfOrientationSelect"><i class="bi bi-printer"></i></label>
+                    <div class="input-group input-group-sm ">
+                        <label class="input-group-text bg-warning" for="pdfOrientationSelect"><i class="bi bi-printer fw-medium text-dark"></i></label>
                         <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example" style="cursor: pointer !important;">
                             <option value="landscape" selected>Landscape</option>
                             <option value="portrait">Portrait</option>

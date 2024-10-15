@@ -1,4 +1,5 @@
 ﻿using Dapper;
+using DevExpress.CodeParser;
 using final_aerialview.Models;
 using System.Data;
 using System.Data.SqlClient;
@@ -620,6 +621,35 @@ namespace final_aerialview.Data
             return ExecuteQuery<CalculatedFieldModel>(query);
         }
         #endregion
+
+        #region event configuration view table data
+        public IEnumerable<EventConfigModel> GetEventConfigData()
+        {
+            string query = "SELECT * FROM EventConfig_View";
+            return ExecuteQuery<EventConfigModel>(query);
+        }
+        #endregion
+
+        #region getting column names according to the selected connection string and table name for the alarm and event configuration page
+        
+        public IEnumerable<string> FetchColNamesForEventConfig(string connectionString, string tableName)
+        {
+            using (var connection = new SqlConnection(connectionString))
+            {
+                connection.Open();
+
+                // Ensure the table name is safely handled
+                string sqlQuery = $@"
+            SELECT COLUMN_NAME 
+            FROM INFORMATION_SCHEMA.COLUMNS 
+            WHERE TABLE_NAME = '{tableName}'AND DATA_TYPE IN ('real', 'int', 'decimal', 'numeric', 'float')"; // condition so that the columns we get are of type (real, int, decimal, numeric, float)
+
+                // Use Dapper to execute the query and fetch the column names
+                return connection.Query<string>(sqlQuery);
+            }
+        }
+        #endregion
+
     }
 }
 

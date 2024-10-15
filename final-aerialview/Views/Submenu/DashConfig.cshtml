@@ -365,20 +365,6 @@
 
 
     // get saved dashboard list from /DashboardFolder/DashInfo
-    // function showToast(message) {
-    //     var toastBody = document.querySelector('.toast-body');
-    //     if (toastBody) {
-    //         toastBody.innerHTML = message;
-    //     }
-    //     var toastLive = document.getElementById('liveToast');
-    //     var toast = new bootstrap.Toast(toastLive, {
-    //         autohide: true,
-    //         delay: 2000
-    //     });
-    //     toast.show();
-    // }
-
-
     $('#getDashboardModal').on('show.bs.modal', function () {
         $.ajax({
             url: '/DashboardFolder/DashInfo',

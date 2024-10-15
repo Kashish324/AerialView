@@ -81,11 +81,9 @@
         </div>
     }
     <!-- #endregion -->
-
-
     @if (User.Identity != null && User.Identity.IsAuthenticated)
     {
-        
+
 
         var controllerValue = ViewContext.RouteData.Values["controller"];
 
@@ -125,6 +123,7 @@
                                 var correspondingIcon = MenuIcons.FirstOrDefault(icon => icon.Item1 == mainItem.MenuCode);
 
                                 <li data-menu-id="@mainItem.MenuCode">
+
                                     <div class="icon-link">
                                         <div class="listMenu" title="@mainItem.MenuName">
                                             @if (correspondingIcon != default)
@@ -143,7 +142,7 @@
                                             }
                                             else
                                             {
-                                            <span class="link_name fs-6">@mainItem.MenuName</span>
+                                                <span class="link_name fs-6">@mainItem.MenuName</span>
                                             }
                                         </div>
                                         @if (hasSubmenu)
@@ -151,6 +150,7 @@
                                             <i class="ri-arrow-down-s-line arrow fs-6"></i>
                                         }
                                     </div>
+
 
                                     @if (hasSubmenu)
                                     {
@@ -340,7 +340,7 @@
                 </ul>
             </div>
 
-            
+
 
             @* home section  *@
             <section class="home-section position-absolute top-0 end-0">
