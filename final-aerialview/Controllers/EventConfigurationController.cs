@@ -1,6 +1,7 @@
 ﻿using DevExpress.ReportServer.ServiceModel.DataContracts;
 using DevExpress.Xpo.DB.Helpers;
 using final_aerialview.Data;
+using final_aerialview.Models;
 using Microsoft.AspNetCore.Mvc;
 
 namespace final_aerialview.Controllers
@@ -20,25 +21,9 @@ namespace final_aerialview.Controllers
             return View();
         }
 
-        [HttpGet]
-        public IActionResult GetTableNames(string connectionString)
-        {
-            // Validate the connection string if necessary
-            if (string.IsNullOrWhiteSpace(connectionString))
-            {
-                return BadRequest("Connection string cannot be empty.");
-            }
-
-            var tableNames = _dataAccess.FetchTableNamesByConnectionString(connectionString);
-
-            
 
 
-            // Return the table names as JSON
-            return Json(tableNames);
-        }
-
-
+        #region get all the integer column names acc. to the selected report name
         [HttpGet]
         public IActionResult GetColumnNames(string connectionString, string tableName)
         {
@@ -50,12 +35,34 @@ namespace final_aerialview.Controllers
 
             var columnNames = _dataAccess.FetchColNamesForEventConfig(connectionString, tableName);
 
-
-
-
             // Return the table names as JSON
             return Json(columnNames);
         }
+        #endregion
+
+        #region inserting the configuration to the sql 
+        [HttpPost]
+        public IActionResult SaveConfiguration([FromBody] EventConfigViewModel viewModel)
+        {
+            // Handle your model and save it to the database
+            if (ModelState.IsValid)
+            {
+                bool status = viewModel.Status ?? false; // Default to false if null
+                //DateTime createdAt = viewModel.CreatedAt ?? DateTime.UtcNow; // Default to current time if null
+                //DateTime updatedAt = viewModel.UpdatedAt ?? DateTime.UtcNow;
+                string createdAt = viewModel.CreatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"); // Default to current time in ISO format
+                string updatedAt = viewModel.UpdatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
+                _dataAccess.InsertEventConfigMasterData(viewModel.ConnString, viewModel.TableName, viewModel.ColumnName, viewModel.AlarmLow, viewModel.AlarmHigh, viewModel.WarningHigh, viewModel.WarningLow, createdAt, updatedAt, status, viewModel.RptId, viewModel.CreatedById, viewModel.UpdateById, viewModel.Emails);
+               
+                
+                // Save logic here
+                return Ok(new { success = true });
+            }
+
+            return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+        }
+        #endregion
     }
 
 }

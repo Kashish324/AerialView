@@ -34,16 +34,18 @@ namespace final_aerialview.Controllers
             var projectSettings = _dataAccess.GetPdfImageData();
 
             //if (user != null && user.Password == password)
-                if (user != null && user.Password == password && projectSettings.Any(item => !string.IsNullOrEmpty(item.ModuleKey)))
-                {
+            if (user != null && user.Password == password && projectSettings.Any(item => !string.IsNullOrEmpty(item.ModuleKey)))
+            {
                 // Determine the role based on the user ID
                 string role = user.UserId ?? string.Empty;
-                var username =  user.UserName ?? string.Empty;
+                var username = user.UserName ?? string.Empty;
+                var loggedUserId = user.Id;
 
                 var claims = new List<Claim>
                     {
                         new(ClaimTypes.Name, username),
-                        new(ClaimTypes.Role, role)
+                        new(ClaimTypes.Role, role),
+                        new("UserId", loggedUserId.ToString())
                     };
 
                 var claimsIdentity = new ClaimsIdentity(claims, CookieAuthenticationDefaults.AuthenticationScheme);
@@ -53,9 +55,10 @@ namespace final_aerialview.Controllers
 
                 return RedirectToAction("Index", "Home");
 
-            }else if(user != null && user.Password != password)
+            }
+            else if (user != null && user.Password != password)
             {
-            ViewBag.Message = "Invalid credentials";
+                ViewBag.Message = "Invalid credentials";
             }
             else
             {
@@ -74,7 +77,7 @@ namespace final_aerialview.Controllers
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             HttpContext.Session.Remove("IsLoggedIn");
             HttpContext.Session.Clear(); // Clear session
-           
+
             return RedirectToAction("Login", "Account");
         }
         #endregion

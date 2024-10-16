@@ -4,7 +4,7 @@
 
 @{
     var reports = ViewData["Reports"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
-    var configurations = ViewData["EventConfigurations"] as IEnumerable<final_aerialview.Models.EventConfigModel>;
+    var configurations = ViewData["EventConfigurations"] as IEnumerable<final_aerialview.Models.EventConfigViewModel>;
 }
 
 
@@ -23,7 +23,7 @@
     <div class="card p-3 mb-3 bg-light shadow">
 
         <!-- Form Content -->
-        <form>
+        <form id="eventConfigForm">
             <!-- Row 1: Connection String, Table Name and Column Name -->
             <div class="row mb-2">
                 @* report name *@
@@ -36,14 +36,13 @@
                         {
                             @foreach (var report in reports)
                             {
-                                <option class="fw-medium" value="@report.SubMenuId" data-table-name="@report.DataTableName" data-conn-string="@report.stringName">@report.SubChildName</option>
+                                <option class="fw-medium" value="@report.SubChildName" data-table-name="@report.DataTableName" data-conn-string="@report.stringName" data-rpt-id="@report.RptId">@report.SubChildName</option>
                             }
                         }
 
                     </select>
                 </div>
 
-                
                 <div class="col-12 col-md-6 mb-2">
                     <label for="columnName" class="form-label fw-medium">Column Name:</label>
                     <select class="form-select form-select-sm fw-medium" id="columnName" required>
@@ -80,32 +79,44 @@
                     <input type="email" class="form-control form-control-sm fw-medium" id="emailInput" placeholder="Enter multiple emails separated by commas" multiple required>
                 </div>
                 <div class="col-12 col-md-4 mb-2">
-    <label for="status" class="form-label fw-medium">Status:</label>
-    <div class="form-check form-switch mt-1">
-        <input class="form-check-input" type="checkbox" id="statusToggle" checked>
-        <span id="statusBadge" class=" text-primary-emphasis fw-medium">Active</span>
-    </div>
-</div>
+                    <label for="status" class="form-label fw-medium">Status:</label>
+                    <div class="form-check form-switch mt-1">
+                        <input class="form-check-input" type="checkbox" id="statusToggle" checked>
+                        <span id="statusBadge" class=" text-primary-emphasis fw-medium">Active</span>
+                    </div>
+                </div>
             </div>
+
+            <!-- hidden inputs -->
+            <input type="hidden" name="connString" value="" id="connStringInput" />
+            <input type="hidden" name="tableName" value="" id="tableNameInput" />
+            <input type="hidden" name="RptId" value="" id="rptIdInput" />
+            <input type="hidden" name="createdAt" value="" id="createdAtInput" />
+            <input type="hidden" name="updatedAt" value="" id="updatedAtInput" />
+
+            @if (User.Identity != null)
+            {
+                <input type="hidden" name="createdById" id="createdById" value="@User.FindFirst("UserId")?.Value" />
+                <input type="hidden" name="updateById" id="updateById" value="@User.FindFirst("UserId")?.Value" />
+            }
 
             <!-- Submit Button -->
             <div class="d-flex justify-content-center justify-content-md-end text-center mt-3">
-                <button type="submit" class="btn btn-sm fw-medium focus-ring focus-ring-primary text-white" style="background-color: #1866B0 !important ">Save</button>
+                <button id="saveConfiguration" type="submit" class="btn btn-sm fw-medium focus-ring focus-ring-primary text-white" style="background-color: #1866B0 !important">Save</button>
             </div>
         </form>
 
     </div>
 
-    <!-- Data Table Section (Responsive) -->
-
+    <!-- Data Table Section -->
     <div class="card p-3 mb-3 bg-light shadow">
-        <h5 class="card-title text-center mb-3 fs-5">Existing Configurations</h5>
+        <div class="card-title text-center mb-3 fw-medium" style="font-size: 18px;">Existing Configurations</div>
         @if (configurations != null && configurations.Count() > 0)
         {
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-sm align-middle">
                     <thead>
-                        <tr class="text-center">
+                        <tr class="text-center" style="font-size: 14px;">
                             <th>Id</th>
                             <th>Report Name</th>
                             <th>Column Name</th>
@@ -122,7 +133,7 @@
                     <tbody>
                         @foreach (var config in configurations)
                         {
-                            <tr class="text-center fw-medium">
+                            <tr class="text-center fw-medium" style="font-size: 13.5px;">
                                 <td>@config.Id</td>
                                 <td>@config.ReportName</td>
                                 <td>@config.ColumnName</td>
@@ -162,7 +173,6 @@
                 No event configuration available.
             </div>
         }
-
     </div>
 </div>
 
@@ -170,8 +180,9 @@
 
 
 <script>
-    //toggling status on click 
-    document.getElementById("statusToggle").addEventListener("change", function() {
+
+    //toggling status on click
+    document.getElementById("statusToggle").addEventListener("change", function () {
         var statusBadge = document.getElementById("statusBadge");
         if (this.checked) {
             statusBadge.innerHTML = "Active";
@@ -179,21 +190,25 @@
             statusBadge.innerHTML = "Inactive";
         }
     });
-   
-   
+
+
     //basis on the selected report name's corresponding connection string, tablename populating column name dropdown
-$('#reportName').on('change', function () {
+    $('#reportName').on('change', function () {
         // const selectedReport = $(this).val();
         const selectedReport = $(this).find('option:selected');
         const connString = selectedReport.data('conn-string'); // Get the connection string from data attribute
         const tableName = selectedReport.data('table-name'); // Get the table name from data attribute
+        const rptId = selectedReport.data('rpt-id'); // Get the table name from data attribute
 
-        console.log(connString)
-        console.log(tableName)
+        // Update hidden inputs
+        document.getElementById("connStringInput").value = connString;
+        document.getElementById("tableNameInput").value = tableName;
+        document.getElementById("rptIdInput").value = rptId;
+
 
         // AJAX call to get the column name based on the selected report
         $.ajax({
-            url: '/EventConfiguration/GetColumnNames', 
+            url: '/EventConfiguration/GetColumnNames',
             type: 'GET',
             data: { connectionString: connString, tableName: tableName },
             success: function (data) {
@@ -212,5 +227,106 @@ $('#reportName').on('change', function () {
             }
         });
     });
+
+    function formatDate(date) {
+        var day = date.getDate();
+        var month = date.getMonth() + 1; // Months are zero-based
+        var year = date.getFullYear();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+
+        // Pad single digits with a leading zero
+        day = day < 10 ? '0' + day : day;
+        month = month < 10 ? '0' + month : month;
+        hours = hours < 10 ? '0' + hours : hours;
+        minutes = minutes < 10 ? '0' + minutes : minutes;
+        seconds = seconds < 10 ? '0' + seconds : seconds;
+
+        // Return the formatted date string in "YYYY-MM-DD HH:MI:SS"
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+    }
+
+    //form data
+    document.getElementById("saveConfiguration").addEventListener('click', function (e) {
+        e.preventDefault();
+
+        //get current date time
+        // var currentDateTime = new Date().toISOString();
+        var currentDateTime = new Date();
+        var formattedDateTime = formatDate(currentDateTime);
+
+
+        // Collecting form data
+
+        // Set createdAt and updatedAt to current date and time
+        document.getElementById("createdAtInput").value = formattedDateTime;
+        document.getElementById("updatedAtInput").value = formattedDateTime;
+
+
+        const connString = document.getElementById('connStringInput').value;
+        const tableName = document.getElementById('tableNameInput').value;
+        const columnName = document.getElementById('columnName').value;
+
+        // Parse integers for alarmHigh, alarmLow, rptId, createdById, updateById
+        const alarmHigh = parseInt(document.getElementById('alarmHigh').value);
+        const warningHigh = parseInt(document.getElementById('warningHigh').value);
+        const warningLow = parseInt(document.getElementById('warningLow').value);
+        const alarmLow = parseInt(document.getElementById('alarmLow').value);
+        const createdAt = document.getElementById('createdAtInput').value;
+        const updatedAt = document.getElementById('updatedAtInput').value;
+
+        
+        // Convert status to boolean
+        const status = document.getElementById('statusToggle').checked;
+
+        const rptId = parseInt(document.getElementById('rptIdInput').value);
+        const createdById = parseInt(document.getElementById('createdById').value);
+        const updateById = parseInt(document.getElementById('updateById').value);
+        const emails = document.getElementById('emailInput').value;
+
+        // Creating an object to store the form data
+        const formData = {
+            connString,
+            tableName,
+            columnName,
+            alarmHigh,
+            warningHigh,
+            warningLow,
+            alarmLow,
+            createdAt,
+            updatedAt,
+            status,
+            rptId,
+            createdById,
+            updateById,
+            emails
+        };
+
+        // Log the form data to the console
+        console.log(formData);
+
+        // Send AJAX request to controller
+        $.ajax({
+            url: '/EventConfiguration/SaveConfiguration',
+            type: 'POST',
+            contentType: 'application/json',
+            data: JSON.stringify(formData),
+            success: function (response) {
+                if (response.success) {
+                    alert('Configuration saved successfully.');
+                    // Optionally, you can refresh the page or update the UI here
+                } else {
+                    alert('Error saving configuration: ' + response.errors.join(', '));
+                }
+            },
+            error: function () {
+                alert('An error occurred while saving the configuration. Please try again.');
+            }
+        });
+
+
+    });
+
 
 </script>

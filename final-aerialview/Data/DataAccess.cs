@@ -623,15 +623,23 @@ namespace final_aerialview.Data
         #endregion
 
         #region event configuration view table data
-        public IEnumerable<EventConfigModel> GetEventConfigData()
+        public IEnumerable<EventConfigViewModel> GetEventConfigData()
         {
             string query = "SELECT * FROM EventConfig_View";
-            return ExecuteQuery<EventConfigModel>(query);
+            return ExecuteQuery<EventConfigViewModel>(query);
+        }
+        #endregion
+
+        #region event config master table
+        public IEnumerable<EventConfigViewModel> InsertEventConfigMasterData(string ConnString, string TableName, string ColumnName, int AlarmLow, int AlarmHigh, int WarningHigh, int WarningLow, string CreatedAt, string UpdatedAt, bool Status, int RptId, int CreatedById, int UpdateById, string Emails)
+        {
+            string query = $"insert into EventConfigurationMaster (ConnString, TableName, ColumnName, AlarmLow, AlarmHigh, WarningLow, WarningHigh, CreatedAt, UpdatedAt, Status, RptId, CreatedById, UpdateById, Emails) values('{ConnString}', '{TableName}', '{ColumnName}', {AlarmLow}, {AlarmHigh}, {WarningLow},  {WarningHigh}, '{CreatedAt}', '{UpdatedAt}', '{Status}', {RptId}, {CreatedById}, {UpdateById}, '{Emails}')";
+            return ExecuteQuery<EventConfigViewModel>(query);
         }
         #endregion
 
         #region getting column names according to the selected connection string and table name for the alarm and event configuration page
-        
+
         public IEnumerable<string> FetchColNamesForEventConfig(string connectionString, string tableName)
         {
             using (var connection = new SqlConnection(connectionString))
