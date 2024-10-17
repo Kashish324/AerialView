@@ -140,13 +140,7 @@ namespace final_aerialview.Controllers
         }
         #endregion
 
-        //#region calculated field table
-        //public IActionResult CalculatedFieldMaster()
-        //{
-        //    var calculatedFieldTable = _dataAccess.GetCalculatedFieldData();
-        //    return Json(calculatedFieldTable);
-        //}
-        //#endregion
+        
 
         #region update or inserts calculated field column in datagrid
         [HttpPost]

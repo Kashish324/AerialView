@@ -675,11 +675,12 @@ namespace final_aerialview.Data
         }
         #endregion
 
-        #region updating data in event config master table
-        //public IEnumerable<EventConfigViewModel> UpdateEventConfigMasterData()
-        //{
-        //    return;
-        //}
+        #region delete selected data from event config master table
+        public IEnumerable<EventConfigViewModel> DeleteEventConfigData(int? id)
+        {
+            string query = $"DELETE FROM EventConfigurationMaster WHERE Id = {id}";
+            return ExecuteQuery<EventConfigViewModel>(query);
+        }
         #endregion
     }
 }

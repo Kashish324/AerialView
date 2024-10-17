@@ -169,11 +169,7 @@
 
                                 }
                                 <td class="text-center align-middle">
-                                    @*  <button class="p-0 border-0 bg-transparent btn btn-sm btn-warning fs-5" aria-label="Edit">
-                            <i class="ri-edit-line text-warning"></i>
-                            </button>
-                            <div class="mx-2" style="display: inline-block; border-left: 1px solid #ccc; height: 10px;"></div> *@
-                                    <button class="p-0 border-0 bg-transparent btn btn-sm btn-danger fs-5" aria-label="Delete">
+                                    <button class="p-0 border-0 bg-transparent btn btn-sm btn-danger fs-5" aria-label="Delete" onclick="handleDeleteConfig(@config.Id)">
                                         <i class="ri-delete-bin-5-line text-danger"></i>
                                     </button>
                                 </td>
@@ -192,7 +188,26 @@
     </div>
 </div>
 
-
+<!-- Modal for delete confirmation -->
+@* <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header p-2 px-3">
+                <h1 class="modal-title fs-6 text-dark" id="deleteConfirmationModalLabel">AerialView</h1>
+                <button type="button" class="btn-close btn-sm" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body" id="dashboard-content">
+                <p class="fw-bold m-0 text-black"> Are you sure you want to delete this ? </p>
+                <span class="text-muted" style="font-size: 14px;"> This action is permanent and cannot be undone. </span>
+                <input type="hidden" id="deleteCalcFieldId" />
+            </div>
+            <div class="modal-footer p-1">
+                <button id="deleteBtn" type="button" class="btn btn-sm bg-danger btn-sm text-white shadow-sm" onclick="handleDeleteCalcField()" data-bs-dismiss="modal">Yes</button>
+                <button type="button" class="btn btn-sm bg-secondary-subtle btn-sm shadow-sm" data-bs-target="#calculatedFieldModal" data-bs-toggle="modal">No</button>
+            </div>
+        </div>
+    </div>
+</div> *@
 
 
 <script>
@@ -487,9 +502,7 @@
         document.getElementById("eventConfigForm").reset();
 
         document.getElementById("idInput").value = id;
-        console.log(id)
 
-        console.log(data)
         data.forEach(config => {
 
             //need table name and connstring
@@ -529,13 +542,63 @@
 
                 document.getElementById('columnName').classList.add('populatedMark');
 
-
-                console.log(document.getElementById('columnName').value)
             }, 500)
            
         });
     }
 
+
+    function handleDeleteConfig(id) {
+        console.log(id)
+
+        $.ajax({
+            url: '/EventConfiguration/DeleteConfiguration',
+            type: 'POST',
+            data: { id: id }, // Sending the ID
+            success: function (response) {
+                // Handle the response data
+                if (response.success) {
+                    DevExpress.ui.notify({
+                        message: "Calculated Field deleted successfully",
+                        width: 400,
+                        type: "success",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
+
+                    setTimeout(function () {
+                        window.location.reload()
+                    }, 2000)
+
+                } else {
+                    DevExpress.ui.notify({
+                        message: "Error saving changes",
+                        width: 400,
+                        type: "error",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
+                }
+            },
+            error: function () {
+                alert('An error occurred while retrieving data. Please try again.');
+            }
+        });
+    }
 
 
 

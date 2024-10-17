@@ -50,8 +50,7 @@ namespace final_aerialview.Controllers
             if (ModelState.IsValid)
             {
                 bool status = viewModel.Status ?? false; // Default to false if null
-                //DateTime createdAt = viewModel.CreatedAt ?? DateTime.UtcNow; // Default to current time if null
-                //DateTime updatedAt = viewModel.UpdatedAt ?? DateTime.UtcNow;
+                
                 string createdAt = viewModel.CreatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"); // Default to current time in ISO format
                 string updatedAt = viewModel.UpdatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
@@ -70,13 +69,6 @@ namespace final_aerialview.Controllers
         [HttpGet]
         public IActionResult GetConfigurationById(int id)
         {
-            //var configuration = _dataAccess.GetEventConfigData().FirstOrDefault(c => c.Id == id); // Adjust if necessary to match your data retrieval method
-
-            //if (configuration == null)
-            //{
-            //    return Json(new { success = false, message = "Configuration not found." });
-            //}
-
             // Fetch the configuration based on the ID
             var configuration = _dataAccess.GetEventConfigDataById(id);
 
@@ -84,6 +76,28 @@ namespace final_aerialview.Controllers
         }
         #endregion
 
+
+        #region to delete configuration 
+        [HttpPost]
+        public IActionResult DeleteConfiguration(int Id)
+        {
+            if (Id == 0)
+            {
+                return BadRequest("Invalid data.");
+            }
+
+            try
+            {
+                _dataAccess.DeleteEventConfigData(Id);
+                return Json(new { success = true });
+            }
+            catch (Exception ex)
+            {
+                return Json(new { success = false, message = ex.Message });
+            }
+        }
+        
+        #endregion
     }
 
 }
