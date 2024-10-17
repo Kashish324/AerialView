@@ -12,9 +12,11 @@ namespace final_aerialview.Controllers
         {
             var configurations = _dataAccess.GetEventConfigData();
             var connTableData = _dataAccess.GetChildMenuData();
+            var reportNameData = _dataAccess.GetReportData();
 
             ViewData["Reports"] = connTableData;
-           
+            ViewData["ReportData"] = reportNameData;
+
 
             ViewData["EventConfigurations"] = configurations.ToList();
 
@@ -53,7 +55,7 @@ namespace final_aerialview.Controllers
                 string createdAt = viewModel.CreatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"); // Default to current time in ISO format
                 string updatedAt = viewModel.UpdatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
-                _dataAccess.InsertEventConfigMasterData(viewModel.ConnString, viewModel.TableName, viewModel.ColumnName, viewModel.AlarmLow, viewModel.AlarmHigh, viewModel.WarningHigh, viewModel.WarningLow, createdAt, updatedAt, status, viewModel.RptId, viewModel.CreatedById, viewModel.UpdateById, viewModel.Emails);
+                _dataAccess.InsertOrUpdateEventConfigMasterData(viewModel.Id, viewModel.ConnString, viewModel.TableName, viewModel.ColumnName, viewModel.AlarmLow, viewModel.AlarmHigh, viewModel.WarningHigh, viewModel.WarningLow, createdAt, updatedAt, status, viewModel.RptId, viewModel.CreatedById, viewModel.UpdateById, viewModel.Emails);
                
                 
                 // Save logic here
@@ -63,6 +65,25 @@ namespace final_aerialview.Controllers
             return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
         }
         #endregion
+
+        #region Get configuration by ID
+        [HttpGet]
+        public IActionResult GetConfigurationById(int id)
+        {
+            //var configuration = _dataAccess.GetEventConfigData().FirstOrDefault(c => c.Id == id); // Adjust if necessary to match your data retrieval method
+
+            //if (configuration == null)
+            //{
+            //    return Json(new { success = false, message = "Configuration not found." });
+            //}
+
+            // Fetch the configuration based on the ID
+            var configuration = _dataAccess.GetEventConfigDataById(id);
+
+            return Json(new { success = true, data = configuration });
+        }
+        #endregion
+
     }
 
 }

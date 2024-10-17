@@ -625,15 +625,24 @@ namespace final_aerialview.Data
         #region event configuration view table data
         public IEnumerable<EventConfigViewModel> GetEventConfigData()
         {
-            string query = "SELECT * FROM EventConfig_View";
+            string query = "SELECT * FROM EventConfig_View ORDER BY Id ASC";
             return ExecuteQuery<EventConfigViewModel>(query);
         }
         #endregion
 
-        #region event config master table
-        public IEnumerable<EventConfigViewModel> InsertEventConfigMasterData(string ConnString, string TableName, string ColumnName, int AlarmLow, int AlarmHigh, int WarningHigh, int WarningLow, string CreatedAt, string UpdatedAt, bool Status, int RptId, int CreatedById, int UpdateById, string Emails)
+        #region inserting data in event config master table
+        public IEnumerable<EventConfigViewModel> InsertOrUpdateEventConfigMasterData(int Id, string ConnString, string TableName, string ColumnName, int AlarmLow, int AlarmHigh, int WarningHigh, int WarningLow, string CreatedAt, string UpdatedAt, bool Status, int RptId, int CreatedById, int UpdateById, string Emails)
         {
-            string query = $"insert into EventConfigurationMaster (ConnString, TableName, ColumnName, AlarmLow, AlarmHigh, WarningLow, WarningHigh, CreatedAt, UpdatedAt, Status, RptId, CreatedById, UpdateById, Emails) values('{ConnString}', '{TableName}', '{ColumnName}', {AlarmLow}, {AlarmHigh}, {WarningLow},  {WarningHigh}, '{CreatedAt}', '{UpdatedAt}', '{Status}', {RptId}, {CreatedById}, {UpdateById}, '{Emails}')";
+            //string query = $"insert into EventConfigurationMaster (ConnString, TableName, ColumnName, AlarmLow, AlarmHigh, WarningLow, WarningHigh, CreatedAt, UpdatedAt, Status, RptId, CreatedById, UpdateById, Emails) values('{ConnString}', '{TableName}', '{ColumnName}', {AlarmLow}, {AlarmHigh}, {WarningLow},  {WarningHigh}, '{CreatedAt}', '{UpdatedAt}', '{Status}', {RptId}, {CreatedById}, {UpdateById}, '{Emails}')";
+            string query = $"if exists (select * from EventConfigurationMaster where Id = {Id})\r\n" +
+                $"Begin\r\n UPDATE EventConfigurationMaster\r\n" +
+                $"SET ConnString = '{ConnString}', TableName = '{TableName}', ColumnName = '{ColumnName}', AlarmLow = {AlarmLow}, AlarmHigh = {AlarmHigh}, WarningLow = {WarningLow}, WarningHigh = {WarningHigh}, UpdatedAt = '{UpdatedAt}', Status = '{Status}', RptId = {RptId}, UpdateById = {UpdateById}, Emails = '{Emails}'\r\n" +
+                $"WHERE Id = 1;" +
+                $"\r\nEnd\r\n" +
+                $"else\r\n" +
+                $"begin\r\n" +
+                $"insert into EventConfigurationMaster (ConnString, TableName, ColumnName, AlarmLow, AlarmHigh, WarningLow, WarningHigh, CreatedAt, UpdatedAt, Status, RptId, CreatedById, UpdateById, Emails) values('{ConnString}', '{TableName}', '{ColumnName}', {AlarmLow}, {AlarmHigh}, {WarningLow},  {WarningHigh}, '{CreatedAt}', '{UpdatedAt}', '{Status}', {RptId}, {CreatedById}, {UpdateById}, '{Emails}') \r\n" +
+                $"end";
             return ExecuteQuery<EventConfigViewModel>(query);
         }
         #endregion
@@ -658,6 +667,20 @@ namespace final_aerialview.Data
         }
         #endregion
 
+        #region to populate form on the basis of selected row from the table
+        public IEnumerable<EventConfigViewModel> GetEventConfigDataById(int id)
+        {
+            string query = $"SELECT * FROM EventConfig_View where Id = {id}";
+            return ExecuteQuery<EventConfigViewModel>(query);
+        }
+        #endregion
+
+        #region updating data in event config master table
+        //public IEnumerable<EventConfigViewModel> UpdateEventConfigMasterData()
+        //{
+        //    return;
+        //}
+        #endregion
     }
 }
 

@@ -4,19 +4,19 @@
 
 @{
     var reports = ViewData["Reports"] as IEnumerable<final_aerialview.Models.ChildMenuModel>;
+    var reportData = ViewData["ReportData"] as IEnumerable<final_aerialview.Models.LocalReportModel>;
     var configurations = ViewData["EventConfigurations"] as IEnumerable<final_aerialview.Models.EventConfigViewModel>;
 }
 
 
 <div class="container-fluid p-3">
 
-    <div class="my-2 mt-1 p-1 d-flex flex-wrap align-items-center justify-content-between">
+    <div class="my-2 mt-1 p-1 d-flex align-items-center justify-content-between">
         <div class="fw-semibold mb-3 fs-5 text-center text-md-start">
             <i class="ri-alarm-warning-line text-danger fw-normal fs-4"></i>  Alarm Configuration
         </div>
 
     </div>
-
 
 
     <!-- Event Configuration Card -->
@@ -32,11 +32,18 @@
                     <select class="form-select form-select-sm fw-medium" id="reportName" required>
                         <option value="" selected disabled>Choose a report</option>
 
-                        @if (reports != null)
+                        @if (reports != null && reportData != null)
                         {
                             @foreach (var report in reports)
                             {
-                                <option class="fw-medium" value="@report.SubChildName" data-table-name="@report.DataTableName" data-conn-string="@report.stringName" data-rpt-id="@report.RptId">@report.SubChildName</option>
+                                @foreach (var data in reportData)
+                                {
+                                    //checking for the report name consistency that it exists in both tables
+                                    if (report.SubChildName == data.ReportName)
+                                    {
+                                        <option class="fw-medium" value="@report.SubChildName" data-table-name="@report.DataTableName" data-conn-string="@report.stringName" data-rpt-id="@report.RptId">@report.SubChildName</option>
+                                    }
+                                }
                             }
                         }
 
@@ -88,11 +95,14 @@
             </div>
 
             <!-- hidden inputs -->
+            <input type="hidden" name="subChildName" value="" id="connStringInput" />
             <input type="hidden" name="connString" value="" id="connStringInput" />
             <input type="hidden" name="tableName" value="" id="tableNameInput" />
             <input type="hidden" name="RptId" value="" id="rptIdInput" />
             <input type="hidden" name="createdAt" value="" id="createdAtInput" />
             <input type="hidden" name="updatedAt" value="" id="updatedAtInput" />
+
+            <input type="hidden" name="id" value="" id="idInput" />
 
             @if (User.Identity != null)
             {
@@ -100,11 +110,17 @@
                 <input type="hidden" name="updateById" id="updateById" value="@User.FindFirst("UserId")?.Value" />
             }
 
+            <div class="d-flex justify-content-center justify-content-md-start text-start">
+                <div id="error-message" class=" text-danger" style="display:none; font-size: 13px;">*Please complete all required fields before saving.</div>
+            </div>
+
             <!-- Submit Button -->
             <div class="d-flex justify-content-center justify-content-md-end text-center mt-3">
                 <button id="saveConfiguration" type="submit" class="btn btn-sm fw-medium focus-ring focus-ring-primary text-white" style="background-color: #1866B0 !important">Save</button>
             </div>
+
         </form>
+            
 
     </div>
 
@@ -116,7 +132,7 @@
             <div class="table-responsive">
                 <table class="table table-striped table-bordered table-sm align-middle">
                     <thead>
-                        <tr class="text-center" style="font-size: 14px;">
+                        <tr class="text-center" style="font-size: 14px; ">
                             <th>Id</th>
                             <th>Report Name</th>
                             <th>Column Name</th>
@@ -127,13 +143,13 @@
                             <th>Last Updated Time</th>
                             <th>Last Updated By</th>
                             <th>Status</th>
-                            <th>Actions</th>
+                            <th></th>
                         </tr>
                     </thead>
                     <tbody>
                         @foreach (var config in configurations)
                         {
-                            <tr class="text-center fw-medium" style="font-size: 13.5px;">
+                            <tr class="text-center fw-medium" style="font-size: 13.5px; cursor: pointer;" onclick="eventToUpdate(@config.Id)">
                                 <td>@config.Id</td>
                                 <td>@config.ReportName</td>
                                 <td>@config.ColumnName</td>
@@ -153,10 +169,10 @@
 
                                 }
                                 <td class="text-center align-middle">
-                                    <button class="p-0 border-0 bg-transparent btn btn-sm btn-warning fs-5" aria-label="Edit">
-                                        <i class="ri-edit-line text-warning"></i>
-                                    </button>
-                                    <div class="mx-2" style="display: inline-block; border-left: 1px solid #ccc; height: 10px;"></div>
+                                    @*  <button class="p-0 border-0 bg-transparent btn btn-sm btn-warning fs-5" aria-label="Edit">
+                            <i class="ri-edit-line text-warning"></i>
+                            </button>
+                            <div class="mx-2" style="display: inline-block; border-left: 1px solid #ccc; height: 10px;"></div> *@
                                     <button class="p-0 border-0 bg-transparent btn btn-sm btn-danger fs-5" aria-label="Delete">
                                         <i class="ri-delete-bin-5-line text-danger"></i>
                                     </button>
@@ -169,8 +185,8 @@
         }
         else
         {
-            <div class="alert alert-warning text-center" role="alert">
-                No event configuration available.
+            <div class="alert alert-primary fst-italic text-center" style="font-size: 14px;" role="alert">
+                No event configuration available
             </div>
         }
     </div>
@@ -191,10 +207,11 @@
         }
     });
 
+    let isManualChange = false; // Flag to track manual changes to report name
 
     //basis on the selected report name's corresponding connection string, tablename populating column name dropdown
     $('#reportName').on('change', function () {
-        // const selectedReport = $(this).val();
+        
         const selectedReport = $(this).find('option:selected');
         const connString = selectedReport.data('conn-string'); // Get the connection string from data attribute
         const tableName = selectedReport.data('table-name'); // Get the table name from data attribute
@@ -205,6 +222,11 @@
         document.getElementById("tableNameInput").value = tableName;
         document.getElementById("rptIdInput").value = rptId;
 
+        // If manual change, clear column names
+        if (isManualChange) {
+            $('#columnName').empty().append('<option value="" selected disabled>Select column</option>');
+        }
+
 
         // AJAX call to get the column name based on the selected report
         $.ajax({
@@ -212,8 +234,26 @@
             type: 'GET',
             data: { connectionString: connString, tableName: tableName },
             success: function (data) {
-                // Clear the previous options in the column name dropdown
-                $('#columnName').empty().append('<option value="" selected disabled>Select column</option>');
+
+                if (!data || data.length === 0) {
+                    DevExpress.ui.notify({
+                        message: "No columns found for the selected table.",
+                        width: 300,
+                        type: "error",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
+                    return; // Early return if no columns are found
+                }
+
+                
 
                 // Populate the column name dropdown
                 if (data && data.length > 0) {
@@ -223,11 +263,29 @@
                 }
             },
             error: function () {
-                alert('Error fetching table names. Please try again.');
+                DevExpress.ui.notify({
+                    message: "Error fetching table names. Please try again.",
+                    width: 300,
+                    type: "error",
+                    displayTime: 3500,
+                    shading: true,
+                    animation: {
+                        show: { type: "fade", duration: 400, from: 0, to: 1 },
+                        hide: { type: "fade", duration: 40, to: 0 }
+                    }
+                }, {
+                    position: "bottom center",
+                    direction: "up-push"
+                });
+                return; // Early return if no columns are found
             }
         });
+
+        // Set the manual change flag to true
+        isManualChange = true; // Set to true after the manual selection
     });
 
+    //format current date according to requirement
     function formatDate(date) {
         var day = date.getDate();
         var month = date.getMonth() + 1; // Months are zero-based
@@ -247,7 +305,7 @@
         return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
     }
 
-    //form data
+    //sending form data to backend
     document.getElementById("saveConfiguration").addEventListener('click', function (e) {
         e.preventDefault();
 
@@ -263,6 +321,7 @@
         document.getElementById("createdAtInput").value = formattedDateTime;
         document.getElementById("updatedAtInput").value = formattedDateTime;
 
+        const id = document.getElementById("idInput").value;
 
         const connString = document.getElementById('connStringInput').value;
         const tableName = document.getElementById('tableNameInput').value;
@@ -276,7 +335,6 @@
         const createdAt = document.getElementById('createdAtInput').value;
         const updatedAt = document.getElementById('updatedAtInput').value;
 
-        
         // Convert status to boolean
         const status = document.getElementById('statusToggle').checked;
 
@@ -284,6 +342,14 @@
         const createdById = parseInt(document.getElementById('createdById').value);
         const updateById = parseInt(document.getElementById('updateById').value);
         const emails = document.getElementById('emailInput').value;
+
+        // Step 1: Check if required fields are filled
+        if ( !columnName || isNaN(alarmHigh) || isNaN(warningHigh)) {
+            $('#error-message').show(); // To show the message
+            return; // Stop execution if fields are not filled
+        } else {
+            $('#error-message').hide(); // Hide the error message if fields are filled
+        }
 
         // Creating an object to store the form data
         const formData = {
@@ -303,6 +369,10 @@
             emails
         };
 
+        if (id) {
+            formData.id = id;
+        }
+
         // Log the form data to the console
         console.log(formData);
 
@@ -314,19 +384,159 @@
             data: JSON.stringify(formData),
             success: function (response) {
                 if (response.success) {
-                    alert('Configuration saved successfully.');
-                    // Optionally, you can refresh the page or update the UI here
+                    // alert('Configuration saved successfully.');
+                    if (response.success) {
+                        DevExpress.ui.notify({
+                            message: "Configuration saved successfully",
+                            width: 300,
+                            type: "success",
+                            displayTime: 3500,
+                            shading: true,
+                            animation: {
+                                show: { type: "fade", duration: 400, from: 0, to: 1 },
+                                hide: { type: "fade", duration: 40, to: 0 }
+                            }
+                        }, {
+                            position: "bottom center",
+                            direction: "up-push"
+                        });
+                    }
+                    setTimeout(function () {
+                        window.location.reload()
+                    }, 2000)
                 } else {
-                    alert('Error saving configuration: ' + response.errors.join(', '));
+                    // alert('Error saving configuration: ' + response.errors.join(', '));
+                    DevExpress.ui.notify({
+                        message: "Error saving configuration",
+                        width: 300,
+                        type: "error",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
                 }
             },
             error: function () {
-                alert('An error occurred while saving the configuration. Please try again.');
+                // alert('An error occurred while saving the configuration. Please try again.');
+                DevExpress.ui.notify({
+                    message: "An error occurred while saving the configuration. Please try again.",
+                    width: 300,
+                    type: "error",
+                    displayTime: 4000,
+                    shading: true,
+                    animation: {
+                        show: { type: "fade", duration: 400, from: 0, to: 1 },
+                        hide: { type: "fade", duration: 40, to: 0 }
+                    }
+                }, {
+                    position: "bottom center",
+                    direction: "up-push"
+                });
             }
         });
 
 
     });
+
+    //function to select the table row and populate the form accordingly
+    function eventToUpdate(val) {
+        var id = document.getElementById("idInput").value;
+        id = val;
+
+        $.ajax({
+            url: '/EventConfiguration/GetConfigurationById',
+            type: 'GET', 
+            data: { id: val }, // Sending the ID
+            success: function (response) {
+                // Handle the response data
+                if (response.success) {
+                    populateForm(response.data, id); // Call a function to handle the data
+                } else {
+                    DevExpress.ui.notify({
+                        message: "Error retrieving data",
+                        width: 300,
+                        type: "error",
+                        displayTime: 3500,
+                        shading: true,
+                        animation: {
+                            show: { type: "fade", duration: 400, from: 0, to: 1 },
+                            hide: { type: "fade", duration: 40, to: 0 }
+                        }
+                    }, {
+                        position: "bottom center",
+                        direction: "up-push"
+                    });
+                }
+                // populateForm(response.data);
+            },
+            error: function () {
+                alert('An error occurred while retrieving data. Please try again.');
+            }
+        });
+    }
+
+    //populate form on any table row click 
+    function populateForm(data, id) {
+        //clear form if necessary
+        document.getElementById("eventConfigForm").reset();
+
+        document.getElementById("idInput").value = id;
+        console.log(id)
+
+        console.log(data)
+        data.forEach(config => {
+
+            //need table name and connstring
+            var reportNameDropdown = document.getElementById('reportName');
+            reportNameDropdown.value = config.ReportName;
+
+            var connString = document.getElementById('connStringInput').value;
+            var tableName = document.getElementById('tableNameInput').value;
+
+            connString = config.ConnString;
+            tableName = config.TableName;
+
+            // Reset the manual change flag
+            isManualChange = false; // Reset before programmatic population
+
+            // Manually trigger the change event
+            $(reportNameDropdown).trigger('change');
+            
+            // Delay setting the columnName until the AJAX request is complete
+            setTimeout(function () {
+                document.getElementById('columnName').value = config.ColumnName; 
+                document.getElementById('alarmHigh').value = config.AlarmHigh;
+                document.getElementById('warningHigh').value = config.WarningHigh;
+                document.getElementById('warningLow').value = config.WarningLow;
+                document.getElementById('alarmLow').value = config.AlarmLow;
+                document.getElementById('emailInput').value = config.Emails;
+                document.getElementById('statusToggle').checked = config.Status;
+                document.getElementById("saveConfiguration").innerHTML = 'Update';
+                document.getElementById("saveConfiguration").style.backgroundColor = '#faa41b';
+
+                //get current date & time for updated at field
+                var currentDateTime = new Date();
+                var formattedDateTime = formatDate(currentDateTime);
+
+                document.getElementById('updatedAtInput').value = formattedDateTime;
+                document.getElementById('updateById').value;
+
+                document.getElementById('columnName').classList.add('populatedMark');
+
+
+                console.log(document.getElementById('columnName').value)
+            }, 500)
+           
+        });
+    }
+
+
 
 
 </script>
