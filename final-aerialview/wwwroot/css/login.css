@@ -1,11 +1,14 @@
 ﻿/*login form*/
+/*.login-font {
+    font-size: 1.8vw;
+}*/
 
 .login-wrapper {
     width: 50vw;
     height: 50vh;
 }
 
-.copyright-text {
+.copyright-text{
     font-size: .65vw;
 }
 
@@ -23,90 +26,7 @@
 }
 
 /* Style for the button when it is disabled */
-/*.btn-disabled {
-    background-color: #cccccc;*/ /* or any color to indicate disabled state */
-/*cursor: not-allowed;
-}*/
-
-.carousel-item {
-    transition: opacity 1.5s ease-in-out !important;
-}
-
-.carousel-fade .carousel-item {
-    opacity: 0;
-    transition-property: opacity, transform;
-    animation: bounce ease-in-out 3.2s infinite;
-}
-
-    .carousel-fade .carousel-item.active,
-    .carousel-fade .carousel-item-next.carousel-item-start,
-    .carousel-fade .carousel-item-prev.carousel-item-end {
-        opacity: 1;
-        transform: translateY(0);
-    }
-
-.carousel-fade .active.carousel-item-start,
-.carousel-fade .active.carousel-item-end {
-    opacity: 0;
-    transform: translateY(0);
-}
-
-.bottom-10 {
-    bottom: 17px !important;
-}
-
-@keyframes bounce {
-    0%, 100% {
-        transform: translateY(0);
-    }
-
-    50% {
-        transform: translateY(-5px);
-    }
-}
-
-/* laptop view */
-@media (min-width: 769px) and (max-width: 1440px) {
-    .login-wrapper {
-        /*        width: 57vw;*/
-        width: 66vw;
-        height: 57vh;
-    }
-
-    .bottom-10 {
-        bottom: 6px !important;
-    }
-
-    .login-form > section {
-        margin-top: 0 !important;
-    }
-
-    /*        .login-form > section > form > .login-break {
-          display: none !important;
-        }*/
-
-    .form-control {
-        font-size: 13px !important;
-    }
-}
-
-/*laptop at 125%*/
-@media only screen and (min-device-width: 900px) and (max-device-width: 1600px) {
-    .login-form > section > form > .login-break {
-        display: none !important;
-    }
-}
-
-
-
-
-@media (min-width: 1920px) and (min-height: 1080px) {
-    .login-wrapper {
-        width: 50vw;
-        height: 44vh;
-    }
-
-    .bottom-10 {
-        bottom: 0 !important;
-    }
+.btn-disabled {
+    background-color: #cccccc; /* or any color to indicate disabled state */
+    cursor: not-allowed;
 }

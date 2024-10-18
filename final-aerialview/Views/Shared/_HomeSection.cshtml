@@ -3,8 +3,6 @@
     var controllerValueForListData = ViewContext.RouteData.Values["controller"];
 }
 <div class="headerContent">
-    @* <i class="ri-arrow-right-double-line bx bx-menu fs-5"></i> *@
-
     @if (controllerValueForListData != null && controllerValueForListData.ToString() != "ListData")
     {
         if (ViewData["MenuName"] != null)

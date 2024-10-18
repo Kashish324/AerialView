@@ -16,7 +16,6 @@
     <Content Include="Dashboards\dashboard1.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="bootstrap" Version="5.3.3" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
     <PackageReference Include="Dapper" Version="2.1.35" />
     <PackageReference Include="DevExpress.AspNetCore.Core" Version="23.2.5" />
