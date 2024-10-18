@@ -152,7 +152,7 @@
         </text>)
 
         .Format(f => f.Type(Format.FixedPoint).Precision(2))
-        .AllowEditing(false); 
+        .AllowEditing(false);
                         }
                     }
                 })
@@ -180,7 +180,7 @@
 
             <button type="button" class="btn  btn-sm border-white shadow fw-medium" data-bs-toggle="modal" data-bs-target="#calculatedFieldModal" onclick="checkInput()" style="background-color:#1866B0 !important; ">
                 @* <p class="fw-semibold  mb-0" style="color: #1D6F42;"><i class="ri-add-line"></i> Calculated field</p> *@
-                <p class="fw-semibold text-white  mb-0" ><i class="ri-add-line"></i> Calculated field</p>
+                <p class="fw-semibold text-white  mb-0"><i class="ri-add-line"></i> Calculated field</p>
             </button>
 
 
@@ -793,7 +793,7 @@
 
             // Update the dropdown
             // updateCalculatedFieldsDropdown(columnName);
-            console.log('datagrid options',dataGrid.options)
+            console.log('datagrid options', dataGrid.options)
 
             // Notify the user
             DevExpress.ui.notify({
@@ -817,17 +817,17 @@
     // function updateCalculatedFieldsDropdown(newColumnName) {
     //     const dropdown = document.getElementById('existingFieldsDropdown');
 
-       
+
     //     if (dropdown) {
     //         // Create a new option element
     //         const option = document.createElement('option');
     //         option.value = newColumnName;
     //         // option.text = newColumnName;
 
-    //         //to show in a drop down that a new column is added 
+    //         //to show in a drop down that a new column is added
     //         option.classList.add('fw-medium', 'bg-success-subtle');
 
-    //         //adding column name and formula 
+    //         //adding column name and formula
     //         option.setAttribute("data-column-name", option.value);
     //         option.setAttribute("value", option.value);
     //         option.setAttribute("data-formula", formulaVal);
@@ -839,7 +839,7 @@
     //         console.log(option)
     //     }
     // }
-    
+
 
     // Function to dynamically update the editing state of the DataGrid
     window.updateDataGridEditing = function (isEditingEnabled) {

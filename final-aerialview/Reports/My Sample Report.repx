@@ -91,7 +91,7 @@
                   </ExpressionBindings>
                   <StylePriority Ref="47" UseBorderColor="false" UseBorders="false" UseTextAlignment="false" />
                 </Item4>
-                <Item5 Ref="48" ControlType="XRTableCell" Name="tableCell12" Weight="0.15280059814453126" TextAlignment="MiddleCenter" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
+                <Item5 Ref="48" ControlType="XRTableCell" Name="tableCell12" Weight="0.15280059814453126" TextFormatString="{0:f}" TextAlignment="MiddleCenter" StyleName="DetailData1" BorderColor="Black" Borders="Left, Right, Bottom">
                   <ExpressionBindings>
                     <Item1 Ref="49" EventName="BeforePrint" PropertyName="Text" Expression="[Before_Qty]" />
                   </ExpressionBindings>

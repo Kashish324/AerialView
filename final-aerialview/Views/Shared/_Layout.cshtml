@@ -85,8 +85,6 @@
     <!-- #endregion -->
     @if (User.Identity != null && User.Identity.IsAuthenticated)
     {
-
-
         var controllerValue = ViewContext.RouteData.Values["controller"];
 
         @if (controllerValue != null && controllerValue.ToString() != "Report")
@@ -107,7 +105,7 @@
                 </div>
 
                 <ul class="nav-links">
-                    @if (menuParentData != null && subMenuData != null && childMenuData != null)
+                    @if (menuParentData != null || subMenuData != null || childMenuData != null)
                     {
                         @foreach (var mainItem in menuParentData)
                         {
@@ -179,7 +177,7 @@
 
                                                         else if (mainItem.MenuName == "Dashboards")
                                                         {
-                                                            <a href="@Url.Action("ViewDashboard", "SubmenuDashViewer", new { dashId = subItem.DashId })" class="text-decoration-none subMenuLink">
+                                                            <a href="@Url.Action("ViewDashboard", "SubmenuDashViewer", new { dashId = subItem.DashId })" class="text-decoration-none subMenuLink" target="_blank">
                                                                 <div class="icon-link text-capitalize">
                                                                     <div class="listMenu">
                                                                         <i class="ri-box-3-line"></i>
@@ -378,7 +376,7 @@
 
     @* <script src="~/lib/jquery/dist/jquery.min.js"></script> *@
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    @* <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script> *@
     <script src="https://cdn.lordicon.com/lordicon.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
