@@ -7,5 +7,6 @@
         public bool Required {  get; set; }
         public string? DisplayName {  get; set; }
         public bool? EditableColumn { get; set; }
+        public string? DataType { get; set; }
     }
 }

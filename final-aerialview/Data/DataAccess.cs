@@ -126,16 +126,6 @@ namespace final_aerialview.Data
         #endregion
 
         #region creating dynamic sql query for reports table with dynamic connection string according to user selection 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="connectionString"></param>
-        /// <param name="tableName"></param>
-        /// <param name="option"></param>
-        /// <param name="selectedValue"></param>
-        /// <param name="fromDate"></param>
-        /// <param name="toDate"></param>
-        /// <returns></returns>
         //to connect with dynamic connection string 
         public IEnumerable<dynamic> DynamicConnString(string connectionString, string tableName, string option, string selectedValue, string fromDate, string toDate)
         {
@@ -503,6 +493,13 @@ namespace final_aerialview.Data
                             // Build the SET clause and get DateAndTime separately
                             foreach (var kvp in data)
                             {
+                                // Skip keys "Id" or "ID" when building the SET clause
+                                if (kvp.Key.Equals("Id", StringComparison.OrdinalIgnoreCase) ||
+                                    kvp.Key.Equals("ID", StringComparison.OrdinalIgnoreCase))
+                                {
+                                    continue; // Skip this key
+                                }
+
                                 if (kvp.Key == "DateAndTime")
                                 {
                                     // Ensure proper handling of DateAndTime
@@ -539,7 +536,8 @@ namespace final_aerialview.Data
                                     // Add parameters for each column
                                     foreach (var kvp in data)
                                     {
-                                        if (kvp.Key != "DateAndTime")
+                                        if (kvp.Key != "DateAndTime" && !kvp.Key.Equals("Id", StringComparison.OrdinalIgnoreCase) &&
+                                    !kvp.Key.Equals("ID", StringComparison.OrdinalIgnoreCase))
                                         {
                                             if (kvp.Value is JsonElement jsonElement)
                                             {

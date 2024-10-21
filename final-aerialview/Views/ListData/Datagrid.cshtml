@@ -83,10 +83,19 @@
                                     if (property == i.ColumnName)
                                     {
                                         var column = c.Add().DataField(property).Caption(i.DisplayName)
+
                                         .CssClass("datagridCol");
+
+                                        @* if(i.DataType == "real")
+        {
+        column.Format(f => f.Type(Format.FixedPoint).Precision(2));
+
+        } *@
+
                                         @* Set the editing ability based on the EditableColumn property *@
                                         if (i.EditableColumn)
                                         {
+
                                             column.AllowEditing(true);
                                         }
                                         else
@@ -118,6 +127,7 @@
                             c.Add()
                     .DataField(calcField.ColumnName)
                     .Caption(calcField.ColumnName)
+
                     .CssClass("datagridCol")
 
                     .CalculateCellValue(@<text>
@@ -172,6 +182,7 @@
                     paging.Enabled(true);
                     paging.PageSize(10);
                 })
+                @* .RepaintChangesOnly(true) *@
                 .OnSaving("onSaving")
                 )
         </div>
@@ -188,7 +199,7 @@
 
                 <div id="exportOrientation" class="ms-2">
                     <div class="input-group input-group-sm ">
-                        <label class="input-group-text bg-warning" for="pdfOrientationSelect"><i class="ri-printer-line fw-medium"></i></label>
+                        <label class="input-group-text bg-warning fs-6" for="pdfOrientationSelect"><i class="ri-printer-line fw-medium"></i></label>
                         <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example" style="cursor: pointer !important;">
                             <option value="landscape" selected>Landscape</option>
                             <option value="portrait">Portrait</option>
@@ -276,8 +287,7 @@
 </div>
 
 
-
-<!-- Modal for delete confirmation -->
+@* Modal for delete confirmation  *@
 <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
@@ -379,6 +389,8 @@
 
     //delete calculated field
     function handleDeleteCalcField() {
+        //to delete the selected calculated field without reloading the page 
+        deleteColumn()
 
         $.ajax({
             url: '/ListData/DeleteCalculatedField',
@@ -405,8 +417,29 @@
                     document.getElementById('error-message').style.display = 'none';
                     calcFieldDeleteButton.style.display = 'none';
                     checkInput();
-                    // handlingFormReset();
-                    deleteColumn();
+                    handlingFormReset();
+                    // deleteColumn();
+
+
+                    // Call the function to reload the datagrid using the filter values
+                    // reloadDatagridWithFilters();
+
+                    // setTimeout(function () {
+                    //     DevExpress.ui.notify({
+                    //         message: "Changes will be reflected on page reload",
+                    //         width: 400,
+                    //         type: "warning",
+                    //         displayTime: 3500,
+                    //         shading: true,
+                    //         animation: {
+                    //             show: { type: "fade", duration: 400, from: 0, to: 1 },
+                    //             hide: { type: "fade", duration: 40, to: 0 }
+                    //         }
+                    //     }, {
+                    //         position: "bottom center",
+                    //         direction: "up-push"
+                    //     });
+                    // }, 3600)
 
                 } else {
                     DevExpress.ui.notify({
@@ -452,31 +485,38 @@
 
     }
 
-    //Update the existingColumnNames and the localStorage by removing the deleted field name
+    //instantly deleting the selected calculated field from the localStorage & datagrid
     function deleteColumn() {
-        var storage = localStorage.getItem("storage");
-        // Parse the JSON string into an object
-        const parsedData = JSON.parse(storage);
+        const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
+        
+        if (dataGrid) {
+            const columns = dataGrid.option('columns');
+            // Find the index of the column to delete
+            const indexToDelete = columns.findIndex(column => column.dataField === columnName);
 
-        // Access the 'columns' property
-        const columns = parsedData.columns;
+            if (indexToDelete > -1) {
+                columns.splice(indexToDelete, 1);
 
-        var columnName = deleteCalcField.getAttribute('data-col-name');
+                dataGrid.option('columns', columns);
 
-        // Filter out the column where col.dataField matches columnName
-        const updatedColumns = columns.filter((col) => col.dataField !== columnName);
 
-        // Update the 'columns' property in parsedData
-        parsedData.columns = updatedColumns;
-
-        // Store the updated object back into localStorage
-        localStorage.setItem('storage', JSON.stringify(parsedData));
-
-        // console.log('Updated columns saved to localStorage:', updatedColumns);
-
-        const deletedColumnName = existingColumnNames.find(name => name === columnName)
-        if (deletedColumnName) {
-            existingColumnNames = existingColumnNames.filter(col => col !== deletedColumnName);
+            } else {
+                // Notify if the column wasn't found
+                DevExpress.ui.notify({
+                    message: `Column '${columnName}' not found`,
+                    width: 300,
+                    type: "error",
+                    displayTime: 3500,
+                    shading: true,
+                    animation: {
+                        show: { type: "fade", duration: 400, from: 0, to: 1 },
+                        hide: { type: "fade", duration: 40, to: 0 }
+                    }
+                }, {
+                    position: "bottom center",
+                    direction: "up-push"
+                });
+            }
         }
     }
 
@@ -485,13 +525,13 @@
     function handleColumnNameVal(value) {
         // console.log(existingColumnNames)
         //dropdown
-        var dropDownValue = document.getElementById('existingFieldsDropdown').value;
         // columnName = value;
         columnName = value.trim().toLowerCase();
 
         // Check if the input matches any of the existing column names (case-insensitive comparison)
         var isDuplicate = existingColumnNames.some(name => name.toLowerCase() === columnName);
 
+        var dropDownValue = document.getElementById('existingFieldsDropdown').value;
         //check if something is selected from dropdown or not
         if (dropDownValue === null || dropDownValue === '') {
 
@@ -669,6 +709,7 @@
         // Set Id to null if it's an empty string
         calculatedFieldId = calculatedFieldId === '' ? null : parseInt(calculatedFieldId);
 
+
         // Prepare the data to be sent
         var formData = {
             ColumnName: calculatedColName,
@@ -676,6 +717,7 @@
             RptId: rptId,
             Id: calculatedFieldId
         };
+
 
         $.ajax({
             url: '/ListData/InsertCalculatedField',
@@ -704,6 +746,10 @@
                     document.getElementById('error-message').style.display = 'none';
                     calcFieldDeleteButton.style.display = 'none';
                     checkInput();
+
+                    // Call the function to reload the datagrid using the filter values
+                    // reloadDatagridWithFilters();
+
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
@@ -746,10 +792,43 @@
     //add calculated column to the datagrid at the button click while also saving the grid previous state
     function addCalculatedColumn() {
         const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
+
         if (dataGrid) {
             // Save the current state
             const gridState = localStorage.getItem('storage');
             const columns = dataGrid.option('columns');
+
+            const existingColumnIndex = columns.findIndex(column => column.dataField === columnName);
+            console.log(existingColumnIndex)
+
+             if(existingColumnIndex > -1){
+                 columns[existingColumnIndex] = {
+                     dataField: columnName,
+                     caption: columnName,
+                     calculateCellValue: function (e) {
+                         try {
+                             // Construct the formula by replacing column names with e.<column_name>
+                             let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
+                                 return `e.${match}`; // Replace valid column names
+                             });
+
+                             // Evaluate the constructed formula
+                             // Use Function constructor to avoid eval's security issues and syntax errors
+                             const evaluateFormula = new Function('e', `return ${formula};`);
+                             return evaluateFormula(e);
+                         } catch (error) {
+                             console.error("Error in formula: ", error);
+                             return null; // Return null if formula cannot be calculated
+                         }
+                     },
+                     dataType: 'number',
+                     cssClass: "datagridCol",
+                     format: {
+                         type: 'fixedPoint',
+                         precision: 2
+                     }
+                 };
+             }else{
 
             // Adding new column
             columns.push({
@@ -779,6 +858,8 @@
                 }
 
             });
+             }
+
 
             // Update the grid with the new columns array
             dataGrid.option('columns', columns);
@@ -789,15 +870,15 @@
             }
 
             // Add the new column name to the existingColumnNames array
-            existingColumnNames.push(columnName);
+            // existingColumnNames.push(columnName);
 
             // Update the dropdown
             // updateCalculatedFieldsDropdown(columnName);
-            console.log('datagrid options', dataGrid.options)
-
+            
             // Notify the user
             DevExpress.ui.notify({
-                message: ` '${columnName}' column added successfully`,
+                // message: ` '${columnName}' column added successfully`,
+                message: ` '${columnName}' column ${existingColumnIndex > -1 ? 'updated' : 'added'} successfully`,
                 width: 300,
                 type: "success",
                 displayTime: 3500,
@@ -812,6 +893,14 @@
             });
         }
     }
+
+
+    // Function to reload the datagrid with the existing filter
+    // function reloadDatagridWithFilters(){
+    //     var result = getFilterData(); // Call the function defined in index.html
+    //     console.log(result);
+    // }
+
 
     //update the dropdown list of calculated column modal, without refreshing
     // function updateCalculatedFieldsDropdown(newColumnName) {
@@ -945,7 +1034,7 @@
                     console.error('Error updating data:', xhr.responseText || error);
                     // DevExpress.ui.notify('Error updating data to the backend', 'error', { position: "center", direction: "up-push" }, 2000);
                     DevExpress.ui.notify({
-                        message: "Error updating data to the backend",
+                        message: "Error updating data",
                         width: 300,
                         type: "error",
                         displayTime: 3500,

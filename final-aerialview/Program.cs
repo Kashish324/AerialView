@@ -21,18 +21,6 @@ builder.Services.AddRazorPages();
 // Add the necessary services like DataAccess
 builder.Services.AddScoped<DataAccess>();
 
-// Fetch connection data
-//var dataAccess = builder.Services.BuildServiceProvider().GetRequiredService<DataAccess>();
-//var connections = dataAccess.GetReportConnectionData();
-
-//// Add connection strings dynamically to configuration
-//foreach (var connection in connections)
-//{
-//    //configuration is similar to runtime but occur at runtime
-//    builder.Configuration[$"ConnectionStrings:{connection.ConName}"] = connection.stringName;
-//}
-
-
 // Add authentication and authorization
 builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
 
@@ -94,7 +82,7 @@ builder.Services.AddSingleton<IFileProvider>(new PhysicalFileProvider(Directory.
 
 
 
-//configure reporting services
+#region configure reporting services for report designer & report viewer
 builder.Services.ConfigureReportingServices(configurator =>
 {
     if (builder.Environment.IsDevelopment())
@@ -124,6 +112,7 @@ builder.Services.ConfigureReportingServices(configurator =>
         viewerConfigurator.UseCachedReportSourceBuilder();
     });
 });
+#endregion
 
 builder.Services.AddMvc();
 
@@ -135,7 +124,7 @@ app.UseDevExpressControls();
 System.Net.ServicePointManager.SecurityProtocol |= System.Net.SecurityProtocolType.Tls12;
 app.MapDashboardRoute("api/dashboard", "DefaultDashboard");
 
-//adding connection strings to runtime configuration file from dataaccess
+#region adding connection strings to runtime configuration file from dataaccess, fetch connection data
 using (var scope = app.Services.CreateScope())
 {
     var dataAccess = scope.ServiceProvider.GetRequiredService<DataAccess>();
@@ -147,7 +136,7 @@ using (var scope = app.Services.CreateScope())
         app.Configuration[$"ConnectionStrings:{connection.ConName}"] = connection.stringName;
     }
 }
-
+#endregion
 
 
 // Configure the HTTP request pipeline.

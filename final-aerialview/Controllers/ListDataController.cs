@@ -140,7 +140,6 @@ namespace final_aerialview.Controllers
         }
         #endregion
 
-        
 
         #region update or inserts calculated field column in datagrid
         [HttpPost]

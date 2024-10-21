@@ -277,6 +277,10 @@
     }
 
     $(document).ready(function () {
+        // Global variable to hold serialized form data
+        let filterFormData = "";
+
+
         // Initialize the toast instance
         $("#toast").dxToast({
             message: "",
@@ -310,13 +314,13 @@
             showLoadingSpinner();
 
             // Serialize the form data
-            var formData = $(this).serialize();
-
+            filterFormData = $(this).serialize();
             $.ajax({
                 type: "POST",
                 url: "/ListData/DataGrid", // URL to submit the form data to
-                data: formData,
+                data: filterFormData,
                 success: function (response) {
+                    
                     // Update the specific portion of the page with the response data
                     $("#dataTable").html(response);
 
@@ -340,6 +344,7 @@
                 }
             });
         });
+       
     });
 
 </script>
