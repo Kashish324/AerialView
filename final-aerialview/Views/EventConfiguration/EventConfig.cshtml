@@ -129,9 +129,9 @@
         <div class="card-title text-center mb-3 fw-medium" style="font-size: 18px;">Existing Configurations</div>
         @if (configurations != null && configurations.Count() > 0)
         {
-            <div class="table-responsive">
+            <div class="table-responsive custom-scrollbar" style="max-height: 400px; overflow-y: auto;">
                 <table class="table table-striped table-bordered table-sm align-middle">
-                    <thead>
+                    <thead class="thead-light position-sticky top-0 start-0 bg-white z-3">
                         <tr class="text-center" style="font-size: 14px; ">
                             <th>Id</th>
                             <th>Report Name</th>
@@ -175,6 +175,7 @@
                                     </button>
                                 </td>
                             </tr>
+
                         }
                     </tbody>
                 </table>

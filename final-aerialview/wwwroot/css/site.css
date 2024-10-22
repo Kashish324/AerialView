@@ -732,6 +732,32 @@ div.dx-column-indicators {
 }
 
 
+
+/* Style the scrollbar for event configuration table  */
+.custom-scrollbar::-webkit-scrollbar {
+    width: 6px; /* width for vertical scrollbars */
+    height: 4px; /* height for horizontal scrollbars */
+}
+
+/* Style the scrollbar track */
+.custom-scrollbar::-webkit-scrollbar-track {
+    background: #f1f1f1; /* light background */
+    border-radius: 5px; /* round corners */
+}
+
+/* Style the scrollbar handle */
+.custom-scrollbar::-webkit-scrollbar-thumb {
+    background: #888; /* gray scroll bar handle */
+    border-radius: 5px; /* round corners */
+}
+
+    /* Style the scrollbar handle on hover */
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: #555; /* Color of the scrollbar handle on hover */
+    }
+
+
+
 @media (max-width: 600px) {
     .sidebar.close .nav-links li .sub-menu {
         display: none;
