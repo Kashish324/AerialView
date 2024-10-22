@@ -3,11 +3,22 @@ using final_aerialview.Controllers;
 using final_aerialview.Data;
 using final_aerialview.Models;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.FileProviders;
 
-public class SubmenuController(DataAccess dataAccess) : BaseController(dataAccess)
+public class SubmenuController : BaseController
 {
-    #region shows us the list of table names for user to select to redirect to report designer
-    public IActionResult ReportDesigner(string parentMenu, string submenu)
+    private readonly IFileProvider _fileProvider;
+    private readonly string _dashboardFolderPath;
+
+    public SubmenuController(DataAccess dataAccess, IFileProvider fileProvider) : base(dataAccess)
+    {
+        _fileProvider = fileProvider;
+        _dashboardFolderPath = "Dashboards";
+    }
+
+
+        #region shows us the list of table names for user to select to redirect to report designer
+        public IActionResult ReportDesigner(string parentMenu, string submenu)
     {
         var reportData = _dataAccess.GetReportData();
         var uniqueReportTypes = reportData
@@ -49,6 +60,10 @@ public class SubmenuController(DataAccess dataAccess) : BaseController(dataAcces
         ViewBag.ParentMenu = parentMenu;
         ViewBag.Submenu = submenu;
         ViewData["MenuName"] = submenu;
+
+        // Fetching the contents of the dashboard folder
+        var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
+        ViewBag.DashboardContents = contents; // Store the contents in ViewBag
 
         return View(dashboardListData);
     }

@@ -170,6 +170,7 @@
                                 }
                                 <td class="text-center align-middle">
                                     <button class="p-0 border-0 bg-transparent btn btn-sm btn-danger fs-6" aria-label="Delete" onclick="handleDeleteConfig(@config.Id)">
+                                    @* <button class="p-0 border-0 bg-transparent btn btn-sm btn-danger fs-6" aria-label="Delete" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal"> *@
                                         <i class="ri-delete-bin-7-line text-danger"></i>
                                     </button>
                                 </td>
@@ -189,7 +190,7 @@
 </div>
 
 <!-- Modal for delete confirmation -->
-@* <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
+<div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="deleteConfirmationModal" tabindex="-1" aria-labelledby="deleteConfirmationModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-dialog-centered">
         <div class="modal-content">
             <div class="modal-header p-2 px-3">
@@ -207,7 +208,7 @@
             </div>
         </div>
     </div>
-</div> *@
+</div>
 
 
 <script>

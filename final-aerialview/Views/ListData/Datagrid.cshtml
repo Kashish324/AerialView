@@ -217,7 +217,6 @@
                     @* <i class="ri-file-pdf-2-line fs-3 shadow-sm text-danger"></i> *@
                 </button>
             </div>
-
         </div>
     }
 </div>
@@ -389,7 +388,7 @@
 
     //delete calculated field
     function handleDeleteCalcField() {
-        //to delete the selected calculated field without reloading the page 
+        //to delete the selected calculated field without reloading the page
         deleteColumn()
 
         $.ajax({
@@ -488,7 +487,7 @@
     //instantly deleting the selected calculated field from the localStorage & datagrid
     function deleteColumn() {
         const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
-        
+
         if (dataGrid) {
             const columns = dataGrid.option('columns');
             // Find the index of the column to delete
@@ -499,7 +498,7 @@
 
                 dataGrid.option('columns', columns);
 
-
+                // updateCalculatedFieldsDropdown();
             } else {
                 // Notify if the column wasn't found
                 DevExpress.ui.notify({
@@ -799,66 +798,66 @@
             const columns = dataGrid.option('columns');
 
             const existingColumnIndex = columns.findIndex(column => column.dataField === columnName);
-            console.log(existingColumnIndex)
+            console.log('columns', columns, 'existing', existingColumnIndex, 'value', calcFieldInput.value)
 
-             if(existingColumnIndex > -1){
-                 columns[existingColumnIndex] = {
-                     dataField: columnName,
-                     caption: columnName,
-                     calculateCellValue: function (e) {
-                         try {
-                             // Construct the formula by replacing column names with e.<column_name>
-                             let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
-                                 return `e.${match}`; // Replace valid column names
-                             });
+            if (existingColumnIndex > -1) {
+                columns[existingColumnIndex] = {
+                    dataField: columnName,
+                    caption: columnName,
+                    calculateCellValue: function (e) {
+                        try {
+                            // Construct the formula by replacing column names with e.<column_name>
+                            let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
+                                return `e.${match}`; // Replace valid column names
+                            });
 
-                             // Evaluate the constructed formula
-                             // Use Function constructor to avoid eval's security issues and syntax errors
-                             const evaluateFormula = new Function('e', `return ${formula};`);
-                             return evaluateFormula(e);
-                         } catch (error) {
-                             console.error("Error in formula: ", error);
-                             return null; // Return null if formula cannot be calculated
-                         }
-                     },
-                     dataType: 'number',
-                     cssClass: "datagridCol",
-                     format: {
-                         type: 'fixedPoint',
-                         precision: 2
-                     }
-                 };
-             }else{
-
-            // Adding new column
-            columns.push({
-                dataField: columnName,
-                caption: columnName,
-                calculateCellValue: function (e) {
-                    try {
-                        // Construct the formula by replacing column names with e.<column_name>
-                        let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
-                            return `e.${match}`; // Replace valid column names
-                        });
-
-                        // Evaluate the constructed formula
-                        // Use Function constructor to avoid eval's security issues and syntax errors
-                        const evaluateFormula = new Function('e', `return ${formula};`);
-                        return evaluateFormula(e);
-                    } catch (error) {
-                        console.error("Error in formula: ", error);
-                        return null; // Return null if formula cannot be calculated
+                            // Evaluate the constructed formula
+                            // Use Function constructor to avoid eval's security issues and syntax errors
+                            const evaluateFormula = new Function('e', `return ${formula};`);
+                            return evaluateFormula(e);
+                        } catch (error) {
+                            console.error("Error in formula: ", error);
+                            return null; // Return null if formula cannot be calculated
+                        }
+                    },
+                    dataType: 'number',
+                    cssClass: "datagridCol",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
                     }
-                },
-                dataType: 'number',
-                cssClass: "datagridCol",
-                format: {
-                    type: 'fixedPoint',
-                    precision: 2
-                }
+                };
+            } else {
 
-            });
-             }
+                // Adding new column
+                columns.push({
+                    dataField: columnName,
+                    caption: columnName,
+                    calculateCellValue: function (e) {
+                        try {
+                            // Construct the formula by replacing column names with e.<column_name>
+                            let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
+                                return `e.${match}`; // Replace valid column names
+                            });
+
+                            // Evaluate the constructed formula
+                            // Use Function constructor to avoid eval's security issues and syntax errors
+                            const evaluateFormula = new Function('e', `return ${formula};`);
+                            return evaluateFormula(e);
+                        } catch (error) {
+                            console.error("Error in formula: ", error);
+                            return null; // Return null if formula cannot be calculated
+                        }
+                    },
+                    dataType: 'number',
+                    cssClass: "datagridCol",
+                    format: {
+                        type: 'fixedPoint',
+                        precision: 2
+                    }
+
+                });
+            }
 
 
             // Update the grid with the new columns array
@@ -874,7 +873,8 @@
 
             // Update the dropdown
             // updateCalculatedFieldsDropdown(columnName);
-            
+            // updateCalculatedFieldsDropdown();
+
             // Notify the user
             DevExpress.ui.notify({
                 // message: ` '${columnName}' column added successfully`,
@@ -893,6 +893,44 @@
             });
         }
     }
+
+
+
+
+    // function updateCalculatedFieldsDropdown() {
+    //     const dropDown = document.getElementById('existingFieldsDropdown');
+
+    //     if(dropDown){
+
+    //     //clear current options
+    //     dropDown.innerHTML = '';
+
+    //     // Fetch the updated calculated fields (you may need to adjust this part to get the current state)
+    //     const calculatedFields = @Html.Raw(Json.Serialize(Model.CalculatedFields)); // Assuming this is your current calculated fields array
+
+    //         // Populate dropdown with updated calculated fields
+    //         calculatedFields.forEach(calcField => {
+    //             const option = document.createElement('option');
+    //             option.value = calcField.Id;
+    //             option.text = calcField.ColumnName;
+    //             option.setAttribute('data-formula', calcField.Formula);
+    //             dropdown.appendChild(option);
+    //         });
+
+    //         // Add the default option
+    //         const defaultOption = document.createElement('option');
+    //         defaultOption.value = '';
+    //         defaultOption.disabled = true;
+    //         defaultOption.selected = true;
+    //         defaultOption.text = 'Select a field to update';
+    //         dropdown.prepend(defaultOption);
+
+    //     console.log(calculatedFields)
+
+    //     }
+
+    // }
+
 
 
     // Function to reload the datagrid with the existing filter

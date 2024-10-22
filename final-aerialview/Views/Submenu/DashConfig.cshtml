@@ -3,7 +3,9 @@
 
 @{
     ViewData["Title"] = "Dashboard Configuration";
+    var dashboardFiles = ViewBag.DashboardContents as Microsoft.Extensions.FileProviders.IDirectoryContents;
 }
+
 
 
 <div class="table-responsive pt-4">
@@ -33,9 +35,22 @@
                         <span id="error-message-@item.DashId" class=" text-danger fw-bold" style="display:none; cursor:pointer;">!</span>
                     </td>
 
-                    <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;">
-                        @item.DashPath
+                    <td id="dashPath" class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;">
+                        @if (dashboardFiles != null && dashboardFiles.Any())
+                        {
+                            foreach (var file in dashboardFiles)
+                            {
+                                if(file.Name == item.DashPath)
+                                {
+                                    @item.DashPath
+                                }
+                                
+                            }
+                        }
                     </td>
+
+                   
+
                     <td class="text-center align-middle p-0">
                         <span id="dashStatus-@item.DashId" class="badge @(item.DashStatus ? "bg-success" : "bg-danger") rounded-pill " onclick="updateDashboardStatus('@item.DashId')" style="cursor: pointer;">@((item.DashStatus) ? "Active" : "Inactive")</span>
                     </td>
@@ -81,8 +96,8 @@
 <div class="d-flex align-items-center justify-content-end gap-2">
     @* <button type="submit" class="btn btn-sm fw-medium focus-ring focus-ring-primary text-white" style="background-color: #1866B0 !important">Save</button> *@
     <button title="Add new row" type="button" class="btn btn-sm fw-medium text-white  fw-medium focus-ring focus-ring-primary border-0" id="addBtn" style="background-color: #1866B0 !important"><i class="ri-menu-add-line"></i> Add</button>
-    <button title="Update database" type="button" class="btn btn-sm fw-medium  fw-medium focus-ring focus-ring-warning border-0" id="updateBtn" style="background-color: #f9c835  !important" onclick="sendDataToServer()">
-        <i class="bi bi-database-add"></i> Update
+    <button title="Update Table" type="button" class="btn btn-sm fw-medium  fw-medium focus-ring focus-ring-warning border-0" id="updateBtn" style="background-color: #f9c835  !important" onclick="sendDataToServer()">
+        <i class="ri-database-2-line"></i> Update
     </button>
     @* <button title="Add new row" type="button" class="btn bg-primary-subtle btn-sm border-primary-subtle  fw-medium focus-ring focus-ring-primary" id="addBtn"><i class="ri-menu-add-line"></i> Add</button> *@
     @* <button title="Update database" type="button" class="btn bg-success-subtle btn-sm border-success-subtle  fw-medium focus-ring focus-ring-success" id="updateBtn" onclick="sendDataToServer()">
@@ -110,6 +125,7 @@
             </div>
         </div>
     </div>
+
     <!-- Modal 2 to give a warning while deleting any dashboard configuration -->
     <div class="modal fade bg-dark bg-gradient  bg-opacity-25" id="deleteDashboardModal" tabindex="-1" aria-labelledby="deleteDashboardModalLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -237,45 +253,45 @@
         newRow.id = 'dashRow-' + uniqueRowId;
 
         newRow.innerHTML = `
-                                                    <td class="d-flex align-items-center gap-1">
-                                                        <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" oninput="updateField('${uniqueRowId}', 'DashName', this.value)">
-                                                            <span id="error-message-${uniqueRowId}" class=" text-danger fw-bold" style="display:none; cursor:pointer;">!</span>
-                                                </td>
-                                                <td class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
-                                                <td class="text-center align-middle p-0">
-                                                    <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
-                                                </td>
-                                                <td class="text-center align-middle p-0">
-                                                    <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
-                                                    <div class="form-check">
-                                                            <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
-                                                    </div>
+                                                        <td class="d-flex align-items-center gap-1">
+                                                            <input type="text" id="DashName-${uniqueRowId}" class="form-control form-control-sm border-0 text-center align-middle text-nowrap text-truncate text-dark fw-bold text-capitalize dash-name-field" value="" oninput="updateField('${uniqueRowId}', 'DashName', this.value)">
+                                                                <span id="error-message-${uniqueRowId}" class=" text-danger fw-bold" style="display:none; cursor:pointer;">!</span>
+                                                    </td>
+                                                        <td id="dashPath" class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;"></td>
+                                                    <td class="text-center align-middle p-0">
+                                                        <span id="dashStatus-${uniqueRowId}" class="badge bg-danger rounded-pill" onclick="updateDashboardStatus('${uniqueRowId}')" style="cursor: pointer;">Inactive</span>
+                                                    </td>
+                                                    <td class="text-center align-middle p-0">
+                                                        <div class="d-flex justify-content-center align-items-center" style="height: 100%;">
+                                                        <div class="form-check">
+                                                                <input class="form-check-input shadow-sm" type="radio" name="flexRadioDefault" id="flexRadioDefault-${uniqueRowId}" style="cursor: pointer;" onchange="updateRadioValue('${uniqueRowId}')">
                                                         </div>
-                                                </td>
-                                                        <td class="text-center align-middle p-0">
-                                                                <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
-                                                                <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
-                                                                <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
-                                                                                trigger="morph"
-                                                       state="morph-folder"
+                                                            </div>
+                                                    </td>
+                                                            <td class="text-center align-middle p-0">
+                                                                    <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
+                                                                    <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
+                                                                    <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
+                                                                                    trigger="morph"
+                                                           state="morph-folder"
 
-                                                                           colors="primary:#FFC107"
-                                                                           style="width:16px;height:16px">
-                                                                </lord-icon>
-                                                            </a>
-                                                        </td>
-                                                            <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-0 bg-white" style="cursor: pointer;">
-                                            <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('${uniqueRowId}')">
-                                            <lord-icon src="https://cdn.lordicon.com/skkahier.json"
-                                                       trigger="hover"
-                                                       colors="primary:#ee6d66"
-                                                       style="width:16px;height:16px">
-                                            </lord-icon>
-                                        </button>
+                                                                               colors="primary:#FFC107"
+                                                                               style="width:16px;height:16px">
+                                                                    </lord-icon>
+                                                                </a>
+                                                            </td>
+                                                                <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-0 bg-white" style="cursor: pointer;">
+                                                <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('${uniqueRowId}')">
+                                                <lord-icon src="https://cdn.lordicon.com/skkahier.json"
+                                                           trigger="hover"
+                                                           colors="primary:#ee6d66"
+                                                           style="width:16px;height:16px">
+                                                </lord-icon>
+                                            </button>
 
-                                    </td>
+                                        </td>
 
-                                            `;
+                                                `;
         markRowAsUpdated(uniqueRowId); // Mark the new row as updated
     }
 
@@ -374,7 +390,7 @@
     }
 
 
-    // get saved dashboard list from /DashboardFolder/DashInfo
+    // // get saved dashboard list from /DashboardFolder/DashInfo
     $('#getDashboardModal').on('show.bs.modal', function () {
         $.ajax({
             url: '/DashboardFolder/DashInfo',
@@ -386,6 +402,7 @@
             }
         });
     });
+
 
     //set the value of hidden input in modal when the delete button is clicked
     function setDeleteDashId(dashId) {
