@@ -19,16 +19,38 @@
     //     }
     // };
 
-        window.onload = function () {
-            var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
+        // window.onload = function () {
+        //     var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
 
-            // Open a new window with the generated URL
-            const openedWindow = window.open(
-                newTabPageUrl,
-                "DefaultDashboard",
-                "width=1500,height=900,resizable,scrollbars"
-            );
-        };
+        //     // Open a new window with the generated URL
+        //     const openedWindow = window.open(
+        //         newTabPageUrl,
+        //         "DefaultDashboard",
+        //         "width=1500,height=900,resizable,scrollbars"
+        //     );
+
+        // };
+
+        let openedWindow;
+
+window.onload = function () {
+    var newTabPageUrl = '@Url.Action("DefaultDashboard", "DefaultDashViewer", new { page = "DefaultDashboard" })';
+
+    // Open a new window with the generated URL and store the reference
+    openedWindow = window.open(
+        newTabPageUrl,
+        "DefaultDashboard",
+        "width=1500,height=900,resizable,scrollbars"
+    );
+};
+
+// Add an event listener for the unload event to close the opened window
+window.addEventListener('unload', function () {
+    if (openedWindow) {
+        openedWindow.close(); // Close the opened window
+    }
+});
+
 
 </script>
 
