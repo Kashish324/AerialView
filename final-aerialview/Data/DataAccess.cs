@@ -612,15 +612,34 @@ namespace final_aerialview.Data
 
 
         #region Delete from Calculated Field Master
-        public IEnumerable<CalculatedFieldModel> DeleteCalculatedFieldData(int? id)
+        //public IEnumerable<CalculatedFieldModel> DeleteCalculatedFieldData(int? id)
+        //{
+        //    string query = $"DELETE FROM CalculatedFieldMaster WHERE Id = {id}";
+        //    return ExecuteQuery<CalculatedFieldModel>(query);
+        //}
+
+        public bool DeleteCalculatedFieldData(int? id)
         {
-            string query = $"DELETE FROM CalculatedFieldMaster WHERE Id = {id}";
-            return ExecuteQuery<CalculatedFieldModel>(query);
+            string query = $"DELETE FROM CalculatedFieldMaster WHERE Id = @Id";
+            int rowsAffected = ExecuteNonQuery(query, new { Id = id });
+            return rowsAffected > 0;
         }
         #endregion
 
         #region Insert/Update of Calculated field - update the calculated field master if the id already exists or insert if it does not 
-        public IEnumerable<CalculatedFieldModel> UpdateOrInsertCalculatedFieldData(string columnName, string formula, int rptId, int? Id)
+        //public IEnumerable<CalculatedFieldModel> UpdateOrInsertCalculatedFieldData(string columnName, string formula, int rptId, int? Id)
+        //{
+        //    string query = $"if exists (select * from CalculatedFieldMaster where Id = {Id})\r\n" +
+        //        $"Begin \r\n" +
+        //        $"update CalculatedFieldMaster set ColumnName = '{columnName}', Formula = '{formula}' where Id = {Id} \r\n" +
+        //        $"End\r\n" +
+        //        $"else\r\n" +
+        //        $"begin \r\n" +
+        //        $"insert into  CalculatedFieldMaster  (RptId, ColumnName, Formula) values ({rptId} , '{columnName}' , '{formula}') \r\n" +
+        //        $"end";
+        //    return ExecuteQuery<CalculatedFieldModel>(query);
+        //}
+        public bool UpdateOrInsertCalculatedFieldData(string columnName, string formula, int rptId, int? Id)
         {
             string query = $"if exists (select * from CalculatedFieldMaster where Id = {Id})\r\n" +
                 $"Begin \r\n" +
@@ -630,7 +649,8 @@ namespace final_aerialview.Data
                 $"begin \r\n" +
                 $"insert into  CalculatedFieldMaster  (RptId, ColumnName, Formula) values ({rptId} , '{columnName}' , '{formula}') \r\n" +
                 $"end";
-            return ExecuteQuery<CalculatedFieldModel>(query);
+            int rowsAffected = ExecuteNonQuery(query);
+            return rowsAffected > 0;
         }
         #endregion
 

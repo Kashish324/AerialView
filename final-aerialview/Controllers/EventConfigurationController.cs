@@ -83,11 +83,11 @@ namespace final_aerialview.Controllers
                
                 if (result) // Check if the operation was successful
                 {
-                    return Json(new { success = true, message = "Data deleted successfully." });
+                    return Json(new { success = true, message = "Configuration saved successfully." });
                 }
                 else
                 {
-                    return Json(new { success = false, message = "Failed to delete data." });
+                    return Json(new { success = false, message = "Failed to save configuration." });
                 }
             }
 

@@ -155,8 +155,16 @@ namespace final_aerialview.Controllers
                 // Use a default value if model.Id is null
                 int id = model.Id ?? -1; // Assuming -1 indicates a new record
                 //_dataAccess.InsertCalculatedFieldData(model.ColumnName, model.Formula, model.RptId, model.Id);
-                _dataAccess.UpdateOrInsertCalculatedFieldData(model.ColumnName, model.Formula, model.RptId, id);
-                return Json(new { success = true });
+                var result = _dataAccess.UpdateOrInsertCalculatedFieldData(model.ColumnName, model.Formula, model.RptId, id);
+
+                if (result)
+                {
+                    return Json(new { success = true, message = "Data deleted successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to delete data." });
+                }
             }
             catch (Exception ex)
             {
@@ -179,8 +187,15 @@ namespace final_aerialview.Controllers
             {
                 // Use a default value if model.Id is null
                 /*int id = model.Id ?? -1;*/ // Assuming -1 indicates a new record
-                _dataAccess.DeleteCalculatedFieldData(Id);
-                return Json(new { success = true });
+                var result = _dataAccess.DeleteCalculatedFieldData(Id);
+                if (result)
+                {
+                    return Json(new { success = true, message = "Data deleted successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to delete data." });
+                }
             }
             catch (Exception ex)
             {
