@@ -120,7 +120,7 @@
             </div>
 
         </form>
-            
+
 
     </div>
 
@@ -205,7 +205,7 @@
             </div>
             <div class="modal-footer p-1">
                 <button id="deleteBtn" type="button" class="btn btn-sm bg-danger btn-sm text-white shadow-sm" onclick="handleDeleteConfig()" data-bs-dismiss="modal">Yes</button>
-                <button type="button" class="btn btn-sm bg-secondary-subtle btn-sm shadow-sm"  data-bs-toggle="modal">No</button>
+                <button type="button" class="btn btn-sm bg-secondary-subtle btn-sm shadow-sm" data-bs-toggle="modal">No</button>
             </div>
         </div>
     </div>
@@ -213,10 +213,10 @@
 
 
 <script>
+        var statusBadge = document.getElementById("statusBadge");
 
     //toggling status on click
     document.getElementById("statusToggle").addEventListener("change", function () {
-        var statusBadge = document.getElementById("statusBadge");
         if (this.checked) {
             statusBadge.innerHTML = "Active";
         } else {
@@ -228,7 +228,7 @@
 
     //basis on the selected report name's corresponding connection string, tablename populating column name dropdown
     $('#reportName').on('change', function () {
-        
+
         const selectedReport = $(this).find('option:selected');
         const connString = selectedReport.data('conn-string'); // Get the connection string from data attribute
         const tableName = selectedReport.data('table-name'); // Get the table name from data attribute
@@ -270,7 +270,7 @@
                     return; // Early return if no columns are found
                 }
 
-                
+
 
                 // Populate the column name dropdown
                 if (data && data.length > 0) {
@@ -361,7 +361,7 @@
         const emails = document.getElementById('emailInput').value;
 
         // Step 1: Check if required fields are filled
-        if ( !columnName || isNaN(alarmHigh) || isNaN(warningHigh)) {
+        if (!columnName || isNaN(alarmHigh) || isNaN(warningHigh)) {
             $('#error-message').show(); // To show the message
             return; // Stop execution if fields are not filled
         } else {
@@ -466,7 +466,7 @@
 
         $.ajax({
             url: '/EventConfiguration/GetConfigurationById',
-            type: 'GET', 
+            type: 'GET',
             data: { id: val }, // Sending the ID
             success: function (response) {
                 // Handle the response data
@@ -496,7 +496,7 @@
         });
     }
 
-    //populate form on any table row click 
+    //populate form on any table row click
     function populateForm(data, id) {
         //clear form if necessary
         document.getElementById("eventConfigForm").reset();
@@ -520,16 +520,22 @@
 
             // Manually trigger the change event
             $(reportNameDropdown).trigger('change');
-            
+
             // Delay setting the columnName until the AJAX request is complete
             setTimeout(function () {
-                document.getElementById('columnName').value = config.ColumnName; 
+                document.getElementById('columnName').value = config.ColumnName;
                 document.getElementById('alarmHigh').value = config.AlarmHigh;
                 document.getElementById('warningHigh').value = config.WarningHigh;
                 document.getElementById('warningLow').value = config.WarningLow;
                 document.getElementById('alarmLow').value = config.AlarmLow;
                 document.getElementById('emailInput').value = config.Emails;
                 document.getElementById('statusToggle').checked = config.Status;
+                if (document.getElementById('statusToggle').checked) {
+                    statusBadge.innerHTML = "Active";
+                }else{
+                    statusBadge.innerHTML = "Inactive";
+                }
+                console.log(document.getElementById('statusToggle').checked)
                 document.getElementById("saveConfiguration").innerHTML = 'Update';
                 document.getElementById("saveConfiguration").style.backgroundColor = '#faa41b';
 
@@ -543,15 +549,15 @@
                 document.getElementById('columnName').classList.add('populatedMark');
 
             }, 500)
-           
+
         });
     }
 
-    //to send the to the modal of clicked row 
+    //to send the to the modal of clicked row
     $(document).on('click', '#deleteEventBtn', function () {
-        var configId = $(this).data('config-id'); 
-       
-        $('#deleteConfiguration').val(configId); 
+        var configId = $(this).data('config-id');
+
+        $('#deleteConfiguration').val(configId);
     });
 
 

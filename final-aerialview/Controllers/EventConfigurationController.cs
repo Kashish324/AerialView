@@ -42,7 +42,7 @@ namespace final_aerialview.Controllers
         }
         #endregion
 
-        #region inserting the configuration to the sql 
+        #region inserting or updating the configuration to the sql 
         [HttpPost]
         public IActionResult SaveConfiguration([FromBody] EventConfigViewModel viewModel)
         {
@@ -55,7 +55,6 @@ namespace final_aerialview.Controllers
                 string updatedAt = viewModel.UpdatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
                 _dataAccess.InsertOrUpdateEventConfigMasterData(viewModel.Id, viewModel.ConnString, viewModel.TableName, viewModel.ColumnName, viewModel.AlarmLow, viewModel.AlarmHigh, viewModel.WarningHigh, viewModel.WarningLow, createdAt, updatedAt, status, viewModel.RptId, viewModel.CreatedById, viewModel.UpdateById, viewModel.Emails);
-               
                 
                 // Save logic here
                 return Ok(new { success = true });
