@@ -419,27 +419,6 @@
                     handlingFormReset();
                     // deleteColumn();
 
-
-                    // Call the function to reload the datagrid using the filter values
-                    // reloadDatagridWithFilters();
-
-                    // setTimeout(function () {
-                    //     DevExpress.ui.notify({
-                    //         message: "Changes will be reflected on page reload",
-                    //         width: 400,
-                    //         type: "warning",
-                    //         displayTime: 3500,
-                    //         shading: true,
-                    //         animation: {
-                    //             show: { type: "fade", duration: 400, from: 0, to: 1 },
-                    //             hide: { type: "fade", duration: 40, to: 0 }
-                    //         }
-                    //     }, {
-                    //         position: "bottom center",
-                    //         direction: "up-push"
-                    //     });
-                    // }, 3600)
-
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
@@ -498,7 +477,7 @@
 
                 dataGrid.option('columns', columns);
 
-                // updateCalculatedFieldsDropdown();
+                //updateCalculatedFieldsDropdown();
             } else {
                 // Notify if the column wasn't found
                 DevExpress.ui.notify({
@@ -966,6 +945,8 @@
     //         console.log(option)
     //     }
     // }
+
+
 
 
     // Function to dynamically update the editing state of the DataGrid

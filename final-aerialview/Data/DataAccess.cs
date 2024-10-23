@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using DevExpress.CodeParser;
+using DevExpress.XtraRichEdit.Model;
 using final_aerialview.Models;
+using System;
 using System.Data;
 using System.Data.SqlClient;
 using System.Text.Json;
@@ -24,6 +26,18 @@ namespace final_aerialview.Data
             return new SqlConnection(connectionString);
         }
         #endregion
+
+        #region executing non-query commands (e.g., INSERT, UPDATE, DELETE)
+        public int ExecuteNonQuery(string query, object parameters = null)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                return connection.Execute(query, parameters); // Executes the query and returns the number of affected rows
+            }
+        }
+        #endregion
+
 
         #region opening the default connection
         public IEnumerable<T> ExecuteQuery<T>(string query)
@@ -629,9 +643,9 @@ namespace final_aerialview.Data
         #endregion
 
         #region inserting and updating data in event config master table
-        public IEnumerable<EventConfigViewModel> InsertOrUpdateEventConfigMasterData(int Id, string ConnString, string TableName, string ColumnName, int AlarmLow, int AlarmHigh, int WarningHigh, int WarningLow, string CreatedAt, string UpdatedAt, bool Status, int RptId, int CreatedById, int UpdateById, string Emails)
+        //public IEnumerable<EventConfigViewModel> InsertOrUpdateEventConfigMasterData(int Id, string ConnString, string TableName, string ColumnName, int AlarmLow, int AlarmHigh, int WarningHigh, int WarningLow, string CreatedAt, string UpdatedAt, bool Status, int RptId, int CreatedById, int UpdateById, string Emails)
+        public bool InsertOrUpdateEventConfigMasterData(int Id, string ConnString, string TableName, string ColumnName, int AlarmLow, int AlarmHigh, int WarningHigh, int WarningLow, string CreatedAt, string UpdatedAt, bool Status, int RptId, int CreatedById, int UpdateById, string Emails)
         {
-            //string query = $"insert into EventConfigurationMaster (ConnString, TableName, ColumnName, AlarmLow, AlarmHigh, WarningLow, WarningHigh, CreatedAt, UpdatedAt, Status, RptId, CreatedById, UpdateById, Emails) values('{ConnString}', '{TableName}', '{ColumnName}', {AlarmLow}, {AlarmHigh}, {WarningLow},  {WarningHigh}, '{CreatedAt}', '{UpdatedAt}', '{Status}', {RptId}, {CreatedById}, {UpdateById}, '{Emails}')";
             string query = $"if exists (select * from EventConfigurationMaster where Id = {Id})\r\n" +
                 $"Begin\r\n UPDATE EventConfigurationMaster\r\n" +
                 $"SET ConnString = '{ConnString}', TableName = '{TableName}', ColumnName = '{ColumnName}', AlarmLow = {AlarmLow}, AlarmHigh = {AlarmHigh}, WarningLow = {WarningLow}, WarningHigh = {WarningHigh}, UpdatedAt = '{UpdatedAt}', Status = '{Status}', RptId = {RptId}, UpdateById = {UpdateById}, Emails = '{Emails}'\r\n" +
@@ -641,7 +655,10 @@ namespace final_aerialview.Data
                 $"begin\r\n" +
                 $"insert into EventConfigurationMaster (ConnString, TableName, ColumnName, AlarmLow, AlarmHigh, WarningLow, WarningHigh, CreatedAt, UpdatedAt, Status, RptId, CreatedById, UpdateById, Emails) values('{ConnString}', '{TableName}', '{ColumnName}', {AlarmLow}, {AlarmHigh}, {WarningLow},  {WarningHigh}, '{CreatedAt}', '{UpdatedAt}', '{Status}', {RptId}, {CreatedById}, {UpdateById}, '{Emails}') \r\n" +
                 $"end";
-            return ExecuteQuery<EventConfigViewModel>(query);
+            //return ExecuteQuery<EventConfigViewModel>(query);
+
+            int rowsAffected = ExecuteNonQuery(query);
+            return rowsAffected > 0;
         }
         #endregion
 
@@ -674,11 +691,19 @@ namespace final_aerialview.Data
         #endregion
 
         #region delete selected data from event config master table
-        public IEnumerable<EventConfigViewModel> DeleteEventConfigData(int? id)
+        //public IEnumerable<EventConfigViewModel> DeleteEventConfigData(int? id)
+        //{
+        //    string query = $"DELETE FROM EventConfigurationMaster WHERE Id = {id}";
+        //    return ExecuteQuery<EventConfigViewModel>(query);
+        //}
+
+        public bool DeleteEventConfigData(int? id)
         {
-            string query = $"DELETE FROM EventConfigurationMaster WHERE Id = {id}";
-            return ExecuteQuery<EventConfigViewModel>(query);
+            string query = $"DELETE FROM EventConfigurationMaster WHERE Id = @Id";
+            int rowsAffected = ExecuteNonQuery(query, new { Id = id }); // Assuming ExecuteNonQuery returns the number of rows affected
+            return rowsAffected > 0; // Return true if at least one row was affected, else false
         }
+
         #endregion
     }
 }

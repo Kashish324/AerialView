@@ -43,21 +43,52 @@ namespace final_aerialview.Controllers
         #endregion
 
         #region inserting or updating the configuration to the sql 
+        //[HttpPost]
+        //public IActionResult SaveConfiguration([FromBody] EventConfigViewModel viewModel)
+        //{
+        //    // Handle your model and save it to the database
+        //    if (ModelState.IsValid)
+        //    {
+        //        bool status = viewModel.Status ?? false; // Default to false if null
+
+        //        string createdAt = viewModel.CreatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"); // Default to current time in ISO format
+        //        string updatedAt = viewModel.UpdatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
+
+        //        _dataAccess.InsertOrUpdateEventConfigMasterData(viewModel.Id, viewModel.ConnString, viewModel.TableName, viewModel.ColumnName, viewModel.AlarmLow, viewModel.AlarmHigh, viewModel.WarningHigh, viewModel.WarningLow, createdAt, updatedAt, status, viewModel.RptId, viewModel.CreatedById, viewModel.UpdateById, viewModel.Emails);
+
+        //        // Save logic here
+        //        return Ok(new { success = true });
+        //    }
+
+        //    return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
+        //}
         [HttpPost]
         public IActionResult SaveConfiguration([FromBody] EventConfigViewModel viewModel)
         {
+            if(viewModel == null)
+            {
+                return BadRequest("Invalid Data.");
+            }
+
             // Handle your model and save it to the database
             if (ModelState.IsValid)
             {
                 bool status = viewModel.Status ?? false; // Default to false if null
-                
+
                 string createdAt = viewModel.CreatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ"); // Default to current time in ISO format
                 string updatedAt = viewModel.UpdatedAt ?? DateTime.UtcNow.ToString("yyyy-MM-ddTHH:mm:ss.fffZ");
 
-                _dataAccess.InsertOrUpdateEventConfigMasterData(viewModel.Id, viewModel.ConnString, viewModel.TableName, viewModel.ColumnName, viewModel.AlarmLow, viewModel.AlarmHigh, viewModel.WarningHigh, viewModel.WarningLow, createdAt, updatedAt, status, viewModel.RptId, viewModel.CreatedById, viewModel.UpdateById, viewModel.Emails);
-                
-                // Save logic here
-                return Ok(new { success = true });
+                var result = _dataAccess.InsertOrUpdateEventConfigMasterData(viewModel.Id, viewModel.ConnString, viewModel.TableName, viewModel.ColumnName, viewModel.AlarmLow, viewModel.AlarmHigh, viewModel.WarningHigh, viewModel.WarningLow, createdAt, updatedAt, status, viewModel.RptId, viewModel.CreatedById, viewModel.UpdateById, viewModel.Emails);
+
+               
+                if (result) // Check if the operation was successful
+                {
+                    return Json(new { success = true, message = "Data deleted successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to delete data." });
+                }
             }
 
             return BadRequest(new { success = false, errors = ModelState.Values.SelectMany(v => v.Errors) });
@@ -77,25 +108,53 @@ namespace final_aerialview.Controllers
 
 
         #region to delete configuration 
+        //[HttpPost]
+        //public IActionResult DeleteConfiguration(int Id)
+        //{
+        //    if (Id == 0)
+        //    {
+        //        return BadRequest("Invalid data.");
+        //    }
+
+        //    try
+        //    {
+        //        _dataAccess.DeleteEventConfigData(Id);
+        //        return Json(new { success = true });
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        return Json(new { success = false, message = ex.Message });
+        //    }
+        //}
+
         [HttpPost]
-        public IActionResult DeleteConfiguration(int Id)
+        public IActionResult DeleteConfiguration(int Id) 
         {
             if (Id == 0)
             {
-                return BadRequest("Invalid data.");
+                return BadRequest("Invalid Data.");
             }
 
             try
             {
-                _dataAccess.DeleteEventConfigData(Id);
-                return Json(new { success = true });
+                var result = _dataAccess.DeleteEventConfigData(Id); // Remove await here
+                if (result) // Check if the operation was successful
+                {
+                    return Json(new { success = true, message = "Data deleted successfully." });
+                }
+                else
+                {
+                    return Json(new { success = false, message = "Failed to delete data." });
+                }
             }
             catch (Exception ex)
             {
                 return Json(new { success = false, message = ex.Message });
             }
         }
-        
+
+
+
         #endregion
     }
 

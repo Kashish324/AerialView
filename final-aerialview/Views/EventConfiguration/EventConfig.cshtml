@@ -213,7 +213,7 @@
 
 
 <script>
-        var statusBadge = document.getElementById("statusBadge");
+     var statusBadge = document.getElementById("statusBadge");
 
     //toggling status on click
     document.getElementById("statusToggle").addEventListener("change", function () {
@@ -255,7 +255,7 @@
                 if (!data || data.length === 0) {
                     DevExpress.ui.notify({
                         message: "No columns found for the selected table.",
-                        width: 300,
+                        width: 400,
                         type: "error",
                         displayTime: 3500,
                         shading: true,
@@ -282,7 +282,7 @@
             error: function () {
                 DevExpress.ui.notify({
                     message: "Error fetching table names. Please try again.",
-                    width: 300,
+                    width: 400,
                     type: "error",
                     displayTime: 3500,
                     shading: true,
@@ -403,7 +403,7 @@
                     if (response.success) {
                         DevExpress.ui.notify({
                             message: "Configuration saved successfully",
-                            width: 300,
+                            width: 400,
                             type: "success",
                             displayTime: 3500,
                             shading: true,
@@ -423,7 +423,7 @@
                     // alert('Error saving configuration: ' + response.errors.join(', '));
                     DevExpress.ui.notify({
                         message: "Error saving configuration",
-                        width: 300,
+                        width: 400,
                         type: "error",
                         displayTime: 3500,
                         shading: true,
@@ -441,7 +441,7 @@
                 // alert('An error occurred while saving the configuration. Please try again.');
                 DevExpress.ui.notify({
                     message: "An error occurred while saving the configuration. Please try again.",
-                    width: 300,
+                    width: 400,
                     type: "error",
                     displayTime: 4000,
                     shading: true,
@@ -475,7 +475,7 @@
                 } else {
                     DevExpress.ui.notify({
                         message: "Error retrieving data",
-                        width: 300,
+                        width: 400,
                         type: "error",
                         displayTime: 3500,
                         shading: true,
