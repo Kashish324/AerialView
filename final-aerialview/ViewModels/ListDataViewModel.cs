@@ -14,5 +14,11 @@ namespace final_aerialview.ViewModels
         public IEnumerable<dynamic>? ConditionalTableData { get; set; }
         public IEnumerable<PdfImageModel>? PdfImageData { get; set; }
         public IEnumerable<CalculatedFieldModel>? CalculatedFields { get; set; }
+
+        // New properties for filter values
+        public string? SelectedOption { get; set; }
+        public string? SelectedValue { get; set; }
+        public string? FromDate { get; set; }
+        public string? ToDate { get; set; }
     }
 }

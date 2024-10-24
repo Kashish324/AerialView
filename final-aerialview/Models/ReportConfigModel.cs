@@ -11,6 +11,7 @@
         public bool? Required { get; set; }
         public string? DisplayName { get; set; }
         public int RptId { get; set; }
+        public string? GrandTotal { get; set; }
         public bool? EditableColumn { get; set; }
     }
 }

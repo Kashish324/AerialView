@@ -469,7 +469,8 @@ namespace final_aerialview.Data
                     SET 
                         Required = CASE WHEN @Required = 1 THEN 'True' ELSE 'False' END,
                         DisplayName = @DisplayName,
-                        EditableColumn = CASE WHEN @EditableColumn = 1 THEN 'True' ELSE 'False' END
+                        EditableColumn = CASE WHEN @EditableColumn = 1 THEN 'True' ELSE 'False' END,
+GrandTotal = @GrandTotal
                     WHERE Rid = @Rid";
                         foreach (var change in changes)
                         {

@@ -92,7 +92,12 @@ namespace final_aerialview.Controllers
                 RptId = rptId,
                 PdfImageData = pdfImageData,
                 ConnectionString = connString,
-                CalculatedFields = calculatedFields
+                CalculatedFields = calculatedFields,
+
+                SelectedOption = option,  // Store selected option
+                SelectedValue = selectedValue,  // Store selected value
+                FromDate = fromDate,  // Store from date
+                ToDate = toDate  // Store to date
             };
             return View(viewModel);
         }

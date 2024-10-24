@@ -68,11 +68,11 @@
             <div id="datePickerContainer" class="ms-2" style="display: none;">
                 <div class="datePicker">
                     <div class="fromDate w-50">
-                        <input title="From Date" type="datetime-local" id="fromDateInput" class="form-control form-control-sm" onchange="fromDate(event)" style="cursor: pointer !important;">
+                        <input title="From Date" type="datetime-local" id="fromDateInput" class="form-control form-control-sm" onchange="fromDate(event)"  style="cursor: pointer !important;">
                     </div>
 
                     <div class="toDate w-50">
-                        <input title="To Date" type="datetime-local" id="toDateInput" class="form-control form-control-sm" onchange="toDate(event)" style="cursor: pointer !important;">
+                        <input title="To Date" type="datetime-local" id="toDateInput" class="form-control form-control-sm" onchange="toDate(event)"  style="cursor: pointer !important;">
                     </div>
                 </div>
             </div>
@@ -214,7 +214,6 @@
     //select radio option
     function selectedOption(e) {
         var option = e;
-        console.log(option);
         if (option === 'Standard') {
             $('#standardFilterContainer').show();
             $('#datePickerContainer').hide();
@@ -228,8 +227,8 @@
     //select box(dropdown value)
     function selectBox_valueChanged(event) {
         var selectedValue = event.target.value;
-
         $("#selectedValue").val(selectedValue);
+       
     }
 
     //from date selected value
@@ -237,7 +236,6 @@
         var fromDateAndTime = new Date(event.target.value);
         var formattedFromDate = formatDate(fromDateAndTime);
         $("#fromDate").val(formattedFromDate);
-        console.log("from date", formattedFromDate);
     }
 
     //to date selected value
@@ -245,7 +243,6 @@
         var toDateAndTime = new Date(event.target.value);
         var formattedToDate = formatDate(toDateAndTime);
         $("#toDate").val(formattedToDate);
-        console.log("to date", formattedToDate);
     }
 
 
@@ -254,6 +251,7 @@
 
         if (option === 'Standard') {
             var selectedValue = $("#selectedValue").val();
+            console.log(selectedValue)
             if (!selectedValue) {
                 showToast("Please select one of the filter options from the dropdown.");
                 return false;
