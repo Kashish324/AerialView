@@ -8,9 +8,33 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Remove="Data\Dashboards\**" />
+    <Compile Remove="wwwroot\lib\%40babel\**" />
+    <Compile Remove="wwwroot\lib\core-js\**" />
+    <Compile Remove="wwwroot\lib\exceljs\**" />
+    <Compile Remove="wwwroot\lib\file-saver\**" />
+    <Compile Remove="wwwroot\lib\jspdf-autotable\**" />
+    <Compile Remove="wwwroot\lib\jspdf\**" />
     <Content Remove="Data\Dashboards\**" />
+    <Content Remove="wwwroot\lib\%40babel\**" />
+    <Content Remove="wwwroot\lib\core-js\**" />
+    <Content Remove="wwwroot\lib\exceljs\**" />
+    <Content Remove="wwwroot\lib\file-saver\**" />
+    <Content Remove="wwwroot\lib\jspdf-autotable\**" />
+    <Content Remove="wwwroot\lib\jspdf\**" />
     <EmbeddedResource Remove="Data\Dashboards\**" />
+    <EmbeddedResource Remove="wwwroot\lib\%40babel\**" />
+    <EmbeddedResource Remove="wwwroot\lib\core-js\**" />
+    <EmbeddedResource Remove="wwwroot\lib\exceljs\**" />
+    <EmbeddedResource Remove="wwwroot\lib\file-saver\**" />
+    <EmbeddedResource Remove="wwwroot\lib\jspdf-autotable\**" />
+    <EmbeddedResource Remove="wwwroot\lib\jspdf\**" />
     <None Remove="Data\Dashboards\**" />
+    <None Remove="wwwroot\lib\%40babel\**" />
+    <None Remove="wwwroot\lib\core-js\**" />
+    <None Remove="wwwroot\lib\exceljs\**" />
+    <None Remove="wwwroot\lib\file-saver\**" />
+    <None Remove="wwwroot\lib\jspdf-autotable\**" />
+    <None Remove="wwwroot\lib\jspdf\**" />
   </ItemGroup>
   <ItemGroup>
     <Content Remove="C:\Users\HPLIT05\.nuget\packages\bootstrap\5.3.3\contentFiles\any\any\wwwroot\css\bootstrap-grid.css" />
