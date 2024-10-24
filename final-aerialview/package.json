@@ -12,11 +12,13 @@
   },
   "dependencies": {
     "@babel/polyfill": "^7.12.1",
+    "@lordicon/element": "^1.10.0",
     "bootstrap-icons": "^1.11.3",
     "core-js": "^3.38.1",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "jspdf": "^2.5.1",
-    "jspdf-autotable": "^3.8.2"
+    "jspdf-autotable": "^3.8.2",
+    "lottie-web": "^5.12.2"
   }
 }

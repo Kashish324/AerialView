@@ -168,11 +168,21 @@
                                     <td> <i class="ri-circle-fill text-danger"></i></td>
 
                                 }
-                                <td class="text-center align-middle">
-                                    @* <button class="p-0 border-0 bg-transparent btn btn-sm btn-danger fs-6" aria-label="Delete" onclick="handleDeleteConfig(@config.Id)"> *@
-                                    <button id="deleteEventBtn" class="p-0 border-0 bg-transparent btn btn-sm btn-danger fs-6" aria-label="Delete" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-config-id="@config.Id">
-                                        <i class="ri-delete-bin-7-line text-danger"></i>
+                                @* <td class="text-center align-middle">
+                        <button id="deleteEventBtn" class="p-0 border-0 bg-transparent btn btn-sm btn-danger fs-6" aria-label="Delete" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-config-id="@config.Id">
+                        <i class="ri-delete-bin-7-line text-danger"></i>
+                        </button>
+                        </td> *@
+                                <td title="Delete" class="deleteBtn text-center align-middle text-nowrap text-truncate  p-1 bg-white" style="cursor: pointer;">
+                                    <button id="deleteEventBtn" class="p-0 border-0 bg-transparent btn btn-sm btn-danger" aria-label="Delete" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal" data-config-id="@config.Id">
+                                        @* <i class="ri-delete-bin-line text-danger"></i> *@
+                                        <lord-icon src="https://cdn.lordicon.com/skkahier.json"
+                                                   trigger="hover"
+                                                   colors="primary:#ee6d66"
+                                                   style="width:16px;height:16px">
+                                        </lord-icon>
                                     </button>
+
                                 </td>
                             </tr>
 
@@ -213,7 +223,7 @@
 
 
 <script>
-     var statusBadge = document.getElementById("statusBadge");
+    var statusBadge = document.getElementById("statusBadge");
 
     //toggling status on click
     document.getElementById("statusToggle").addEventListener("change", function () {
@@ -532,7 +542,7 @@
                 document.getElementById('statusToggle').checked = config.Status;
                 if (document.getElementById('statusToggle').checked) {
                     statusBadge.innerHTML = "Active";
-                }else{
+                } else {
                     statusBadge.innerHTML = "Inactive";
                 }
                 console.log(document.getElementById('statusToggle').checked)
