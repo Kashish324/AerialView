@@ -156,10 +156,12 @@ namespace final_aerialview.Data
         #endregion
 
         #region conditional table for the datagrid to show only those columns for which the required is true in report config according to rptid
-        public IEnumerable<ConditionalTableModel> ConditionalTable(int rptId)
+
+        //changed the model from conditionaltable to reportconfig model 
+        public IEnumerable<ReportConfigModel> ConditionalTable(int rptId)
         {
             string query = $"SELECT * from Report_Config where RptId = '{rptId}' and Required = 'true'";
-            return ExecuteQuery<ConditionalTableModel>(query);
+            return ExecuteQuery<ReportConfigModel>(query);
         }
         #endregion
 

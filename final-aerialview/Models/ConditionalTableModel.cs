@@ -8,5 +8,6 @@
         public string? DisplayName {  get; set; }
         public bool? EditableColumn { get; set; }
         public string? DataType { get; set; }
+        public string? GrandTotal { get; set; }
     }
 }

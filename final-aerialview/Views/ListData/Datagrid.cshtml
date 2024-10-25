@@ -160,13 +160,50 @@
             }
             }
 
-        </text>)
+        </text>
+        )
 
         .Format(f => f.Type(Format.FixedPoint).Precision(2))
         .AllowEditing(false);
                         }
                     }
                 })
+
+
+                .Summary(s => s
+                .RecalculateWhileEditing(true)
+                .TotalItems(items =>
+                {
+                    if (Model.ConditionalTableData != null)
+                    {
+                        foreach (var i in Model.ConditionalTableData)
+                        {
+                            SummaryType? summaryType = i.GrandTotal switch
+                            {
+                                "Sum" => SummaryType.Sum,
+                                "Min" => SummaryType.Min,
+                                "Max" => SummaryType.Max,
+                                "Avg" => SummaryType.Avg,
+                                "Count" => SummaryType.Count,
+                                "No" => null, // Do not add summary for "No" option
+                                _ => null     // Handle any unexpected cases as well
+                            };
+
+                            // Only add a summary if a valid `SummaryType` is determined
+                            if (summaryType.HasValue)
+                            {
+                                items.Add()
+                                .Column(i.ColumnName)            // Apply to the specific column
+                                .SummaryType(summaryType.Value)  // Set summary type dynamically
+                                @* .DisplayFormat("{0:n2}") *@         // Optional formatting
+                                .ShowInColumn(i.ColumnName);     // Show in relevant column
+                            }
+                        }
+                    }
+                })
+                )
+
+
                 .ShowColumnHeaders(true)
                 .Pager(pager =>
                 {
