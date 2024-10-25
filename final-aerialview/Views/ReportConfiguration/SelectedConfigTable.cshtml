@@ -46,20 +46,17 @@
             c.Add().DataField("DataType").Caption("Data Type").AllowEditing(false).CssClass("datagridCol");
             c.Add().DataField("Required").Caption("Required").AllowEditing(true).CssClass("datagridCol");
             c.Add().DataField("DisplayName").Caption("Display Name").AllowEditing(true).CssClass("datagridCol");
-
-            @* c.Add().DataField("GrandTotal").Caption("Calculation").AllowEditing(true).CssClass("datagridCol"); *@
             c.Add().DataField("GrandTotal")
-    .AllowEditing(true).CssClass("datagridCol")
-    .EditorOptions(new
+            .AllowEditing(true).CssClass("datagridCol")
+            .EditorOptions(new
             {
                 itemTemplate = new JS("itemTemplate")
             })
-    .Lookup(lookup => lookup
-    .DataSource(new JS("statuses"))
-    .ValueExpr("name")
-    .DisplayExpr("name")
-    );
-
+            .Lookup(lookup => lookup
+            .DataSource(new JS("statuses"))
+            .ValueExpr("name")
+            .DisplayExpr("name")
+            );
             c.Add().DataField("EditableColumn").Caption("Editable Cell").AllowEditing(true).CssClass("datagridCol");
         })
         .Pager(pager =>
@@ -84,7 +81,7 @@
 
 <script>
     var statuses = [
-        { "id": "1", "name": "No" },   // Ensure IDs are strings
+        { "id": "1", "name": "No" },   
         { "id": "2", "name": "Sum" },
         { "id": "3", "name": "Min" },
         { "id": "4", "name": "Max" },
@@ -106,7 +103,7 @@
 
         if (changes.length > 0) {
             var updateData = changes.map(change => ({
-                Rid: change.key.Rid,
+                Rid: change.key.Rid, // Including Rid in the same object
 
                 //old data
                 ...change.key,

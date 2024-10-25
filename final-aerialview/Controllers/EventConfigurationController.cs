@@ -65,7 +65,7 @@ namespace final_aerialview.Controllers
         [HttpPost]
         public IActionResult SaveConfiguration([FromBody] EventConfigViewModel viewModel)
         {
-            if(viewModel == null)
+            if (viewModel == null)
             {
                 return BadRequest("Invalid Data.");
             }
@@ -80,7 +80,7 @@ namespace final_aerialview.Controllers
 
                 var result = _dataAccess.InsertOrUpdateEventConfigMasterData(viewModel.Id, viewModel.ConnString, viewModel.TableName, viewModel.ColumnName, viewModel.AlarmLow, viewModel.AlarmHigh, viewModel.WarningHigh, viewModel.WarningLow, createdAt, updatedAt, status, viewModel.RptId, viewModel.CreatedById, viewModel.UpdateById, viewModel.Emails);
 
-               
+
                 if (result) // Check if the operation was successful
                 {
                     return Json(new { success = true, message = "Configuration saved successfully." });
@@ -128,7 +128,7 @@ namespace final_aerialview.Controllers
         //}
 
         [HttpPost]
-        public IActionResult DeleteConfiguration(int Id) 
+        public IActionResult DeleteConfiguration(int Id)
         {
             if (Id == 0)
             {

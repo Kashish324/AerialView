@@ -46,7 +46,6 @@
                 .Editing(editing =>
                 {
                     editing.Mode(GridEditMode.Batch);
-                    @* editing.AllowUpdating(true); *@
                     editing.AllowUpdating(new JS("localStorage.getItem('isEditingEnabled') === 'true'"));
                 })
 
@@ -193,12 +192,11 @@
                             if (summaryType.HasValue)
                             {
                                 items.Add()
-                                .Column(i.ColumnName)            // Apply to the specific column
-                                .SummaryType(summaryType.Value)  // Set summary type dynamically
+                                .Column(i.ColumnName)
+                                .SummaryType(summaryType.Value)
                                 .ValueFormat(",##0.##")
-                                @* .ValueFormat("")
-                                .DisplayFormat(",##0.##")     // Optional formatting *@
-                                .ShowInColumn(i.ColumnName);     // Show in relevant column
+                                
+                                .ShowInColumn(i.ColumnName);
                             }
                         }
                     }
