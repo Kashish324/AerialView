@@ -195,7 +195,9 @@
                                 items.Add()
                                 .Column(i.ColumnName)            // Apply to the specific column
                                 .SummaryType(summaryType.Value)  // Set summary type dynamically
-                                @* .DisplayFormat("{0:n2}") *@         // Optional formatting
+                                .ValueFormat(",##0.##")
+                                @* .ValueFormat("")
+                                .DisplayFormat(",##0.##")     // Optional formatting *@
                                 .ShowInColumn(i.ColumnName);     // Show in relevant column
                             }
                         }
