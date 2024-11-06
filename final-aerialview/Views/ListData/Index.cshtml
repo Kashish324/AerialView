@@ -107,14 +107,11 @@
 
 <script>
 
-    /* If browser back button was used, flush cache */
-    // if (performance.navigation.type == 2) {
-    //     location.reload(true);
-    // }// Check if the user navigated using the back or forward button
+    // Check if the user navigated using the back or forward button and do force page reload
     if (window.performance && window.performance.getEntriesByType) {
         const navigationEntries = window.performance.getEntriesByType('navigation');
         if (navigationEntries.length > 0 && navigationEntries[0].type === 'back_forward') {
-            location.reload();  // Force page reload
+            location.reload();  
         }
     }
 
