@@ -107,6 +107,18 @@
 
 <script>
 
+    /* If browser back button was used, flush cache */
+    // if (performance.navigation.type == 2) {
+    //     location.reload(true);
+    // }// Check if the user navigated using the back or forward button
+    if (window.performance && window.performance.getEntriesByType) {
+        const navigationEntries = window.performance.getEntriesByType('navigation');
+        if (navigationEntries.length > 0 && navigationEntries[0].type === 'back_forward') {
+            location.reload();  // Force page reload
+        }
+    }
+
+
     //enable or disable editing in datagrid button
     // Check if 'isEditingEnabled' exists in localStorage. If not, set it to false initially.
     let isEditingEnabled = localStorage.getItem('isEditingEnabled');
@@ -293,11 +305,11 @@
         $("#selectedOption").val("Standard");
 
         // Submit the form
-        $(".previewBtn").click(function () {
+        $(".previewBtn").on("click",function () {
             $("#filterForm").submit();
         });
 
-        $("#filterForm").submit(function (event) {
+        $("#filterForm").on("submit", function (event) {
 
             // Prevent the default form submission behavior
             event.preventDefault();
