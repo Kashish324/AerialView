@@ -4,6 +4,7 @@
   "private": true,
   "devDependencies": {
     "@devexpress/analytics-core": "23.2.5",
+    "@interactjs/types": "^1.10.27",
     "bootstrap": "^5.3.3",
     "devexpress-dashboard": "23.2.5",
     "devexpress-reporting": "23.2.5",
@@ -17,6 +18,8 @@
     "core-js": "^3.38.1",
     "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
+    "formBuilder": "^3.19.12",
+    "interactjs": "^1.10.27",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
     "lottie-web": "^5.12.2"

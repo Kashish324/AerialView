@@ -70,11 +70,12 @@
         (1, "ri-menu-2-line"),
         (2, "ri-file-chart-2-line"),
         (3, "ri-tools-line"),
-        (4, "ri-settings-4-fill"),
+        (4, "ri-settings-4-line"),
         (5, "ri-dashboard-line"),
         (6, "ri-account-pin-box-line"),
         (7, "ri-terminal-window-line"),
-        (8, "ri-calendar-schedule-line")
+        (8, "ri-calendar-schedule-line"),
+        (9, "ri-file-edit-line"),
     };
 }
 
@@ -142,12 +143,20 @@
                                             @if (mainItem.MenuName == "Event Configuration")
                                             {
                                                 <a href="@Url.Action("EventConfig", "EventConfiguration")" class="text-decoration-none text-white">
-                                                    <span class="link_name fs-6">@mainItem.MenuName</span>
+                                                    <span class="link_name fs-6 text-capitalize">@mainItem.MenuName</span>
                                                 </a>
                                             }
+                                            else if (mainItem.MenuName == "Form Designer")
+                                            {
+                                                <a href="@Url.Action("FormDesigner", "FormDesigner")" class="text-decoration-none text-white">
+                                                    <span class="link_name fs-6 text-capitalize">@mainItem.MenuName</span>
+                                                </a>
+                                            }
+
+                                           
                                             else
                                             {
-                                                <span class="link_name fs-6">@mainItem.MenuName</span>
+                                                <span class="link_name fs-6 text-capitalize">@mainItem.MenuName</span>
                                             }
                                         </div>
                                         @if (hasSubmenu)
@@ -380,7 +389,6 @@
     }
 
     <script src="/lib/bootstrap.bundle.min.js"></script>
-    @* <script src="https://cdn.lordicon.com/lordicon.js"></script> *@
     @* lordicon  *@
     <script src="~/lib/lottie.min.js"></script>
     <script src="~/lib/lordicon.js"></script>

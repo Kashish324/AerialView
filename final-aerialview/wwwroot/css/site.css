@@ -116,7 +116,8 @@ body, html {
     .sidebar .nav-links {
         height: 100%;
         width: var(--sidebar-width);
-        padding: 30px 0 150px 0;
+        /*padding: 30px 0 150px 0;*/
+        padding: 20px 0 150px 0;
         overflow: auto;
     }
 
