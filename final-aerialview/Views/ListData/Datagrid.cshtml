@@ -85,13 +85,6 @@
                                         var column = c.Add().DataField(property).Caption(i.DisplayName)
 
                                         .CssClass("datagridCol");
-
-                                        @* if(i.DataType == "real")
-        {
-        column.Format(f => f.Type(Format.FixedPoint).Precision(2));
-
-        } *@
-
                                         @* Set the editing ability based on the EditableColumn property *@
                                         if (i.EditableColumn)
                                         {
@@ -310,15 +303,15 @@
 
                 </form>
             </div>
-                    <div class="modal-footer ">
-                        <button id="formReset" class="btn text-light text-decoration-none cursor-pointer position-absolute start-0 pr-3" title="Reset Form" onclick="handlingFormReset()">
-                            <i class="ri-refresh-line text-primary-emphasis"></i>
-                        </button>
-                        @* Delete Button to remove the opened calculated field  *@
-                        <button type="button" class="btn btn-sm bg-danger-subtle border-0 fw-semibold text-danger-emphasis focus-ring focus-ring-danger" style="display:none; font-size: .8rem !important;" id="deleteFormulaButton" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">Delete</button>
-                        @* Submit button to send form data to the controller  *@
-                        <button type="submit" class="btn btn-sm bg-primary-subtle border-0 shadow-none text-primary-emphasis fw-semibold  focus-ring focus-ring-primary" style="font-size: .8rem !important;" id="submitFormulaButton" onclick="submitFormula()" data-bs-toggle="modal">Save Calculation</button>
-                    </div>
+            <div class="modal-footer ">
+                <button id="formReset" class="btn text-light text-decoration-none cursor-pointer position-absolute start-0 pr-3" title="Reset Form" onclick="handlingFormReset()">
+                    <i class="ri-refresh-line text-primary-emphasis"></i>
+                </button>
+                @* Delete Button to remove the opened calculated field  *@
+                <button type="button" class="btn btn-sm bg-danger-subtle border-0 fw-semibold text-danger-emphasis focus-ring focus-ring-danger" style="display:none; font-size: .8rem !important;" id="deleteFormulaButton" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">Delete</button>
+                @* Submit button to send form data to the controller  *@
+                <button type="submit" class="btn btn-sm bg-primary-subtle border-0 shadow-none text-primary-emphasis fw-semibold  focus-ring focus-ring-primary" style="font-size: .8rem !important;" id="submitFormulaButton" onclick="submitFormula()" data-bs-toggle="modal">Save Calculation</button>
+            </div>
         </div>
     </div>
 </div>
@@ -347,7 +340,6 @@
 
 
 <script>
-
     var columnName;
     var formulaVal;
     var dropDownVal;
@@ -358,24 +350,19 @@
     var resultInput = document.getElementById('formulaResult');
     var duplicateMessage = document.getElementById('duplicateName-message');
 
+
     // Pass the column names from the server-side Model to a JavaScript variable
-    existingColumnNames = @Json.Serialize(Model?.CalculatedFields?.Select(c => c.ColumnName ?? string.Empty).ToList() ?? new List<string>())
+    existingColumnNames = @Json.Serialize(Model?.CalculatedFields?.Select(c => c.ColumnName ?? string.Empty).ToList() ?? new List<string>());
 
-        //keeping the save calculation button disabled by default
-        function checkInput() {
-            // if (columnName === undefined && formulaVal === undefined) {
-            //     saveButton.disabled = true;
-            // } else {
-            //     saveButton.disabled = false;
-            // }
-
-            if (columnName === undefined || columnName === '' || formulaVal === undefined || formulaVal === '') {
-                saveButton.disabled = true;
-            } else {
-                saveButton.disabled = false;
-            }
-            
+    //keeping the save calculation button disabled by default
+    function checkInput() {
+        if (columnName === undefined || columnName === '' || formulaVal === undefined || formulaVal === '') {
+            saveButton.disabled = true;
+        } else {
+            saveButton.disabled = false;
         }
+
+    }
 
     //handling form reset
     function handlingFormReset() {
@@ -414,11 +401,61 @@
         calcFieldDeleteButton.style.display = selectedElement.value ? 'inline-block' : 'none';
     }
 
+    //to update the dropdown after deleting any calculated field column 
+    function updateDropDownAfterDelete(deletedValue){
+        const dropdown = document.getElementById('existingFieldsDropdown');
+        const options = dropdown.getElementsByTagName('option');
+
+        for (let i = 0; i < options.length; i++ ) {
+            if(options[i].value === deletedValue){
+                options[i].remove();
+                break;
+            }
+        }
+    }
+
+
+    // Function to update the dropdown option after updating a column
+    function updateDropdownAfterUpdate(updatedValue, newValue, newFormula) {
+        const dropdown = document.getElementById('existingFieldsDropdown');
+        const options = dropdown.getElementsByTagName('option');
+
+        for (let i = 0; i < options.length; i++) {
+            if (options[i].value === updatedValue) {
+                options[i].value = newValue;  // Update the value of the option
+                options[i].setAttribute('data-formula', newFormula);  // Update the formula if needed
+                options[i].textContent = newValue; // Update the text of the option
+                break;
+            }
+        }
+    }
+
+    // Call this function after successful update
+    // updateDropdownAfterUpdate(oldColumnValue, updatedColumnValue, updatedFormula);
+
+    // Function to add a new option to the dropdown
+    function updateDropdownAfterAdd(newColumnName, newFormula) {
+        const dropdown = document.getElementById('existingFieldsDropdown');
+
+        const newOption = document.createElement('option');
+        newOption.value = newColumnName;
+        newOption.textContent = newColumnName;
+        newOption.setAttribute('data-formula', newFormula);
+
+        dropdown.appendChild(newOption);
+    }
+
+    // Call this function after successfully adding a new item
+    // updateDropdownAfterAdd(newColumnName, newFormula);
+
+
 
     //delete calculated field
     function handleDeleteCalcField() {
         //to delete the selected calculated field without reloading the page
         deleteColumn()
+        // //function to delete column from dropdown after successful deletion
+        // updateDropDownAfterDelete(deleteCalcField.value);
 
         $.ajax({
             url: '/ListData/DeleteCalculatedField',
@@ -446,8 +483,9 @@
                     calcFieldDeleteButton.style.display = 'none';
                     checkInput();
                     handlingFormReset();
-                    // deleteColumn();
 
+                    //function to delete column from dropdown after successful deletion
+                    updateDropDownAfterDelete(deleteCalcField.value);
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
@@ -707,6 +745,7 @@
         }
     }
 
+
     //submit the formula to the backend and add its column in the grid at the same time
     function submitFormula() {
         var calculatedColName = columnName;
@@ -749,6 +788,13 @@
                     //     direction: "up-push"
                     // });
                     addCalculatedColumn();
+
+                    //update dropdown with the adding the calculated field
+                    updateDropdownAfterAdd(calculatedColName, formula);
+
+                    //update dropdown with the updating the calculated field
+                    // updateDropdownAfterUpdate(oldColumnValue, updatedColumnValue, updatedFormula);
+
                     document.getElementById('formulaForm').reset();
                     resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
                     document.getElementById('error-message').style.display = 'none';
@@ -800,33 +846,39 @@
     //add calculated column to the datagrid at the button click while also saving the grid previous state
     function addCalculatedColumn() {
         const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
+        const dropdown = document.getElementById('existingFieldsDropdown');
+        const selectedOption = dropdown.options[dropdown.selectedIndex];
+        const oldColName = selectedOption.getAttribute('data-column-name'); 
+
 
         if (dataGrid) {
             // Save the current state
             const gridState = localStorage.getItem('storage');
             const columns = dataGrid.option('columns');
 
+            // Find the index of the column with the same name
             const existingColumnIndex = columns.findIndex(column => column.dataField === columnName);
-            console.log('columns', columns, 'existing', existingColumnIndex, 'value', calcFieldInput.value)
+
+            const isExistingValue = calcFieldInput.value !== null && calcFieldInput.value !== ''; // Check if there's an existing value
+
+           
 
             if (existingColumnIndex > -1) {
+                // If column exists, update it
                 columns[existingColumnIndex] = {
                     dataField: columnName,
                     caption: columnName,
                     calculateCellValue: function (e) {
                         try {
-                            // Construct the formula by replacing column names with e.<column_name>
                             let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
                                 return `e.${match}`; // Replace valid column names
                             });
 
-                            // Evaluate the constructed formula
-                            // Use Function constructor to avoid eval's security issues and syntax errors
                             const evaluateFormula = new Function('e', `return ${formula};`);
                             return evaluateFormula(e);
                         } catch (error) {
                             console.error("Error in formula: ", error);
-                            return null; // Return null if formula cannot be calculated
+                            return null;
                         }
                     },
                     dataType: 'number',
@@ -836,26 +888,55 @@
                         precision: 2
                     }
                 };
-            } else {
 
-                // Adding new column
+
+            } else if (oldColName && oldColName !== columnName) {
+                // If the old column name doesn't match the new one, update the column
+                const columnIndex = columns.findIndex(col => col.dataField === oldColName);
+
+                if (columnIndex > -1) {
+                    columns[columnIndex] = {
+                        dataField: columnName,
+                        caption: columnName,
+                        calculateCellValue: function (e) {
+                            try {
+                                let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
+                                    return `e.${match}`; // Replace valid column names
+                                });
+
+                                const evaluateFormula = new Function('e', `return ${formula};`);
+                                return evaluateFormula(e);
+                            } catch (error) {
+                                console.error("Error in formula: ", error);
+                                return null;
+                            }
+                        },
+                        dataType: 'number',
+                        cssClass: "datagridCol",
+                        format: {
+                            type: 'fixedPoint',
+                            precision: 2
+                        }
+                    };
+                }
+
+                // updateDropdownAfterUpdate(oldColName, columnName, formulaVal);
+            } else {
+                // Add new column if it doesn't exist
                 columns.push({
                     dataField: columnName,
                     caption: columnName,
                     calculateCellValue: function (e) {
                         try {
-                            // Construct the formula by replacing column names with e.<column_name>
                             let formula = formulaVal.replace(/([A-Za-z_]\w*)/g, function (match) {
                                 return `e.${match}`; // Replace valid column names
                             });
 
-                            // Evaluate the constructed formula
-                            // Use Function constructor to avoid eval's security issues and syntax errors
                             const evaluateFormula = new Function('e', `return ${formula};`);
                             return evaluateFormula(e);
                         } catch (error) {
                             console.error("Error in formula: ", error);
-                            return null; // Return null if formula cannot be calculated
+                            return null;
                         }
                     },
                     dataType: 'number',
@@ -864,30 +945,26 @@
                         type: 'fixedPoint',
                         precision: 2
                     }
-
                 });
             }
-
 
             // Update the grid with the new columns array
             dataGrid.option('columns', columns);
 
-            // Restore the state
+            // Restore the state if it was previously saved
             if (gridState) {
                 dataGrid.state(JSON.parse(gridState));
             }
 
             // Add the new column name to the existingColumnNames array
-            // existingColumnNames.push(columnName);
+             existingColumnNames.push(columnName);
 
             // Update the dropdown
-            // updateCalculatedFieldsDropdown(columnName);
-            // updateCalculatedFieldsDropdown();
+            // updateDropdownAfterAdd(columnName, formula);
 
             // Notify the user
             DevExpress.ui.notify({
-                // message: ` '${columnName}' column added successfully`,
-                message: ` '${columnName}' column ${existingColumnIndex > -1 ? 'updated' : 'added'} successfully`,
+                message: ` '${columnName}' column ${existingColumnIndex > -1 || (oldColName && oldColName !== columnName) ? 'updated' : 'added'} successfully`,
                 width: 400,
                 type: "success",
                 displayTime: 3500,
