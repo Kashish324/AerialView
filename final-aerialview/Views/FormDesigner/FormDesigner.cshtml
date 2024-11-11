@@ -552,7 +552,7 @@
 <style>
 
     .form-wrap.form-builder .cb-wrap.sticky-controls {
-       margin-left: 5px !important;
+        margin-left: 5px !important;
     }
 
     #fb-rendered-form {
@@ -560,30 +560,46 @@
         display: none;
     }
 
-    #fb-rendered-form button {
-        float: right;
+    /* #fb-rendered-form button {
+            float: right;
+        } */
+
+    .form-builder-dialog {
+        z-index: 999;
+        /* overflow-y: visible; */
     }
 
-    .form-builder-dialog{
-        z-index: 999;
-        
-    }
+        .form-builder-dialog.positioned {
+            overflow-y: visible;
+        }
 
     .form-builder-overlay {
         z-index: 999;
     }
 
     .form-wrap.form-builder .cb-wrap .form-actions {
-        float: left; 
+        float: left;
         margin-left: 2px;
     }
 
     .form-actions .save-template {
         background-color: #1866B0 !important;
+        /* background-color: #333 !important; */
     }
 
     .form-actions .clear-all {
-        background-color: #FAA41B !important;
+        /* background-color: #FAA41B !important; */
+        background-color: #2f2f2fd1 !important;
+    }
+
+    .form-actions .get-data {
+        /* background-color: #FAA41B !important; */
+        background-color: #fff !important;
+    }
+
+    .saveDataWrap {
+        text-align: center;
+        margin-bottom: 10px;
     }
 </style>
 
@@ -599,14 +615,20 @@
     <div id="fb-rendered-form" class=" bg-white p-2 position-relative">
         <form action="#"></form>
         @* <button class="btn btn-sm btn-warning edit-form">Edit</button> *@
-    <button id="saveFormBtn" class="btn btn-success btn-sm mt-3">Save Form</button>
-        <button id="editBtn" class="btn btn-sm btn-warning edit-form mt-3">Edit</button>
+        <div class="d-flex justify-content-end">
+            <button id="editBtn" class="btn btn-sm btn-warning edit-form mt-3">Edit</button>
+            <button id="exportBtn" class="btn btn-secondary btn-sm mt-3 mx-1" title="Export JSON"><i class="ri-upload-2-line"></i> Export JSON</button>
+            <button id="saveFormBtn" class="btn text-white btn-sm edit-form mt-3 " style="background-color: #1866B0 !important;">Save Form</button>
+        </div>
+        @*  <div class="saveDataWrap">
+        <button id="saveData" class="btn btn-sm btn-success edit-form mt-3 me-1" type="button">External Save Button</button>
+        </div> *@
     </div>
 
 
     <!-- Preview, Export, Import, and Save Buttons -->
-    <button id="previewBtn" class="btn btn-primary btn-sm mt-3">Preview Form</button>
-    <button id="saveFormBtn" class="btn btn-success btn-sm mt-3">Save Form</button>
+    @* <button id="previewBtn" class="btn btn-primary btn-sm mt-3">Preview Form</button>
+    <button id="saveFormBtn" class="btn btn-success btn-sm mt-3">Save Form</button> *@
     @* <button id="exportBtn" class="btn btn-secondary btn-sm mt-3">Export JSON</button>
     <button id="importBtn" class="btn btn-secondary btn-sm mt-3">Import JSON</button> *@
 
@@ -615,42 +637,48 @@
 </div>
 
 <!-- Include jQuery and jQuery UI -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script>
+@* <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script> *@
+@* <script src="https://cdnjs.cloudflare.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"></script> *@
+<script src="/lib/jquery.min.js"></script>
+<script src="/lib/jquery-ui.min.js"></script>
 
 <!-- Include FormBuilder -->
-<script src="https://formbuilder.online/assets/js/form-builder.min.js"></script>
-<script src="https://formbuilder.online/assets/js/form-render.min.js"></script>
+@* <script src="https://formbuilder.online/assets/js/form-builder.min.js"></script> *@
+@* <script src="https://formbuilder.online/assets/js/form-render.min.js"></script> *@
+<script src="/lib/form-builder.min.js"></script>
+<script src="/lib/form-render.min.js"></script>
 
 <!-- Include RateYo (for star rating functionality) -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/rateYo/2.3.2/jquery.rateyo.min.js"></script>
+@* <link rel="stylesheet" href="~/lib/rateyo.min.css">
+<script src="~/lib/rateyo.min.js"></script> *@
 
 <script>
 
     jQuery(function ($) {
         // Define custom fields and templates for various elements
         let fields = [
-            { label: 'Star Rating', attrs: { type: 'starRating' }, icon: '🌟' },
-            { label: 'Color Picker', attrs: { type: 'colorPicker' }, icon: '🎨' },
+            // { label: 'Star Rating', attrs: { type: 'starRating' }, icon: '🌟' },
+            // { label: 'Color Picker', attrs: { type: 'colorPicker' }, icon: '🎨' },
         ];
 
         let templates = {
-           
-            starRating: function (fieldData) {
-                return {
-                    field: '<span id="' + fieldData.name + '"></span>',
-                    onRender: function () {
-                        $(document.getElementById(fieldData.name)).rateYo({ rating: 3.6 });
-                    }
-                };
-            },
-            colorPicker: function (fieldData) {
-                return {
-                    field: `<input type="color" id="${fieldData.name}" name="${fieldData.name}">`
-                };
-            },
-           
+
+            // starRating: function (fieldData) {
+            //     return {
+            //         field: '<span id="' + fieldData.name + '"></span>',
+            //         onRender: function () {
+            //             $(document.getElementById(fieldData.name)).rateYo({ rating: 3.6 });
+            //         }
+            //     };
+            // },
+            // colorPicker: function (fieldData) {
+            //     return {
+            //         field: `<input type="color" id="${fieldData.name}" name="${fieldData.name}">`
+            //     };
+            // },
+
         };
 
         // Initialize formBuilder with custom fields, templates, and options
@@ -672,6 +700,8 @@
                 }
             });
 
+        
+
         // Preview Form
         $('#previewBtn').on('click', function () {
             var formData = formBuilder.actions.getData('json');
@@ -684,10 +714,15 @@
             const blob = new Blob([formData], { type: 'application/json' });
             const url = URL.createObjectURL(blob);
             const a = document.createElement('a');
-            a.href = url;
-            a.download = 'formData.json';
-            a.click();
-            URL.revokeObjectURL(url);
+
+            let person = prompt("Save as:", "formData");
+            if (person != null) {
+
+                a.href = url;
+                a.download = `${person}`;
+                a.click();
+                URL.revokeObjectURL(url);
+            }
         });
 
         // Import JSON
@@ -715,6 +750,12 @@
         $('.edit-form', $formContainer).on('click', function () {
             $fbEditor.toggle();
             $formContainer.toggle();
+        });
+
+        document.getElementById("saveFormBtn").addEventListener("click", () => {
+            console.log("external save clicked");
+            const result = formBuilder.actions.save();
+            console.log("result:", result);
         });
     });
 

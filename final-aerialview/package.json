@@ -20,8 +20,10 @@
     "file-saver": "^2.0.5",
     "formBuilder": "^3.19.12",
     "interactjs": "^1.10.27",
+    "jquery-ui": "^1.14.1",
     "jspdf": "^2.5.1",
     "jspdf-autotable": "^3.8.2",
-    "lottie-web": "^5.12.2"
+    "lottie-web": "^5.12.2",
+    "rateyo": "^3.0.0-alpha.2"
   }
 }
