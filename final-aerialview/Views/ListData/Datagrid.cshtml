@@ -414,48 +414,44 @@
         }
     }
 
-
     // Function to update the dropdown option after updating a column
-    function updateDropdownAfterUpdate(updatedValue, newValue, newFormula) {
+    function updateDropdownAfterUpdate(oldColName, columnName, formulaVal) {
         const dropdown = document.getElementById('existingFieldsDropdown');
         const options = dropdown.getElementsByTagName('option');
 
         for (let i = 0; i < options.length; i++) {
-            if (options[i].value === updatedValue) {
-                options[i].value = newValue;  // Update the value of the option
-                options[i].setAttribute('data-formula', newFormula);  // Update the formula if needed
-                options[i].textContent = newValue; // Update the text of the option
+            // Compare `data-column-name` attribute with `oldColName`
+            if (options[i].getAttribute('data-column-name') === oldColName) {
+                // If column name is different, update to the new name and formula
+                if (options[i].textContent !== columnName) {
+                    options[i].setAttribute('data-column-name', columnName);  // Update column name attribute
+                    options[i].setAttribute('data-formula', formulaVal);      // Update formula attribute
+                    options[i].textContent = columnName;                      // Update displayed text
+                    options[i].classList.add("bg-primary-subtle");            // Highlight updated item
+                }
                 break;
             }
         }
     }
 
-    // Call this function after successful update
-    // updateDropdownAfterUpdate(oldColumnValue, updatedColumnValue, updatedFormula);
-
     // Function to add a new option to the dropdown
     function updateDropdownAfterAdd(newColumnName, newFormula) {
         const dropdown = document.getElementById('existingFieldsDropdown');
-
         const newOption = document.createElement('option');
         newOption.value = newColumnName;
         newOption.textContent = newColumnName;
+        newOption.setAttribute('data-column-name', newColumnName)
         newOption.setAttribute('data-formula', newFormula);
+        newOption.classList = "bg-success-subtle fw-medium"
 
         dropdown.appendChild(newOption);
     }
-
-    // Call this function after successfully adding a new item
-    // updateDropdownAfterAdd(newColumnName, newFormula);
-
 
 
     //delete calculated field
     function handleDeleteCalcField() {
         //to delete the selected calculated field without reloading the page
         deleteColumn()
-        // //function to delete column from dropdown after successful deletion
-        // updateDropDownAfterDelete(deleteCalcField.value);
 
         $.ajax({
             url: '/ListData/DeleteCalculatedField',
@@ -566,9 +562,6 @@
 
     //get the column name from user input
     function handleColumnNameVal(value) {
-        // console.log(existingColumnNames)
-        //dropdown
-        // columnName = value;
         columnName = value.trim().toLowerCase();
 
         // Check if the input matches any of the existing column names (case-insensitive comparison)
@@ -612,7 +605,6 @@
             duplicateMessage.style.display = 'none';
         }
     })
-
 
     //get the formula input by the user and show its result in the result preview text field
     function handleFormulaInput(value) {
@@ -703,7 +695,6 @@
         checkInput();
     }
 
-
     // Validate the formula to check if all referenced columns exist
     function validateFormula(formula) {
         const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
@@ -773,37 +764,12 @@
             contentType: 'application/json',
             success: function (response) {
                 if (response.success) {
-                    // DevExpress.ui.notify({
-                    //     message: "Formula submitted successfully",
-                    //     width: 300,
-                    //     type: "success",
-                    //     displayTime: 3500,
-                    //     shading: true,
-                    //     animation: {
-                    //         show: { type: "fade", duration: 400, from: 0, to: 1 },
-                    //         hide: { type: "fade", duration: 40, to: 0 }
-                    //     }
-                    // }, {
-                    //     position: "bottom center",
-                    //     direction: "up-push"
-                    // });
                     addCalculatedColumn();
-
-                    //update dropdown with the adding the calculated field
-                    updateDropdownAfterAdd(calculatedColName, formula);
-
-                    //update dropdown with the updating the calculated field
-                    // updateDropdownAfterUpdate(oldColumnValue, updatedColumnValue, updatedFormula);
-
                     document.getElementById('formulaForm').reset();
                     resultInput.classList.remove('bg-danger-subtle', 'bg-success-subtle');
                     document.getElementById('error-message').style.display = 'none';
                     calcFieldDeleteButton.style.display = 'none';
                     checkInput();
-
-                    // Call the function to reload the datagrid using the filter values
-                    // reloadDatagridWithFilters();
-
                 } else {
                     DevExpress.ui.notify({
                         message: "Error saving changes",
@@ -861,8 +827,6 @@
 
             const isExistingValue = calcFieldInput.value !== null && calcFieldInput.value !== ''; // Check if there's an existing value
 
-           
-
             if (existingColumnIndex > -1) {
                 // If column exists, update it
                 columns[existingColumnIndex] = {
@@ -888,11 +852,12 @@
                         precision: 2
                     }
                 };
-
+                // updateDropdownAfterUpdate(oldColName, columnName, formulaVal);
 
             } else if (oldColName && oldColName !== columnName) {
                 // If the old column name doesn't match the new one, update the column
                 const columnIndex = columns.findIndex(col => col.dataField === oldColName);
+                
 
                 if (columnIndex > -1) {
                     columns[columnIndex] = {
@@ -921,6 +886,9 @@
                 }
 
                 // updateDropdownAfterUpdate(oldColName, columnName, formulaVal);
+                console.log(oldColName, columnName, formulaVal)
+
+                updateDropdownAfterUpdate(oldColName, columnName, formulaVal);
             } else {
                 // Add new column if it doesn't exist
                 columns.push({
@@ -946,6 +914,8 @@
                         precision: 2
                     }
                 });
+
+                updateDropdownAfterAdd(columnName, formulaVal);
             }
 
             // Update the grid with the new columns array
@@ -978,6 +948,8 @@
                 direction: "up-push"
             });
         }
+
+        handlingFormReset()
     }
 
 
