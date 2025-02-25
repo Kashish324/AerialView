@@ -89,25 +89,6 @@ namespace final_aerialview.Controllers
 
 
         #region to delete configuration 
-        //[HttpPost]
-        //public IActionResult DeleteConfiguration(int Id)
-        //{
-        //    if (Id == 0)
-        //    {
-        //        return BadRequest("Invalid data.");
-        //    }
-
-        //    try
-        //    {
-        //        _dataAccess.DeleteEventConfigData(Id);
-        //        return Json(new { success = true });
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
-
         [HttpPost]
         public IActionResult DeleteConfiguration(int Id)
         {

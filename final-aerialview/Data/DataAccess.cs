@@ -1,6 +1,8 @@
 ﻿using Dapper;
 using DevExpress.CodeParser;
+using DevExpress.Xpo.DB.Helpers;
 using DevExpress.XtraRichEdit.Model;
+using DevExpress.XtraRichEdit.Unicode;
 using final_aerialview.Models;
 using System;
 using System.Data;
@@ -630,18 +632,7 @@ GrandTotal = @GrandTotal
         #endregion
 
         #region Insert/Update of Calculated field - update the calculated field master if the id already exists or insert if it does not 
-        //public IEnumerable<CalculatedFieldModel> UpdateOrInsertCalculatedFieldData(string columnName, string formula, int rptId, int? Id)
-        //{
-        //    string query = $"if exists (select * from CalculatedFieldMaster where Id = {Id})\r\n" +
-        //        $"Begin \r\n" +
-        //        $"update CalculatedFieldMaster set ColumnName = '{columnName}', Formula = '{formula}' where Id = {Id} \r\n" +
-        //        $"End\r\n" +
-        //        $"else\r\n" +
-        //        $"begin \r\n" +
-        //        $"insert into  CalculatedFieldMaster  (RptId, ColumnName, Formula) values ({rptId} , '{columnName}' , '{formula}') \r\n" +
-        //        $"end";
-        //    return ExecuteQuery<CalculatedFieldModel>(query);
-        //}
+
         public bool UpdateOrInsertCalculatedFieldData(string columnName, string formula, int rptId, int? Id)
         {
             string query = $"if exists (select * from CalculatedFieldMaster where Id = {Id})\r\n" +
@@ -714,12 +705,6 @@ GrandTotal = @GrandTotal
         #endregion
 
         #region delete selected data from event config master table
-        //public IEnumerable<EventConfigViewModel> DeleteEventConfigData(int? id)
-        //{
-        //    string query = $"DELETE FROM EventConfigurationMaster WHERE Id = {id}";
-        //    return ExecuteQuery<EventConfigViewModel>(query);
-        //}
-
         public bool DeleteEventConfigData(int? id)
         {
             string query = $"DELETE FROM EventConfigurationMaster WHERE Id = @Id";
@@ -728,6 +713,151 @@ GrandTotal = @GrandTotal
         }
 
         #endregion
+
+
+        #region get all the custom links
+        public IEnumerable<SubMenuModel> GetCustomLinks()
+        {
+            string query = @"SELECT * FROM Menu_Child_New 
+                     WHERE MainMenuCode = 10 ";
+            return ExecuteQuery<SubMenuModel>(query);
+        }
+        #endregion
+
+        #region Insert Custom Link
+        public bool InsertCustomLink(SubMenuModel model)
+        {
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                using (var transaction = connection.BeginTransaction())
+                {
+                    try
+                    {
+                        // First Query
+                        string query1 = @"
+                    DECLARE @LastSubMenuCode INT;
+                    SELECT @LastSubMenuCode = MAX(SubMenuCode) FROM Menu_Child_New
+                    WHERE MainMenuCode = 10 AND SubMenuCode IS NOT NULL;
+
+                    IF @LastSubMenuCode IS NULL
+                        SET @LastSubMenuCode = 0;
+
+                    INSERT INTO Menu_Child_New (MainMenuCode, SubMenuCode, SubMenuName, Status, Frm_Level, RptId, Link_FormName, DashId)
+                    VALUES (10, @LastSubMenuCode + 1, @SubMenuName, 0, 0, 0, @Link_FormName, 0);
+                ";
+
+                        int rowsAffected1 = connection.Execute(query1, new { model.SubMenuName, model.Link_FormName }, transaction);
+
+                        // Second Query
+                        string query2 = @"
+                    INSERT INTO UserControlMaster (userId, UserName, ControlName, Status, UpdateDate, refId)
+                    SELECT 
+                        userId, 
+                        UserName, 
+                        @SubMenuName,  
+                        'True',            
+                        GETDATE(),         
+                        0                  
+                    FROM UserControlMaster
+                    WHERE ControlName = 'Reports';
+                ";
+
+                        int rowsAffected2 = connection.Execute(query2, new { model.SubMenuName }, transaction);
+
+                        // Check if both queries were successful
+                        if (rowsAffected1 > 0 && rowsAffected2 > 0)
+                        {
+                            transaction.Commit();
+                            return true;
+                        }
+                        else
+                        {
+                            transaction.Rollback();
+                            return false;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        transaction.Rollback();
+                        throw;
+                    }
+                }
+            }
+        }
+        #endregion
+
+
+        #region to populate custom project 
+        public IEnumerable<SubMenuModel> GetCustomLinksById(int id)
+        {
+            string query = $"select * from Menu_Child_New where MainMenuCode = 10 and SubMenuCode = {id}";
+            return ExecuteQuery<SubMenuModel>(query);
+        }
+        #endregion
+
+
+        #region delete selected data from custom project 
+        public void DeleteCustomProjectData(int? id, string subMenuName)
+        {
+
+            using (var connection = CreateConnection())
+            {
+                connection.Open();
+                var transaction = connection.BeginTransaction();
+
+                try
+                {
+                string query1 = $"delete from Menu_Child_New where MainMenuCode = 10 and SubMenuCode = {id}";
+                    connection.Execute(query1, transaction);
+
+                    //string query2 = $"DELETE FROM UserControlMaster WHERE ControlName = {subMenuName}";
+                    //connection.Execute(query2, transaction);
+                }
+                catch (Exception ex)
+                {
+                    transaction.Rollback();
+                    Console.WriteLine($"Error deleting  {subMenuName}: {ex.Message}");
+                    throw;
+                }
+            }
+            //delete from Menu_Child_New where MainMenuCode = 10 and SubMenuCode = 1
+            //     delete from UserControlMaster where ControlName = 'link1'
+            //string query = $"DELETE FROM EventConfigurationMaster WHERE Id = @Id";
+            //int rowsAffected = ExecuteNonQuery(query, new { Id = id }); // Assuming ExecuteNonQuery returns the number of rows affected
+            //return rowsAffected > 0; // Return true if at least one row was affected, else false
+        }
+
+
+        //public void DeleteDashById(int dashId)
+        //{
+        //    using (var connection = CreateConnection())
+        //    {
+        //        connection.Open();
+        //        var transaction = connection.BeginTransaction();
+
+        //        try
+        //        {
+        //            string query1 = "DELETE FROM DashboardMaster WHERE DashId = @DashId";
+        //            connection.Execute(query1, new { DashId = dashId }, transaction);
+
+        //            string query2 = "DELETE FROM Menu_Child_New WHERE DashId = @DashId";
+        //            connection.Execute(query2, new { DashId = dashId }, transaction);
+
+        //            string query3 = "DELETE FROM UserControlMaster WHERE refId = @DashId";
+        //            connection.Execute(query3, new { DashId = dashId }, transaction);
+
+        //            transaction.Commit();
+        //        }
+        //        catch (Exception ex)
+        //        {
+        //            transaction.Rollback();
+        //            Console.WriteLine($"Error deleting dashboard with ID {dashId}: {ex.Message}");
+        //            throw; // Optionally handle or log the exception as needed
+        //        }
+        //    }
+        //}
+        #endregion
+
     }
 }
-

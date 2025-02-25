@@ -184,6 +184,7 @@ function activeSubMenu() {
     var currentUrl = new URL(window.location.href);
 
     var currentSearcAttr = currentUrl.search;
+    
 
     var submenuLinks = document.querySelectorAll('.sub-menu li .subMenuLink');
 

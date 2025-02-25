@@ -1,0 +1,100 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="New Dashboard 1" />
+  <DataSources>
+    <SqlDataSource Name="T_KW" ComponentName="sqlDataSource1">
+      <Connection Name="Con1" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="T_KW">
+        <Tables>
+          <Table Name="T_KW" />
+        </Tables>
+        <Columns>
+          <Column Table="T_KW" Name="DateAndTime" />
+          <Column Table="T_KW" Name="C2" />
+          <Column Table="T_KW" Name="C3" />
+          <Column Table="T_KW" Name="C4" />
+          <Column Table="T_KW" Name="C5" />
+          <Column Table="T_KW" Name="C6" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C6" SummaryType="Count" DefaultId="DataItem0" />
+        <Measure DataMember="C5" SummaryType="Count" DefaultId="DataItem1" />
+        <Measure DataMember="C4" SummaryType="Count" DefaultId="DataItem2" />
+        <Dimension DataMember="DateAndTime" DateTimeGroupInterval="Minute" DefaultId="DataItem3" />
+      </DataItems>
+      <SeriesDimensions>
+        <SeriesDimension DefaultId="DataItem3" />
+      </SeriesDimensions>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple>
+              <Value DefaultId="DataItem0" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem2" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Pie ComponentName="pieDashboardItem1" Name="Pies 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C2" SummaryType="Count" DefaultId="DataItem0" />
+        <Measure DataMember="C3" SummaryType="Count" DefaultId="DataItem1" />
+        <Measure DataMember="C4" SummaryType="Count" DefaultId="DataItem2" />
+      </DataItems>
+      <Values>
+        <Value DefaultId="DataItem0" />
+        <Value DefaultId="DataItem1" />
+        <Value DefaultId="DataItem2" />
+      </Values>
+    </Pie>
+    <Chart ComponentName="chartDashboardItem2" Name="Chart 2" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C2" SummaryType="Count" DefaultId="DataItem0" />
+        <Measure DataMember="C3" SummaryType="Count" DefaultId="DataItem1" />
+        <Measure DataMember="C4" SummaryType="Count" DefaultId="DataItem2" />
+        <Dimension DataMember="DateAndTime" DefaultId="DataItem3" />
+      </DataItems>
+      <SeriesDimensions>
+        <SeriesDimension DefaultId="DataItem3" />
+      </SeriesDimensions>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple SeriesType="Line">
+              <Value DefaultId="DataItem0" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem1" />
+            </Simple>
+            <Simple>
+              <Value DefaultId="DataItem2" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutGroup>
+          <LayoutItem DashboardItem="chartDashboardItem1" />
+          <LayoutItem DashboardItem="chartDashboardItem2" />
+        </LayoutGroup>
+        <LayoutItem DashboardItem="pieDashboardItem1" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

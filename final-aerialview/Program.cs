@@ -175,6 +175,22 @@ app.Use(async (context, next) =>
 });
 #endregion
 
+#region custom project route
+//app.UseEndpoints(endPoints =>
+//{
+//    endPoints.MapControllerRoute(
+//        name: "default",
+//        pattern: "{controller=CustomProject}/{action=CustomProject}/{id?}"
+//        );
+//});
+
+app.MapControllerRoute(
+    name: "Custom Link Route",
+    pattern: "custom-link",
+     defaults: new { controller = "CustomProject", action = "CustomProject" }
+);
+#endregion
+
 
 #region submenu routing 
 app.MapControllerRoute(

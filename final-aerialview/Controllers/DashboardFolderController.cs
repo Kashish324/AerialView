@@ -1,4 +1,5 @@
-﻿using final_aerialview.Data;
+﻿using DevExpress.DashboardCommon;
+using final_aerialview.Data;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 
@@ -14,14 +15,21 @@ namespace final_aerialview.Controllers
         {
             _fileProvider = fileProvider;
             _dashboardFolderPath = "Dashboards";
+
+            
         }
         #endregion
+
 
         #region taking all the files from dashboards folder to set in dash configuration
         public IActionResult DashInfo()
         {
             var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
             ViewBag.Contents = contents;
+
+            //Dashboard d = new Dashboard();
+            ////d.LoadFromXDocument(document);
+            //var title = d.Title.Text;
             return View(contents);
         }
         #endregion

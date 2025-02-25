@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="test new" />
+  <DataSources>
+    <SqlDataSource Name="T_KW" ComponentName="sqlDataSource1">
+      <Connection Name="Godiva_Pump" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="T_KW">
+        <Tables>
+          <Table Name="T_KW" />
+        </Tables>
+        <Columns>
+          <AllColumns Table="T_KW" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Gauge ComponentName="gaugeDashboardItem1" Name="Gauges 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C14" DefaultId="DataItem1" />
+        <Measure DataMember="C15" DefaultId="DataItem2" />
+        <Measure DataMember="C19" SummaryType="Count" DefaultId="DataItem3" />
+        <Measure DataMember="C35" SummaryType="Count" DefaultId="DataItem4" />
+        <Measure DataMember="C54" DefaultId="DataItem5" />
+        <Measure DataMember="C54" DefaultId="DataItem6" />
+        <Measure DataMember="C67" SummaryType="Count" DefaultId="DataItem7" />
+        <Dimension DataMember="DateAndTime" DateTimeGroupInterval="Minute" DefaultId="DataItem8" />
+      </DataItems>
+      <SeriesDimensions>
+        <SeriesDimension DefaultId="DataItem8" />
+      </SeriesDimensions>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem0" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem1" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem2" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem3" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem4" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem5" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem6" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+      <GaugeElement>
+        <ActualValue DefaultId="DataItem7" />
+        <AbsoluteVariationNumericFormat />
+        <PercentVariationNumericFormat />
+        <PercentOfTargetNumericFormat />
+      </GaugeElement>
+    </Gauge>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="gaugeDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>
