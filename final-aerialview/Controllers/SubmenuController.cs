@@ -4,6 +4,7 @@ using final_aerialview.Data;
 using final_aerialview.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
+using System.Xml;
 
 public class SubmenuController : BaseController
 {
@@ -64,6 +65,7 @@ public class SubmenuController : BaseController
         // Fetching the contents of the dashboard folder
         var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
         ViewBag.DashboardContents = contents; // Store the contents in ViewBag
+
 
         return View(dashboardListData);
     }

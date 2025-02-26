@@ -1,0 +1,65 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="New Dashboard12313" />
+  <DataSources>
+    <SqlDataSource Name="T_KW" ComponentName="sqlDataSource1">
+      <Connection Name="Con2" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="T_KW">
+        <Tables>
+          <Table Name="T_KW" />
+        </Tables>
+        <Columns>
+          <AllColumns Table="T_KW" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="D10_KW" DefaultId="DataItem0" />
+        <Measure DataMember="D2_KW" DefaultId="DataItem1" />
+        <Measure DataMember="D4_KW" DefaultId="DataItem3" />
+        <Measure DataMember="D4_KW" DefaultId="DataItem4" />
+        <Measure DataMember="EM4_KW" DefaultId="DataItem2" />
+        <Measure DataMember="EM4_KW" DefaultId="DataItem5" />
+        <Measure DataMember="EM5_KW" DefaultId="DataItem6" />
+        <Measure DataMember="EM7_KW" DefaultId="DataItem7" />
+      </DataItems>
+      <GridColumns>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem0" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem1" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem3" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem4" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem2" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem5" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem6" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem7" />
+        </GridMeasureColumn>
+      </GridColumns>
+      <GridOptions />
+      <ColumnFilterOptions />
+    </Grid>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="gridDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

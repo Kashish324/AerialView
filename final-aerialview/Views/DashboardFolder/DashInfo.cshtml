@@ -20,10 +20,12 @@
     <ul class="list-group list-group-flush w-100">
         @if (Model != null && Model.Any())
         {
-            foreach (var item in Model)
+            @* foreach (var item in Model) *@
+            @foreach (var file in ViewBag.DashboardFiles)
             {
-                <li class="list-group-item list-group-item-action fw-medium" onclick="selectDashboard('@item.Name')" style="cursor: pointer;" data-bs-dismiss="modal">
-                    <i class="ri-dashboard-line text-primary-emphasis me-2"></i>@item.Name
+                @* <li class="list-group-item list-group-item-action fw-medium" onclick="selectDashboard('@item.Name')" style="cursor: pointer;" data-bs-dismiss="modal"> *@
+                <li class="list-group-item list-group-item-action fw-medium" onclick="selectDashboard('@file.Title')" style="cursor: pointer;" data-bs-dismiss="modal">
+                    <i class="ri-dashboard-line text-primary-emphasis me-2"></i>@file.Title
                 </li>
             }
         }
@@ -32,22 +34,14 @@
             <li class="list-group-item">No dashboards available</li>
         }
     </ul>
+
+  
     <script src="/lib/bootstrap.bundle.min.js"></script>
     @* <script src="/js/bootstrap.bundle.min.js"></script> *@
     @* <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js" integrity="sha512-ZbbJAtTdtPb2sp1zYLkwBQeyB2h4Jv76unyXw+8X+WkxMPCrCwnoEoZnGOOWTB6yBfR7I3HtZd8hZx+AwOM9tQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script> *@
     <script>
 
-        // document.addEventListener("DOMContentLoaded", function () {
-        //     var dashboardNames = [];
-
-        //     document.querySelectorAll('.list-group-item').forEach((item) => {
-        //         dashboardNames.push(item.textContent.trim());
-        //     });
-
-        //     // Store the dashboard names array in localStorage
-        //     localStorage.setItem("dashboardNames", JSON.stringify(dashboardNames));
-        // });
-
+       
 
         // Function to handle selecting a dashboard from the modal
         function selectDashboard(dashName) {
