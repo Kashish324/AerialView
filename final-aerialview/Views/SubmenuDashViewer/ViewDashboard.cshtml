@@ -1,5 +1,4 @@
 ﻿@* this is a dashboard that we see in submenu under dashboard parent *@
-
 @model DashboardDataModel
 
 @{
@@ -34,7 +33,10 @@
             <h6 class="fw-medium text-white mb-0">@Model.DashName</h6>
         </div>
 
-        string dashPath = Model.DashPath.Substring(0, Model.DashPath.LastIndexOf("."));
+        @* string dashPath = Model.DashPath.Substring(0, Model.DashPath.LastIndexOf(".")); *@
+        string dashPath = System.IO.Path.GetFileNameWithoutExtension(Model.DashPath);
+
+
 
         <div style="position: absolute; left:0;top:26px;right:0;bottom:0;" class="border-top">
             @(Html.DevExpress().Dashboard("clientDashboardControl")

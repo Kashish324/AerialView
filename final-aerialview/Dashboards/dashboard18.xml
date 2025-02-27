@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="Sample Dashboard 22" />
+  <DataSources>
+    <SqlDataSource Name="T1" ComponentName="sqlDataSource1">
+      <Connection Name="Godiva_Pump" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="T1">
+        <Tables>
+          <Table Name="T1" />
+        </Tables>
+        <Columns>
+          <Column Table="T1" Name="DateAndTime" />
+          <Column Table="T1" Name="C15" />
+          <Column Table="T1" Name="C16" />
+          <Column Table="T1" Name="C14" />
+          <Column Table="T1" Name="C13" />
+          <Column Table="T1" Name="C11" />
+          <Column Table="T1" Name="C10" />
+          <Column Table="T1" Name="C9" />
+          <Column Table="T1" Name="C6" />
+          <Column Table="T1" Name="C5" />
+          <Column Table="T1" Name="C4" />
+          <Column Table="T1" Name="C3" />
+          <Column Table="T1" Name="C2" />
+        </Columns>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <GeoPointMap ComponentName="geoPointMapDashboardItem1" Name="Geo Point Map 1" DataSource="sqlDataSource1" DataMember="T1">
+      <ViewArea TopLatitude="83.64513000000001" BottomLatitude="-55.61182999999996" LeftLongitude="-179.99999999999997" CenterPointLatitude="44.08908074480383" CenterPointLongitude="1.4210854715202004E-13" />
+      <MapLegend />
+      <WeightedLegend />
+    </GeoPointMap>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="T1">
+      <Panes>
+        <Pane Name="Pane 1" />
+      </Panes>
+    </Chart>
+    <ListBox ComponentName="listBoxDashboardItem1" Name="List Box 1" DataSource="sqlDataSource1" DataMember="T1" />
+    <ChoroplethMap ComponentName="choroplethMapDashboardItem1" Name="Choropleth Map 1" DataSource="sqlDataSource1" DataMember="T1" AttributeName="NAME">
+      <ViewArea TopLatitude="83.64513000000001" BottomLatitude="-55.61182999999996" LeftLongitude="-179.99999999999997" CenterPointLatitude="44.08908074480383" CenterPointLongitude="10.098071356993813" />
+      <MapLegend />
+      <WeightedLegend />
+    </ChoroplethMap>
+    <Image ComponentName="imageDashboardItem1" Name="Image 1" />
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutGroup Orientation="Vertical">
+        <LayoutItem DashboardItem="chartDashboardItem1" />
+        <LayoutItem DashboardItem="imageDashboardItem1" />
+      </LayoutGroup>
+      <LayoutItem DashboardItem="choroplethMapDashboardItem1" />
+      <LayoutGroup Orientation="Vertical">
+        <LayoutItem DashboardItem="listBoxDashboardItem1" />
+        <LayoutItem DashboardItem="geoPointMapDashboardItem1" />
+      </LayoutGroup>
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

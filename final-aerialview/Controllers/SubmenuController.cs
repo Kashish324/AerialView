@@ -1,10 +1,12 @@
 ﻿
+using DevExpress.DashboardCommon;
 using final_aerialview.Controllers;
 using final_aerialview.Data;
 using final_aerialview.Models;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using System.Xml;
+using System.Xml.Linq;
 
 public class SubmenuController : BaseController
 {
@@ -45,6 +47,38 @@ public class SubmenuController : BaseController
         ViewBag.Submenu = submenu;
         ViewData["MenuName"] = submenu;
         var dashboardListData = _dataAccess.GetDashboardMasterData();
+
+        // Get all XML files from the dashboard folder
+        var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
+
+        var titleToFileMap = new Dictionary<string, string>();
+
+        // Get the title of saved dashboards and map to file names
+        foreach (var item in contents)
+        {
+            if (item.Name.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+            {
+                // Get the file path
+                var filePath = item.PhysicalPath;
+
+                // Load the XML as XDocument
+                XDocument document = XDocument.Load(filePath);
+
+                // Initialize and load dashboard
+                Dashboard d = new Dashboard();
+                d.LoadFromXDocument(document);
+
+                // Get the title
+                var title = d.Title.Text;
+
+                // Map Title -> FileName for loading later
+                titleToFileMap[title] = item.Name;
+            }
+        }
+
+        // Pass the mapping for loading the correct file
+        ViewBag.TitleToFileMap = titleToFileMap;
+
 
         return View(dashboardListData);
     }

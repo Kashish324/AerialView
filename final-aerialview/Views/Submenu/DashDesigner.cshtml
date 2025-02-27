@@ -3,6 +3,7 @@
 @{
     ViewData["Title"] = "Dash Designer";
     Layout = null;
+    var titleToFileMap = ViewBag.TitleToFileMap as Dictionary<string, string>;
 }
 
 @using DevExpress.AspNetCore
@@ -53,7 +54,7 @@
                 if (i.DashPath != null)
                 {
                     // removing the extension for dashboard viewer syntax
-                    string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
+                   @*  string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
 
                     <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
                         @(
@@ -65,7 +66,40 @@
                             .InitialDashboardId(FileNameOnly)
                             .OnBeforeRender("onBeforeRender")
                             )
-                    </div>
+                    </div> *@
+
+                    // Get the title from the database
+                    var dashboardTitle = i.DashPath;
+
+                    // Use the title to get the corresponding file name
+                    string mappedFileName = titleToFileMap != null && titleToFileMap.ContainsKey(dashboardTitle)
+                    ? titleToFileMap[dashboardTitle]
+                    : null;
+
+                    if (mappedFileName != null)
+                    {
+                        // removing the extension for dashboard viewer syntax
+                        string FileNameOnly = mappedFileName.Substring(0, mappedFileName.LastIndexOf("."));
+
+                        <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
+                            @(
+                                Html.DevExpress().Dashboard("clientDashboardControl")
+                                .ControllerName("DefaultDashboard")
+                                .Width("100%")
+                                .Height("100%")
+                                .WorkingMode(WorkingMode.Designer)
+                                .InitialDashboardId(FileNameOnly)
+                                .OnBeforeRender("onBeforeRender")
+                                )
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="text-center position-absolute top-50 start-50 translate-middle fw-medium text-danger">
+                            Dashboard file not found for title: @dashboardTitle
+                        </div>
+                    }
+
                 }
                
             }
