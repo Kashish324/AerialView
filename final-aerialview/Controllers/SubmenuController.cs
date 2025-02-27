@@ -101,6 +101,36 @@ public class SubmenuController : BaseController
         ViewBag.DashboardContents = contents; // Store the contents in ViewBag
 
 
+        var dashboardList = new List<(string FileName, string Title)>();
+        //to get the title of saved dashboards
+        foreach (var item in contents)
+        {
+            if (item.Name.EndsWith(".xml", StringComparison.OrdinalIgnoreCase))
+            {
+                // Get the file path
+                var filePath = item.PhysicalPath;
+
+                // Load the XML as XDocument
+                XDocument document = XDocument.Load(filePath);
+
+                // Initialize and load dashboard
+                Dashboard d = new Dashboard();
+                d.LoadFromXDocument(document);
+
+                // Get the title
+                var title = d.Title.Text;
+
+                // If title is empty, set default value
+                title = string.IsNullOrWhiteSpace(title) ? "Untitled Dashboard" : title;
+
+                // Add to list
+                dashboardList.Add((FileName: item.Name, Title: title));
+            }
+        }
+
+
+        ViewBag.DashboardFiles = dashboardList.Select(file => new { FileName = file.FileName, Title = file.Title }).ToList();
+
         return View(dashboardListData);
     }
     #endregion
