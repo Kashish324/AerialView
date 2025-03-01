@@ -3,6 +3,7 @@ using DevExpress.DashboardCommon;
 using final_aerialview.Controllers;
 using final_aerialview.Data;
 using final_aerialview.Models;
+using final_aerialview.Storages;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.FileProviders;
 using System.Xml;
@@ -84,6 +85,16 @@ public class SubmenuController : BaseController
     }
     #endregion
 
+    #region delete dashboard from dashboard designer and from project too
+    public ActionResult DeleteDashboard(string DashboardID)
+    {
+        string dashboardPath = Path.Combine(Directory.GetCurrentDirectory(), "Dashboards");
+        CustomDashboardFileStorage newDashboardStorage = new CustomDashboardFileStorage(dashboardPath);
+        newDashboardStorage.DeleteDashboard(DashboardID);
+        return new EmptyResult();
+    }
+    #endregion
+
     #region Dashboard configuration table actions start
 
     #region dashboard configuration table
@@ -99,6 +110,20 @@ public class SubmenuController : BaseController
         // Fetching the contents of the dashboard folder
         var contents = _fileProvider.GetDirectoryContents(_dashboardFolderPath);
         ViewBag.DashboardContents = contents; // Store the contents in ViewBag
+
+
+        //// Convert to a list for better LINQ support
+        //var dashboardFiles = ((IEnumerable<dynamic>)ViewBag.DashboardFiles).ToList();
+
+
+        //foreach (var item in dashboardListData)
+        //{
+        //    item.IsPathExists = dashboardFiles
+        //        .Any(i => dashboardFiles
+        //            .Any(d => d.Name.Equals(i.FileName, StringComparison.OrdinalIgnoreCase)
+        //                   && i.Title.Equals(item.DashPath, StringComparison.OrdinalIgnoreCase)));
+        //}
+
 
 
         var dashboardList = new List<(string FileName, string Title)>();

@@ -348,6 +348,9 @@
       <Pages>
         <Page ComponentName="dashboardTabPage1" Name="Page 1" />
         <Page ComponentName="dashboardTabPage2" Name="some map" />
+        <Page ComponentName="dashboardTabPage3" Name="Page 2" />
+        <Page ComponentName="dashboardTabPage4" Name="Page 3" />
+        <Page ComponentName="dashboardTabPage5" Name="Page 4" />
       </Pages>
     </TabContainer>
     <Pie ComponentName="pieDashboardItem1" Name="Pies 1" ParentContainer="dashboardTabPage1" DataSource="sqlDataSource1" DataMember="T_KW">
@@ -405,7 +408,38 @@
         </ValueMap>
       </Maps>
     </ChoroplethMap>
+    <Treemap ComponentName="treemapDashboardItem1" Name="Treemap 1" ParentContainer="dashboardTabPage5" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Measure DataMember="C10" DefaultId="DataItem0" />
+        <Measure DataMember="C11" DefaultId="DataItem1" />
+        <Measure DataMember="C12" DefaultId="DataItem2" />
+        <Measure DataMember="C13" DefaultId="DataItem3" />
+        <Measure DataMember="C14" DefaultId="DataItem4" />
+        <Measure DataMember="C15" DefaultId="DataItem5" />
+        <Measure DataMember="C16" DefaultId="DataItem6" />
+        <Dimension DataMember="DateAndTime" DateTimeGroupInterval="None" DefaultId="DataItem7" />
+      </DataItems>
+      <Values>
+        <Value DefaultId="DataItem0" />
+        <Value DefaultId="DataItem1" />
+        <Value DefaultId="DataItem2" />
+        <Value DefaultId="DataItem3" />
+        <Value DefaultId="DataItem4" />
+        <Value DefaultId="DataItem5" />
+        <Value DefaultId="DataItem6" />
+      </Values>
+      <Arguments>
+        <Argument DefaultId="DataItem7" />
+      </Arguments>
+    </Treemap>
   </Items>
+  <ColorScheme>
+    <Entry DataSource="sqlDataSource1" DataMember="T_KW" Color="-5412580">
+      <MeasureKey>
+        <Definition DataMember="C10" SummaryType="StdDevp" />
+      </MeasureKey>
+    </Entry>
+  </ColorScheme>
   <LayoutTree>
     <LayoutGroup>
       <LayoutItem DashboardItem="chartDashboardItem1" />
@@ -419,6 +453,11 @@
           </LayoutTabPage>
           <LayoutTabPage DashboardItem="dashboardTabPage1">
             <LayoutItem DashboardItem="pieDashboardItem1" />
+          </LayoutTabPage>
+          <LayoutTabPage DashboardItem="dashboardTabPage3" />
+          <LayoutTabPage DashboardItem="dashboardTabPage4" />
+          <LayoutTabPage DashboardItem="dashboardTabPage5">
+            <LayoutItem DashboardItem="treemapDashboardItem1" />
           </LayoutTabPage>
         </LayoutTabContainer>
         <LayoutItem DashboardItem="cardDashboardItem1" Weight="1.2926239419588876" />

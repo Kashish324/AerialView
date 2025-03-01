@@ -11,5 +11,7 @@
         public bool DashStatus { get; set; }
 
         public bool DashDefault {  get; set; }
+
+        public bool IsPathExists { get; set; } // New flag for existence check in dashboard folder 
     }
 }

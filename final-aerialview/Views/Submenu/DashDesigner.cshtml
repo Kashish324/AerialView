@@ -42,6 +42,7 @@
                 .WorkingMode(WorkingMode.Designer)
                 .OnBeforeRender("onBeforeRender")
                 )
+
         </div>
     }
     else
@@ -54,7 +55,7 @@
                 if (i.DashPath != null)
                 {
                     // removing the extension for dashboard viewer syntax
-                   @*  string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
+                    @*  string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
 
                     <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
                         @(
@@ -84,12 +85,14 @@
                         <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
                             @(
                                 Html.DevExpress().Dashboard("clientDashboardControl")
+
                                 .ControllerName("DefaultDashboard")
                                 .Width("100%")
                                 .Height("100%")
                                 .WorkingMode(WorkingMode.Designer)
                                 .InitialDashboardId(FileNameOnly)
                                 .OnBeforeRender("onBeforeRender")
+
                                 )
                         </div>
                     }
@@ -101,13 +104,14 @@
                     }
 
                 }
-               
+
             }
         }
     }
 
     <script src="/lib/bootstrap.bundle.min.js"></script>
     <script src="~/js/SaveAsExtension.js"></script>
+    <script src="~/js/DeleteExtension.js"></script>
 
     <!-- Defines the "Save As" extension template. -->
     @* <script type="text/html" id="dx-save-as-form">
@@ -116,17 +120,25 @@
     <div data-bind="dxButton: { text: 'Save', onClick: saveAs }"></div>
     </script> *@
 
+    @* <script type="text/javascript" src="js/DeleteExtension.js"></script> *@
     <script>
         var dashboardControl; // Declare globally
 
-        function onBeforeRender(dashboardControl) {
+        // function onBeforeRender(dashboardControl) {
+        function onBeforeRender(sender) {
+
+            dashboardControl = sender;
 
             //added the switch button in dashboard left panel
             dashboardControl.registerExtension(new DevExpress.Dashboard.DashboardPanelExtension(dashboardControl));
             // dashboardControl.registerExtension(new SaveAsDashboardExtension(dashboardControl));
 
+                // Attach the DashboardTitleToolbarUpdated event
+        dashboardControl.on('dashboardTitleToolbarUpdated', onDashboardTitleToolbarUpdated);
 
-            //to refresh the data 
+         dashboardControl.registerExtension(new DeleteDashboardExtension(dashboardControl));
+
+            //to refresh the data
 
             // Initialize or capture the dashboard control
             dashboardControl = clientDashboardControl;
@@ -141,7 +153,39 @@
         }
 
 
-       
+                function onDashboardTitleToolbarUpdated(e) {
+            var colorSchemeList = {
+                "light": "Light",
+                "dark": "Dark",
+                "light.compact": "Light Compact",
+                "dark.compact": "Dark Compact"
+            };
+
+            e.options.actionItems.unshift({
+                type: "menu",
+                icon: "colorSchemeIcon", // Ensure this icon is registered
+                hint: "Color Scheme",
+                menu: {
+                    items: Object.keys(colorSchemeList).map(function(key) { return colorSchemeList[key]; }),
+                    type: 'list',
+                    selectionMode: 'none',
+                    selectedItems: [],
+                    itemClick: function(menuItem) {
+                        var newTheme = Object.keys(colorSchemeList).find(key => colorSchemeList[key] === menuItem.item);
+                        saveToUrl("colorScheme", newTheme);
+                        location.reload();
+                    }
+                }
+            });
+        }
+
+        function saveToUrl(key, value) {
+            var url = new URL(window.location);
+            url.searchParams.set(key, value);
+            window.history.pushState({}, '', url);
+        }
+
+
     </script>
 </body>
 </html>

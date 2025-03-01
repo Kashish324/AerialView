@@ -14,7 +14,7 @@
             <tr>
                 @foreach (var prop in typeof(DashboardDataModel).GetProperties())
                 {
-                    if (prop.Name != nameof(DashboardDataModel.DashId))
+                    if (prop.Name != nameof(DashboardDataModel.DashId) && prop.Name != "IsPathExists")
                     {
                         <th scope="col" class="text-center align-middle text-primary-emphasis">@prop.Name</th>
                     }
@@ -53,20 +53,29 @@
                         {
                             @if (dashboardFiles != null && dashboardFiles.Any())
                             {
-                                @foreach (var d in dashboardFiles)
+                                @foreach (var file in dashboardFiles)
                                 {
-                                    if (d.Name == i.FileName)
+                                    if (file.Name == i.FileName)
                                     {
                                         if(i.Title == item.DashPath)
                                         {
-                                        @i.Title
+                                            @item.DashPath
                                         }
+                                      
                                     }
 
                                 }
 
                             }
                         }
+                       @*  @if (item.IsPathExists)
+                        {
+                            <span>@item.DashPath</span>
+                        }
+                        else
+                        {
+                            <span class="text-danger fw-bold">File Missing</span>
+                        } *@
                     </td>
 
 
