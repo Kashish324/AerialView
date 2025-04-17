@@ -10,11 +10,11 @@ namespace final_aerialview.Controllers
 {
     public class CustomProjectController(DataAccess dataAccess) : BaseController(dataAccess)
     {
+        #region Load custom project page
         [HttpGet]
         public async Task<IActionResult> CustomProject()
 
         {
-
             var subModel = new SubMenuModel();
             var role = User.FindFirst(ClaimTypes.Role)?.Value;
 
@@ -42,8 +42,9 @@ namespace final_aerialview.Controllers
 
             return View(subModel);
         }
+        #endregion
 
-
+        #region Add custom project link
         [HttpPost]
         public IActionResult CustomProject(SubMenuModel model)
         {
@@ -82,55 +83,16 @@ namespace final_aerialview.Controllers
             // If there are errors, return the view with the same model
             return View(model);
         }
+        #endregion
 
-        #region get link details by id
+        #region get custom link details by id
         public IActionResult GetLinkDetails(int subMenuCode)
         {
             var link = _dataAccess.GetCustomLinksById(subMenuCode);
 
             return Json(new { success = true, data = link });
-            //if (link != null)
-            //{
-            //    return Json(new
-            //    {
-            //        SubMenuCode = link.SubMenuCode,
-            //        SubMenuName = link.SubMenuName,
-            //        Link_FormName = link.Link_FormName
-            //    });
-            //}
+            
         }
         #endregion
-
-
-        //#region delete custom project saved details 
-        //public IActionResult DeleteCustomLink(int subMenuCode, string subMenuName)
-        //{
-        //    if (subMenuCode == 0 || string.IsNullOrEmpty(subMenuName))
-
-        //    {
-        //        return Json(new { success = false, message = "Invalid Data." });
-        //    }
-
-        //    try
-        //    {
-        //        var result = _dataAccess.DeleteCustomProjectData(subMenuCode, subMenuName);
-
-        //        if (result) // Check if the operation was successful
-        //        {
-        //            return Json(new { success = true, message = $"Custom link '{subMenuName}' deleted successfully!" });
-        //        }
-        //        else
-        //        {
-        //            return Json(new { success = false, message = "Failed to delete data." });
-        //        }
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        return Json(new { success = false, message = ex.Message });
-        //    }
-        //}
-        //#endregion
-
-
     }
 }

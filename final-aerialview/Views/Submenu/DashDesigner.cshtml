@@ -120,7 +120,7 @@
     <div data-bind="dxButton: { text: 'Save', onClick: saveAs }"></div>
     </script> *@
 
-  
+
     <script>
         var dashboardControl; // Declare globally
 
@@ -153,37 +153,37 @@
         }
 
 
-                function onDashboardTitleToolbarUpdated(e) {
-            var colorSchemeList = {
-                "light": "Light",
-                "dark": "Dark",
-                "light.compact": "Light Compact",
-                "dark.compact": "Dark Compact"
-            };
+        //         function onDashboardTitleToolbarUpdated(e) {
+        //     var colorSchemeList = {
+        //         "light": "Light",
+        //         "dark": "Dark",
+        //         "light.compact": "Light Compact",
+        //         "dark.compact": "Dark Compact"
+        //     };
 
-            e.options.actionItems.unshift({
-                type: "menu",
-                icon: "colorSchemeIcon", // Ensure this icon is registered
-                hint: "Color Scheme",
-                menu: {
-                    items: Object.keys(colorSchemeList).map(function(key) { return colorSchemeList[key]; }),
-                    type: 'list',
-                    selectionMode: 'none',
-                    selectedItems: [],
-                    itemClick: function(menuItem) {
-                        var newTheme = Object.keys(colorSchemeList).find(key => colorSchemeList[key] === menuItem.item);
-                        saveToUrl("colorScheme", newTheme);
-                        location.reload();
-                    }
-                }
-            });
-        }
+        //     e.options.actionItems.unshift({
+        //         type: "menu",
+        //         icon: "accountbox", // Ensure this icon is registered
+        //         hint: "Color Scheme",
+        //         menu: {
+        //             items: Object.keys(colorSchemeList).map(function(key) { return colorSchemeList[key]; }),
+        //             type: 'list',
+        //             selectionMode: 'none',
+        //             selectedItems: [],
+        //             itemClick: function(menuItem) {
+        //                 var newTheme = Object.keys(colorSchemeList).find(key => colorSchemeList[key] === menuItem.item);
+        //                 saveToUrl("colorScheme", newTheme);
+        //                 location.reload();
+        //             }
+        //         }
+        //     });
+        // }
 
-        function saveToUrl(key, value) {
-            var url = new URL(window.location);
-            url.searchParams.set(key, value);
-            window.history.pushState({}, '', url);
-        }
+        // function saveToUrl(key, value) {
+        //     var url = new URL(window.location);
+        //     url.searchParams.set(key, value);
+        //     window.history.pushState({}, '', url);
+        // }
 
 
     </script>

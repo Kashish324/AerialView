@@ -20,7 +20,7 @@ namespace final_aerialview.Controllers
             _dashboardFolderPath = "Dashboards";
         }
 
-        #region show us the default dashboard on application startup
+        #region show us the default dashboard screen on application startup
         public IActionResult DefaultDashboard()
         {
             // Set session flag to indicate new tab is opened

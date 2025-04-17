@@ -8,6 +8,9 @@ namespace final_aerialview.Controllers
 {
     public class EventConfigurationController(DataAccess dataAccess) : BaseController(dataAccess)
     {
+
+        #region load event configuration page
+
         public IActionResult EventConfig()
         {
             var configurations = _dataAccess.GetEventConfigData();
@@ -22,7 +25,7 @@ namespace final_aerialview.Controllers
 
             return View();
         }
-
+        #endregion
 
 
         #region get all the integer column names acc. to the selected report name
