@@ -35,7 +35,7 @@
         @* default but only should come when no default dashboard is selected  *@
         <div class="text-center position-absolute top-50 start-50 translate-middle fw-medium text-primary-emphasis">
             <span class="d-block">No default dashboard is selected.</span>
-            You can select your default dashboard <a href="/Submenu/DashConfig?parentMenu=Dashboard-Admin&submenu=Dash%20Configuration">here</a>.
+            @* You can select your default dashboard <a href="/Submenu/DashConfig?parentMenu=Dashboard-Admin&submenu=Dash%20Configuration">here</a>. *@
         </div>
     }
     else
@@ -84,19 +84,6 @@
                             Dashboard file not found for title: @dashboardTitle
                         </div>
                     }
-
-                    @* string FileNameOnly = @i.DashPath.Substring(0, @i.DashPath.LastIndexOf("."));
-                    <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
-                        @(
-                            Html.DevExpress().Dashboard("clientDashboardControl")
-                            .ControllerName("DefaultDashboard")
-                            .Width("100%")
-                            .Height("100%")
-                            .WorkingMode(WorkingMode.Viewer)
-                            .InitialDashboardId(FileNameOnly)
-                            .OnBeforeRender("onBeforeRender")
-                            )
-                    </div> *@
                 }
             }
         }
@@ -114,7 +101,7 @@
                 if (dashboardControl) {
                     dashboardControl.reloadData();
                     // dashboardControl.refresh();
-                    //console.log("Dashboard refreshed");
+                    // console.log("Dashboard refreshed");
                 }
             }, 5000);
         }

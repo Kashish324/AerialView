@@ -1,14 +1,9 @@
 ﻿using Dapper;
-using DevExpress.CodeParser;
-using DevExpress.Xpo.DB.Helpers;
-using DevExpress.XtraRichEdit.Model;
-using DevExpress.XtraRichEdit.Unicode;
 using final_aerialview.Models;
-using System;
 using System.Data;
-using System.Data.SqlClient;
+//using System.Data.SqlClient;
 using System.Text.Json;
-
+using Microsoft.Data.SqlClient;
 
 namespace final_aerialview.Data
 {
@@ -272,7 +267,6 @@ namespace final_aerialview.Data
                             continue;
                         }
                     }
-
                     // Convert DashStatus and DashDefault to bool explicitly
                     var parameters = new
                     {

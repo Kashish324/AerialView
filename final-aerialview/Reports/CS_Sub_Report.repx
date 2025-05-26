@@ -1,0 +1,108 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XtraReportsLayoutSerializer SerializerVersion="23.2.5.0" Ref="1" ControlType="DevExpress.XtraReports.UI.XtraReport, DevExpress.XtraReports.v23.2, Version=23.2.5.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" Name="Report" DisplayName="CS_Sub_Report" Margins="100, 93.75, 28.124996, 27.083332" PaperKind="Custom" PageWidth="800" PageHeight="180" Version="23.2" FilterString="[ActualDate] = ?test1" DataMember="sp_CS_Report_Temp" DataSource="#Ref-0" Font="Arial, 9.75pt">
+  <Extensions>
+    <Item1 Ref="2" Key="DataSerializationExtension" Value="DevExpress.XtraReports.Web.ReportDesigner.DefaultDataSerializer" />
+  </Extensions>
+  <Parameters>
+    <Item1 Ref="4" Visible="false" Description="test1" AllowNull="true" Name="test1" Type="#Ref-3" />
+    <Item2 Ref="5" Visible="false" Description="From Date" ValueInfo="2025-05-16" Name="FromDate" Type="#Ref-3">
+      <ExpressionBindings>
+        <Item1 Ref="6" PropertyName="Value" Expression="AddDays(Today(), -1)" />
+      </ExpressionBindings>
+    </Item2>
+    <Item3 Ref="7" Visible="false" Description="To Date" ValueInfo="2025-05-16" Name="ToDate" Type="#Ref-3">
+      <ExpressionBindings>
+        <Item1 Ref="8" PropertyName="Value" Expression="Now()" />
+      </ExpressionBindings>
+    </Item3>
+  </Parameters>
+  <Bands>
+    <Item1 Ref="9" ControlType="TopMarginBand" Name="TopMargin" HeightF="28.124996" />
+    <Item2 Ref="10" ControlType="PageHeaderBand" Name="PageHeader1" HeightF="25">
+      <Controls>
+        <Item1 Ref="11" ControlType="XRTable" Name="table1" SizeF="596.8587,25" LocationFloat="0,0" Padding="2,2,0,0,100">
+          <Rows>
+            <Item1 Ref="12" ControlType="XRTableRow" Name="tableRow3" Weight="1" TextAlignment="MiddleCenter" Font="Arial, 9.75pt, style=Bold" Borders="All">
+              <Cells>
+                <Item1 Ref="13" ControlType="XRTableCell" Name="tableCell6" Weight="0.5258789" Multiline="true" Text="S.No" />
+                <Item2 Ref="14" ControlType="XRTableCell" Name="tableCell7" Weight="0.97412109" Multiline="true" Text="Description" />
+                <Item3 Ref="15" ControlType="XRTableCell" Name="tableCell8" Weight="0.9999989100000001" Multiline="true" Text="ROM Feed MT" />
+                <Item4 Ref="16" ControlType="XRTableCell" Name="tableCell9" Weight="1.77587857270868" Multiline="true" Text="Jaw Crusher Output TPH" />
+                <Item5 Ref="17" ControlType="XRTableCell" Name="tableCell10" Weight="1.692700788038201" Multiline="true" Text="Feed to FOB TPH" />
+              </Cells>
+              <StylePriority Ref="18" UseFont="false" UseBorders="false" UseTextAlignment="false" />
+            </Item1>
+          </Rows>
+        </Item1>
+      </Controls>
+    </Item2>
+    <Item3 Ref="19" ControlType="GroupHeaderBand" Name="GroupHeader1" PageBreak="AfterBand" HeightF="25" Visible="false">
+      <GroupFields>
+        <Item1 Ref="20" FieldName="ActualDate" />
+      </GroupFields>
+    </Item3>
+    <Item4 Ref="21" ControlType="DetailBand" Name="Detail" HeightF="1.041666">
+      <SubBands>
+        <Item1 Ref="22" ControlType="SubBand" Name="SubBand1" HeightF="25">
+          <Controls>
+            <Item1 Ref="23" ControlType="XRTable" Name="table2" SizeF="596.8587,25" LocationFloat="0,0" Padding="2,2,0,0,100">
+              <Rows>
+                <Item1 Ref="24" ControlType="XRTableRow" Name="tableRow1" Weight="1" TextAlignment="MiddleCenter" Borders="Left, Right, Bottom">
+                  <Cells>
+                    <Item1 Ref="25" ControlType="XRTableCell" Name="tableCell1" Weight="0.5258789" Multiline="true">
+                      <ExpressionBindings>
+                        <Item1 Ref="26" EventName="BeforePrint" PropertyName="Text" Expression="[SrNo]" />
+                      </ExpressionBindings>
+                    </Item1>
+                    <Item2 Ref="27" ControlType="XRTableCell" Name="tableCell2" Weight="0.97412109" Multiline="true">
+                      <ExpressionBindings>
+                        <Item1 Ref="28" EventName="BeforePrint" PropertyName="Text" Expression="[Description]" />
+                      </ExpressionBindings>
+                    </Item2>
+                    <Item3 Ref="29" ControlType="XRTableCell" Name="tableCell3" Weight="0.9999989100000001" TextFormatString="{0:n2}" Multiline="true">
+                      <ExpressionBindings>
+                        <Item1 Ref="30" EventName="BeforePrint" PropertyName="Text" Expression="[RomFeedMT]" />
+                      </ExpressionBindings>
+                    </Item3>
+                    <Item4 Ref="31" ControlType="XRTableCell" Name="tableCell4" Weight="1.77587857270868" TextFormatString="{0:n2}" Multiline="true">
+                      <ExpressionBindings>
+                        <Item1 Ref="32" EventName="BeforePrint" PropertyName="Text" Expression="[JawCruOut]" />
+                      </ExpressionBindings>
+                    </Item4>
+                    <Item5 Ref="33" ControlType="XRTableCell" Name="tableCell5" Weight="1.692700788038201" TextFormatString="{0:n2}" Multiline="true">
+                      <ExpressionBindings>
+                        <Item1 Ref="34" EventName="BeforePrint" PropertyName="Text" Expression="[FeedFob]" />
+                      </ExpressionBindings>
+                    </Item5>
+                  </Cells>
+                  <StylePriority Ref="35" UseBorders="false" UseTextAlignment="false" />
+                </Item1>
+              </Rows>
+            </Item1>
+          </Controls>
+        </Item1>
+      </SubBands>
+    </Item4>
+    <Item5 Ref="36" ControlType="GroupFooterBand" Name="GroupFooter1" HeightF="56.25">
+      <SubBands>
+        <Item1 Ref="37" ControlType="SubBand" Name="SubBand2" HeightF="26.041666" />
+      </SubBands>
+    </Item5>
+    <Item6 Ref="38" ControlType="PageFooterBand" Name="PageFooter1" HeightF="26.042" Visible="false" />
+    <Item7 Ref="39" ControlType="BottomMarginBand" Name="BottomMargin" HeightF="27.083332" Visible="false" />
+  </Bands>
+  <ExportOptions Ref="40">
+    <Xls Ref="41" ShowGridLines="true" />
+  </ExportOptions>
+  <ParameterPanelLayoutItems>
+    <Item1 Ref="42" LayoutItemType="Parameter" Parameter="#Ref-4" />
+    <Item2 Ref="43" LayoutItemType="Parameter" Parameter="#Ref-5" />
+    <Item3 Ref="44" LayoutItemType="Parameter" Parameter="#Ref-7" />
+  </ParameterPanelLayoutItems>
+  <ComponentStorage>
+    <Item1 Ref="0" ObjectType="DevExpress.DataAccess.Sql.SqlDataSource,DevExpress.DataAccess.v23.2" Name="sqlDataSource1" Base64="PFNxbERhdGFTb3VyY2UgTmFtZT0ic3FsRGF0YVNvdXJjZTEiPjxDb25uZWN0aW9uIE5hbWU9IkhQTElUMDIiIEZyb21BcHBDb25maWc9InRydWUiIC8+PFF1ZXJ5IFR5cGU9IlN0b3JlZFByb2NRdWVyeSIgTmFtZT0ic3BfQ1NfUmVwb3J0X1RlbXAiPjxQYXJhbWV0ZXIgTmFtZT0iQEZyb21EYXRlIiBUeXBlPSJEZXZFeHByZXNzLkRhdGFBY2Nlc3MuRXhwcmVzc2lvbiI+KFN5c3RlbS5EYXRlVGltZSkoP0Zyb21EYXRlICk8L1BhcmFtZXRlcj48UGFyYW1ldGVyIE5hbWU9IkBUb0RhdGUiIFR5cGU9IkRldkV4cHJlc3MuRGF0YUFjY2Vzcy5FeHByZXNzaW9uIj4oU3lzdGVtLkRhdGVUaW1lKSg/VG9EYXRlICk8L1BhcmFtZXRlcj48UHJvY05hbWU+c3BfQ1NfUmVwb3J0X1RlbXA8L1Byb2NOYW1lPjwvUXVlcnk+PFJlc3VsdFNjaGVtYT48RGF0YVNldCBOYW1lPSJzcWxEYXRhU291cmNlMSI+PFZpZXcgTmFtZT0ic3BfQ1NfUmVwb3J0X1RlbXAiPjxGaWVsZCBOYW1lPSJTck5vIiBUeXBlPSJJbnQzMiIgLz48RmllbGQgTmFtZT0iRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJEZXNjcmlwdGlvbiIgVHlwZT0iU3RyaW5nIiAvPjxGaWVsZCBOYW1lPSJSb21GZWVkTVQiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iSmF3Q3J1T3V0IiBUeXBlPSJTaW5nbGUiIC8+PEZpZWxkIE5hbWU9IkZlZWRGb2IiIFR5cGU9IlNpbmdsZSIgLz48RmllbGQgTmFtZT0iQWN0dWFsRGF0ZSIgVHlwZT0iU3RyaW5nIiAvPjwvVmlldz48L0RhdGFTZXQ+PC9SZXN1bHRTY2hlbWE+PENvbm5lY3Rpb25PcHRpb25zIENsb3NlQ29ubmVjdGlvbj0idHJ1ZSIgLz48L1NxbERhdGFTb3VyY2U+" />
+  </ComponentStorage>
+  <ObjectStorage>
+    <Item1 ObjectType="DevExpress.XtraReports.Serialization.ObjectStorageInfo, DevExpress.XtraReports.v23.2" Ref="3" Content="System.DateTime" Type="System.Type" />
+  </ObjectStorage>
+</XtraReportsLayoutSerializer>

@@ -50,20 +50,20 @@
     <Content Include="Dashboards\dashboard1.xml" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="bootstrap" Version="5.3.3" />
+    <PackageReference Include="bootstrap" Version="5.3.5" />
     <PackageReference Include="BuildBundlerMinifier" Version="3.2.449" />
-    <PackageReference Include="Dapper" Version="2.1.35" />
+    <PackageReference Include="Dapper" Version="2.1.66" />
     <PackageReference Include="DevExpress.AspNetCore.Core" Version="23.2.5" />
     <PackageReference Include="DevExpress.AspNetCore.Dashboard" Version="23.2.5" />
     <PackageReference Include="DevExpress.AspNetCore.Reporting" Version="23.2.5" />
     <PackageReference Include="DevExtreme.AspNet.Core" Version="23.2.5" />
-    <PackageReference Include="DevExtreme.AspNet.Data" Version="4.0.1" />
-    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.2.0" />
-    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.2.0" />
-    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.0-preview1.24240.8" />
-    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="2.1.175" />
+    <PackageReference Include="DevExtreme.AspNet.Data" Version="5.0.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Authentication.Cookies" Version="2.3.0" />
+    <PackageReference Include="Microsoft.AspNetCore.Session" Version="2.3.0" />
+    <PackageReference Include="Microsoft.Data.SqlClient" Version="6.0.1" />
+    <PackageReference Include="Microsoft.Web.LibraryManager.Build" Version="3.0.71" />
     <PackageReference Include="Newtonsoft.Json" Version="13.0.3" />
-    <PackageReference Include="System.Data.SqlClient" Version="4.8.6" />
+    <PackageReference Include="System.Data.SqlClient" Version="4.9.0" />
   </ItemGroup>
   <ItemGroup>
     <Content Update="Views\Account\_AuthLayout.cshtml">

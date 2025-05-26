@@ -66,7 +66,6 @@
                 .GroupPanel(g => g.Visible(true))
                 .Grouping(g => g.AutoExpandAll(false))
 
-
                 .Columns(c =>
                 {
                     if (Model.TableData != null && Model.TableData.Any() && Model.ConditionalTableData != null)
@@ -215,6 +214,7 @@
                 })
                 @* .RepaintChangesOnly(true) *@
                 .OnSaving("onSaving")
+
                 )
         </div>
 
@@ -228,7 +228,7 @@
 
             <div class=" d-flex align-items-center gap-2">
 
-                <div id="exportOrientation" class="ms-2">
+                @*   <div id="exportOrientation" class="ms-2">
                     <div class="input-group input-group-sm ">
                         <label class="input-group-text bg-warning fs-6" for="pdfOrientationSelect"><i class="ri-printer-line fw-medium"></i></label>
                         <select id="pdfOrientationSelect" class="form-select form-select-sm" aria-label="Small select example" style="cursor: pointer !important;">
@@ -236,17 +236,16 @@
                             <option value="portrait">Portrait</option>
                         </select>
                     </div>
-                </div>
+                </div> *@
 
 
                 <button title="Export To Excel" id="excelExportButton" class="btn btn-sm  text-decoration-none text-dark p-0">
                     <i class="ri-file-excel-2-line fs-3 shadow-sm" style="color: #1D6F42;"></i>
                     @* <i class="ri-file-excel-2-line fs-3 shadow-sm text-success"></i> *@
                 </button>
-                <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
+                @*    <button title="Export To PDF" id="pdfExportButton" class="btn btn-sm text-decoration-none text-dark p-0">
                     <i class="ri-file-pdf-2-line fs-3 shadow-sm" style="color: #F40F02;"></i>
-                    @* <i class="ri-file-pdf-2-line fs-3 shadow-sm text-danger"></i> *@
-                </button>
+                </button> *@
             </div>
         </div>
     }
@@ -309,19 +308,19 @@
                 @* </button> *@
 
 
-                <button id="formReset" class="btn btn-sm bg-warning-subtle border-0 shadow-none text-warning-emphasis fw-semibold  focus-ring focus-ring-warning ml-2" style="font-size: .8rem !important;" title="Reset Form" onclick="handlingFormReset()"> 
-                    <i class="ri-refresh-line text-warning-emphasis"></i> 
+                <button id="formReset" class="btn btn-sm bg-warning-subtle border-0 shadow-none text-warning-emphasis fw-semibold  focus-ring focus-ring-warning ml-2" style="font-size: .8rem !important;" title="Reset Form" onclick="handlingFormReset()">
+                    <i class="ri-refresh-line text-warning-emphasis"></i>
                     Reset
                 </button>
 
-              <div>
+                <div>
                     @* Delete Button to remove the opened calculated field  *@
                     <button type="button" class="btn btn-sm bg-danger-subtle border-0 fw-semibold text-danger-emphasis focus-ring focus-ring-danger" style="display:none; font-size: .8rem !important;" id="deleteFormulaButton" data-bs-toggle="modal" data-bs-target="#deleteConfirmationModal">Delete</button>
                     @* Submit button to send form data to the controller  *@
                     <button type="submit" class="btn btn-sm bg-primary-subtle border-0 shadow-none text-primary-emphasis fw-semibold  focus-ring focus-ring-primary" style="font-size: .8rem !important;" id="submitFormulaButton" onclick="submitFormula()" data-bs-toggle="modal">Save Calculation</button>
-              </div>
+                </div>
 
-               
+
             </div>
         </div>
     </div>
@@ -351,6 +350,8 @@
 
 
 <script>
+
+
     var columnName;
     var formulaVal;
     var dropDownVal;
@@ -412,7 +413,7 @@
         calcFieldDeleteButton.style.display = selectedElement.value ? 'inline-block' : 'none';
     }
 
-    //to update the dropdown after deleting any calculated field column 
+    //to update the dropdown after deleting any calculated field column
     function updateDropDownAfterDelete(deletedValue){
         const dropdown = document.getElementById('existingFieldsDropdown');
         const options = dropdown.getElementsByTagName('option');
@@ -825,7 +826,7 @@
         const dataGrid = $('#dataGridContainer').dxDataGrid('instance');
         const dropdown = document.getElementById('existingFieldsDropdown');
         const selectedOption = dropdown.options[dropdown.selectedIndex];
-        const oldColName = selectedOption.getAttribute('data-column-name'); 
+        const oldColName = selectedOption.getAttribute('data-column-name');
 
 
         if (dataGrid) {
@@ -868,7 +869,7 @@
             } else if (oldColName && oldColName !== columnName) {
                 // If the old column name doesn't match the new one, update the column
                 const columnIndex = columns.findIndex(col => col.dataField === oldColName);
-                
+
 
                 if (columnIndex > -1) {
                     columns[columnIndex] = {

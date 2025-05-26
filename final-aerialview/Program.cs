@@ -29,7 +29,6 @@ builder.Services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationSc
         options.LoginPath = "/Account/Login";
         options.LogoutPath = "/Account/Logout";
     });
-
 //old
 //builder.Services.AddScoped<DataAccess>();
 
@@ -226,5 +225,17 @@ app.MapControllerRoute(
     pattern: "{controller=Account}/{action=Login}/{id?}");
 #endregion
 
-app.Run();
+//app.Run();
+
+try
+{
+    app.Run();
+}
+catch (Exception ex)
+{
+    Console.WriteLine($"Unhandled exception during startup: {ex.Message}");
+    Console.WriteLine(ex.StackTrace);
+    throw;
+}
+
 

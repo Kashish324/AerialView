@@ -1,0 +1,73 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Dashboard>
+  <Title Text="MPL-01 Live Data" />
+  <DataSources>
+    <SqlDataSource Name="MPL_01" ComponentName="sqlDataSource1">
+      <Connection Name="GEA-LMP" FromAppConfig="true" />
+      <Query Type="SelectQuery" Name="MPL_01" Top="10">
+        <Tables>
+          <Table Name="MPL_01" />
+        </Tables>
+        <Columns>
+          <Column Table="MPL_01" Name="DateAndTime" />
+          <Column Table="MPL_01" Name="B11FT01" />
+          <Column Table="MPL_01" Name="B11H1LT02" />
+        </Columns>
+        <Sorting>
+          <Column Table="MPL_01" Name="DateAndTime" Descending="true" />
+        </Sorting>
+      </Query>
+      <ConnectionOptions CloseConnection="true" />
+    </SqlDataSource>
+  </DataSources>
+  <Items>
+    <Chart ComponentName="chartDashboardItem1" Name="Chart 1" DataSource="sqlDataSource1" DataMember="MPL_01">
+      <DataItems>
+        <Measure DataMember="B11H1LT02" DefaultId="DataItem0" />
+        <Measure DataMember="B11FT01" DefaultId="DataItem1" />
+        <Dimension DataMember="DateAndTime" DateTimeGroupInterval="DateHourMinuteSecond" DefaultId="DataItem2" />
+      </DataItems>
+      <Arguments>
+        <Argument DefaultId="DataItem2" />
+      </Arguments>
+      <Panes>
+        <Pane Name="Pane 1">
+          <Series>
+            <Simple SeriesType="Line">
+              <Value DefaultId="DataItem0" />
+            </Simple>
+            <Simple SeriesType="Line">
+              <Value DefaultId="DataItem1" />
+            </Simple>
+          </Series>
+        </Pane>
+      </Panes>
+    </Chart>
+    <Grid ComponentName="gridDashboardItem1" Name="Grid 1" DataSource="sqlDataSource1" DataMember="MPL_01">
+      <DataItems>
+        <Measure DataMember="B11FT01" DefaultId="DataItem0" />
+        <Measure DataMember="B11H1LT02" DefaultId="DataItem1" />
+        <Dimension DataMember="DateAndTime" DateTimeGroupInterval="DateHourMinuteSecond" DefaultId="DataItem2" />
+      </DataItems>
+      <GridColumns>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem0" />
+        </GridMeasureColumn>
+        <GridMeasureColumn>
+          <Measure DefaultId="DataItem1" />
+        </GridMeasureColumn>
+        <GridDimensionColumn>
+          <Dimension DefaultId="DataItem2" />
+        </GridDimensionColumn>
+      </GridColumns>
+      <GridOptions />
+      <ColumnFilterOptions />
+    </Grid>
+  </Items>
+  <LayoutTree>
+    <LayoutGroup>
+      <LayoutItem DashboardItem="gridDashboardItem1" />
+      <LayoutItem DashboardItem="chartDashboardItem1" />
+    </LayoutGroup>
+  </LayoutTree>
+</Dashboard>

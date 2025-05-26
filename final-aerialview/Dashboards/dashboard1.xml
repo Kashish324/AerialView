@@ -318,30 +318,10 @@
     <ComboBox ComponentName="comboBoxDashboardItem1" Name="Combo Box 1" DataSource="sqlDataSource1" DataMember="T_KW" IsMasterFilterCrossDataSource="true">
       <InteractivityOptions IgnoreMasterFilters="false" />
       <DataItems>
-        <Dimension DataMember="C12" DefaultId="DataItem0" />
-        <Dimension DataMember="C12" DefaultId="DataItem1" />
-        <Measure DataMember="C17" SummaryType="Count" DefaultId="DataItem2" />
-        <Measure DataMember="C10" DefaultId="DataItem3" />
-        <Measure DataMember="C11" DefaultId="DataItem4" />
-        <Dimension DataMember="C10" DefaultId="DataItem5" />
-        <Dimension DataMember="C3" DefaultId="DataItem6" />
-        <Dimension DataMember="C32" DefaultId="DataItem7" />
-        <Dimension DataMember="C52" DefaultId="DataItem8" />
+        <Dimension DataMember="DateAndTime" DateTimeGroupInterval="DateHourMinuteSecond" DefaultId="DataItem9" />
       </DataItems>
-      <HiddenDimensions>
-        <Dimension DefaultId="DataItem0" />
-        <Dimension DefaultId="DataItem1" />
-      </HiddenDimensions>
-      <HiddenMeasures>
-        <Measure DefaultId="DataItem2" />
-        <Measure DefaultId="DataItem3" />
-        <Measure DefaultId="DataItem4" />
-      </HiddenMeasures>
       <FilterDimensions>
-        <Dimension DefaultId="DataItem5" />
-        <Dimension DefaultId="DataItem6" />
-        <Dimension DefaultId="DataItem7" />
-        <Dimension DefaultId="DataItem8" />
+        <Dimension DefaultId="DataItem9" />
       </FilterDimensions>
     </ComboBox>
     <TabContainer ComponentName="tabContainerDashboardItem1" Name="Tab Container 1">
@@ -432,6 +412,14 @@
         <Argument DefaultId="DataItem7" />
       </Arguments>
     </Treemap>
+    <TreeView ComponentName="treeViewDashboardItem1" Name="Tree View 1" DataSource="sqlDataSource1" DataMember="T_KW">
+      <DataItems>
+        <Dimension DataMember="DateAndTime" DateTimeGroupInterval="DateHourMinuteSecond" DefaultId="DataItem0" />
+      </DataItems>
+      <FilterDimensions>
+        <Dimension DefaultId="DataItem0" />
+      </FilterDimensions>
+    </TreeView>
   </Items>
   <ColorScheme>
     <Entry DataSource="sqlDataSource1" DataMember="T_KW" Color="-5412580">
@@ -442,7 +430,10 @@
   </ColorScheme>
   <LayoutTree>
     <LayoutGroup>
-      <LayoutItem DashboardItem="chartDashboardItem1" />
+      <LayoutGroup Orientation="Vertical">
+        <LayoutItem DashboardItem="treeViewDashboardItem1" />
+        <LayoutItem DashboardItem="chartDashboardItem1" />
+      </LayoutGroup>
       <LayoutGroup Orientation="Vertical">
         <LayoutItem DashboardItem="comboBoxDashboardItem1" Weight="0.7073760580411125" />
         <LayoutItem DashboardItem="gridDashboardItem1" Weight="0.7073760580411125" />

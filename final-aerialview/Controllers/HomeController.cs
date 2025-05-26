@@ -26,6 +26,15 @@ namespace final_aerialview.Controllers
             //{
             //    ViewBag.IsNewTabOpened = "True";
             //}
+
+            #region to check if there is any dashdefault true
+            var dashboardListData = _dataAccess.GetDashboardMasterData();
+            var checkDefaultDashboard = dashboardListData.Any(item => item.DashDefault == true);
+
+            // Pass the result to the view
+            ViewBag.HasDefaultDashboard = checkDefaultDashboard;
+            #endregion
+
             return View();
         }
         #endregion

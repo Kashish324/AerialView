@@ -11,24 +11,25 @@
 <link rel="stylesheet" href="~/css/ace/ace.bundle.css" />
 <script src="~/js/reporting.designer.part.bundle.js"></script>
 
-
 <script type="text/javascript">
     //setting the preview zoom to "page width"
     function onCustomizeElements(s, e) {
-        var previewModel = s.GetPreviewModel();
+    var previewModel = s.GetPreviewModel();
 
-        if (previewModel && previewModel.reportPreview) {
-            var reportPreview = previewModel.reportPreview;
+    if (previewModel && previewModel.reportPreview) {
+    var reportPreview = previewModel.reportPreview;
 
-            if (typeof reportPreview.zoom === 'number') {
+    if (typeof reportPreview.zoom === 'number') {
 
-                reportPreview.zoom = -1;
-                // console.log("Zoom level set to Page Width");
-            } else {
-                throw Error("reportPreview model not available");
-            }
-        }
+    reportPreview.zoom = -1;
+    // console.log("Zoom level set to Page Width");
+    } else {
+    throw Error("reportPreview model not available");
     }
+    }
+    }
+
+
 </script>
 
 
@@ -41,7 +42,19 @@
 
     @{
         var designerRender = Html.DevExpress().ReportDesigner("reportDesigner")
-        .ClientSideEvents(configure => { configure.BeforeRender("onCustomizeElements"); })
+        .ClientSideEvents(configure =>
+        {
+            configure.BeforeRender("onCustomizeElements");
+            // configure.CustomizeMenuActions("onCustomizeMenuActions");
+            // configure.CustomizeMenuActions("customizeActions");
+
+            // configure.Preview(p =>
+            // {
+            //     p.CustomizeMenuActions("customizeActions");
+            //     p.CustomizeExportOptions("customExport");
+            // });
+
+        })
         .Height("96.6vh");
 
         if (!string.IsNullOrEmpty(reportName))
@@ -52,7 +65,7 @@
         {
             Console.WriteLine("Opening blank report designer");
         }
-
+       
         @designerRender.RenderHtml()
     }
 </div>
@@ -61,5 +74,3 @@
     <link href="~/css/dx-reporting-skeleton-screen.css" rel="stylesheet" />
     @designerRender.RenderScripts()
 }
-
-
