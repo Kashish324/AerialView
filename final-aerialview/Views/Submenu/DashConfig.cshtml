@@ -7,6 +7,20 @@
 }
 
 
+@{
+    var options = new Dictionary<int, string>
+    {
+        { 0, "Do not refresh" },
+        { 5, "Every 5 seconds" },
+        { 10, "Every 10 seconds" },
+        { 15, "Every 15 seconds" },
+        { 30, "Every 30 seconds" },
+        { 60, "Every 1 minute" },
+        { 120, "Every 2 minutes" },
+        { 300, "Every 5 minutes" }
+    };
+}
+
 
 <div class="table-responsive pt-4">
     <table id="dashConfigTable" class="table table-hover table-bordered border-light shadow-sm table-sm">
@@ -36,19 +50,7 @@
                     </td>
 
                     <td id="dashPath" class="text-muted text-center align-middle text-nowrap text-truncate text-dark user-select-all dash-path-cell p-0" style="max-width: 250px; font-size: 14px;">
-                        @* @if (dashboardFiles != null && dashboardFiles.Any())
-                        {
-                            foreach (var file in dashboardFiles)
-                            {
-                                if(file.Name == item.DashPath)
-                                {
-                                     @item.DashPath
-                                }
-                                @item.DashPath 
 
-                            }
-                            @item.DashPath
-                        } *@
                         @foreach (var i in ViewBag.DashboardFiles)
                         {
                             @if (dashboardFiles != null && dashboardFiles.Any())
@@ -57,25 +59,18 @@
                                 {
                                     if (file.Name == i.FileName)
                                     {
-                                        if(i.Title == item.DashPath)
+                                        if (i.Title == item.DashPath)
                                         {
                                             @item.DashPath
                                         }
-                                      
+
                                     }
 
                                 }
 
                             }
                         }
-                       @*  @if (item.IsPathExists)
-                        {
-                            <span>@item.DashPath</span>
-                        }
-                        else
-                        {
-                            <span class="text-danger fw-bold">File Missing</span>
-                        } *@
+
                     </td>
 
 
@@ -91,15 +86,44 @@
                         </div>
                     </td>
 
+                    @* refresh rate *@
+                    <td class="text-center align-middle p-0">
+                        @* @item.RefreshRate *@
+                        <div class="input-group border-0">
+                           @*  <select id="refreshRate-@item.DashId"
+                                    name="refreshRate"
+                                    class="form-select"
+                                    value="@item.RefreshRate"
+                                    onchange="updateRefreshRate('@item.DashId', this.value)">
+                                @foreach (var opt in options)
+                                {
+                                    <option value="@opt.Key">@opt.Value</option>
+                                }
+                            </select> *@
+
+                            <select class="form-select form-select-sm border-0 refresh-rate" id="refreshRate-@item.DashId" onchange="updateRefreshRate('@item.DashId', this.value)">
+                                <option selected disabled>Refresh Rate</option>
+                               
+                                @foreach (var opt in options)
+                                {
+                                    <option value="@opt.Key" selected="@(item.RefreshRate == opt.Key ? "selected" : null)">
+                                        @opt.Value
+                                    </option>
+                                }
+                            </select>
+                        </div>
+
+                    </td>
+
                     <td class="text-center align-middle p-0">
                         <input type="file" name="dialog" id="dialog-@item.DashId" hidden />
                         <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('@item.DashId')">
                             @* <i class="ri-folder-open-fill text-warning "></i> *@
                             <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
-                            trigger="morph"
-                            state="morph-folder"
-                            colors="primary:#FFC107"
-                            style="width:16px;height:16px">
+                                       trigger="morph"
+                                       state="morph-folder"
+                                       colors="primary:#FFC107"
+                                       style="width:16px;height:16px">
 
                             </lord-icon>
 
@@ -110,9 +134,9 @@
                         <button class="p-0 border-0 bg-transparent" data-bs-toggle="modal" data-bs-target="#deleteDashboardModal" onclick="setDeleteDashId('@item.DashId')">
                             @* <i class="ri-delete-bin-line text-danger"></i> *@
                             <lord-icon src="https://cdn.lordicon.com/skkahier.json"
-                            trigger="hover"
-                            colors="primary:#ee6d66"
-                            style="width:16px;height:16px">
+                                       trigger="hover"
+                                       colors="primary:#ee6d66"
+                                       style="width:16px;height:16px">
                             </lord-icon>
                         </button>
 
@@ -204,6 +228,15 @@
 
     var addBtn = document.getElementById('addBtn');
     var dashConfigTable = document.getElementById('dashConfigTable').getElementsByTagName('tbody')[0];
+      
+    
+    // Function to mark a row as updated
+    function markRowAsUpdated(dashId) {
+        var row = document.getElementById('dashRow-' + dashId);
+        if (row) {
+            row.classList.add('updated-row'); // Add a class to mark the row as updated
+        }
+    }
 
     // Update dashboard active/inactive status
     function updateDashboardStatus(dashId) {
@@ -220,14 +253,7 @@
         markRowAsUpdated(dashId); // Mark the row as updated
     }
 
-    // Function to mark a row as updated
-    function markRowAsUpdated(dashId) {
-        var row = document.getElementById('dashRow-' + dashId);
-        if (row) {
-            row.classList.add('updated-row'); // Add a class to mark the row as updated
-        }
-    }
-
+  
 
     // Initialize dashNames with values from the table
     var dashNames = {};
@@ -241,6 +267,7 @@
 
     // Function to handle updating any field in a row
     function updateField(dashId, fieldName, updatedValue) {
+        
         var inputField = document.getElementById(fieldName + '-' + dashId);
         var errorMessage = document.getElementById('error-message-' + dashId);
 
@@ -304,6 +331,20 @@
                                                             </div>
                                                     </td>
                                                             <td class="text-center align-middle p-0">
+                                                                <div class="input-group border-0">
+                                                                     <select class="form-select form-select-sm border-0  refresh-rate" id="refreshRate-${uniqueRowId}" onchange="updateRefreshRate('${uniqueRowId}', this.value)">
+                                                                       <option selected disabled>Refresh Rate</option>
+                                                                                @foreach (var opt in options)
+                                                                                {
+                                                                                  <option value="@opt.Key">
+                                                                                        @opt.Value
+                                                                                  </option>
+                                                                                }
+                                                                     </select>
+                                                                </div>
+
+                                                            </td>
+                                                            <td class="text-center align-middle p-0">
                                                                     <input type="file" name="dialog" id="dialog-${uniqueRowId}" hidden />
                                                                     <a href="#" class="btn border-0 p-0 " title="Choose Dashboard" data-bs-toggle="modal" data-bs-target="#getDashboardModal" onclick="dialogHandling('${uniqueRowId}')">
                                                                     <lord-icon src="https://cdn.lordicon.com/fkaukecx.json"
@@ -341,6 +382,15 @@
         }
     }
 
+
+    //Function to update the refresh rate
+    function updateRefreshRate(dashId, value){
+        const refreshValue = parseInt(value)
+        if(refreshValue != null){
+         markRowAsUpdated(dashId);
+        }
+    }
+
     function hasDuplicateDashNames(updatedRows) {
         const dashNames = updatedRows.map(row => row.DashName.toLowerCase());
         return new Set(dashNames).size !== dashNames.length;
@@ -357,7 +407,8 @@
                 DashName: row.querySelector('.dash-name-field').value.trim(),
                 DashPath: row.querySelector('.dash-path-cell').textContent.trim(),
                 DashStatus: row.querySelector('.badge').classList.contains('bg-success'),
-                DashDefault: row.querySelector('input[type="radio"]').checked
+                DashDefault: row.querySelector('input[type="radio"]').checked,
+                RefreshRate: parseInt( row.querySelector('select').value)
             };
             // Convert DashStatus and DashDefault to boolean explicitly if needed
             rowData.DashStatus = !!rowData.DashStatus; // Ensures boolean value
@@ -373,6 +424,7 @@
 
         // Filter out rows with empty DashPath
         updatedRows = updatedRows.filter(row => row.DashPath.trim() !== '');
+        
 
         if (updatedRows.length === 0) {
             showToast('No valid rows to update.');
@@ -385,6 +437,7 @@
             contentType: 'application/json',
             data: JSON.stringify(updatedRows),
             success: function (response) {
+               
                 if (response.errors) {
                     // If there are errors, show them in the toast
                     var errorMessage = response.errors.join('\n');
@@ -425,7 +478,7 @@
     }
 
 
-    // // get saved dashboard list from /DashboardFolder/DashInfo
+     // get saved dashboard list from /DashboardFolder/DashInfo
     $('#getDashboardModal').on('show.bs.modal', function () {
         $.ajax({
             url: '/DashboardFolder/DashInfo',

@@ -315,7 +315,7 @@
         <PercentOfTargetNumericFormat />
       </GaugeElement>
     </Gauge>
-    <ComboBox ComponentName="comboBoxDashboardItem1" Name="Combo Box 1" DataSource="sqlDataSource1" DataMember="T_KW" IsMasterFilterCrossDataSource="true">
+    <ComboBox ComponentName="comboBoxDashboardItem1" Name="Combo Box 1" ShowCaption="false" DataSource="sqlDataSource1" DataMember="T_KW" IsMasterFilterCrossDataSource="true" ShowAllValue="false" EnableSearch="true">
       <InteractivityOptions IgnoreMasterFilters="false" />
       <DataItems>
         <Dimension DataMember="DateAndTime" DateTimeGroupInterval="DateHourMinuteSecond" DefaultId="DataItem9" />

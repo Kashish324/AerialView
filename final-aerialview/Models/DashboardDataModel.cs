@@ -12,6 +12,8 @@
 
         public bool DashDefault {  get; set; }
 
+        public int RefreshRate { get; set; }
+
         public bool IsPathExists { get; set; } // New flag for existence check in dashboard folder 
     }
 }

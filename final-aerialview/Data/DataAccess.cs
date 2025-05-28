@@ -233,7 +233,7 @@ namespace final_aerialview.Data
         #region dashboard master (dash config) table
         public IEnumerable<DashboardDataModel> GetDashboardMasterData()
         {
-            string query = "Select DashId,DashName,DashPath, (case when DashStatus ='' then 'False' else DashStatus end) as 'DashStatus',(case when DashDefault ='' then 'False' else DashDefault end) as 'DashDefault' from DashboardMaster order by DashId asc";
+            string query = "Select DashId,DashName,DashPath, (case when DashStatus ='' then 'False' else DashStatus end) as 'DashStatus',(case when DashDefault ='' then 'False' else DashDefault end) as 'DashDefault', RefreshRate  from DashboardMaster order by DashId asc";
             return ExecuteQuery<DashboardDataModel>(query);
         }
         #endregion
@@ -248,7 +248,7 @@ namespace final_aerialview.Data
                 connection.Open();
 
                 var checkExistsSql = "SELECT COUNT(*) FROM DashboardMaster WHERE DashName = @DashName AND DashId <> @DashId";
-                var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END WHERE DashId = @DashId";
+                var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END, RefreshRate = @RefreshRate  WHERE DashId = @DashId";
 
                 foreach (var data in updatedData)
                 {
@@ -275,6 +275,7 @@ namespace final_aerialview.Data
                         data.DashPath,
                         DashStatus = data.DashStatus ? true : false,
                         DashDefault = data.DashDefault ? true : false,
+                        RefreshRate = data.RefreshRate,
                     };
 
                     connection.Execute(sql, parameters);
@@ -319,7 +320,7 @@ namespace final_aerialview.Data
                 connection.Open();
 
                 var checkExistsSql = "Select count(*) from DashboardMaster WHERE DashName = @DashName";
-                var sql = "INSERT INTO DashboardMaster (DashName, DashPath, DashStatus, DashDefault) VALUES (@DashName, @DashPath, CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END)";
+                var sql = "INSERT INTO DashboardMaster (DashName, DashPath, DashStatus, DashDefault, RefreshRate) VALUES (@DashName, @DashPath, CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END, @RefreshRate)";
 
                 foreach (var data in newData)
                 {
@@ -339,6 +340,7 @@ namespace final_aerialview.Data
                         data.DashPath,
                         DashStatus = data.DashStatus ? true : false, // Ensure it's a boolean value
                         DashDefault = data.DashDefault ? true : false, // Ensure it's a boolean value
+                        data.RefreshRate
                     };
 
                     connection.Execute(sql, parameters);
