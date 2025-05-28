@@ -31,14 +31,16 @@
     {
         <div class="d-flex align-items-center justify-content-center py-1 px-4  border-bottom" style="background-color: #1866B0 ;">
             <h6 class="fw-medium text-white mb-0">@Model.DashName</h6>
+
+            @* <h1 class="fw-medium text-white mb-0">@Model.RefreshRate</h1> *@
         </div>
 
         @* string dashPath = Model.DashPath.Substring(0, Model.DashPath.LastIndexOf(".")); *@
         string dashPath = System.IO.Path.GetFileNameWithoutExtension(Model.DashPath);
 
 
-
-        <div style="position: absolute; left:0;top:26px;right:0;bottom:0;" class="border-top">
+        @* <div id="dashboard-wrapper" data-refresh-rate="@Model.RefreshRate" style="position: absolute; left:0;top:26px;right:0;bottom:0;" class="border-top"> *@
+        <div id="dashboard-wrapper" style="position: absolute; left:0;top:26px;right:0;bottom:0;" class="border-top" data-refresh-rate="@Model.RefreshRate">
             @(Html.DevExpress().Dashboard("clientDashboardControl")
                 .ControllerName("DefaultDashboard")
                 .Width("100%")
@@ -54,20 +56,51 @@
 
     <script src="/lib/bootstrap.bundle.min.js"></script>
     <script>
-        var dashboardControl; 
+        var dashboardControl;
+        var refreshIntervalId;
 
-        //refresh dashboard every 5 sec 
+        //refresh dashboard every 5 sec
         function onBeforeRender() {
+             var refreshRate = document.getElementById('dashboard-wrapper').getAttribute('data-refresh-rate');
+
+             // Validate the refresh rate
+        if (isNaN(refreshRate) || refreshRate <= 0) {
+            console.log("Auto-refresh disabled (refreshRate is 0 or invalid).");
+            return; // Exit early
+        }
+
+        if(refreshRate < 1000){
+            refreshRate *= 1000;
+        }
+
+        //clear previous interval
+        if(refreshIntervalId){
+            clearInterval(refreshIntervalId);
+        }
+
+        console.log(refreshRate)
+
             // Initialize or capture the dashboard control
             dashboardControl = clientDashboardControl;
-            
-            setInterval(() => {
-                if (dashboardControl) {
-                    dashboardControl.reloadData();
-                    // dashboardControl.refresh();
-                    console.log("Dashboard refreshed");
-                }
-            }, 5000); 
+
+            // if(refreshRate <= 0){
+            //
+
+            // }else{
+            //  setInterval(() => {
+            //     if (dashboardControl) {
+            //         dashboardControl.reloadData();
+            //         // dashboardControl.refresh();
+            //         console.log("Dashboard refreshed");
+            //     }
+            // }, refreshRate);
+            // }
+             refreshIntervalId = setInterval(() => {
+            if (dashboardControl) {
+                dashboardControl.reloadData();
+                console.log("Dashboard refreshed");
+            }
+        }, refreshRate);
         }
     </script>
 </body>
