@@ -50,7 +50,7 @@
                     // Get the title from the database
                     var dashboardTitle = i.DashPath;
 
-                   @*  // Use the title to get the corresponding file name
+                    @*  // Use the title to get the corresponding file name
                     string mappedFileName = titleToFileMap != null && titleToFileMap.ContainsKey(dashboardTitle)
                     ? titleToFileMap[dashboardTitle]
                     : null; *@
@@ -66,16 +66,17 @@
                     {
                         // removing the extension for dashboard viewer syntax
                         string FileNameOnly = mappedFileName.Substring(0, mappedFileName.LastIndexOf("."));
-                        <div style="position: absolute; left:0;top:0px;right:0;bottom:0;">
+
+                        <div id="dashboard-wrapper" style="position: absolute; left:0;top:0px;right:0;bottom:0;" data-refresh-rate="@i.RefreshRate">
                             @(
-                                    Html.DevExpress().Dashboard("clientDashboardControl")
-                                    .ControllerName("DefaultDashboard")
-                                    .Width("100%")
-                                    .Height("100%")
-                                    .WorkingMode(WorkingMode.Viewer)
-                                    .InitialDashboardId(FileNameOnly)
-                                    .OnBeforeRender("onBeforeRender")
-                                    )
+                                Html.DevExpress().Dashboard("clientDashboardControl")
+                                .ControllerName("DefaultDashboard")
+                                .Width("100%")
+                                .Height("100%")
+                                .WorkingMode(WorkingMode.Viewer)
+                                .InitialDashboardId(FileNameOnly)
+                                .OnBeforeRender("onBeforeRender")
+                                )
                         </div>
                     }
                     else
@@ -89,23 +90,38 @@
         }
     }
     <script src="/lib/bootstrap.bundle.min.js"></script>
-    <script>
+    <script src="/js/reloadInterval.js"></script>
+   @*  <script>
         var dashboardControl; // Declare globally
+        var refreshIntervalId;
+
 
         function onBeforeRender() {
             // Initialize or capture the dashboard control
             dashboardControl = clientDashboardControl;
+             var refreshRate = document.getElementById('dashboard-wrapper').getAttribute('data-refresh-rate');
 
+             if(isNaN(refreshRate) || refreshRate <=0 ){
+                console.log("Auto-refresh disabled (refreshRate is 0 or invalid).");
+                return; // Exit early
+             }
 
-            setInterval(() => {
-                if (dashboardControl) {
-                    dashboardControl.reloadData();
-                    // dashboardControl.refresh();
-                    // console.log("Dashboard refreshed");
-                }
-            }, 5000);
+             if(refreshRate < 1000){
+                 refreshRate *= 1000;
+             }
+
+             if(refreshIntervalId){
+                 clearInterval(refreshIntervalId)
+             }
+
+            refreshIntervalId = setInterval(() => {
+            if (dashboardControl) {
+                dashboardControl.reloadData();
+                console.log("Dashboard refreshed");
+            }
+        }, refreshRate);
         }
-    </script>
-   
+    </script> *@
+
 </body>
 </html>
