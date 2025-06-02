@@ -7,87 +7,88 @@
     <Item1 Ref="3" ControlType="TopMarginBand" Name="TopMargin1" />
     <Item2 Ref="4" ControlType="ReportHeaderBand" Name="ReportHeader1" HeightF="294.80786">
       <Controls>
-        <Item1 Ref="5" ControlType="XRChart" Name="chart1" DataSource="#Ref-0" SizeF="650,192.49675" LocationFloat="0,100.113884" BorderColor="Black" Borders="All">
-          <Chart Ref="6">
+        <Item1 Ref="5" ControlType="XRLabel" Name="label8" Multiline="true" Text="label8" SizeF="100,23" LocationFloat="0,66.666664" Padding="2,2,0,0,100" />
+        <Item2 Ref="6" ControlType="XRChart" Name="chart1" DataSource="#Ref-0" SizeF="650,192.49675" LocationFloat="0,100.113884" BorderColor="Black" Borders="All">
+          <Chart Ref="7">
             <AutoSeriesCheckedInLegendStates>
-              <Item1 Ref="7" AutoSeriesName="Series 3" CheckState="true" />
-              <Item2 Ref="8" AutoSeriesName="Series 2" CheckState="true" />
-              <Item3 Ref="9" AutoSeriesName="Series 1" CheckState="true" />
+              <Item1 Ref="8" AutoSeriesName="Series 3" CheckState="true" />
+              <Item2 Ref="9" AutoSeriesName="Series 2" CheckState="true" />
+              <Item3 Ref="10" AutoSeriesName="Series 1" CheckState="true" />
             </AutoSeriesCheckedInLegendStates>
-            <DataContainer Ref="10" DataMember="T1" SeriesDataMember="C6" ValidateDataMembers="true">
+            <DataContainer Ref="11" DataMember="T1" SeriesDataMember="C6" ValidateDataMembers="true">
               <SeriesSerializable>
-                <Item1 Ref="11" DataSource="#Ref-0" Name="Series1" SeriesID="0" />
+                <Item1 Ref="12" DataSource="#Ref-0" Name="Series1" SeriesID="0" />
               </SeriesSerializable>
-              <SeriesTemplate Ref="12" SeriesDataMember="C6" ArgumentDataMember="C9" ColorDataMember="C6" ValueDataMembersSerializable="C10" ArgumentScaleType="Numerical" SeriesPointsSorting="Ascending" SeriesPointsSortingKey="Value_1" />
+              <SeriesTemplate Ref="13" SeriesDataMember="C6" ArgumentDataMember="C9" ColorDataMember="C6" ValueDataMembersSerializable="C10" ArgumentScaleType="Numerical" SeriesPointsSorting="Ascending" SeriesPointsSortingKey="Value_1" />
             </DataContainer>
-            <Diagram Ref="13" TypeNameSerializable="XYDiagram">
-              <AxisX Ref="14" VisibleInPanesSerializable="-1" />
-              <AxisY Ref="15" VisibleInPanesSerializable="-1" />
+            <Diagram Ref="14" TypeNameSerializable="XYDiagram">
+              <AxisX Ref="15" VisibleInPanesSerializable="-1" />
+              <AxisY Ref="16" VisibleInPanesSerializable="-1" />
             </Diagram>
-            <EmptyChartText Ref="16" Text="no data" />
-            <Legend Ref="17" LegendID="-1" />
-            <OptionsPrint Ref="18" ImageFormat="Metafile" />
+            <EmptyChartText Ref="17" Text="no data" />
+            <Legend Ref="18" LegendID="-1" />
+            <OptionsPrint Ref="19" ImageFormat="Metafile" />
           </Chart>
-          <StylePriority Ref="19" UseBorders="false" />
-        </Item1>
-        <Item2 Ref="20" ControlType="XRLabel" Name="label1" Multiline="true" Text="Product Report" SizeF="650,66.666664" LocationFloat="0,0" Font="Arial, 30pt" Padding="2,2,0,0,100">
-          <StylePriority Ref="21" UseFont="false" />
+          <StylePriority Ref="20" UseBorders="false" />
         </Item2>
+        <Item3 Ref="21" ControlType="XRLabel" Name="label1" Multiline="true" Text="Product Report" SizeF="650,66.666664" LocationFloat="0,0" Font="Arial, 30pt" Padding="2,2,0,0,100">
+          <StylePriority Ref="22" UseFont="false" />
+        </Item3>
       </Controls>
     </Item2>
-    <Item3 Ref="22" ControlType="DetailBand" Name="Detail1" HeightF="100.83033">
+    <Item3 Ref="23" ControlType="DetailBand" Name="Detail1" HeightF="100.83033">
       <Controls>
-        <Item1 Ref="23" ControlType="XRLabel" Name="label7" Multiline="true" Text="label7" SizeF="198.95833,49.039715" LocationFloat="451.04166,0" Padding="2,2,0,0,100">
+        <Item1 Ref="24" ControlType="XRLabel" Name="label7" Multiline="true" Text="label7" SizeF="198.95833,49.039715" LocationFloat="451.04166,0" Padding="2,2,0,0,100">
           <ExpressionBindings>
-            <Item1 Ref="24" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C52]" />
+            <Item1 Ref="25" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C52]" />
           </ExpressionBindings>
         </Item1>
-        <Item2 Ref="25" ControlType="XRLabel" Name="label6" Multiline="true" Text="label6" SizeF="198.95833,49.039715" LocationFloat="451.04166,51.79062" Padding="2,2,0,0,100">
+        <Item2 Ref="26" ControlType="XRLabel" Name="label6" Multiline="true" Text="label6" SizeF="198.95833,49.039715" LocationFloat="451.04166,51.79062" Padding="2,2,0,0,100">
           <ExpressionBindings>
-            <Item1 Ref="26" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C51]" />
+            <Item1 Ref="27" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C51]" />
           </ExpressionBindings>
         </Item2>
-        <Item3 Ref="27" ControlType="XRLabel" Name="label5" Multiline="true" Text="label5" SizeF="188.54167,50.08138" LocationFloat="262.5,49.039715" Padding="2,2,0,0,100">
+        <Item3 Ref="28" ControlType="XRLabel" Name="label5" Multiline="true" Text="label5" SizeF="188.54167,50.08138" LocationFloat="262.5,49.039715" Padding="2,2,0,0,100">
           <ExpressionBindings>
-            <Item1 Ref="28" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C21]" />
+            <Item1 Ref="29" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C21]" />
           </ExpressionBindings>
         </Item3>
-        <Item4 Ref="29" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" SizeF="188.54167,49.039715" LocationFloat="262.5,0" Padding="2,2,0,0,100">
+        <Item4 Ref="30" ControlType="XRLabel" Name="label4" Multiline="true" Text="label4" SizeF="188.54167,49.039715" LocationFloat="262.5,0" Padding="2,2,0,0,100">
           <ExpressionBindings>
-            <Item1 Ref="30" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C12]" />
+            <Item1 Ref="31" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C12]" />
           </ExpressionBindings>
         </Item4>
-        <Item5 Ref="31" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="262.5,50.08138" LocationFloat="0,49.039715" Font="Arial, 13pt" Padding="2,2,0,0,100">
+        <Item5 Ref="32" ControlType="XRLabel" Name="label3" Multiline="true" Text="label3" SizeF="262.5,50.08138" LocationFloat="0,49.039715" Font="Arial, 13pt" Padding="2,2,0,0,100">
           <ExpressionBindings>
-            <Item1 Ref="32" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C10]" />
+            <Item1 Ref="33" EventName="BeforePrint" PropertyName="Text" Expression="[T1.C10]" />
           </ExpressionBindings>
-          <StylePriority Ref="33" UseFont="false" />
+          <StylePriority Ref="34" UseFont="false" />
         </Item5>
-        <Item6 Ref="34" ControlType="XRLabel" Name="label2" Multiline="true" Text="label2" SizeF="262.5,49.039715" LocationFloat="0,0" Font="Arial, 16pt" Padding="2,2,0,0,100">
+        <Item6 Ref="35" ControlType="XRLabel" Name="label2" Multiline="true" Text="label2" SizeF="262.5,49.039715" LocationFloat="0,0" Font="Arial, 16pt" Padding="2,2,0,0,100">
           <ExpressionBindings>
-            <Item1 Ref="35" EventName="BeforePrint" PropertyName="Text" Expression="[C2]" />
+            <Item1 Ref="36" EventName="BeforePrint" PropertyName="Text" Expression="[C2]" />
           </ExpressionBindings>
-          <StylePriority Ref="36" UseFont="false" />
+          <StylePriority Ref="37" UseFont="false" />
         </Item6>
       </Controls>
     </Item3>
-    <Item4 Ref="37" ControlType="BottomMarginBand" Name="BottomMargin1" HeightF="315.625">
+    <Item4 Ref="38" ControlType="BottomMarginBand" Name="BottomMargin1" HeightF="315.625">
       <Controls>
-        <Item1 Ref="38" ControlType="XRChart" Name="chart2" DataSource="#Ref-0" SizeF="650,300" LocationFloat="0,5E-06" BorderColor="Black" Borders="All">
-          <Chart Ref="39">
-            <DataContainer Ref="40" DataMember="T1" ValidateDataMembers="true">
+        <Item1 Ref="39" ControlType="XRChart" Name="chart2" DataSource="#Ref-0" SizeF="650,300" LocationFloat="0,5E-06" BorderColor="Black" Borders="All">
+          <Chart Ref="40">
+            <DataContainer Ref="41" DataMember="T1" ValidateDataMembers="true">
               <SeriesSerializable>
-                <Item1 Ref="41" DataSource="#Ref-0" Name="Series1" SeriesID="0" ArgumentDataMember="DateAndTime" ColorDataMember="T1.C6" ValueDataMembersSerializable="C10" />
+                <Item1 Ref="42" DataSource="#Ref-0" Name="Series1" SeriesID="0" ArgumentDataMember="DateAndTime" ColorDataMember="T1.C6" ValueDataMembersSerializable="C10" />
               </SeriesSerializable>
             </DataContainer>
-            <Diagram Ref="42" TypeNameSerializable="XYDiagram">
-              <AxisX Ref="43" VisibleInPanesSerializable="-1" />
-              <AxisY Ref="44" VisibleInPanesSerializable="-1" />
+            <Diagram Ref="43" TypeNameSerializable="XYDiagram">
+              <AxisX Ref="44" VisibleInPanesSerializable="-1" />
+              <AxisY Ref="45" VisibleInPanesSerializable="-1" />
             </Diagram>
-            <Legend Ref="45" LegendID="-1" />
-            <OptionsPrint Ref="46" ImageFormat="Metafile" />
+            <Legend Ref="46" LegendID="-1" />
+            <OptionsPrint Ref="47" ImageFormat="Metafile" />
           </Chart>
-          <StylePriority Ref="47" UseBorders="false" />
+          <StylePriority Ref="48" UseBorders="false" />
         </Item1>
       </Controls>
     </Item4>
