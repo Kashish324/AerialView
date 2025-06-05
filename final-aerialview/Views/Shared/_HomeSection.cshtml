@@ -29,7 +29,11 @@
     {
         if (ViewBag.TableName != null)
         {
-            <span class="text text-center" id="selected-submenu">@ViewBag.TableName</span>
+            @* <span class="text text-center" id="selected-submenu">@ViewBag.TableName</span> *@
+            @foreach (var item in projectData)
+            {
+                <span class="text text-center text-capitalize" id="selected-submenu">@item.ClientName</span>
+            }
         }
         else
         {
