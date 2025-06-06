@@ -2,7 +2,8 @@
 {
     public class DashboardDataModel
     {
-        public int DashId { get; set; }
+        //public int DashId { get; set; }
+        public long DashId { get; set; }
 
         public string? DashName { get; set; }  
         
@@ -13,6 +14,8 @@
         public bool DashDefault {  get; set; }
 
         public int RefreshRate { get; set; }
+
+        public bool IsNew { get; set; }
 
         public bool IsPathExists { get; set; } // New flag for existence check in dashboard folder 
     }

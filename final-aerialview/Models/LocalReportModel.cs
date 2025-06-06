@@ -6,6 +6,8 @@
 
         public string? ReportName { get; set; }
 
+        public int ConnNo { get; set; }
+
         public string? DataTableName { get; set; }
 
         public string? WebReportPath { get; set; }

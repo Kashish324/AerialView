@@ -169,7 +169,7 @@
                                         }
                                     </div>
 
-                                    @* add another condition for custom link and something for form should be added *@
+                                   
                                     @if (hasSubmenu)
                                     {
                                         <ul class="sub-menu">
@@ -258,7 +258,32 @@
                                                             }
 
                                                         }
-                                                       
+
+                                                        else if (subItem.SubMenuName == "Historical Charts")
+                                                        {
+                                                            <a href="@Url.Action("HistoricalCharts", "Charts", new { parentMenu = mainItem.MenuName, submenu = subItem.SubMenuName })" class="text-decoration-none subMenuLink">
+                                                                <div class="icon-link text-capitalize">
+                                                                    <div class="listMenu">
+                                                                        <i class="ri-box-3-line"></i>
+                                                                        <span>@subItem.SubMenuName</span>
+                                                                    </div>
+                                                                </div>
+
+                                                            </a>
+                                                        }
+
+                                                        else if (subItem.SubMenuName == "Live Charts")
+                                                        {
+                                                            <a href="@Url.Action("LiveCharts", "Charts", new { parentMenu = mainItem.MenuName, submenu = subItem.SubMenuName })" class="text-decoration-none subMenuLink">
+                                                                <div class="icon-link text-capitalize">
+                                                                    <div class="listMenu">
+                                                                        <i class="ri-box-3-line"></i>
+                                                                        <span>@subItem.SubMenuName</span>
+                                                                    </div>
+                                                                </div>
+
+                                                            </a>
+                                                        }
 
                                                         else
                                                         {

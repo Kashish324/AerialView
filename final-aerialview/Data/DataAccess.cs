@@ -4,6 +4,7 @@ using System.Data;
 //using System.Data.SqlClient;
 using System.Text.Json;
 using Microsoft.Data.SqlClient;
+using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
 
 namespace final_aerialview.Data
 {
@@ -37,7 +38,7 @@ namespace final_aerialview.Data
 
 
         #region opening the default connection
-        public IEnumerable<T> ExecuteQuery<T>(string query)
+        public IEnumerable<T> ExecuteQuery<T>(string query, object parameters = null)
         {
             using (var connection = CreateConnection())
             {
@@ -344,37 +345,38 @@ namespace final_aerialview.Data
                     };
 
                     connection.Execute(sql, parameters);
+
+                    //inserting multiple enteries in menu_child_new 
+
+                    SqlConnection con = new SqlConnection(connection.ConnectionString);
+
+
+                    string s1 = "select Top (1) * from Menu_Child_New  where MainMenuCode=5 order by SubMenuCode desc"
+                                        + " Select Top (1) * from DashboardMaster order by DashId desc";
+                    SqlDataAdapter Adpt = new SqlDataAdapter(s1, con);
+                    DataSet ds1 = new DataSet();
+                    Adpt.Fill(ds1);
+
+
+                    int submenucode = 0;
+                    int DashId = 0;
+                    string DashName = null;
+
+
+                    if (ds1.Tables[0].Rows.Count > 0)
+                    {
+                        submenucode = (Convert.ToInt32(ds1.Tables[0].Rows[0][1].ToString()) + 1);
+                    }
+
+                    if (ds1.Tables[1].Rows.Count > 0)
+                    {
+                        DashId = (Convert.ToInt32(ds1.Tables[1].Rows[0][0].ToString()));
+                        DashName = ds1.Tables[1].Rows[0]["DashName"].ToString() ?? string.Empty;
+                    }
+
+                    var sql2 = $" insert into Menu_Child_New (MainMenuCode, SubMenuCode, SubMenuName, Status, Frm_Level, RptId, Link_FormName, DashId) VALUES (5, {submenucode}, '{DashName}', 0, 0, 0, 'xDashboardReport', {DashId} )";
+                    connection.Execute(sql2);
                 }
-
-
-                SqlConnection con = new SqlConnection(connection.ConnectionString);
-
-
-                string s1 = "select Top (1) * from Menu_Child_New  where MainMenuCode=5 order by SubMenuCode desc"
-                                    + " Select Top (1) * from DashboardMaster order by DashId desc";
-                SqlDataAdapter Adpt = new SqlDataAdapter(s1, con);
-                DataSet ds1 = new DataSet();
-                Adpt.Fill(ds1);
-
-
-                int submenucode = 0;
-                int DashId = 0;
-                string DashName = null;
-
-
-                if (ds1.Tables[0].Rows.Count > 0)
-                {
-                    submenucode = (Convert.ToInt32(ds1.Tables[0].Rows[0][1].ToString()) + 1);
-                }
-
-                if (ds1.Tables[1].Rows.Count > 0)
-                {
-                    DashId = (Convert.ToInt32(ds1.Tables[1].Rows[0][0].ToString()));
-                    DashName = ds1.Tables[1].Rows[0]["DashName"].ToString() ?? string.Empty;
-                }
-
-                var sql2 = $" insert into Menu_Child_New (MainMenuCode, SubMenuCode, SubMenuName, Status, Frm_Level, RptId, Link_FormName, DashId) VALUES (5, {submenucode}, '{DashName}', 0, 0, 0, 'xDashboardReport', {DashId} )";
-                connection.Execute(sql2);
             }
             return errorMessages;
         }
@@ -673,7 +675,6 @@ GrandTotal = @GrandTotal
         #endregion
 
         #region getting column names according to the selected connection string and table name for the alarm and event configuration page
-
         public IEnumerable<string> FetchColNamesForEventConfig(string connectionString, string tableName)
         {
             using (var connection = new SqlConnection(connectionString))
@@ -817,43 +818,61 @@ GrandTotal = @GrandTotal
                     throw;
                 }
             }
-            //delete from Menu_Child_New where MainMenuCode = 10 and SubMenuCode = 1
-            //     delete from UserControlMaster where ControlName = 'link1'
-            //string query = $"DELETE FROM EventConfigurationMaster WHERE Id = @Id";
-            //int rowsAffected = ExecuteNonQuery(query, new { Id = id }); // Assuming ExecuteNonQuery returns the number of rows affected
-            //return rowsAffected > 0; // Return true if at least one row was affected, else false
         }
-
-
-        //public void DeleteDashById(int dashId)
-        //{
-        //    using (var connection = CreateConnection())
-        //    {
-        //        connection.Open();
-        //        var transaction = connection.BeginTransaction();
-
-        //        try
-        //        {
-        //            string query1 = "DELETE FROM DashboardMaster WHERE DashId = @DashId";
-        //            connection.Execute(query1, new { DashId = dashId }, transaction);
-
-        //            string query2 = "DELETE FROM Menu_Child_New WHERE DashId = @DashId";
-        //            connection.Execute(query2, new { DashId = dashId }, transaction);
-
-        //            string query3 = "DELETE FROM UserControlMaster WHERE refId = @DashId";
-        //            connection.Execute(query3, new { DashId = dashId }, transaction);
-
-        //            transaction.Commit();
-        //        }
-        //        catch (Exception ex)
-        //        {
-        //            transaction.Rollback();
-        //            Console.WriteLine($"Error deleting dashboard with ID {dashId}: {ex.Message}");
-        //            throw; // Optionally handle or log the exception as needed
-        //        }
-        //    }
-        //}
         #endregion
+
+        #region removing the xpoProvider from the connection string 
+        private static string CleanForAdo(string xpoConn)
+        {
+            // removes the first key‑value that starts with “XpoProvider=”
+            if (xpoConn.StartsWith("XpoProvider=", StringComparison.OrdinalIgnoreCase))
+            {
+                int firstSemi = xpoConn.IndexOf(';');
+                if (firstSemi > 0)
+                    return xpoConn.Substring(firstSemi + 1);   // everything after the first ‘;’
+            }
+            return xpoConn;
+        }
+        #endregion
+
+        #region Get all column names from the table 
+        public List<string> GetColumnsOfTable(string connectionString, string tableName)
+        {
+            using var conn = new SqlConnection(CleanForAdo(connectionString));
+            conn.Open();
+
+            const string sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @table";
+            return conn.Query<string>(sql, new { table = tableName }).ToList();
+        }
+        #endregion
+
+
+
+        #region Get columns with data types
+        public Dictionary<string, string> GetColumnsWithTypes(string tableName)
+        {
+            var query = @"
+                SELECT COLUMN_NAME, DATA_TYPE
+                FROM INFORMATION_SCHEMA.COLUMNS
+                WHERE TABLE_NAME = @TableName";
+
+            var parameters = new Dictionary<string, object> { { "@TableName", tableName } };
+
+            var result = ExecuteQuery<dynamic>(query, parameters);
+
+            var columnTypeMap = new Dictionary<string, string>();
+
+
+            foreach (var row in result)
+            {
+                var dict = (IDictionary<string, object>)row;
+                columnTypeMap[dict["COLUMN_NAME"].ToString()] = dict["DATA_TYPE"].ToString();
+            }
+
+            return columnTypeMap;
+        }
+        #endregion
+
 
     }
 }

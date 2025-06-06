@@ -1,0 +1,23 @@
+﻿@{
+    ViewBag.Title = "Report View";
+    var tableName = ViewData["TableName"] as string;
+    var connStr = ViewData["ConnectionString"] as string;
+    var columns = ViewBag.Columns as List<string>;
+}
+
+<h2>Table Name: @tableName</h2>
+
+@if (columns != null && columns.Any())
+{
+    <h3>Columns:</h3>
+    <ul>
+        @foreach (var col in columns)
+        {
+            <li>@col</li>
+        }
+    </ul>
+}
+else
+{
+    <p>No columns found for this table.</p>
+}
