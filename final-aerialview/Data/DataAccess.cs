@@ -251,6 +251,7 @@ namespace final_aerialview.Data
                 var checkExistsSql = "SELECT COUNT(*) FROM DashboardMaster WHERE DashName = @DashName AND DashId <> @DashId";
                 var sql = "UPDATE DashboardMaster SET DashName = @DashName, DashPath = @DashPath, DashStatus = CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, DashDefault = CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END, RefreshRate = @RefreshRate  WHERE DashId = @DashId";
 
+                //multiple dashconfig entries can be updated at once in all the required tables 
                 foreach (var data in updatedData)
                 {
                     // Check if DashName has changed
@@ -323,6 +324,7 @@ namespace final_aerialview.Data
                 var checkExistsSql = "Select count(*) from DashboardMaster WHERE DashName = @DashName";
                 var sql = "INSERT INTO DashboardMaster (DashName, DashPath, DashStatus, DashDefault, RefreshRate) VALUES (@DashName, @DashPath, CASE WHEN @DashStatus = 1 THEN 'true' ELSE 'false' END, CASE WHEN @DashDefault = 1 THEN 'true' ELSE 'false' END, @RefreshRate)";
 
+                //multiple dashconfig entries can be inserted at once in all the required tables 
                 foreach (var data in newData)
                 {
 
