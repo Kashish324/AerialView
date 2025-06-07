@@ -1,6 +1,8 @@
 ﻿using DevExpress.Xpo.DB.Helpers;
+using System.Linq;
 using final_aerialview.Data;
 using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 
 namespace final_aerialview.Controllers
 {
@@ -34,7 +36,7 @@ namespace final_aerialview.Controllers
         }
 
         //Show Charts form view
-        public IActionResult ViewReport(int id)
+        public IActionResult ChartConfiguration(int id)
         {
             var reports = _dataAccess.GetReportData();
             var report = reports.FirstOrDefault(r => r.RptId == id);
@@ -45,6 +47,9 @@ namespace final_aerialview.Controllers
             var connections = _dataAccess.GetReportConnectionData();
             var conn = connections.FirstOrDefault(c => c.ConNo == report.ConnNo && c.ConName == report.ConnName);
             if (conn == null)
+                return RedirectToAction("Error", "Home");
+
+            if (string.IsNullOrWhiteSpace(conn.ConName))
                 return RedirectToAction("Error", "Home");
 
             // Get connection string
@@ -60,16 +65,35 @@ namespace final_aerialview.Controllers
             ViewData["ConnectionString"] = connStr;
 
 
-            ViewBag.Columns = _dataAccess.GetColumnsOfTable(connStr, report.DataTableName);
+            var columnMap = _dataAccess.GetColumnsOfTable(connStr, report.DataTableName);
 
-            return View("ReportView");
+            var allColumns = columnMap.Keys.ToList();
+
+            ViewBag.Columns = allColumns;
+
+            // Pass only numeric columns to view
+            var numericTypes = new[] { "int", "float", "decimal", "real", "double", "numeric", "bigint", "smallint", "money" };
+
+            ViewBag.NumericColumns = columnMap
+                .Where(kv => numericTypes.Contains(kv.Value.ToLower()))
+                .Select(kv => kv.Key)
+                .ToList();
+
+            return View();
         }
 
-        [HttpGet]
-        public JsonResult GetColumns(string tableName)
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RenderLineChart(string connString, string tableName, string xColumn, List<string> yColumns, DateTime? fromDate, DateTime? toDate)
         {
-            var columns = _dataAccess.GetColumnsWithTypes(tableName);
-            return Json(columns);
+            var dataSeries = _dataAccess.GetSplineChartSeries(connString, tableName, xColumn, yColumns, fromDate, toDate);
+
+            ViewBag.DataSeries = JsonConvert.SerializeObject(dataSeries);
+            ViewBag.TableName = tableName;
+            ViewBag.XColumn = xColumn;
+            ViewBag.YColumns = yColumns;
+
+            return PartialView("RenderLineChart");
         }
 
     }

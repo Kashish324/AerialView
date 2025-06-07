@@ -1,10 +1,9 @@
 ﻿using Dapper;
 using final_aerialview.Models;
 using System.Data;
-//using System.Data.SqlClient;
 using System.Text.Json;
 using Microsoft.Data.SqlClient;
-using static DevExpress.Xpo.Helpers.AssociatedCollectionCriteriaHelper;
+
 
 namespace final_aerialview.Data
 {
@@ -43,7 +42,7 @@ namespace final_aerialview.Data
             using (var connection = CreateConnection())
             {
                 connection.Open();
-                return connection.Query<T>(query);
+                return connection.Query<T>(query, parameters);
             }
         }
         #endregion
@@ -837,14 +836,19 @@ GrandTotal = @GrandTotal
         }
         #endregion
 
-        #region Get all column names from the table 
-        public List<string> GetColumnsOfTable(string connectionString, string tableName)
+        #region Get all column names from the table with data types
+        public Dictionary<string, string> GetColumnsOfTable(string connectionString, string tableName)
         {
             using var conn = new SqlConnection(CleanForAdo(connectionString));
             conn.Open();
 
-            const string sql = "SELECT COLUMN_NAME FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @table";
-            return conn.Query<string>(sql, new { table = tableName }).ToList();
+            const string sql = "SELECT COLUMN_NAME, DATA_TYPE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME = @table";
+
+            var result = conn.Query<(string ColumnName, string DataType)>(sql, new { table = tableName }).ToList();
+
+            return result.ToDictionary(x => x.ColumnName, x => x.DataType);
+
+            //return conn.Query<string>(sql, new { table = tableName }).ToList();
         }
         #endregion
 
@@ -875,6 +879,66 @@ GrandTotal = @GrandTotal
         }
         #endregion
 
+
+        #region Get spline chart series data
+        public List<object> GetSplineChartSeries(
+                string connectionString,
+                string tableName,
+                string xColumn,
+                List<string> yColumns,
+                DateTime? fromDate,
+                DateTime? toDate)
+        {
+            var selectedColumns = new[] { xColumn }.Concat(yColumns).Distinct();
+            string columnQuery = string.Join(", ", selectedColumns.Select(c => $"[{c}]"));
+
+            using var conn = new SqlConnection(CleanForAdo(connectionString));
+            conn.Open();
+
+            //get the schema for the table
+            string schema = conn.QuerySingle<string>(
+                "SELECT TABLE_SCHEMA FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = @t",
+                new { t = tableName });
+
+            string fullTable = $"[{schema}].[{tableName}]";
+
+            // query & parameters
+            DateTime from = fromDate ?? DateTime.Now.AddHours(-1);
+            DateTime to = toDate ?? DateTime.Now;
+
+            string query = $@"
+                            SELECT {columnQuery}
+                            FROM   {fullTable}
+                            WHERE  DateAndTime BETWEEN @from AND @to
+                            ORDER  BY DateAndTime";
+
+            var rawData = conn.Query<dynamic>(query, new { from, to })
+                              .OrderBy(row => ((IDictionary<string, object>)row)[xColumn])
+                              .ToList();
+
+            //CanvasJS‑style spline series
+            var series = new List<object>();
+
+            foreach (var yCol in yColumns)
+            {
+                var points = rawData.Select(r => new
+                {
+                    label = Convert.ToString(((IDictionary<string, object>)r)[xColumn]),
+                    y = Convert.ToDouble(((IDictionary<string, object>)r)[yCol])
+                }).ToList();
+
+                series.Add(new
+                {
+                    type = "spline",
+                    name = yCol,
+                    showInLegend = true,
+                    dataPoints = points
+                });
+            }
+
+            return series;
+        }
+        #endregion
 
     }
 }

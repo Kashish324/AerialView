@@ -1,0 +1,61 @@
+﻿@using Newtonsoft.Json;
+
+@{
+    ViewBag.Title = "Line Chart";
+    var tableName = ViewBag.TableName;
+    var json = ViewBag.DataSeries; 
+}
+
+<div class=" py-4">
+
+    <div class="card shadow border-0 rounded-1 p-4">
+        <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+    </div>
+</div>
+
+<script>
+    $(function () {
+        var chart = new CanvasJS.Chart("chartContainer", {
+
+            animationEnabled: true,
+            theme: "light2",
+            backgroundColor: "#ffffff",
+             zoomEnabled: true,
+            title: {
+                text: "@tableName",
+                fontColor: "#1866B0",
+                fontSize: 22,
+                fontWeight: "bold"
+            },
+            exportFileName: "@(tableName + " Chart - " + DateTime.Now.ToString("yyyyMMdd_HHmmss"))",
+              exportEnabled: true,
+
+            axisY: {
+                 // gridThickness: 0,
+                includeZero: false,
+                gridColor: "#dfe3e8",
+                labelFontColor: "#4a4a4a"
+            },
+            axisX: {
+                 // gridThickness: 0,
+                labelFontColor: "#4a4a4a"
+            },
+            toolTip: {
+                shared: true,
+                backgroundColor: "#e8f0ff"
+            },
+            legend: {
+                cursor: "pointer",
+                itemclick: function (e) {
+                    e.dataSeries.visible = !(typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible);
+                    chart.render();
+                }
+            },
+            
+             data: @Html.Raw(ViewBag.DataSeries)
+        });
+
+
+        chart.render();
+    });
+</script>
