@@ -25,18 +25,25 @@ namespace final_aerialview.Controllers
 
             ViewData["ReportsConn"] = reportConnData;
             ViewData["ReportData"] = reportNameData;
-
-            return View();
+            ViewData["Mode"] = "Historical";
+            return View("ReportList");
         }
 
         //Live Charts
         public IActionResult LiveCharts()
         {
-            return View();
+            var reportNameData = _dataAccess.GetReportData();
+            var reportConnData = _dataAccess.GetReportConnectionData();
+
+            ViewData["ReportsConn"] = reportConnData;
+            ViewData["ReportData"] = reportNameData;
+            ViewData["Mode"] = "Live";
+
+            return View("ReportList");
         }
 
         //Show Charts form view
-        public IActionResult ChartConfiguration(int id)
+        public IActionResult ChartConfiguration(int id, string mode = "Historical")
         {
             var reports = _dataAccess.GetReportData();
             var report = reports.FirstOrDefault(r => r.RptId == id);
@@ -79,6 +86,8 @@ namespace final_aerialview.Controllers
                 .Select(kv => kv.Key)
                 .ToList();
 
+            ViewBag.Mode = mode;
+
             return View();
         }
 
@@ -96,5 +105,46 @@ namespace final_aerialview.Controllers
             return PartialView("RenderLineChart");
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public IActionResult RenderLiveChart(string connString, string tableName, string xColumn, List<string> yColumns, int refreshRateSeconds)
+        {
+           
+            var dataSeries = _dataAccess.GetSplineChartSeries(connString, tableName, xColumn, yColumns, DateTime.Now.AddMinutes(-5), DateTime.Now);
+
+            ViewBag.DataSeries = JsonConvert.SerializeObject(dataSeries);
+            ViewBag.TableName = tableName;
+            ViewBag.XColumn = xColumn;
+            ViewBag.YColumns = yColumns;
+            ViewBag.RefreshRateSeconds = refreshRateSeconds;
+            ViewBag.ConnectionString = connString;
+
+            return PartialView("RenderLiveChart");
+        }
+
+
+        ////this endpoint is for live updates
+        [HttpGet]
+        public IActionResult GetLiveChartData(string connString, string tableName, string xColumn, List<string> yColumns)
+        {
+            if (string.IsNullOrWhiteSpace(connString))
+                return BadRequest("Missing connection string.");
+
+            var startTime = DateTime.Now.AddMinutes(-5); 
+            var endTime = DateTime.Now;
+
+            //Console.WriteLine($"[GetLiveChartData] Fetching data from {startTime} to {endTime}");
+
+            //Console.WriteLine("xColumn: " + xColumn);
+            //Console.WriteLine("yColumns: " + (yColumns == null ? "null" : string.Join(", ", yColumns)));
+
+
+            var dataSeries = _dataAccess.GetSplineChartSeries(connString, tableName, xColumn, yColumns, startTime, endTime);
+
+            //Console.WriteLine($"[GetLiveChartData] Returning {dataSeries?.Count ?? 0} series");
+
+            return Json(dataSeries);
+            //return NoContent();
+        }
     }
 }

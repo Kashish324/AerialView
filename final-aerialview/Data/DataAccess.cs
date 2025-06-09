@@ -823,8 +823,11 @@ GrandTotal = @GrandTotal
         #endregion
 
         #region removing the xpoProvider from the connection string 
-        private static string CleanForAdo(string xpoConn)
+        private static string CleanForAdo(string? xpoConn)
         {
+            if (string.IsNullOrWhiteSpace(xpoConn))
+                return string.Empty;
+
             // removes the first key‑value that starts with “XpoProvider=”
             if (xpoConn.StartsWith("XpoProvider=", StringComparison.OrdinalIgnoreCase))
             {
@@ -916,9 +919,16 @@ GrandTotal = @GrandTotal
                               .OrderBy(row => ((IDictionary<string, object>)row)[xColumn])
                               .ToList();
 
+            if (rawData.Count == 0)
+            {
+                // Log here for debugging
+                Console.WriteLine("No rows found for query:");
+                Console.WriteLine(query);
+            }
+
             //CanvasJS‑style spline series
             var series = new List<object>();
-
+            Console.WriteLine(yColumns);
             foreach (var yCol in yColumns)
             {
                 var points = rawData.Select(r => new

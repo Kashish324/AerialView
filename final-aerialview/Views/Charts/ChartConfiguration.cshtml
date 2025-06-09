@@ -5,6 +5,7 @@
     // var connStr = ViewData["ConnectionString"] as string;
     var columns = ViewBag.Columns as List<string>;
     var numericColumns = ViewBag.NumericColumns as List<string>;
+    string mode = ViewBag.Mode?.ToString() ?? "Historical";
 }
 
 
@@ -22,7 +23,7 @@
     <!-- Chart Configuration Card -->
     <div class="card p-3 mb-3 bg-white shadow">
         <!-- Form Content -->
-        <form asp-action="RenderLineChart" method="post" id="chartConfigForm">
+        <form asp-controller="Charts" asp-action="@(mode == "Live" ? "RenderLiveChart" : "RenderLineChart")" method="post" id="chartConfigForm">
             @Html.AntiForgeryToken()
 
             <input type="hidden" name="tableName" value="@tableName" />
@@ -62,6 +63,7 @@
 
                     </select>
                 </div>
+
             </div>
 
             <!-- Row 3: select y-axis -->
@@ -81,21 +83,37 @@
                     </select>
                     <div class="form-text text-muted">Hold Ctrl (Windows) or ⌘ Command (Mac) to select multiple columns.</div>
                 </div>
-
             </div>
 
-            <!-- Row 4: Date Range -->
+            <!-- Row 4: Date Range & Refresh Interval -->
             <div class="row mb-2">
-                <div class="col-12 col-md-6 mb-2">
+
+                <div class="col-12 col-md-4 mb-2">
                     <label class="form-label fw-semibold">📅 From Date</label>
                     <input type="datetime-local" class="form-control form-control-sm fw-medium rounded-3 shadow-sm" name="fromDate" id="fromDate" />
                 </div>
-                <div class="col-12 col-md-6 mb-2">
+                <div class="col-12 col-md-4 mb-2">
                     <label class="form-label fw-semibold">📅 To Date</label>
                     <input type="datetime-local" class="form-control form-control-sm fw-medium rounded-3 shadow-sm" name="toDate" id="toDate" />
                 </div>
+                @if (mode == "Live")
+                {
+                    <div class="col-12 col-md-4 mb-2">
+                        <label for="refreshRate" class="form-label fw-semibold">Refresh Interval</label>
+                        <select class="form-select form-select-sm fw-medium rounded-3 shadow-sm" id="refreshRate" name="refreshRateSeconds" required>
+                            <option value="2">Every 2 seconds</option>
+                            <option value="5" selected>Every 5 seconds</option>
+                            <option value="10">Every 10 seconds</option>
+                            <option value="30">Every 30 seconds</option>
+                            <option value="60">Every 1 minute</option>
+                            <option value="120">Every 2 minutes</option>
+                            <option value="300">Every 5 minutes</option>
+                        </select>
+                    </div>
+                }
             </div>
 
+            
 
 
             <div class="d-flex justify-content-center justify-content-md-start text-start">
@@ -146,13 +164,8 @@
         const form = $(this);
         const formData = form.serializeArray();
 
-        // Get tableName from data attribute
-        const tableName = $('#tableName').data('table-name');
-        const connString = $('#connString').data('table-name');
-
-        // Add tableName to the serialized data
-        formData.push({ name: "tableName", value: tableName }, {name: "connString", value: connString });
-
+       
+        console.log(formData)
         $.post(this.action, formData)
             .done(html => $('#chartPlaceholder').html(html))
             .fail(() => alert('Something went wrong while loading the chart.'));

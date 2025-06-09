@@ -1,0 +1,101 @@
+﻿@using Newtonsoft.Json;
+@{
+    ViewData["Title"] = "Live Chart";
+    var json = ViewBag.DataSeries;
+    var tableName = ViewBag.TableName;
+}
+
+<div class=" py-4">
+    <div class="card shadow border-0 rounded-1 p-4">
+        <div id="chartContainer" style="height: 400px; width: 100%;" data-refresh-rate="@ViewBag.RefreshRateSeconds"></div>
+    </div>
+</div>
+
+
+<script>
+    $(function () {
+        var refreshRateSeconds = parseInt($("#chartContainer").data("refresh-rate")) || 5;
+        var connString = '@Html.Raw(ViewBag.ConnectionString)';
+        var tableName = '@Html.Raw(ViewBag.TableName)';
+        var xColumn = '@Html.Raw(ViewBag.XColumn)';
+        var yColumns = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.YColumns));
+
+
+        // Parse initial data series from ViewBag
+        var initialDataSeries = @Html.Raw(ViewBag.DataSeries);
+        // Create chart instance
+        var chart = new CanvasJS.Chart("chartContainer", {
+            animationEnabled: true,
+            theme: "light2",
+            backgroundColor: "#ffffff",
+            zoomEnabled: true,
+            title: {
+                text: tableName,
+                fontColor: "#1866B0",
+                fontSize: 22,
+                fontWeight: "bold"
+            },
+            exportFileName: tableName + " Chart - " + new Date().toISOString().replace(/[:.]/g, ""),
+            exportEnabled: true,
+            axisY: {
+                includeZero: false,
+                gridColor: "#dfe3e8",
+                labelFontColor: "#4a4a4a"
+            },
+            axisX: {
+                labelFontColor: "#4a4a4a"
+            },
+            toolTip: {
+                shared: true,
+                backgroundColor: "#e8f0ff"
+            },
+            legend: {
+                cursor: "pointer",
+                itemclick: function (e) {
+                    e.dataSeries.visible = !(typeof (e.dataSeries.visible) === "undefined" || e.dataSeries.visible);
+                    chart.render();
+                }
+            },
+            data: initialDataSeries
+        });
+
+        chart.render();
+
+        // Function to fetch live data and update chart
+        function fetchLiveData() {
+            $.ajax({
+                url: '@Url.Action("GetLiveChartData", "Charts")',
+                type: 'GET',
+                traditional: true,
+                data: {
+                    connString: connString,
+                    tableName: tableName,
+                    xColumn: xColumn,
+                    yColumns: yColumns
+                },
+                success: function (newDataSeries) {
+
+                    // Update each series dataPoints
+                    // for (var i = 0; i < newDataSeries.length; i++) {
+                    //     if (chart.data[i]) {
+                    //         chart.data[i].set("dataPoints", newDataSeries[i].dataPoints);
+                    //         chart.data[i].visible = newDataSeries[i].visible !== false;
+                    //         } else {
+                    //        // Push new data series if it doesn't exist yet
+                    //        chart.options.data.push(newDataSeries[i]);
+                    //     }
+                    // }
+                    chart.options.data = newDataSeries;
+                    chart.render();
+                },
+                error: function () {
+                    console.error("Failed to fetch live chart data");
+                }
+            });
+
+        }
+        // console.log(refreshRateSeconds)
+        // Poll for live updates every refreshRateSeconds
+        setInterval(fetchLiveData, refreshRateSeconds * 1000);
+    });
+</script>

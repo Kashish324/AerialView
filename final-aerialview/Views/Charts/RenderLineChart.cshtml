@@ -15,6 +15,8 @@
 
 <script>
     $(function () {
+            console.log(@Html.Raw(ViewBag.DataSeries))
+
         var chart = new CanvasJS.Chart("chartContainer", {
 
             animationEnabled: true,
@@ -29,6 +31,10 @@
             },
             exportFileName: "@(tableName + " Chart - " + DateTime.Now.ToString("yyyyMMdd_HHmmss"))",
               exportEnabled: true,
+
+                 toolbar: { 
+                     itemBackgroundColorOnHover: "#1866B0",
+                 },
 
             axisY: {
                  // gridThickness: 0,
@@ -51,7 +57,6 @@
                     chart.render();
                 }
             },
-            
              data: @Html.Raw(ViewBag.DataSeries)
         });
 
