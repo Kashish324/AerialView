@@ -8,14 +8,17 @@
 
 <div class=" py-4">
 
-    <div class="card shadow border-0 rounded-1 p-4">
-        <div id="chartContainer" style="height: 400px; width: 100%;"></div>
+    <div class="card shadow border-0 rounded-1 p-3">
+        <div id="chartContainer" style="height: 420px; width: 100%;"></div>
     </div>
 </div>
 
+
+
+
 <script>
     $(function () {
-            console.log(@Html.Raw(ViewBag.DataSeries))
+            // console.log(@Html.Raw(ViewBag.DataSeries))
 
         var chart = new CanvasJS.Chart("chartContainer", {
 

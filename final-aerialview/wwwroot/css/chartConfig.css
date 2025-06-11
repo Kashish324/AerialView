@@ -48,3 +48,8 @@ body {
 .select2-container--bootstrap-5 .select2-dropdown .select2-results__options .select2-results__option {
     font-size: 0.9rem !important;
 }
+
+#chartContainer .canvasjs-chart-container a.canvasjs-chart-credit {
+    display: none !important;
+    color: white !important;
+}

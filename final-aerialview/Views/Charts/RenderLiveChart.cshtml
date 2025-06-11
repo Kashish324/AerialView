@@ -6,20 +6,21 @@
 }
 
 <div class=" py-4">
-    <div class="card shadow border-0 rounded-1 p-4">
-        <div id="chartContainer" style="height: 400px; width: 100%;" data-refresh-rate="@ViewBag.RefreshRateSeconds"></div>
+    <div class="card shadow border-0 rounded-1 p-3 position-relative">
+        <div id="chartContainer" style="height: 420px; width: 100%;" data-refresh-rate="@ViewBag.RefreshRateSeconds"></div>
     </div>
 </div>
 
 
 <script>
+    //function to get the chart
     $(function () {
         var refreshRateSeconds = parseInt($("#chartContainer").data("refresh-rate")) || 5;
         var connString = '@Html.Raw(ViewBag.ConnectionString)';
         var tableName = '@Html.Raw(ViewBag.TableName)';
         var xColumn = '@Html.Raw(ViewBag.XColumn)';
         var yColumns = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(ViewBag.YColumns));
-
+        const fromRange = '@Html.Raw(ViewBag.FromRangeMinutes)';
 
         // Parse initial data series from ViewBag
         var initialDataSeries = @Html.Raw(ViewBag.DataSeries);
@@ -71,7 +72,8 @@
                     connString: connString,
                     tableName: tableName,
                     xColumn: xColumn,
-                    yColumns: yColumns
+                    yColumns: yColumns,
+                    fromRange: fromRange
                 },
                 success: function (newDataSeries) {
 
@@ -99,3 +101,4 @@
         setInterval(fetchLiveData, refreshRateSeconds * 1000);
     });
 </script>
+

@@ -14,14 +14,14 @@
 <div class="container-fluid p-3">
 
     <!-- Header -->
-    <div class="my-2 mt-1 p-1 d-flex align-items-center justify-content-between">
+    <div class="mt-1 p-1 d-flex align-items-center justify-content-between">
         <div class="fw-semibold mb-3 fs-5 text-center text-md-start text-primary-emphasis ">
             <i class="ri-line-chart-line text-primary-emphasis fw-normal fs-4"></i>  Chart Configuration
         </div>
     </div>
 
     <!-- Chart Configuration Card -->
-    <div class="card p-3 mb-3 bg-white shadow">
+    <div class="card p-3  bg-white shadow">
         <!-- Form Content -->
         <form asp-controller="Charts" asp-action="@(mode == "Live" ? "RenderLiveChart" : "RenderLineChart")" method="post" id="chartConfigForm">
             @Html.AntiForgeryToken()
@@ -32,16 +32,16 @@
             <!-- Row 1: Selected report table name -->
             <div class="row mb-2">
                 <div class="col-12 col-md-3 mb-2" id="tableName" data-table-name="@tableName">
-                    <label for="tableName" class="form-label fw-medium">📊 Table Name: <span class="text-primary-emphasis fw-bold">@tableName</span> </label>
+                    <div class="form-label fw-medium">📊 Table Name: <span class="text-primary-emphasis fw-bold">@tableName</span> </div>
                 </div>
             </div>
 
             <!-- Row 2: select x-axis -->
             <div class="row mb-2">
                 @* x-axis *@
-                <div class="col-12 col-md-12 mb-2">
+                <div class="col-12 col-md-6 mb-2">
                     <label for="xColumn" class="form-label fw-medium">📌 X Axis (Label)</label>
-                    <select name="xColumn" class="form-select form-select-sm fw-medium rounded-3 shadow-sm" required>
+                    <select name="xColumn" class="form-select form-select-sm fw-medium rounded-3 shadow-sm" id="xColumn" required>
                         <option value="" disabled>-- Select X Axis --</option>
 
                         @if (columns != null)
@@ -60,19 +60,12 @@
                                 }
                             }
                         }
-
                     </select>
                 </div>
 
-            </div>
-
-            <!-- Row 3: select y-axis -->
-            <div class="row mb-2">
-                @* y-axis *@
-                <div class="col-12 col-md-12 mb-2">
+                <div class="col-12 col-md-6 mb-2">
                     <label for="yColumns" class="form-label fw-medium">📈 Y Axis (Values)</label>
                     <select name="yColumns" multiple class="form-select form-select-sm fw-medium rounded-3 shadow-sm" id="yColumns" required>
-                        @* <option value="" selected disabled>-- Select Y Axis --</option> *@
                         @if (numericColumns != null)
                         {
                             @foreach (var col in numericColumns)
@@ -85,19 +78,71 @@
                 </div>
             </div>
 
+            <!-- Row 3: select y-axis -->
+           @*  <div class="row mb-2">
+                <div class="col-12 col-md-12 mb-2">
+                    <label for="yColumns" class="form-label fw-medium">📈 Y Axis (Values)</label>
+                    <select name="yColumns" multiple class="form-select form-select-sm fw-medium rounded-3 shadow-sm" id="yColumns" required>
+                        @if (numericColumns != null)
+                        {
+                            @foreach (var col in numericColumns)
+                            {
+                                <option class="fw-medium fs-6" value="@col">@col</option>
+                            }
+                        }
+                    </select>
+                    <div class="form-text text-muted">Hold Ctrl (Windows) or ⌘ Command (Mac) to select multiple columns.</div>
+                </div>
+            </div>
+             *@
+
             <!-- Row 4: Date Range & Refresh Interval -->
             <div class="row mb-2">
 
-                <div class="col-12 col-md-4 mb-2">
-                    <label class="form-label fw-semibold">📅 From Date</label>
-                    <input type="datetime-local" class="form-control form-control-sm fw-medium rounded-3 shadow-sm" name="fromDate" id="fromDate" />
-                </div>
-                <div class="col-12 col-md-4 mb-2">
-                    <label class="form-label fw-semibold">📅 To Date</label>
-                    <input type="datetime-local" class="form-control form-control-sm fw-medium rounded-3 shadow-sm" name="toDate" id="toDate" />
-                </div>
+                @if(mode == "Historical")
+                {
+                    
+                    <div class="col-12 col-md-4 mb-2">
+                        <label for="fromDate" class="form-label fw-semibold">📅 From Date</label>
+                        <input type="datetime-local" class="form-control form-control-sm fw-medium rounded-3 shadow-sm" name="fromDate" id="fromDate" />
+                    </div>
+                    <div class="col-12 col-md-4 mb-2">
+                        <label for="toDate" class="form-label fw-semibold">📅 To Date</label>
+                        <input type="datetime-local" class="form-control form-control-sm fw-medium rounded-3 shadow-sm" name="toDate" id="toDate" />
+                    </div>
+                }
+
                 @if (mode == "Live")
                 {
+                    @* --- keeping them here so y-axis col doesnt break --- *@
+                    <div class="col-12 col-md-4 mb-2 d-none">
+                        <label for="fromDate" class="form-label fw-semibold">📅 From Date</label>
+                        <label class="form-label fw-semibold">📅 From Date</label>
+                        <input type="datetime-local" class="form-control form-control-sm fw-medium rounded-3 shadow-sm" name="fromDate" id="fromDate" disabled />
+                    </div>
+
+
+                    <div class="col-12 col-md-4 mb-2 d-none">
+                        <label class="form-label fw-semibold">📅 To Date</label>
+                        <input type="datetime-local" class="form-control form-control-sm fw-medium rounded-3 shadow-sm" name="toDate" id="toDate" disabled />
+                    </div>
+                    @* --- *@
+
+                    @* from range *@
+                    <div class="col-12 col-md-4 mb-2">
+                        <label for="fromRange" class="form-label fw-semibold">📅 From Range</label>
+                        <select class="form-select form-select-sm fw-medium rounded-3 shadow-sm" id="fromRange" name="fromRange">
+                            <option value="5">Last 5 minutes</option>
+                            <option value="15">Last 15 minutes</option>
+                            <option value="30">Last 30 minutes</option>
+                            <option value="60">Last 1 hour</option>
+                            <option value="180">Last 3 hours</option>
+                            <option value="360">Last 6 hours</option>
+                            <option value="1440">Last 24 hours</option>
+                        </select>
+                    </div>
+
+
                     <div class="col-12 col-md-4 mb-2">
                         <label for="refreshRate" class="form-label fw-semibold">Refresh Interval</label>
                         <select class="form-select form-select-sm fw-medium rounded-3 shadow-sm" id="refreshRate" name="refreshRateSeconds" required>
@@ -111,13 +156,6 @@
                         </select>
                     </div>
                 }
-            </div>
-
-            
-
-
-            <div class="d-flex justify-content-center justify-content-md-start text-start">
-                <div id="error-message" class=" text-danger" style="display:none; font-size: 13px;">*Please complete all required fields before saving.</div>
             </div>
 
             <!-- Generate Chart Button -->
@@ -140,36 +178,57 @@
 
         const fromDate = document.querySelector("#fromDate");
         const toDate = document.querySelector("#toDate");
+        // const fromRange = document.querySelector("#fromRange");
+
+        var mode =  '@Html.Raw(ViewBag.Mode?.ToString())';
+       
 
         //Default date values
         const now = new Date();
         const oneHourAgo = new Date(now.getTime() - (60 * 60 * 1000)); //1 hour in milliseconds
+        const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
+
+        if(mode == 'Historical' ){
         fromDate.value = toLocalDatetime(oneHourAgo);
+        }else{
+        fromDate.value = toLocalDatetime(fiveMinutesAgo);
+
+         fromRange.addEventListener("change", () => {
+            const minutesBack = parseInt(fromRange.value);
+            fromRange.value = minutesBack;
+            // const from = new Date(now.getTime() - minutesBack * 60 * 1000);
+            console.log("Live mode selected range:", minutesBack);
+            // Optional: Send or display the calculated 'from' if needed.
+        });
+        }
         toDate.value = toLocalDatetime(now);
 
+        // console.log(fromRange.value)
     })();
 
+     //applying select2 for multiple selection 
         $(function () {
         $('#yColumns').select2({
+            
             theme: 'bootstrap-5',
             placeholder: '-- Select Y‑Axis columns --',
             allowClear: true,
             width: '100%'
         });
-
+              // Give a custom ID to the generated Select2 container (optional)
+            $('#yColumns').next('.select2-container').attr('id', 'customSelect2ContainerId');
         
         $('#chartConfigForm').on('submit', function (e) {
-        e.preventDefault();
+            e.preventDefault();
 
-        const form = $(this);
-        const formData = form.serializeArray();
+            const form = $(this);
+            const formData = form.serializeArray();
+            console.log(formData)
 
-       
-        console.log(formData)
-        $.post(this.action, formData)
-            .done(html => $('#chartPlaceholder').html(html))
-            .fail(() => alert('Something went wrong while loading the chart.'));
-    });
+            $.post(this.action, formData)
+                .done(html => $('#chartPlaceholder').html(html))
+                .fail(() => alert('Something went wrong while loading the chart.'));
+        });
         
     });
 </script>

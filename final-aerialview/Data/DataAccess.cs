@@ -856,7 +856,6 @@ GrandTotal = @GrandTotal
         #endregion
 
 
-
         #region Get columns with data types
         public Dictionary<string, string> GetColumnsWithTypes(string tableName)
         {

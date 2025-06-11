@@ -3,6 +3,7 @@ using System.Linq;
 using final_aerialview.Data;
 using Microsoft.AspNetCore.Mvc;
 using Newtonsoft.Json;
+using System.Data.SqlClient;
 
 namespace final_aerialview.Controllers
 {
@@ -17,7 +18,7 @@ namespace final_aerialview.Controllers
             _configuration = configuration;
         }
 
-        //Historical Charts
+        # region Historical Charts report list
         public IActionResult HistoricalCharts()
         {
             var reportNameData = _dataAccess.GetReportData();
@@ -28,8 +29,9 @@ namespace final_aerialview.Controllers
             ViewData["Mode"] = "Historical";
             return View("ReportList");
         }
+        #endregion
 
-        //Live Charts
+        #region  Live Charts report list
         public IActionResult LiveCharts()
         {
             var reportNameData = _dataAccess.GetReportData();
@@ -41,8 +43,9 @@ namespace final_aerialview.Controllers
 
             return View("ReportList");
         }
+        #endregion
 
-        //Show Charts form view
+        #region Show Charts form view
         public IActionResult ChartConfiguration(int id, string mode = "Historical")
         {
             var reports = _dataAccess.GetReportData();
@@ -71,26 +74,35 @@ namespace final_aerialview.Controllers
             ViewData["TableName"] = report.DataTableName;
             ViewData["ConnectionString"] = connStr;
 
+            try
+            {
+                var columnMap = _dataAccess.GetColumnsOfTable(connStr, report.DataTableName);
 
-            var columnMap = _dataAccess.GetColumnsOfTable(connStr, report.DataTableName);
+                var allColumns = columnMap.Keys.ToList();
 
-            var allColumns = columnMap.Keys.ToList();
+                ViewBag.Columns = allColumns;
 
-            ViewBag.Columns = allColumns;
+                // Pass only numeric columns to view
+                var numericTypes = new[] { "int", "float", "decimal", "real", "double", "numeric", "bigint", "smallint", "money" };
 
-            // Pass only numeric columns to view
-            var numericTypes = new[] { "int", "float", "decimal", "real", "double", "numeric", "bigint", "smallint", "money" };
+                ViewBag.NumericColumns = columnMap
+                    .Where(kv => numericTypes.Contains(kv.Value.ToLower()))
+                    .Select(kv => kv.Key)
+                    .ToList();
 
-            ViewBag.NumericColumns = columnMap
-                .Where(kv => numericTypes.Contains(kv.Value.ToLower()))
-                .Select(kv => kv.Key)
-                .ToList();
+                ViewBag.Mode = mode;
 
-            ViewBag.Mode = mode;
+                return View();
 
-            return View();
+            } catch (Exception ex)
+            {
+                return RedirectToAction("NoReportAvailable", "Home");
+            }
+
         }
+        #endregion
 
+        #region rendering static line chart (historian/historical)
         [HttpPost]
         [ValidateAntiForgeryToken]
         public IActionResult RenderLineChart(string connString, string tableName, string xColumn, List<string> yColumns, DateTime? fromDate, DateTime? toDate)
@@ -104,13 +116,15 @@ namespace final_aerialview.Controllers
 
             return PartialView("RenderLineChart");
         }
+        #endregion
 
+        #region rendering live chart
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public IActionResult RenderLiveChart(string connString, string tableName, string xColumn, List<string> yColumns, int refreshRateSeconds)
+        public IActionResult RenderLiveChart(string connString, string tableName, string xColumn, List<string> yColumns, int refreshRateSeconds, int fromRange)
         {
            
-            var dataSeries = _dataAccess.GetSplineChartSeries(connString, tableName, xColumn, yColumns, DateTime.Now.AddMinutes(-5), DateTime.Now);
+            var dataSeries = _dataAccess.GetSplineChartSeries(connString, tableName, xColumn, yColumns, DateTime.Now.AddMinutes(-fromRange), DateTime.Now);
 
             ViewBag.DataSeries = JsonConvert.SerializeObject(dataSeries);
             ViewBag.TableName = tableName;
@@ -118,33 +132,27 @@ namespace final_aerialview.Controllers
             ViewBag.YColumns = yColumns;
             ViewBag.RefreshRateSeconds = refreshRateSeconds;
             ViewBag.ConnectionString = connString;
+            ViewBag.FromRangeMinutes = fromRange;
 
             return PartialView("RenderLiveChart");
         }
+        #endregion
 
-
-        ////this endpoint is for live updates
+        #region this endpoint is for live updates
         [HttpGet]
-        public IActionResult GetLiveChartData(string connString, string tableName, string xColumn, List<string> yColumns)
+        public IActionResult GetLiveChartData(string connString, string tableName, string xColumn, List<string> yColumns, int fromRange)
         {
             if (string.IsNullOrWhiteSpace(connString))
                 return BadRequest("Missing connection string.");
 
-            var startTime = DateTime.Now.AddMinutes(-5); 
+
+            //var from = ParseInt() ;
+            var startTime = DateTime.Now.AddMinutes(-fromRange); 
             var endTime = DateTime.Now;
-
-            //Console.WriteLine($"[GetLiveChartData] Fetching data from {startTime} to {endTime}");
-
-            //Console.WriteLine("xColumn: " + xColumn);
-            //Console.WriteLine("yColumns: " + (yColumns == null ? "null" : string.Join(", ", yColumns)));
-
-
             var dataSeries = _dataAccess.GetSplineChartSeries(connString, tableName, xColumn, yColumns, startTime, endTime);
 
-            //Console.WriteLine($"[GetLiveChartData] Returning {dataSeries?.Count ?? 0} series");
-
             return Json(dataSeries);
-            //return NoContent();
         }
+        #endregion
     }
 }
